@@ -1,0 +1,11 @@
+@use 'sass:math';
+
+@function rem($px) {
+  @return math.div($px, 16px) + 0rem;
+}
+
+@function space($multiplier) {
+  $grid-px: 8px;
+
+  @return rem($multiplier * $grid-px);
+}

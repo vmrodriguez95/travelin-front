@@ -1,0 +1,36 @@
+@use './tools.scss' as *;
+
+@mixin body--xl($font-weight: 400) {
+  font-family: var(--font-base);
+  font-weight: $font-weight;
+  font-size: rem(24px);
+  line-height: rem(32px);
+}
+
+@mixin body--l($font-weight: 400) {
+  font-family: var(--font-base);
+  font-weight: $font-weight;
+  font-size: rem(18px);
+  line-height: rem(28px);
+}
+
+@mixin body--m($font-weight: 400) {
+  font-family: var(--font-base);
+  font-weight: $font-weight;
+  font-size: rem(16px);
+  line-height: rem(26px);
+}
+
+@mixin body--s($font-weight: 400) {
+  font-family: var(--font-base);
+  font-weight: $font-weight;
+  font-size: rem(14px);
+  line-height: rem(24px);
+}
+
+@mixin body--xs($font-weight: 400) {
+  font-family: var(--font-base);
+  font-weight: $font-weight;
+  font-size: rem(12px);
+  line-height: rem(20px);
+}

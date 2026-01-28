@@ -1,0 +1,23 @@
+@use '../../styles/tools/tools' as *;
+
+.loader {
+  border: 2px solid rgba(var(--loaderColor, var(--color-primary)), 1);
+  border-bottom-color: rgba(var(--loaderColor), 0.3);
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  animation: rotate 1s linear infinite;
+  width: space(2);
+  height: space(2);
+  border-radius: 100%;
+  margin-left: space(2);
+  background-color: transparent;
+}
+
+@keyframes rotate {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+}

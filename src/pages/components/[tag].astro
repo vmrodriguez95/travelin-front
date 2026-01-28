@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { components } from '../../registry/components'
+import '../../elements'
+
+const { tag } = Astro.params
+const component = components.find((c) => c.meta.tag === tag)
+
+if (!component) {
+  throw new Error(`Component ${tag} not found`)
+}
+
+const Demo = component.Demo
+const config = component.config
+
+// === Astro necesita esto para build-time ===
+export async function getStaticPaths() {
+  return components.map(c => ({ params: { tag: c.meta.tag } }))
+}
+---
+
+<BaseLayout>
+  <h1>{component.meta.name}</h1>
+  <p>{component.meta.description}</p>
+
+  <h2>Preview</h2>
+  <Demo />
+
+  <h2>Config</h2>
+  <pre>{JSON.stringify(config, null, 2)}</pre>
+</BaseLayout>

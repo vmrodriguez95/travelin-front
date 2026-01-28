@@ -1,17 +1,28 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro'
+import '../elements'
+import { elements } from '../registry/elements'
+import { components } from '../registry/components'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <h1>Travel In - Design System</h1>
+  <ul>
+    {elements.map(c => (
+      <li>
+        <a href={`/elements/${c.meta.tag}`}>{c.meta.name}</a>
+      </li>
+    ))}
+  </ul>
+  <ul>
+    {components.map(c => (
+      <li>
+        <a href={`/components/${c.meta.tag}`}>{c.meta.name}</a>
+      </li>
+    ))}
+  </ul>
+
+  <hr />
+  <h2>Quick preview</h2>
+  <e-button label="Desde index"></e-button>
+</BaseLayout>

@@ -1,6 +1,7 @@
 {
-  "name": "",
+  "name": "travelin",
   "type": "module",
+  "private": true,
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -9,6 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.16.15"
+    "astro": "^5.16.15",
+    "lit": "^3.3.2"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.97.3"
   }
 }
