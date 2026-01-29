@@ -1,24 +1,25 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import { foundations } from '../../registry/foundations'
+import BaseLayout from '@ds/layouts/BaseLayout.astro'
+import { foundations } from '@ds/registry/foundations'
 
 const { tag } = Astro.params
 const foundation = foundations.find((f) => f.meta.tag === tag)
 if (!foundation) {
-  throw new Error(`Foundation ${tag} not found`)
+  throw new Error(`foundation ${tag} not found`)
 }
 
 const Demo = foundation.Demo
-const config = foundation.config
 
 // === Astro necesita esto para build-time ===
 export async function getStaticPaths() {
-  return foundations.map(c => ({ params: { tag: c.meta.tag } }))
+  return foundations.map((e) => ({ params: { tag: e.meta.tag } }))
 }
 ---
 
 <BaseLayout>
   <h1>{foundation.meta.name}</h1>
   <p>{foundation.meta.description}</p>
+
+  <h2>Preview</h2>
   <Demo />
 </BaseLayout>

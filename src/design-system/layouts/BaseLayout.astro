@@ -1,14 +1,14 @@
 ---
-import '../elements'
-import { elements } from '../registry/elements'
-import { components } from '../registry/components'
-import { foundations } from '../registry/foundations'
-import { getIcon } from '../registry/icons'
+import '@web/elements'
+import { elements } from '@ds/registry/elements.ts'
+import { components } from '@ds/registry/components.ts'
+import { foundations } from '@ds/registry/foundations.ts'
+import { getIcon } from '@ds/registry/icons.ts'
 
 const currentPath = Astro.url.pathname
 
 // Styles
-import '../styles/design-system/index.scss'
+import '@ds/styles/index.scss'
 ---
 
 <html lang="es">
@@ -17,7 +17,7 @@ import '../styles/design-system/index.scss'
     <title>Travel In - Design System</title>
     <link rel="icon" type="image/png" href="/images/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/src/elements/index.ts"></script>
+    <script type="module" src="/src/web/elements/index.ts"></script>
   </head>
   <body class="ti-layout">
     <aside class="ti-layout__aside">

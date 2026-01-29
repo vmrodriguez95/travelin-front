@@ -1,9 +1,9 @@
 // Variables
-@use '../variables/variables.scss';
+@use '@common/styles/variables/variables.scss';
 
 // Base styles
-@use '../base/fonts.scss';
-@use '../base/base.scss';
+@use '@common/styles/base/fonts.scss';
+@use '@common/styles/base/base.scss';
 
 // Layout styles
 @use './layout/layout.scss';

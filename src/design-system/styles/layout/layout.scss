@@ -1,5 +1,5 @@
-@use '../../tools/tools.scss' as *;
-@use '../../tools/typography.scss' as *;
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
 
 .ti-layout {
   display: grid;

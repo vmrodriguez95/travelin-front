@@ -1,0 +1,30 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+:host {
+  display: inline-block;
+}
+
+:host([size="full"]) {
+  width: 100%;
+}
+
+.e-button {
+  @include body--s(600);
+  padding: space(2) space(3);
+  border-radius: space(1);
+  border: none;
+  text-transform: uppercase;
+  background: rgba(var(--color-primary), 1);
+  color: rgba(var(--color-text), 1);
+  cursor: pointer;
+  transition: box-shadow 0.1s ease;
+
+  &:active {
+    box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  }
+
+  &--full {
+    width: 100%;
+  }
+}

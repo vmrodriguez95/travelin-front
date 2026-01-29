@@ -5,5 +5,15 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   devToolbar: {
     enabled: false
+  },
+  srcDir: './src',
+  vite: {
+    resolve: {
+      alias: {
+        '@ds': '/src/design-system',
+        '@web': '/src/web',
+        '@common': '/src/common',
+      }
+    }
   }
 });
