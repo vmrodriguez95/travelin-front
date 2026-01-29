@@ -1,5 +1,6 @@
 export const meta = {
   name: 'Button',
+  icon: 'rectangle',
   tag: 'e-button',
   description: 'Botón principal del sistema'
 }

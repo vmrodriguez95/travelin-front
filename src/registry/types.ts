@@ -1,6 +1,7 @@
 export interface ComponentMeta {
   name: string
   tag: string
+  icon: string
   description: string
 }
 

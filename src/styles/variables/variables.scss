@@ -1,30 +1,23 @@
 body {
   // Principal
-  --color-primary: 159, 27, 29; // Red
-  --color-secondary: 0, 240, 89; // Green
-  --color-tertiary: 242, 190, 36; // Yellow
-  --color-danger: 216, 82, 82;
-  --color-light: 255, 255, 255;
-  --color-gray: 237, 237, 237;
-  --color-gray--dark: 156, 156, 156;
-  --color-dark: 28, 28, 26;
+  --color-primary: 252, 110, 32; // Orange
 
-  // Status
-  --color-status--blue: 145, 154, 240;
-  --color-status--blue-dark: 135, 162, 194;
-  --color-status--orange: 248, 191, 126;
-  --color-status--purple: 192, 157, 230;
-  --color-status--green: 158, 218, 174;
-  --color-status--red: 230, 157, 157;
+  // Dark Theme
+  --color-text: 255, 255, 255;
+  --color-background: 34, 34, 34; // black
+  --color-background--secondary: 50, 50, 50; // black secondary
+  --color-gray: 234, 234, 234;
 
-  // Consoles
-  --color-blue: 28, 80, 139; // Playstation
-  --color-green: 31, 128, 28; // Xbox
-  --color-red: 231, 22, 30; // Switch
-  --color-black: 10, 10, 10; // PC
+  // Light Theme
+  --color-text--light: 34, 34, 34;
+  --color-background--light: 255, 255, 255; // white
+  --color-background--secondary--light: 245, 245, 245; // white secondary
+  --color-gray--light: 100, 100, 100;
 
+  // Spacing
   --grid-px: 8px;
   --grid-margin: 16px;
 
+  // Typography
   --font-base: 16px;
 }
