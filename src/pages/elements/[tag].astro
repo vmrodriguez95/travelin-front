@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import { elements } from '../../registry/elements'
-import '../../elements'
+import BaseLayout from '@ds/layouts/BaseLayout.astro'
+import ConfigLayout from '@ds/layouts/ConfigLayout.astro'
+import { elements } from '@ds/registry/elements'
 
 const { tag } = Astro.params
 const element = elements.find((e) => e.meta.tag === tag)
@@ -26,6 +26,8 @@ export async function getStaticPaths() {
   <h2>Preview</h2>
   <Demo />
 
+  <hr />
+
   <h2>Config</h2>
-  <pre>{JSON.stringify(config, null, 2)}</pre>
+  <ConfigLayout config={config} />
 </BaseLayout>

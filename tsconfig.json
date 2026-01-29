@@ -8,6 +8,12 @@
     "moduleResolution": "Bundler",
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
-    "lib": ["DOM", "ES2022"]
+    "lib": ["DOM", "ES2022"],
+    "baseUrl": ".",
+    "paths": {
+      "@web/*": ["src/web/*"],
+      "@ds/*": ["src/design-system/*"],
+      "@common/*": ["src/common/*"]
+    }
   }
 }
