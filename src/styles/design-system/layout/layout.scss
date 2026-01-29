@@ -65,6 +65,10 @@
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out;
 
+    &.is-current {
+      background-color: rgba(var(--color-gray), 1);
+    }
+
     &:hover {
       background-color: rgba(var(--color-gray), 1);
     }
