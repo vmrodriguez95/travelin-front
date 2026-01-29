@@ -1,0 +1,7 @@
+@use '../../tools/tools.scss' as *;
+
+.ti-icon {
+  width: space(3);
+  height: space(3);
+  fill: rgba(var(--icon-color, var(--color-primary)), 1);
+}
