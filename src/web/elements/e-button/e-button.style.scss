@@ -18,7 +18,7 @@
   background: rgba(var(--color-primary), 1);
   color: rgba(var(--color-text), 1);
   cursor: pointer;
-  transition: box-shadow 0.1s ease;
+  transition: box-shadow 0.1s ease, background-color 0.2s ease-in-out;
 
   &:active {
     box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 0.3);
@@ -26,5 +26,14 @@
 
   &--full {
     width: 100%;
+  }
+
+  &:disabled {
+    background: rgba(var(--color-primary), 0.67);
+    cursor: not-allowed;
+
+    &:active {
+      box-shadow: none;
+    }
   }
 }

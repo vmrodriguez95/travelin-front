@@ -1,0 +1,81 @@
+---
+import { getIcon } from '@ds/registry/icons.ts'
+
+const { config } = Astro.props
+
+const propsState: Record<string, any> = {}
+let prop: any
+
+for (prop of Object.values(config.props)) {
+  propsState[prop.name] = prop.default
+}
+---
+
+<section class="ti-code">
+  <h2 class="ti-code__title ti-text--xl">Código</h2>
+  <pre class="ti-code__block">
+    <code id="code-output" class="ti-code__output"></code>
+  </pre>
+  <button class="ti-code__copy" data-action="copy-code">Copiar código <span class="ti-code__icon ti-icon" set:html={getIcon('copy')}></span></button>
+</section>
+
+<script>
+  import { showToast } from '@ds/components/toast/toast.script.ts'
+
+  const component = document.querySelector('#component')
+  const codeEl = document.querySelector('#code-output')
+  const buttonCopy = document.querySelector('[data-action="copy-code"]')
+
+  if (!component) throw new Error('Component not found')
+  
+  function updateCode() {
+    if (!component || !codeEl) return
+
+    const content = component.innerHTML.trim()
+    const inner = content ? ` ${content} ` : ''
+
+    const tagName = component.tagName.toLowerCase()
+    const attrs = Array.from(component.attributes)
+      .filter((attr) => {
+        return attr.name !== 'id' // omitimos el id de demo
+      })
+      .map((attr) => {
+        if (attr.value === '') return attr.name
+        return `${attr.name}="${attr.value}"`
+      })
+      .join(' ')
+
+    const openTag = attrs.length
+      ? `<${tagName} ${attrs}>`
+      : `<${tagName}>`
+
+    codeEl.textContent = `${openTag}${inner}</${tagName}>`
+  }
+
+  function copyCode() {
+    if (!codeEl) return
+    navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+      showToast('Código copiado al portapapeles', 'success')
+    }).catch(() => {
+      showToast('Error al copiar el código', 'error')
+    })
+  }
+
+  function attachCopyListeners() {
+    if (!buttonCopy) return
+    buttonCopy.addEventListener('click', copyCode)
+  }
+
+  
+  // inicial
+  updateCode()
+  attachCopyListeners()
+
+  // observar cambios de atributos
+  const observer = new MutationObserver(updateCode)
+  observer.observe(component, {
+    attributes: true,
+    childList: true,
+    subtree: true
+  })
+</script>

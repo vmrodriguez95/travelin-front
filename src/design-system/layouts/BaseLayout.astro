@@ -5,6 +5,8 @@ import { components } from '@ds/registry/components.ts'
 import { foundations } from '@ds/registry/foundations.ts'
 import { getIcon } from '@ds/registry/icons.ts'
 
+import Toast from '@ds/components/toast/Toast.astro'
+
 const currentPath = Astro.url.pathname
 
 // Styles
@@ -20,6 +22,7 @@ import '@ds/styles/index.scss'
     <script type="module" src="/src/web/elements/index.ts"></script>
   </head>
   <body class="ti-layout">
+    <Toast />
     <aside class="ti-layout__aside">
       <a class="ti-layout__logo" href="/">
         <img class="ti-layout__image" src="/images/logo.png" alt="Travel In Logo" width="32" height="38" />
