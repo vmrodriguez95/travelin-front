@@ -1,0 +1,19 @@
+// Variables
+@use '@common/styles/variables/variables.scss';
+
+// Base styles
+@use '@common/styles/base/fonts.scss';
+@use '@common/styles/base/base.scss';
+
+// Layout styles
+@use './layout/layout.scss';
+
+// Components styles
+@use '../components/code/code.style.scss';
+@use '../components/toast/toast.style.scss';
+@use '../components/config/config.style.scss';
+
+// Utils styles
+@use './utils/grid.scss';
+@use './utils/icon.scss';
+@use './utils/text.scss';

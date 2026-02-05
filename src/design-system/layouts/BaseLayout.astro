@@ -1,0 +1,72 @@
+---
+import '@web/elements'
+import { elements } from '@ds/registry/elements.ts'
+import { components } from '@ds/registry/components.ts'
+import { foundations } from '@ds/registry/foundations.ts'
+import { getIcon } from '@ds/registry/icons.ts'
+
+import Toast from '@ds/components/toast/Toast.astro'
+
+const currentPath = Astro.url.pathname
+
+// Styles
+import '@ds/styles/index.scss'
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Travel In - Design System</title>
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/web/elements/index.ts"></script>
+  </head>
+  <body class="ti-layout">
+    <Toast />
+    <aside class="ti-layout__aside">
+      <a class="ti-layout__logo" href="/">
+        <img class="ti-layout__image" src="/images/logo.png" alt="Travel In Logo" width="32" height="38" />
+        <span class="ti-text--l">Travel In</span>
+      </a>
+      <nav>
+        <h2 class="ti-layout__title ti-text--xl">Foundations</h2>
+        <ul class="ti-layout__list">
+          {foundations.map((f) => (
+            <li class="ti-layout__item">
+              <a class={currentPath === `/foundations/${f.meta.tag}` ? 'ti-layout__link is-current' : 'ti-layout__link'} href={`/foundations/${f.meta.tag}`}>
+                <span class="ti-icon" set:html={getIcon(f.meta.icon)}></span>
+                <span>{f.meta.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <h2 class="ti-layout__title ti-text--xl">Elementos</h2>
+        <ul class="ti-layout__list">
+          {elements.map((e) => (
+            <li class="ti-layout__item">
+              <a class={currentPath === `/elements/${e.meta.tag}` ? 'ti-layout__link is-current' : 'ti-layout__link'} href={`/elements/${e.meta.tag}`}>
+                <span class="ti-icon" set:html={getIcon(e.meta.icon)}></span>
+                <span>{e.meta.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <h2 class="ti-layout__title ti-text--xl">Componentes</h2>
+        <ul class="ti-layout__list">
+          {components.map((c) => (
+            <li class="ti-layout__item">
+              <a class={currentPath === `/components/${c.meta.tag}` ? 'ti-layout__link is-current' : 'ti-layout__link'} href={`/components/${c.meta.tag}`}>
+                <span class="ti-icon" set:html={getIcon(c.meta.icon)}></span>
+                <span>{c.meta.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+    <header class="ti-layout__header"></header>
+    <main class="ti-layout__main">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+body {
+  // Principal
+  --color-primary: 252, 110, 32; // Orange
+  --color-gray: 234, 234, 234; // Light gray
+
+  // Dark Theme
+  --color-text: 255, 255, 255;
+  --color-background: 34, 34, 34;
+  --color-background--secondary: 50, 50, 50;
+
+  // Light Theme
+  --color-text--light: 34, 34, 34;
+  --color-background--light: 255, 255, 255;
+  --color-background--secondary--light: 245, 245, 245;
+  --color-gray--light: 100, 100, 100;
+
+  // Semantic Colors
+  --color-success: 76, 175, 80; // Green
+  --color-error: 244, 67, 54; // Red
+
+  // Spacing
+  --grid-px: 8px;
+  --grid-margin: 16px;
+
+  // Typography
+  --font-base: 16px;
+}

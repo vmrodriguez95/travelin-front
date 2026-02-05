@@ -1,0 +1,13 @@
+---
+import './toast.script.ts'
+import { getIcon } from '@ds/registry/icons.ts'
+---
+
+<div id="toast-root" class="ti-toast">
+  <button class="ti-toast__close">
+    <span class="ti-icon" set:html={getIcon('close')}></span>
+  </button>
+  <span class="ti-icon ti-toast__info" set:html={getIcon('info')}></span>
+  <span class="ti-icon ti-toast__error" set:html={getIcon('dangerous')}></span>
+  <span class="ti-icon ti-toast__success" set:html={getIcon('check-circle')}></span>
+</div>

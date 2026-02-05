@@ -1,0 +1,76 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+.ti-layout {
+  display: grid;
+  grid-template-areas:
+    'aside header'
+    'aside main';
+  grid-template-columns: space(30) 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100dvh;
+
+  &__header {
+    grid-area: header;
+    min-height: space(8);
+    padding: space(3);
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(var(--color-gray), 1);
+  }
+  
+  &__aside {
+    grid-area: aside;
+    border-right: 1px solid rgba(var(--color-gray), 1);
+    padding: space(3);
+    box-sizing: border-box;
+  }
+
+  &__main {
+    grid-area: main;
+    padding: space(3);
+    box-sizing: border-box;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: space(2);
+    gap: space(1);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &__title {
+    margin: 0 0 space(2);
+  }
+
+  &__list {
+    padding: 0;
+    margin: 0 0 space(4);
+    list-style: none;
+  }
+
+  &__item {
+    margin-bottom: space(1);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    padding: space(1) space(2);
+    border-radius: space(1);
+    text-decoration: none;
+    color: inherit;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease-in-out;
+
+    &.is-current {
+      background-color: rgba(var(--color-gray), 1);
+    }
+
+    &:hover {
+      background-color: rgba(var(--color-gray), 1);
+    }
+  }
+}

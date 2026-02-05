@@ -1,28 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import '../elements'
-import { elements } from '../registry/elements'
-import { components } from '../registry/components'
+import BaseLayout from '@ds/layouts/BaseLayout.astro'
 ---
 
 <BaseLayout>
-  <h1>Travel In - Design System</h1>
-  <ul>
-    {elements.map(c => (
-      <li>
-        <a href={`/elements/${c.meta.tag}`}>{c.meta.name}</a>
-      </li>
-    ))}
-  </ul>
-  <ul>
-    {components.map(c => (
-      <li>
-        <a href={`/components/${c.meta.tag}`}>{c.meta.name}</a>
-      </li>
-    ))}
-  </ul>
-
-  <hr />
   <h2>Quick preview</h2>
   <e-button label="Desde index"></e-button>
 </BaseLayout>
