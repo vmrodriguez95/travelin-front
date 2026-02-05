@@ -1,3 +1,7 @@
-<e-button>
-  Click me
+---
+const { id } = Astro.props
+---
+
+<e-button id={id}>
+  <slot />
 </e-button>

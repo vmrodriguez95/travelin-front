@@ -1,0 +1,37 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+.ti-code {
+  display: block;
+  padding-top: space(4);
+  box-sizing: border-box;
+  text-align: right;
+
+  &__title {
+    margin: 0 0 space(2);
+    text-align: left;
+  }
+  
+  &__block {
+    display: block;
+    margin: 0;
+    padding: space(2) space(4);
+    border-radius: space(1);
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background), 1);
+    text-align: left;
+  }
+  
+  &__copy {
+    @include body--m;
+    display: inline-flex;
+    align-items: center;
+    gap: space(1);
+    border: none;
+    margin: 0 0 space(2);
+    padding: space(1) space(2);
+    border-radius: space(1);
+    background: none;
+    cursor: pointer;
+  }
+}

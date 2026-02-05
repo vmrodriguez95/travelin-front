@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@ds/layouts/BaseLayout.astro'
-import ConfigLayout from '@ds/layouts/ConfigLayout.astro'
+import Config from '@ds/components/config/Config.astro'
+import Code from '@ds/components/code/Code.astro'
 import { elements } from '@ds/registry/elements'
 
 const { tag } = Astro.params
@@ -13,21 +14,25 @@ if (!element) {
 const Demo = element.Demo
 const config = element.config
 
-// === Astro necesita esto para build-time ===
 export async function getStaticPaths() {
   return elements.map((e) => ({ params: { tag: e.meta.tag } }))
 }
 ---
 
 <BaseLayout>
-  <h1>{element.meta.name}</h1>
-  <p>{element.meta.description}</p>
+  <h1 class="ti-text--xl">{element.meta.name}</h1>
+  <p class="ti-text--m">{element.meta.description}</p>
 
-  <h2>Preview</h2>
-  <Demo />
+  <h2 class="ti-text--l">Demo</h2>
+  <Demo id="component">{config.slots.default.default}</Demo>
 
-  <hr />
+  <section class="ti-grid">
+    <div class="ti-grid__column ti-grid__column--6">
+      <Config config={config} />
+    </div>
 
-  <h2>Config</h2>
-  <ConfigLayout config={config} />
+    <div class="ti-grid__column ti-grid__column--6">
+      <Code config={config} />
+    </div>
+  </section>
 </BaseLayout>

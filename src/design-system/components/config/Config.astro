@@ -1,0 +1,128 @@
+---
+const { config } = Astro.props
+
+const propsState: Record<string, any> = {}
+let prop: any
+
+for (prop of Object.values(config.props)) {
+  propsState[prop.name] = prop.default
+}
+---
+
+<section class="ti-configuration">
+  <h2 class="ti-configuration__title ti-text--xl">Configuración</h2>
+  <form id="controls" class="ti-configuration__form">
+    <fieldset id="properties" class="ti-configuration__block">
+      <p class="ti-configuration__title ti-text--l">Propiedades del componente</p>
+      {Object.values(config.props).map((prop: any) => (
+        <label class="ti-configuration__label">
+          {prop.label}
+          {prop.type === 'text' && (
+            <input
+              class="ti-configuration__input"
+              name={prop.name}
+              type="text"
+              value={prop.default}
+            />
+          )}
+          {prop.type === 'checkbox' && (
+            <input
+              class="ti-configuration__checkbox"
+              name={prop.name}
+              type="checkbox"
+              checked={prop.default}
+            />
+          )}
+          {prop.type === 'select' && (
+            <select
+              class="ti-configuration__select"
+              name={prop.name}
+              value={prop.default}>
+              {prop.options.map((option: string) => <option>{option}</option>)}
+            </select>
+          )}
+        </label>
+      ))}
+    </fieldset>
+    <fieldset id="slots" class="ti-configuration__block">
+      <p class="ti-configuration__title ti-text--l">Slots del componente</p>
+      {Object.values(config.slots).map((slot: any) => (
+        <label class="ti-configuration__label">
+          {slot.label}
+          {slot.type === 'text' && (
+            <input
+              class="ti-configuration__input"
+              name={slot.name}
+              type={slot.type}
+              value={slot.default}
+              data-slot="true"
+            />
+          )}
+        </label>
+      ))}
+    </fieldset>
+  </form>
+</section>
+
+<script>
+  // === Helpers ===
+  function updateCheckboxProp(component: any, name: string, value: boolean) {
+    value ? component.setAttribute(name, '') : component.removeAttribute(name)
+  }
+
+  function updateProp(component: any, name: string, value: string) {
+    component.setAttribute(name, value)
+  }
+
+  function updateSlot(component: any, value: string) {
+      component.textContent = value
+  }
+
+  function attachInputEvent(input: HTMLInputElement, component: any) {
+    input.addEventListener('input', (event) => {
+      const input = event.target as HTMLInputElement
+
+      if (input.dataset.slot === 'true') {
+        updateSlot(component, input.value)
+      } else {
+        updateProp(component, input.name, input.value)
+      }
+    })
+  }
+
+  function attachChangeEvent(input: HTMLInputElement, component: any) {
+    input.addEventListener('change', (event) => {
+      const input = event.target as HTMLInputElement
+
+      updateCheckboxProp(component, input.name, input.checked)
+    })
+  }
+
+  function attachSelectEvent(select: HTMLSelectElement, component: any) {
+    select.addEventListener('change', (event) => {
+      const select = event.target as HTMLSelectElement
+
+      updateProp(component, select.name, select.value)
+    })
+  }
+
+  // === Main ===
+  const component = document.querySelector('#component')
+  const form = document.querySelector('#controls') as HTMLFormElement
+
+  if (!form) throw new Error('Form not found in Config component')
+
+  const elements = Array.from(form.elements)
+
+  for (const element of elements) {
+    if (element instanceof HTMLInputElement && element.type === 'text') {
+      attachInputEvent(element, component)
+    }
+    else if (element instanceof HTMLInputElement && element.type === 'checkbox') {
+      attachChangeEvent(element, component)
+    }
+    else if (element instanceof HTMLSelectElement) {
+      attachSelectEvent(element, component)
+    }
+  }
+</script>
