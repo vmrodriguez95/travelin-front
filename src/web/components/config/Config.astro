@@ -14,7 +14,7 @@ for (prop of Object.values(config.props)) {
   <form id="controls" class="ti-configuration__form">
     <fieldset id="properties" class="ti-configuration__block">
       <p class="ti-configuration__title ti-text--l">Propiedades del componente</p>
-      {Object.values(config.props).map((prop: any) => (
+      {config.props && Object.values(config.props).map((prop: any) => (
         <label class="ti-configuration__label">
           {prop.label}
           {prop.type === 'text' && (
@@ -45,8 +45,8 @@ for (prop of Object.values(config.props)) {
       ))}
     </fieldset>
     <fieldset id="slots" class="ti-configuration__block">
-      <p class="ti-configuration__title ti-text--l">Slots del componente</p>
-      {Object.values(config.slots).map((slot: any) => (
+      {config.slots && (<p class="ti-configuration__title ti-text--l">Slots del componente</p>)}
+      {config.slots && Object.values(config.slots).map((slot: any) => (
         <label class="ti-configuration__label">
           {slot.label}
           {slot.type === 'text' && (

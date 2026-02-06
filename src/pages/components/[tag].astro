@@ -1,7 +1,15 @@
 ---
+// === Imports ===
 import BaseLayout from '@web/layouts/BaseLayout.astro'
+
+import Code from '@web/components/code/Code.astro'
+import Config from '@web/components/config/Config.astro'
+
 import { components } from '@web/registry/components'
 
+import { getAttrs } from '@web/utils/utils'
+
+// === Get component data ===
 const { tag } = Astro.params
 const component = components.find((c) => c.meta.tag === tag)
 
@@ -12,19 +20,25 @@ if (!component) {
 const Demo = component.Demo
 const config = component.config
 
-// === Astro necesita esto para build-time ===
 export async function getStaticPaths() {
-  return components.map(c => ({ params: { tag: c.meta.tag } }))
+  return components.map((c) => ({ params: { tag: c.meta.tag } }))
 }
 ---
 
 <BaseLayout>
-  <h1>{component.meta.name}</h1>
-  <p>{component.meta.description}</p>
+  <h1 class="ti-text--xl">{component.meta.name}</h1>
+  <p class="ti-text--m">{component.meta.description}</p>
 
-  <h2>Preview</h2>
-  <Demo id="component" />
+  <h2 class="ti-text--l">Demo</h2>
+  <Demo id="component" {...getAttrs(component)}>{config.slots?.default?.default}</Demo>
 
-  <h2>Config</h2>
-  <pre>{JSON.stringify(config, null, 2)}</pre>
+  <section class="ti-grid">
+    <div class="ti-grid__column ti-grid__column--6">
+      <Config config={config} />
+    </div>
+
+    <div class="ti-grid__column ti-grid__column--6">
+      <Code config={config} />
+    </div>
+  </section>
 </BaseLayout>
