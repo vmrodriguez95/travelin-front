@@ -20,6 +20,7 @@
     color: rgba(var(--color-text), 1);
     background-color: rgba(var(--color-background), 1);
     text-align: left;
+    overflow: auto;
   }
   
   &__copy {

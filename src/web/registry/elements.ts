@@ -1,4 +1,4 @@
-import type { ComponentRegistryItem } from './types'
+import type { ComponentRegistryItem } from '../types/components'
 
 const modules = import.meta.glob('../../design-system/elements/e-*/index.ts', { eager: true })
 
