@@ -1,8 +1,10 @@
 ---
-import BaseLayout from '@ds/layouts/BaseLayout.astro'
-import Config from '@ds/components/config/Config.astro'
-import Code from '@ds/components/code/Code.astro'
-import { elements } from '@ds/registry/elements'
+import BaseLayout from '@web/layouts/BaseLayout.astro'
+
+import Code from '@web/components/code/Code.astro'
+import Config from '@web/components/config/Config.astro'
+
+import { elements } from '@web/registry/elements'
 
 const { tag } = Astro.params
 const element = elements.find((e) => e.meta.tag === tag)

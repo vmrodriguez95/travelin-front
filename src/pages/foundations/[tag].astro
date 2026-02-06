@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '@ds/layouts/BaseLayout.astro'
-import { foundations } from '@ds/registry/foundations'
+import BaseLayout from '@web/layouts/BaseLayout.astro'
+import { foundations } from '@web/registry/foundations'
 
 const { tag } = Astro.params
 const foundation = foundations.find((f) => f.meta.tag === tag)

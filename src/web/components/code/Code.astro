@@ -1,5 +1,5 @@
 ---
-import { getIcon } from '@ds/registry/icons.ts'
+import { getIcon } from '@web/registry/icons'
 
 const { config } = Astro.props
 
@@ -20,7 +20,7 @@ for (prop of Object.values(config.props)) {
 </section>
 
 <script>
-  import { showToast } from '@ds/components/toast/toast.script.ts'
+  import { showToast } from '@web/components/toast/toast.script.ts'
 
   const component = document.querySelector('#component')
   const codeEl = document.querySelector('#code-output')

@@ -12,8 +12,8 @@
     "baseUrl": ".",
     "paths": {
       "@web/*": ["src/web/*"],
-      "@ds/*": ["src/design-system/*"],
-      "@common/*": ["src/common/*"]
+      "@common/*": ["src/common/*"],
+      "@ds/*": ["src/design-system/*"]
     }
   }
 }

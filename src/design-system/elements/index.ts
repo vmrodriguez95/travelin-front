@@ -1,5 +1,5 @@
 // Importa TODOS los custom elements automáticamente
-const elements = import.meta.glob('./**/!(*.config).ts', {
+const elements = import.meta.glob('./**/*.ts', {
   eager: true
 })
 

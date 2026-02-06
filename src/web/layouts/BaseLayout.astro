@@ -1,16 +1,17 @@
 ---
-import '@web/elements'
-import { elements } from '@ds/registry/elements.ts'
-import { components } from '@ds/registry/components.ts'
-import { foundations } from '@ds/registry/foundations.ts'
-import { getIcon } from '@ds/registry/icons.ts'
+import '@ds/elements'
 
-import Toast from '@ds/components/toast/Toast.astro'
+import { getIcon } from '@web/registry/icons'
+import { elements } from '@web/registry/elements'
+import { components } from '@web/registry/components'
+import { foundations } from '@web/registry/foundations'
+
+import Toast from '@web/components/toast/Toast.astro'
 
 const currentPath = Astro.url.pathname
 
 // Styles
-import '@ds/styles/index.scss'
+import '@web/styles/index.scss'
 ---
 
 <html lang="es">
@@ -19,7 +20,7 @@ import '@ds/styles/index.scss'
     <title>Travel In - Design System</title>
     <link rel="icon" type="image/png" href="/images/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/src/web/elements/index.ts"></script>
+    <script type="module" src="/src/design-system/elements/index.ts"></script>
   </head>
   <body class="ti-layout">
     <Toast />
