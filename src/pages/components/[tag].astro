@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '@ds/layouts/BaseLayout.astro'
-import { components } from '@ds/registry/components.ts'
+import BaseLayout from '@web/layouts/BaseLayout.astro'
+import { components } from '@web/registry/components'
 
 const { tag } = Astro.params
 const component = components.find((c) => c.meta.tag === tag)

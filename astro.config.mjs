@@ -10,9 +10,9 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@ds': '/src/design-system',
         '@web': '/src/web',
         '@common': '/src/common',
+        '@ds': '/src/design-system',
       }
     }
   }
