@@ -1,0 +1,16 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.ti-padding {
+  &-top--s {
+    padding-top: space(1);
+  }
+  &-top--m {
+    padding-top: space(2);
+  }
+  &-top--l {
+    padding-top: space(3);
+  }
+  &-top--xl {
+    padding-top: space(4);
+  }
+}

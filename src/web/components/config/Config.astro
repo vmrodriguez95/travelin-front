@@ -1,4 +1,6 @@
 ---
+import { getIcon } from '@web/registry/icons'
+
 const { config } = Astro.props
 
 const propsState: Record<string, any> = {}
@@ -40,6 +42,7 @@ for (prop of Object.values(config.props)) {
               value={prop.default}>
               {prop.options.map((option: string) => <option>{option}</option>)}
             </select>
+            <span class="ti-icon ti-configuration__icon" set:html={getIcon('chevron-down')}></span>
           )}
         </label>
       ))}
