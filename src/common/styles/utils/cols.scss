@@ -1,0 +1,37 @@
+@use '../variables/breakpoints.scss' as *;
+
+.e-col {
+  // Default column spans for mobile
+    @for $i from 1 through 4 {
+      &-#{$i} {
+        grid-column: span #{$i};
+      }
+    }
+  
+    // Column spans for tablet and above
+    @media (min-width: $breakpoint-md) {
+      @for $i from 1 through 12 {
+        &-md-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+  
+    // Column spans for desktop and above
+    @media (min-width: $breakpoint-lg) {
+      @for $i from 1 through 12 {
+        &-lg-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+  
+    // Column spans for wide desktop and above
+    @media (min-width: $breakpoint-xl) {
+      @for $i from 1 through 12 {
+        &-xl-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+}

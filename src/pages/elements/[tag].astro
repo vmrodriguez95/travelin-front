@@ -28,12 +28,12 @@ export async function getStaticPaths() {
   <h2 class="ti-text--l">Demo</h2>
   <Demo id="component">{config.slots.default.default}</Demo>
 
-  <section class="ti-grid">
-    <div class="ti-grid__column ti-grid__column--6">
+  <section class="e-grid ti-border-top ti-margin-top--l ti-padding-top--l">
+    <div class="e-col-4 e-col-md-6">
       <Config config={config} />
     </div>
 
-    <div class="ti-grid__column ti-grid__column--6">
+    <div class="e-col-4 e-col-md-6">
       <Code config={config} />
     </div>
   </section>

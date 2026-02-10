@@ -1,0 +1,12 @@
+// Main styles file that imports all other styles
+
+// Variables
+@use './variables/variables.scss' as *;
+
+// Base styles
+@use './base/fonts.scss' as *;
+@use './base/base.scss' as *;
+
+// Utils
+@use './utils/cols.scss' as *;
+@use './utils/grid.scss' as *;

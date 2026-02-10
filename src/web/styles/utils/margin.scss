@@ -1,0 +1,16 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.ti-margin {
+  &-top--s {
+    margin-top: space(1);
+  }
+  &-top--m {
+    margin-top: space(2);
+  }
+  &-top--l {
+    margin-top: space(3);
+  }
+  &-top--xl {
+    margin-top: space(4);
+  }
+}
