@@ -4,6 +4,7 @@ import '@ds/elements'
 import { getIcon } from '@web/registry/icons'
 import { elements } from '@web/registry/elements'
 import { components } from '@web/registry/components'
+import { compositions } from '@web/registry/compositions'
 import { foundations } from '@web/registry/foundations'
 
 import Toast from '@web/components/toast/Toast.astro'
@@ -58,6 +59,17 @@ import '@web/styles/index.scss'
           {components.map((c) => (
             <li class="ti-layout__item">
               <a class={currentPath === `/components/${c.meta.tag}` ? 'ti-layout__link is-current' : 'ti-layout__link'} href={`/components/${c.meta.tag}`}>
+                <span class="ti-icon" set:html={getIcon(c.meta.icon)}></span>
+                <span>{c.meta.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <h2 class="ti-layout__title ti-text--xl">Compositions</h2>
+        <ul class="ti-layout__list">
+          {compositions.map((c) => (
+            <li class="ti-layout__item">
+              <a class={currentPath === `/compositions/${c.meta.tag}` ? 'ti-layout__link is-current' : 'ti-layout__link'} href={`/compositions/${c.meta.tag}`}>
                 <span class="ti-icon" set:html={getIcon(c.meta.icon)}></span>
                 <span>{c.meta.name}</span>
               </a>

@@ -9,3 +9,23 @@ export function getAttrs(component: ComponentRegistryItem) {
 
   return Object.fromEntries(componentAttrs.map((attr) => [attr.name, attr.attr]))
 }
+
+export function prettyHTML(html: string) {
+  html = html.replace(/> </g, '>\n<') // ya tienes esto
+
+  const lines = html.split('\n')
+  let indent = 0
+  const tab = '  '
+
+  return lines
+    .map((line) => {
+      if (line.match(/^<\/.+>/)) indent -= 2
+
+      const result = tab.repeat(indent < 0 ? 0 : indent) + line
+      
+      if (line.match(/^<[^/!][^>]*[^/]>/)) indent++
+
+      return result
+    })
+    .join('\n')
+}

@@ -1,29 +1,26 @@
 ---
 import { getIcon } from '@web/registry/icons'
-
-const { config } = Astro.props
-
-const propsState: Record<string, any> = {}
-let prop: any
-
-for (prop of Object.values(config.props)) {
-  propsState[prop.name] = prop.default
-}
 ---
 
 <section class="ti-code">
   <h2 class="ti-code__title ti-text--xl">Código</h2>
   <pre class="ti-code__block">
-    <code id="code-output" class="ti-code__output"></code>
+    <code id="code-output" class="ti-code__output language-xml"></code>
   </pre>
   <button class="ti-code__copy" data-action="copy-code">Copiar código <span class="ti-code__icon ti-icon" set:html={getIcon('copy')}></span></button>
 </section>
 
 <script>
+  import hljs from 'highlight.js/lib/core'
+  import xml from 'highlight.js/lib/languages/xml'
+
   import { showToast } from '@web/components/toast/toast.script.ts'
+  import { prettyHTML } from '@web/utils/utils.ts'
+
+  hljs.registerLanguage('xml', xml)
 
   const component = document.querySelector('#component')
-  const codeEl = document.querySelector('#code-output')
+  const codeEl = document.querySelector('#code-output') as HTMLElement
   const buttonCopy = document.querySelector('[data-action="copy-code"]')
 
   if (!component) throw new Error('Component not found')
@@ -49,7 +46,11 @@ for (prop of Object.values(config.props)) {
       ? `<${tagName} ${attrs}>`
       : `<${tagName}>`
 
-    codeEl.textContent = `${openTag}${inner}</${tagName}>`
+    const finalContent = `${openTag}${inner}</${tagName}>`
+
+    codeEl.textContent = prettyHTML(finalContent)
+
+    hljs.highlightElement(codeEl)
   }
 
   function copyCode() {

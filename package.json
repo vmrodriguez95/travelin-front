@@ -7,15 +7,18 @@
     "dev": "astro dev",
     "preview": "astro preview",
     "astro": "astro",
-    "build:ds": "vite build -c vite.config.js",
     "build:web": "astro build",
+    "build:ds": "vite build --config vite.build.ds.config.ts",
     "build": "pnpm run build:ds && pnpm run build:web"
   },
   "dependencies": {
     "astro": "^5.16.15",
+    "highlight.js": "^11.11.1",
     "lit": "^3.3.2"
   },
   "devDependencies": {
-    "sass-embedded": "^1.97.3"
+    "sass-embedded": "^1.97.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.1.1"
   }
 }

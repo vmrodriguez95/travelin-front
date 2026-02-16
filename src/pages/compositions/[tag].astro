@@ -1,0 +1,35 @@
+---
+// === Imports ===
+import BaseLayout from '@web/layouts/BaseLayout.astro'
+
+import Code from '@web/components/code/Code.astro'
+
+import { compositions } from '@web/registry/compositions'
+
+// === Get composition data ===
+const { tag } = Astro.params
+const composition = compositions.find((c) => c.meta.tag === tag)
+
+if (!composition) {
+  throw new Error(`composition ${tag} not found`)
+}
+
+const Demo = composition.Demo
+
+export async function getStaticPaths() {
+  return compositions.map((c) => ({ params: { tag: c.meta.tag } }))
+}
+---
+
+<BaseLayout>
+  <h1 class="ti-text--xl">{composition.meta.name}</h1>
+  <p class="ti-text--m">{composition.meta.description}</p>
+
+  <Demo id="component" />
+
+  <section class="e-grid ti-border-top ti-margin-top--xl">
+    <div class="e-col-4 e-col-md-12">
+      <Code config={{}} />
+    </div>
+  </section>
+</BaseLayout>

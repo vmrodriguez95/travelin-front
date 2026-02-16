@@ -7,6 +7,14 @@
   border-radius: space(1);
   border: none;
   overflow: hidden;
+  width: 100%;
+  max-height: space(19);
+
+  &__background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   
   &__content {
     position: absolute;
@@ -19,7 +27,7 @@
     justify-content: flex-end;
     padding: space(2);
     box-sizing: border-box;
-    background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
+    background: linear-gradient(rgba(var(--color-background), 0.1) 50%, rgba(var(--color-background), 0.8));
   }
   
   &__title {
