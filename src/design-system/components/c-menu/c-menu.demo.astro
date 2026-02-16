@@ -1,0 +1,43 @@
+---
+const { id } = Astro.props
+---
+
+<c-menu id={id}>
+  <a slot="logo" href="#">
+    <img src="/images/logo.png" alt="Logo" width="56" height="61" />
+  </a>
+
+  <nav slot="nav">
+    <ul>
+      <li>
+        <a href="#">
+          <e-icon name="home" size="l"></e-icon>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <e-icon name="map" size="l"></e-icon>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <e-icon name="settings" size="l"></e-icon>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <e-icon name="user" size="l"></e-icon>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <e-icon name="favorites" size="l"></e-icon>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <a slot="profile" href="#">
+    <img src="/images/avatar.jpg" alt="Avatar" width="40" height="40" />
+  </a>
+</c-menu>

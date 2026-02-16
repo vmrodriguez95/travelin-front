@@ -1,0 +1,21 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+.c-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100dvh;
+  background-color: rgba(var(--color-background), 1);
+  color: rgba(var(--color-text), 1);
+  max-width: space(12);
+
+  ::slotted(a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,65 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+:host,
+.e-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.e-icon {
+  width: var(--eIconWidth, space(3));
+  height: var(--eIconHeight, space(3));
+
+  &--xxl {
+    width: space(7);
+    height: space(7);
+  }
+
+  &--xl {
+    width: space(5);
+    height: space(5);
+  }
+
+  &--l {
+    width: space(4);
+    height: space(4);
+  }
+
+  &--m {
+    width: space(3);
+    height: space(3);
+  }
+
+  &--sm {
+    width: space(2.5);
+    height: space(2.5);
+  }
+
+  &--s {
+    width: space(2);
+    height: space(2);
+  }
+
+  &--xs {
+    width: space(1);
+    height: space(1);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    path:not([stroke]) {
+      fill: rgba(var(--eIconColor, var(--color-primary)), 1);
+      transition: var(--eIconTransition, fill 200ms ease-out);
+    }
+
+    path[stroke] {
+      stroke-width: var(--eIconStrokeWidth, rem(2px));
+      stroke: rgba(var(--eIconColor, var(--color-primary)), 1);
+      transition: var(--eIconTransition, stroke 200ms ease-out);
+    }
+  }
+}
