@@ -1,6 +1,6 @@
 export const meta = {
-  name: 'Icono',
-  icon: 'icon',
+  name: 'Iconos',
+  icon: 'icons',
   tag: 'e-icon',
   description: 'Componente de icono SVG reutilizable para el sistema de diseño.'
 }

@@ -4,40 +4,36 @@ const { id } = Astro.props
 
 <c-menu id={id}>
   <a slot="logo" href="#">
-    <img src="/images/logo.png" alt="Logo" width="56" height="61" />
+    <img src="/images/logo.png" alt="Logo" width="42" height="48" />
   </a>
 
-  <nav slot="nav">
-    <ul>
-      <li>
-        <a href="#">
-          <e-icon name="home" size="l"></e-icon>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <e-icon name="map" size="l"></e-icon>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <e-icon name="settings" size="l"></e-icon>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <e-icon name="user" size="l"></e-icon>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <e-icon name="favorites" size="l"></e-icon>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <li slot="links" class="active">
+    <a href="#" title="Ir a home">
+      <e-icon icon="home" size="l"></e-icon>
+    </a>
+  </li>
+  <li slot="links">
+    <a href="#" title="Ir a viajes">
+      <e-icon icon="map" size="l"></e-icon>
+    </a>
+  </li>
+  <li slot="links">
+    <a href="#" title="Ir a configuración">
+      <e-icon icon="settings" size="l"></e-icon>
+    </a>
+  </li>
+  <li slot="links">
+    <a href="#" title="Ir a usuarios">
+      <e-icon icon="person" size="l"></e-icon>
+    </a>
+  </li>
+  <li slot="links">
+    <a href="#" title="Ir a viajes destacados">
+      <e-icon icon="bookmark" size="l"></e-icon>
+    </a>
+  </li>
 
   <a slot="profile" href="#">
-    <img src="/images/avatar.jpg" alt="Avatar" width="40" height="40" />
+    <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40" />
   </a>
 </c-menu>

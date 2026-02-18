@@ -10,12 +10,14 @@ export class CMenu extends LitElement {
 
   render() {
     return html`
-    <div class="c-menu">
-      <slot name="logo" />
-        
-        <slot name="nav" />
-        
-        <slot name="profile" />
+      <div class="c-menu">
+        <slot name="logo"></slot>
+        <nav>
+          <ul class="c-menu__list">
+            <slot name="links"></slot>
+          </ul>
+        </nav>
+        <slot name="profile"></slot>
       </div>
     `
   }

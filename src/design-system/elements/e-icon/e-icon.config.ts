@@ -7,6 +7,7 @@ export const config = {
       label: 'Icono',
       type: 'select',
       options: [...Object.keys(EICON_LIST)],
+      default: Object.keys(EICON_LIST)[0]
     },
     size: {
       name: 'size',

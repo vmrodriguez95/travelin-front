@@ -5,6 +5,7 @@ import Code from '@web/components/code/Code.astro'
 import Config from '@web/components/config/Config.astro'
 
 import { elements } from '@web/registry/elements'
+import { getAttrs } from '@web/utils/utils'
 
 const { tag } = Astro.params
 const element = elements.find((e) => e.meta.tag === tag)
@@ -26,15 +27,22 @@ export async function getStaticPaths() {
   <p class="ti-text--m">{element.meta.description}</p>
 
   <h2 class="ti-text--l">Demo</h2>
-  <Demo id="component">{config.slots.default.default}</Demo>
+  <Demo id="component" {...getAttrs(element)}>{config.slots?.default?.default}</Demo>
 
   <section class="e-grid ti-border-top ti-margin-top--xl ti-padding-top--xl">
-    <div class="e-col-4 e-col-md-6">
-      <Config config={config} />
-    </div>
+    {Object.keys(config.props).length > 0 && 
+      <div class="e-col-4 e-col-md-6">
+        <Config config={config} />
+      </div>
+      <div class="e-col-4 e-col-md-6">
+        <Code />
+      </div>
+    }
 
-    <div class="e-col-4 e-col-md-6">
-      <Code config={config} />
-    </div>
+    {Object.keys(config.props).length === 0 &&
+      <div class="e-col-4 e-col-md-12">
+        <Code />
+      </div>
+    }
   </section>
 </BaseLayout>
