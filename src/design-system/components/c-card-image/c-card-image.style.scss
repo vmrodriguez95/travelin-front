@@ -28,6 +28,11 @@
     padding: space(2);
     box-sizing: border-box;
     background: linear-gradient(rgba(var(--color-background), 0.1) 50%, rgba(var(--color-background), 0.8));
+    transition: background 0.3s ease-in-out;
+
+    &:hover {
+      background-color: rgba(var(--color-background), 0.8);
+    }
   }
   
   &__title {

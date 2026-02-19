@@ -21,7 +21,7 @@ export class EButton extends LitElement {
   render() {
     const classes = classMap({
       'e-header': true,
-      'e-header--img': this.bg
+      'e-header--bg': this.bg
     })
 
     return html`
@@ -30,12 +30,14 @@ export class EButton extends LitElement {
           <img class="e-header__background" src=${this.bg} alt="Picture about ${this.heading}" />
         `)}
         <div class="e-header__content">
-          <a class="e-header__link" href=${this.url} title="Ir atrás">
-            <e-icon icon="arrow-left" size="l"></e-icon>
-          </a>
-          <h1 class"e-header__title">${this.heading}</h1>
+          ${when(this.url, () => html`
+            <a class="e-header__link" href=${this.url} title="Ir atrás">
+              <e-icon icon="arrow-left" size="l"></e-icon>
+            </a>
+          `)}
+          <h1 class="e-header__title">${this.heading}</h1>
           ${when(this.subheading, () => html`
-            <h2 class"e-header__subtitle">${this.subheading}</h2>
+            <p class"e-header__subtitle">${this.subheading}</p>
           `)}
         </div>
       </section>

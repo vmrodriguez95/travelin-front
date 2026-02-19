@@ -1,5 +1,10 @@
 @use './tools.scss' as *;
 
+@mixin body--xxl($font-weight: 400) {
+  font-weight: $font-weight;
+  font-size: rem(48px);
+  line-height: rem(56px);
+}
 @mixin body--xl($font-weight: 400) {
   font-weight: $font-weight;
   font-size: rem(24px);
