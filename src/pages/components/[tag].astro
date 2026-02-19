@@ -32,18 +32,18 @@ export async function getStaticPaths() {
   <h2 class="ti-text--l">Demo</h2>
   <Demo id="component" {...getAttrs(component)}>{config.slots?.default?.default}</Demo>
 
-  <section class="e-grid ti-border-top ti-margin-top--xl ti-padding-top--xl">
+  <section class="u-grid ti-border-top ti-margin-top--xl ti-padding-top--xl">
     {Object.keys(config.props).length > 0 && 
-      <div class="e-col-4 e-col-md-6">
+      <div class="u-col-4 u-col-md-6">
         <Config config={config} />
       </div>
-      <div class="e-col-4 e-col-md-6">
+      <div class="u-col-4 u-col-md-6">
         <Code />
       </div>
     }
 
     {Object.keys(config.props).length === 0 &&
-      <div class="e-col-4 e-col-md-12">
+      <div class="u-col-4 u-col-md-12">
         <Code />
       </div>
     }

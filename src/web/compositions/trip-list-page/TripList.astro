@@ -1,0 +1,150 @@
+---
+const { id } = Astro.props
+---
+
+<section id={id} class="u-grid u-bg--dark">
+  <div class="u-col-4 u-col-md-12 u-col-lg-1">
+    <!-- Menu -->
+    <c-menu>
+      <a slot="logo" href="#">
+        <img src="/images/logo.png" alt="Logo" width="42" height="48">
+      </a>
+      <li slot="links" class="active">
+        <a href="#" title="Ir a home">
+          <e-icon icon="home" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes">
+          <e-icon icon="map" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a configuración">
+          <e-icon icon="settings" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a usuarios">
+          <e-icon icon="person" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes destacados">
+          <e-icon icon="bookmark" size="l"></e-icon>
+        </a>
+      </li>
+      <a slot="profile" href="#">
+        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
+      </a>
+    </c-menu>
+  </div>
+  <div class="u-col-4 u-col-md-12 u-col-lg-11">
+    <e-header heading="Travels" subheading="" url="#" bg=""></e-header>
+    <section class="u-grid u-scroll">
+      <div class="u-col-4 u-col-md-4">
+        <p class="u-text--l u-color--text-light">179 Viajes</p>
+      </div>
+      <div class="u-col-4 u-col-md-4">
+        <e-search></e-search>
+      </div>
+      <div class="u-col-4 u-col-md-4 u-text--right">
+        <a href="#">
+          <e-button>
+            Añadir viaje
+          </e-button>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/japan"
+            name="Japón"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/jordania"
+            name="Jordania"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/italy"
+            name="Dolomitas"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/thailand"
+            name="Tailandia"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/spain"
+            name="Huesca"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/peru"
+            name="Perú"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/egypt"
+            name="Egipto"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/southafrica"
+            name="Africa"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6 u-col-lg-4 u-col-xl-3">
+        <a href="#">
+          <c-card-image
+            image="https://loremflickr.com/800/600/eeuu"
+            name="Costa Oeste"
+            start="28-10-2025"
+            end="12-11-2025"
+          ></c-card-image>
+        </a>
+      </div>
+    </section>
+  </div>
+</section>

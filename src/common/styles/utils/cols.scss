@@ -1,6 +1,6 @@
 @use '../variables/breakpoints.scss' as *;
 
-.e-col {
+.u-col {
   // Default column spans for mobile
     @for $i from 1 through 4 {
       &-#{$i} {

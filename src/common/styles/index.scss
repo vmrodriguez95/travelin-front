@@ -8,5 +8,8 @@
 @use './base/base.scss' as *;
 
 // Utils
+@use './utils/color.scss' as *;
+@use './utils/background.scss' as *;
 @use './utils/cols.scss' as *;
 @use './utils/grid.scss' as *;
+@use './utils/text.scss' as *;

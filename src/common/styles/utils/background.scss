@@ -1,0 +1,9 @@
+.u-bg {
+  &--dark {
+    background-color: rgba(var(--color-background), 1);
+  }
+
+  &--light {
+    background-color: rgba(var(--color-background--secondary), 1);
+  }
+}

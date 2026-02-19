@@ -1,6 +1,6 @@
-@use '@common/styles/tools/typography.scss' as *;
+@use '../tools/typography.scss' as *;
 
-.ti-text {
+.u-text {
   &--xl {
     @include body--xl(600);
   }
@@ -27,5 +27,9 @@
 
   &--bold {
     font-weight: 600;
+  }
+
+  &--right {
+    text-align: right;
   }
 }
