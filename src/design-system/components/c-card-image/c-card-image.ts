@@ -19,7 +19,7 @@ export class CCardImage extends LitElement {
   render() {
     return html`
       <div class="c-card-image">
-        <img class="c-card-image__background" src=${this.image} alt="Picture about ${this.name}" />
+        <img class="c-card-image__background" src=${this.image} alt="Picture about ${this.name}" loading="lazy" />
         <div class="c-card-image__content">
           <p class="c-card-image__title">${this.name}</p>
           <p class="c-card-image__date">${this.start} - ${this.end}</p>

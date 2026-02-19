@@ -27,7 +27,7 @@ export class EButton extends LitElement {
     return html`
       <section class=${classes}>
         ${when(this.bg, () => html`
-          <img class="e-header__background" src=${this.bg} alt="Picture about ${this.heading}" />
+          <img class="e-header__background" src=${this.bg} alt="Picture about ${this.heading}" loading="lazy"/>
         `)}
         <div class="e-header__content">
           ${when(this.url, () => html`
