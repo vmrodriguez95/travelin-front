@@ -1,0 +1,58 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+.e-input {
+  display: block;
+  position: relative;
+
+  &--hidden {
+    position: absolute;
+    top: -100%;
+    opacity: 0;
+  }
+
+  &__label {
+    @include body--m;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 space(0.5);
+  }
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &__field {
+    @include body--m;
+    display: block;
+    width: 100%;
+    background-color: rgba(var(--color-gray), 1);
+    padding: space(1) space(5) space(1) space(2);
+    box-sizing: border-box;
+    border: 0;
+    border-radius: space(1);
+  }
+
+  &__clear {
+    position: absolute;
+    top: 50%;
+    right: space(2);
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: none;
+    border: 0;
+  }
+
+  &__helpmsg {
+    @include body--xs;
+    margin: space(1) 0 0;
+    color: rgba(var(--color-black), 1);
+  }
+
+  &__error {
+    @include body--xs;
+    margin: space(1) 0 0;
+    color: rgba(var(--color-red), 1);
+  }
+}
