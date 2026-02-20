@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "core": {
+      "sectionTitle": "Información general",
+      "fields": {
+        "id": {
+          "id": "tripId",
+          "name": "id",
+          "label": "Identificador",
+          "type": "hidden",
+          "required": false,
+          "readonly": true
+        },
+        "idUser": {
+          "id": "tripIdUser",
+          "name": "idUser",
+          "label": "Identificador del usuario",
+          "type": "hidden",
+          "required": false,
+          "readonly": true
+        },
+        "name": {
+          "id": "tripName",
+          "name": "name",
+          "label": "Nombre",
+          "type": "text",
+          "required": true,
+          "readonly": false
+        },
+        "location": {
+          "id": "tripLocation",
+          "name": "location",
+          "label": "Localización",
+          "type": "text",
+          "required": true,
+          "readonly": false
+        },
+        "image": {
+          "id": "tripImage",
+          "name": "image",
+          "label": "Imagen",
+          "type": "image",
+          "required": false,
+          "readonly": false
+        },
+        "date": {
+          "id": "tripDate",
+          "name": "date",
+          "label": "Elige las fechas del viaje",
+          "helpmsg": "Puedes elegir solo una fecha o un rango de fechas.",
+          "type": "calendar",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false,
+          "returnedValues": ["dateStart", "dateEnd"]
+        }
+      }
+    }
+  }
+}

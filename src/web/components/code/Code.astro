@@ -19,7 +19,7 @@ import { getIcon } from '@web/registry/icons'
 
   hljs.registerLanguage('xml', xml)
 
-  const component = document.querySelector('#component')
+  const component = document.querySelector('[data-component]')
   const codeEl = document.querySelector('#code-output') as HTMLElement
   const buttonCopy = document.querySelector('[data-action="copy-code"]')
 
@@ -34,7 +34,7 @@ import { getIcon } from '@web/registry/icons'
     const tagName = component.tagName.toLowerCase()
     const attrs = Array.from(component.attributes)
       .filter((attr) => {
-        return attr.name !== 'id' // omitimos el id de demo
+        return attr.name !== 'data-component' // omitimos el atributo data-component
       })
       .map((attr) => {
         if (attr.value === '') return attr.name

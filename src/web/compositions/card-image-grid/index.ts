@@ -6,4 +6,5 @@ export const meta = {
   order: 0
 }
 
+export { config } from './card-image-grid.config'
 export { default as Demo } from './CardImageGrid.astro'

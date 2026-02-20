@@ -5,6 +5,7 @@ import BaseLayout from '@web/layouts/BaseLayout.astro'
 import Code from '@web/components/code/Code.astro'
 
 import { compositions } from '@web/registry/compositions'
+import { getAttrs } from '@web/utils/utils'
 
 // === Get composition data ===
 const { tag } = Astro.params
@@ -15,6 +16,7 @@ if (!composition) {
 }
 
 const Demo = composition.Demo
+const config = composition.config
 
 export async function getStaticPaths() {
   return compositions.map((c) => ({ params: { tag: c.meta.tag } }))
@@ -25,7 +27,7 @@ export async function getStaticPaths() {
   <h1 class="ti-text--xl">{composition.meta.name}</h1>
   <p class="ti-text--m">{composition.meta.description}</p>
 
-  <Demo id="component" />
+  <Demo {...getAttrs(composition)} />
 
   <section class="u-grid ti-border-top ti-margin-top--xl">
     <div class="u-col-4 u-col-md-12">
