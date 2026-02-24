@@ -10,32 +10,25 @@ export const config = {
       name: 'name',
       label: 'Nombre',
       type: 'text',
-      default: 'campo-texto'
+      default: 'calendar'
     },
     label: {
       name: 'label',
       label: 'Etiqueta',
       type: 'text',
-      default: 'Campo de texto'
+      default: 'Calendario'
     },
-    value: {
-      name: 'value',
-      label: 'Valor',
+    start: {
+      name: 'start',
+      label: 'Fecha de inicio',
       type: 'text',
-      default: 'Hooooliiiii'
+      default: ''
     },
-    helpmsg: {
-      name: 'helpmsg',
-      label: 'Mensaje de ayuda o apoyo',
+    end: {
+      name: 'end',
+      label: 'Fecha de fin',
       type: 'text',
-      default: 'Esto es un mensaje de apoyo'
-    },
-    type: {
-      name: 'type',
-      label: 'Tipo',
-      type: 'select',
-      default: 'text',
-      options: ['text', 'password', 'email', 'number', "hidden"]
+      default: ''
     },
     readonly: {
       name: 'readonly',
