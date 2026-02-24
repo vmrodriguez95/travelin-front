@@ -13,6 +13,7 @@
 
   &__label {
     @include body--m;
+    color: rgba(var(--color-text), 1);
     display: flex;
     align-items: center;
     width: 100%;
@@ -47,12 +48,12 @@
   &__helpmsg {
     @include body--xs;
     margin: space(1) 0 0;
-    color: rgba(var(--color-black), 1);
+    color: rgba(var(--color-text), 1);
   }
 
   &__error {
     @include body--xs;
     margin: space(1) 0 0;
-    color: rgba(var(--color-red), 1);
+    color: rgba(var(--color-error), 1);
   }
 }

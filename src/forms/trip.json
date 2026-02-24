@@ -35,14 +35,6 @@
           "required": true,
           "readonly": false
         },
-        "image": {
-          "id": "tripImage",
-          "name": "image",
-          "label": "Imagen",
-          "type": "image",
-          "required": false,
-          "readonly": false
-        },
         "date": {
           "id": "tripDate",
           "name": "date",

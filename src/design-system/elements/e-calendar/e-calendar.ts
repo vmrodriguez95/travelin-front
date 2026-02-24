@@ -263,7 +263,7 @@ export class ECalendar extends LitElement {
 
     this._validate()
     this._internals.setFormValue(this.value)
-    this.dispatchEvent(new CustomEvent('change', { detail: { start: this.start, end: this.end } }))
+    this.dispatchEvent(new CustomEvent('change', { detail: [this.start, this.end] }))
   }
 
   // Validation
