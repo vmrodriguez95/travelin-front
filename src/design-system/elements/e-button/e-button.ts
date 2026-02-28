@@ -9,6 +9,8 @@ export class EButton extends LitElement {
 
   static styles = css`${unsafeCSS(styles)}`
 
+  @property({ type: String, reflect: true }) type = 'button' // 'button' | 'submit'
+
   @property({ type: String, reflect: true }) size = 'fit' // 'fit' | 'full'
 
   @property({ type: Boolean }) disabled = false

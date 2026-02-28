@@ -1,4 +1,4 @@
-import type { FormSchema } from '@web/types/form'
+import type { FormSchema } from './c-form.types'
 
 const jsonGlob = import.meta.glob('../../../forms/trip.json', { eager: true })
 
@@ -17,6 +17,12 @@ export const config = {
       label: 'Método para el formulario',
       type: 'text',
       default: 'POST'
+    },
+    submitLabel: {
+      name: 'submitLabel',
+      label: 'Etiqueta del botón de envío',
+      type: 'text',
+      default: 'Enviar'
     },
     data: {
       name: 'data',

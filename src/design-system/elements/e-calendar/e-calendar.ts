@@ -66,6 +66,13 @@ export class ECalendar extends LitElement {
     super.connectedCallback()
   }
 
+  protected updated(changed: Map<string, unknown>) {
+    if (changed.has('value') || changed.has('required')) {
+      this._internals.setFormValue(this.value.toString() || null)
+      this._validate()
+    }
+  }
+
   render() {
     const inputClasses = classMap({
       'e-calendar': true,
@@ -252,12 +259,15 @@ export class ECalendar extends LitElement {
 
     if (!this.start && !this.end) {
       this.start = newDate
+      this.value = newDate
     } else if (this.start && Temporal.PlainDate.compare(this.start, newDate) === 1 && !this.end) {
       this.start = newDate
+      this.value = newDate
     } else if (this.start && Temporal.PlainDate.compare(this.start, newDate) === -1 && !this.end) {
       this.end = newDate
     } else if (this.start && this.end) {
       this.start = newDate
+      this.value = newDate
       this.end = ''
     }
 
@@ -297,10 +307,20 @@ export class ECalendar extends LitElement {
 
   private _calculateValidity() {
     // required
-    if (this.required && !this.start) {
+    if (this.required && !this.value) {
       return this._getRequiredValidy()
     }
     
-    return this._getDefaultValidy() 
+    return this._getDefaultValidy()
+  }
+
+  reportValidity() {
+    this._validate()
+    return this._internals.reportValidity()
+  }
+
+  checkValidity() {
+    this._validate()
+    return this._internals.checkValidity()
   }
 }

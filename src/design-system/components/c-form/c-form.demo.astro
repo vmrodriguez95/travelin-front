@@ -1,7 +1,7 @@
 ---
-const { id, data, method, action } = Astro.props
+const { id, data, method, action, submitLabel } = Astro.props
 ---
 
 <section class="u-bg--dark">
-  <c-form data-component id={id} data={data} method={method} action={action}></c-form>
+  <c-form data-component id={id} data={data} method={method} action={action} submitLabel={submitLabel}></c-form>
 </section>
