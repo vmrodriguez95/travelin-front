@@ -18,6 +18,8 @@ export class EButton extends LitElement {
 
   @property({ type: String }) subheading = ''
 
+  @property({ type: String }) complement = ''
+
   render() {
     const classes = classMap({
       'e-header': true,
@@ -37,7 +39,9 @@ export class EButton extends LitElement {
           `)}
           <h1 class="e-header__title">${this.heading}</h1>
           ${when(this.subheading, () => html`
-            <p class"e-header__subtitle">${this.subheading}</p>
+            <p class="e-header__subtitle">
+              <e-icon icon="calendar" size="s"></e-icon> ${this.subheading} <span class="e-header__separator">·</span> <e-icon icon="group" size="s"></e-icon> ${this.complement}
+            </p>
           `)}
         </div>
       </section>

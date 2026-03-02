@@ -1,0 +1,89 @@
+---
+const { id } = Astro.props
+---
+
+<section id={id} class="u-grid u-bg--dark" data-component>
+  <div class="u-col-4 u-col-md-12 u-col-lg-1">
+    <!-- Menu -->
+    <c-menu>
+      <a slot="logo" href="#">
+        <img src="/images/logo.png" alt="Logo" width="42" height="48">
+      </a>
+      <li slot="links" class="active">
+        <a href="#" title="Ir a home">
+          <e-icon icon="home" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes">
+          <e-icon icon="map" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a configuración">
+          <e-icon icon="settings" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a usuarios">
+          <e-icon icon="person" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes destacados">
+          <e-icon icon="bookmark" size="l"></e-icon>
+        </a>
+      </li>
+      <a slot="profile" href="#">
+        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
+      </a>
+    </c-menu>
+  </div>
+  <div class="u-col-4 u-col-md-12 u-col-lg-11">
+    <e-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/japan"></e-header>
+    <section class="u-grid u-scroll">
+      <div class="u-col-4 u-col-md-6">
+        <a href="#">
+          <c-card-date index="1" date="2025-05-12" text="Llegada a Bangkok">
+            <p>9:00 AM - Aterrizaje en Bangkok</p>
+            <p>Checkin en Rambutti Village Palace</p>
+            <p>Khao Sand Road</p>
+          </c-card-date>
+        </a>
+        <a href="#">
+          <c-card-date index="2" date="2025-05-13" text="Ruta por los templos">
+            <p>9:00 AM - Aterrizaje en Bangkok</p>
+            <p>Checkin en Rambutti Village Palace</p>
+            <p>Khao Sand Road</p>
+          </c-card-date>
+        </a>
+        <a href="#">
+          <c-card-date index="3" date="2025-05-14" text="Vuelo a Chiang May">
+            <p>9:00 AM - Aterrizaje en Bangkok</p>
+            <p>Checkin en Rambutti Village Palace</p>
+            <p>Khao Sand Road</p>
+          </c-card-date>
+        </a>
+        <a href="#">
+          <c-card-date index="4" date="2025-05-15" text="Día por Chiang Rai">
+            <p>9:00 AM - Aterrizaje en Bangkok</p>
+            <p>Checkin en Rambutti Village Palace</p>
+            <p>Khao Sand Road</p>
+          </c-card-date>
+        </a>
+        <a href="#">
+          <c-card-date index="5" date="2025-05-16" text="Llegada a Bangkok">
+            <p>9:00 AM - Aterrizaje en Bangkok</p>
+            <p>Checkin en Rambutti Village Palace</p>
+            <p>Khao Sand Road</p>
+          </c-card-date>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-6">
+        <!-- TODO: Poner mapa de google -->
+        <!-- TODO: Poner resumen de viaje -->
+        <!-- TODO: Poner addons -->
+      </div>
+    </section>
+  </div>
+</section>

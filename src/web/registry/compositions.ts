@@ -6,4 +6,4 @@ export const compositions: ComponentRegistryItem[] = Object.values(modules).map(
   meta: mod.meta,
   Demo: mod.Demo,
   config: mod.config
-})).sort((a, b) => a.meta.name.localeCompare(b.meta.name))
+})).sort((a, b) => a.meta.order - b.meta.order)
