@@ -4,6 +4,7 @@ export interface FormSchema {
 
 export interface FormSection {
   legend: string
+  removeMainKey?: boolean
   fields: Record<string, FormField>
 }
 

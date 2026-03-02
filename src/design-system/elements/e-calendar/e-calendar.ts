@@ -5,11 +5,21 @@ import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Utils
-import { getWeekdayInitials, getMonthDays, getMonths, getMonth, getYear, isToday} from '../../utils/date.utils'
+import {
+  getWeekdayInitials,
+  getMonthDays,
+  getMonths,
+  getMonth,
+  getYear,
+  isToday,
+  getDateFrom,
+  compareDates
+} from '../../utils/date.utils'
+
+import { Temporal } from '@js-temporal/polyfill'
 
 // Styles
 import style from './e-calendar.style.scss?inline'
-import { Temporal } from '@js-temporal/polyfill'
 
 @customElement('e-calendar')
 export class ECalendar extends LitElement {
@@ -151,25 +161,25 @@ export class ECalendar extends LitElement {
   }
 
   private _isSingle(day: number) {
-    return this.start === Temporal.PlainDate.from({ day, month: this._actualMonth, year: this._actualYear }).toString() && !this.end
+    return this.start === getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString() && !this.end
   }
 
   private _isStart(day: number) {
-    return this.start === Temporal.PlainDate.from({ day, month: this._actualMonth, year: this._actualYear }).toString() && this.end
+    return this.start === getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString() && this.end
   }
 
   private _isMiddle(day: number) {
     if (!this.start || !this.end) return false
 
-    const startDate = Temporal.PlainDate.from(this.start)
-    const endDate = Temporal.PlainDate.from(this.end)
-    const actualDate = Temporal.PlainDate.from({ day, month: this._actualMonth, year: this._actualYear })
+    const startDate = getDateFrom(this.start)
+    const endDate = getDateFrom(this.end)
+    const actualDate = getDateFrom({ day, month: this._actualMonth, year: this._actualYear })
 
-    return Temporal.PlainDate.compare(startDate, actualDate) === -1 && Temporal.PlainDate.compare(endDate, actualDate) === 1
+    return compareDates(startDate, actualDate) === -1 && compareDates(endDate, actualDate) === 1
   }
 
   private _isEnd(day: number) {
-    return this.end === Temporal.PlainDate.from({ day, month: this._actualMonth, year: this._actualYear }).toString()
+    return this.end === getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString()
   }
 
   private _getDaysCounter() {
@@ -177,8 +187,8 @@ export class ECalendar extends LitElement {
 
     if (this.start && !this.end) return '1 día seleccionado'
 
-    const startDate = Temporal.PlainDate.from(this.start)
-    const endDate = Temporal.PlainDate.from(this.end)
+    const startDate = getDateFrom(this.start)
+    const endDate = getDateFrom(this.end)
 
     return `${startDate.until(endDate, { largestUnit: 'day' }).days + 1} días seleccionados`
   }
@@ -255,15 +265,15 @@ export class ECalendar extends LitElement {
   }
 
   private _onChange(day: number) {
-    const newDate = Temporal.PlainDate.from({ day, month: this._actualMonth, year: this._actualYear }).toString()
+    const newDate = getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString()
 
     if (!this.start && !this.end) {
       this.start = newDate
       this.value = newDate
-    } else if (this.start && Temporal.PlainDate.compare(this.start, newDate) === 1 && !this.end) {
+    } else if (this.start && compareDates(this.start, newDate) === 1 && !this.end) {
       this.start = newDate
       this.value = newDate
-    } else if (this.start && Temporal.PlainDate.compare(this.start, newDate) === -1 && !this.end) {
+    } else if (this.start && compareDates(this.start, newDate) === -1 && !this.end) {
       this.end = newDate
     } else if (this.start && this.end) {
       this.start = newDate
@@ -277,7 +287,6 @@ export class ECalendar extends LitElement {
   }
 
   // Validation
-
   private _validate() {
     const validity = this._calculateValidity()
     
@@ -306,7 +315,6 @@ export class ECalendar extends LitElement {
   }
 
   private _calculateValidity() {
-    // required
     if (this.required && !this.value) {
       return this._getRequiredValidy()
     }

@@ -1,6 +1,7 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
+import { live } from 'lit/directives/live.js'
 
 // Types
 import type { SearchResult, SearchApiResponse } from './e-input-search.types.ts'
@@ -17,8 +18,6 @@ import style from './e-input-search.style.scss?inline'
 
 @customElement('e-input-search')
 export class EInputSearch extends LitElement {
-
-  private _internals: ElementInternals
 
   @property({ type: String }) id = ''
 
@@ -43,6 +42,8 @@ export class EInputSearch extends LitElement {
   @state() _open = false
 
   @query('input') _input!: HTMLInputElement
+
+  private _internals: ElementInternals
 
   private _client = new SimpleGetClient({ baseUrl: '', timeoutMs: 8000 })
 
@@ -85,16 +86,17 @@ export class EInputSearch extends LitElement {
             ?required=${this.required}
             aria-autocomplete="list"
             aria-expanded=${this._open ? 'true' : 'false'}
-            value=${this.displayValue}
+            .value=${live(this.displayValue)}
             @input=${this._debounceSearch}
             @blur=${this._onBlur}
+            @keyup=${this._detectEscape}
           />
 
           ${when(this._request.loading, () => html`
             <span class="u-spinner" aria-hidden="true"></span>
           `)}
 
-          ${when(this.value, () => html`
+          ${when(this.displayValue, () => html`
             <button class="e-input-search__clear" @click=${this._onClean}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
@@ -108,7 +110,7 @@ export class EInputSearch extends LitElement {
                     type="button"
                     class="e-input-search__option"
                     @mousedown=${(e: MouseEvent) => e.preventDefault()}
-                    @click=${() => this._selectResult(result)}
+                    @click=${() => this._onChange(result)}
                   >
                     ${result.label}
                     ${when(result.helptext, () => html`
@@ -130,9 +132,18 @@ export class EInputSearch extends LitElement {
     `
   }
 
+  private _detectEscape(ev: KeyboardEvent) {
+    const key = ev.key
+
+    if (key === 'Escape') this._onClean()
+  }
+
   private async _onSearch() {
     if (this.readonly) return
     const query = this._input.value
+
+    this.value = ''
+    this.displayValue = query
 
     if (!this.api || query.length < 2) {
       this._searchResults = []
@@ -155,15 +166,21 @@ export class EInputSearch extends LitElement {
     }
   }
 
-  private _onChange(value: string) {
-    this.value = value
+  private _onChange(result: SearchResult) {
+    this.value = result.value
+    this.displayValue = result.label
+    this._searchResults = []
+    this._open = false
 
     this._validate()
     this._internals.setFormValue(this.value)
+
+    this.dispatchEvent(new Event('change'))
   }
 
   private _onBlur() {
-    // TODO: clean search results
+    this._searchResults = []
+    this._open = false
   }
 
   private _onClean() {
@@ -176,10 +193,6 @@ export class EInputSearch extends LitElement {
     this._internals.setFormValue(this.value)
 
     this.dispatchEvent(new Event('change'))
-  }
-
-  private _selectResult(result: SearchResult) {
-    console.log(result)
   }
 
   private _validate() {

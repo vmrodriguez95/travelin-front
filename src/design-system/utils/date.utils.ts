@@ -71,3 +71,11 @@ export function isToday(day: number, month: number, year: number) {
 
   return day === today.day && month === today.month && year === today.year
 }
+
+export function getDateFrom(date: string | object) {
+  return Temporal.PlainDate.from(date)
+}
+
+export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal.PlainDate | string) {
+  return Temporal.PlainDate.compare(date1, date2)
+}

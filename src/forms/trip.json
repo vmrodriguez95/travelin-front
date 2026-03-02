@@ -2,25 +2,8 @@
   "sections": {
     "core": {
       "legend": "Creación de un nuevo viaje",
+      "removeMainKey": true,
       "fields": {
-        "startDate": {
-          "id": "tripStartDate",
-          "name": "startDate",
-          "label": "Fecha de inicio",
-          "type": "hidden",
-          "required": true,
-          "readonly": false,
-          "dependsOn": ["date"]
-        },
-        "endDate": {
-          "id": "tripEndDate",
-          "name": "endDate",
-          "label": "Fecha de fin",
-          "type": "hidden",
-          "required": true,
-          "readonly": false,
-          "dependsOn": ["date"]
-        },
         "name": {
           "id": "tripName",
           "name": "name",

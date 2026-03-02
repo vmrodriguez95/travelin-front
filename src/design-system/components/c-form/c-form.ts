@@ -23,23 +23,24 @@ export class CForm extends LitElement {
 
   @queryAll('.c-form__field') fields!: NodeListOf<HTMLInputElement>
 
-  _dependencies: Array<any> = []
+  private _internals: ElementInternals
+
+  private _dependencies: Array<any> = []
+
+  static formAssociated = true
 
   static styles = css`${unsafeCSS(styles)}`
 
-  protected updated(_changedProperties: PropertyValues): void {
-    if (this._dependencies.length > 0) {
-      this._activateDependencies()
-    }
+  constructor() {
+    super()
+    this._internals = this.attachInternals()
   }
 
   render() {
     return html`
       <div class="c-form">
-        <form action=${this.action} method=${this.method} @submit=${this._onSubmit}>
-          ${this._printSections(this.data.sections)}
-          <e-button class="c-form__submit" type="submit" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
-        </form>
+        ${this._printSections(this.data.sections)}
+        <e-button class="c-form__submit" type="button" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
       </div>
     `
   }
@@ -52,30 +53,50 @@ export class CForm extends LitElement {
   }
 
   private _getFormData() {
-    const formData = new FormData(this.form)
+    const formData = new FormData()
+    const { sections } = this.data
 
-    console.log(formData)
+    Object.keys(sections).forEach((sectionKey: string) => {
+      const section = sections[sectionKey]
+
+      Object.keys(section.fields).forEach((fieldKey: string) => {
+        const field = section.fields[fieldKey]
+
+        if (!field.excludeValue) {
+          formData.append(fieldKey, field.value)
+        }
+
+        if (field.returnedValues) {
+          field.returnedValues.forEach((value: string, index: number) => {
+            formData.append(value, field.value[index])
+          })
+        }
+      })
+    })
+
+    return formData
   }
 
   private _isValid() {
+    let isValid = true
     
     this.fields.forEach((field: HTMLInputElement) => {
-      console.log(field.reportValidity())
+      if (!field.reportValidity()) {
+        isValid = false
+      }
     })
 
-    return false
+    return isValid
   }
   
-  private _onSubmit(ev: Event) {
-    ev.preventDefault()
-    ev.stopPropagation()
+  private _onSubmit() {
+    if (!this._isValid()) return false
 
-    if (this._isValid()) {
-      this._getFormData()
-      return false
-    }
+    const formData = this._getFormData()
 
-    return false
+    this._internals.setFormValue(formData)
+
+    this.dispatchEvent(new CustomEvent('submit', { detail: formData, bubbles: true, composed: true }))
   }
 
   private _onChange(ev: CustomEvent, field: FormField) {
@@ -136,10 +157,6 @@ export class CForm extends LitElement {
       case 'calendar':
         let start = '', end = '';
 
-        if (Array.isArray(field.fillValue)) {
-          [start, end] = field.fillValue
-        }
-
         return html`
           <e-calendar
             class=${this._getFieldClasses(field)}
@@ -171,20 +188,5 @@ export class CForm extends LitElement {
         </fieldset>
       `
     })
-  }
-
-  private _activateDependencies() {
-    // this._dependencies.forEach((dependency: any) => {
-    //   if (this.data.sections[dependency.dependsOn].fields[dependency.field].value) {
-    //     if (!dependency.isRegistered) {
-    //       dependency.isRegistered = true
-    //       this._dependencies.push({
-    //         field: dependency.field,
-    //         dependsOn: dependency.dependsOn,
-    //         isRegistered: false
-    //       })
-    //     }
-    //   }
-    // })
   }
 }
