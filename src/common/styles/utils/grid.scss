@@ -1,5 +1,5 @@
-@use '../variables/breakpoints.scss' as *;
-@use '../tools/tools.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/tools/tools.scss' as *;
 
 .u-grid {
   display: grid;

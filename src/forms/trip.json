@@ -1,24 +1,9 @@
 {
   "sections": {
     "core": {
-      "sectionTitle": "Información general",
+      "legend": "Creación de un nuevo viaje",
+      "removeMainKey": true,
       "fields": {
-        "id": {
-          "id": "tripId",
-          "name": "id",
-          "label": "Identificador",
-          "type": "hidden",
-          "required": false,
-          "readonly": true
-        },
-        "idUser": {
-          "id": "tripIdUser",
-          "name": "idUser",
-          "label": "Identificador del usuario",
-          "type": "hidden",
-          "required": false,
-          "readonly": true
-        },
         "name": {
           "id": "tripName",
           "name": "name",
@@ -30,17 +15,11 @@
         "location": {
           "id": "tripLocation",
           "name": "location",
-          "label": "Localización",
-          "type": "text",
+          "label": "¿Donde viajas?",
+          "helpmsg": "El campo necesita de al menos 3 caracteres para empezar la búsqueda.",
+          "type": "search",
+          "api": "/api/places.json",
           "required": true,
-          "readonly": false
-        },
-        "image": {
-          "id": "tripImage",
-          "name": "image",
-          "label": "Imagen",
-          "type": "image",
-          "required": false,
           "readonly": false
         },
         "date": {
@@ -50,9 +29,10 @@
           "helpmsg": "Puedes elegir solo una fecha o un rango de fechas.",
           "type": "calendar",
           "fieldSize": "full",
+          "excludeValue": true,
           "required": true,
           "readonly": false,
-          "returnedValues": ["dateStart", "dateEnd"]
+          "returnedValues": ["startDate", "endDate"]
         }
       }
     }

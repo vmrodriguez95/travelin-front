@@ -43,10 +43,11 @@ export class EInput extends LitElement {
     this._internals = this.attachInternals()
   }
 
-  connectedCallback(): void {
-    super.connectedCallback()
-
-    this._validate()
+  protected updated(changed: Map<string, unknown>) {
+    if (changed.has('value') || changed.has('required')) {
+      this._internals.setFormValue(this.value.toString() || null)
+      this._validate()
+    }
   }
 
   render() {
@@ -172,5 +173,15 @@ export class EInput extends LitElement {
     }
 
     return this._getDefaultValidy() 
+  }
+
+  reportValidity() {
+    this._validate()
+    return this._internals.reportValidity()
+  }
+
+  checkValidity() {
+    this._validate()
+    return this._internals.checkValidity()
   }
 }

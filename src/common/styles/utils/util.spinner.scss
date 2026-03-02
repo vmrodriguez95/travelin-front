@@ -1,0 +1,26 @@
+@use '@common/styles/@common/styles/style/generic/generic.tools.scss' as *;
+
+.u-spinner {
+  border: solid rem(5px) rgba(var(--spinner-color, var(--color-primary)), 1);
+  border-bottom-color: rgba(var(--spinner-color, var(--color-primary)), 0.2);
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  animation-name: rotate;
+  animation-timing-function: linear;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+  width: space(2);
+  height: space(2);
+  border-radius: 50%;
+  border-width: rem(2px);
+  margin-left: space(2);
+}
+
+@keyframes rotate {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+}

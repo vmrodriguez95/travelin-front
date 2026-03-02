@@ -1,6 +1,39 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 
 .c-form {
   display: block;
+
+  &__section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: space(4);
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__title {
+    @include body--xl;
+    color: rgba(var(--color-text), 1);
+    grid-column: span 2;
+    margin-bottom: space(4);
+  }
+
+  &__field {
+    grid-column: span 2;
+
+    @media (min-width: $breakpoint-lg) {
+      grid-column: span 1;
+    }
+
+    &--full {
+      grid-column: span 2;
+    }
+  }
+
+  &__submit {
+    margin-top: space(4);
+  }
 }
