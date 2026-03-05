@@ -7,6 +7,7 @@
 }
 
 .c-card-date {
+  $block: &;
   display: inline-flex;
   position: relative;
   border-radius: $border-radius-xl;
@@ -24,6 +25,11 @@
     width: space(8);
     color: rgba(var(--color-text--light), 1);
     background-color: rgba(var(--color-background--light), 1);
+
+    #{$block}--today & {
+      color: rgba(var(--color-text), 1);
+      background-color: rgba(var(--color-primary), 1);
+    }
   }
   
   &__index,
@@ -39,6 +45,7 @@
   
   &__day {
     @include body--l(600);
+    margin-top: space(1);
   }
   
   &__month {

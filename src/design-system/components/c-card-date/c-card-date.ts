@@ -1,5 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 import { Temporal } from '@js-temporal/polyfill'
 
@@ -20,15 +21,23 @@ export class CCardImage extends LitElement {
 
   private _month = ''
 
+  private _tempDate!: Temporal.PlainDate
+
   connectedCallback(): void {
+    this._setTempDate()
     this._setInfo()
 
     super.connectedCallback()
   }
 
   render() {
+    const classes = classMap({
+      'c-card-date': true,
+      'c-card-date--today': this._isToday()
+    })
+
     return html`
-      <div class="c-card-date">
+      <div class=${classes}>
         <div class="c-card-date__head">
           <p class="c-card-date__index">Día ${this.index}</p>
           <p class="c-card-date__day">${this._day}</p>
@@ -42,11 +51,17 @@ export class CCardImage extends LitElement {
     `
   }
 
-  private _setInfo() {
-    const newDate = Temporal.PlainDate.from(this.date)
+  private _isToday() {
+    return Temporal.PlainDate.compare(this._tempDate, Temporal.Now.plainDateISO()) === 0
+  }
 
-    this._setDay(newDate.day.toString())
-    this._setMonth(newDate.toLocaleString(navigator.language, { month: 'long' }))
+  private _setTempDate() {
+    this._tempDate = Temporal.PlainDate.from(this.date)
+  }
+
+  private _setInfo() {
+    this._setDay(this._tempDate.day.toString())
+    this._setMonth(this._tempDate.toLocaleString(navigator.language, { month: 'long' }))
   }
 
   private _setDay(day: string) {
