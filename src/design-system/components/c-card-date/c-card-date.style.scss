@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
   display: block;
@@ -8,7 +9,7 @@
 .c-card-date {
   display: inline-flex;
   position: relative;
-  border-radius: 20px;
+  border-radius: $border-radius-xl;
   border: none;
   overflow: hidden;
   width: 100%;
