@@ -1,0 +1,25 @@
+---
+// === Imports ===
+import DSLayout from '@web/layouts/DSLayout.astro'
+
+import { simulator } from '@web/registry/simulator'
+import { getAttrs } from '@web/utils/utils'
+
+// === Get composition data ===
+const { tag } = Astro.params
+const composition = simulator.find((c) => c.meta.tag === tag)
+
+if (!composition) {
+  throw new Error(`Simulator ${tag} not found`)
+}
+
+const Demo = composition.Demo
+
+export async function getStaticPaths() {
+  return simulator.map((c) => ({ params: { tag: c.meta.tag } }))
+}
+---
+
+<DSLayout>
+  <Demo {...getAttrs(composition)} />
+</DSLayout>

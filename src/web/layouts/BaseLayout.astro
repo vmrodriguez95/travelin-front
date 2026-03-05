@@ -7,6 +7,8 @@ import { components } from '@web/registry/components'
 import { compositions } from '@web/registry/compositions'
 import { foundations } from '@web/registry/foundations'
 
+import { getSimulatorRoute } from '@web/utils/utils'
+
 import Toast from '@web/components/toast/Toast.astro'
 
 const currentPath = Astro.url.pathname
@@ -78,7 +80,11 @@ import '@web/styles/index.scss'
         </ul>
       </nav>
     </aside>
-    <header class="ti-layout__header"></header>
+    <header class="ti-layout__header">
+      <a href={getSimulatorRoute(currentPath)} target="_blank">
+        <span class="ti-icon" set:html={getIcon('external')}></span>
+      </a>
+    </header>
     <main class="ti-layout__main">
       <slot />
     </main>

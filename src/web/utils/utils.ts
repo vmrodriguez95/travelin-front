@@ -29,3 +29,7 @@ export function prettyHTML(html: string) {
     })
     .join('\n')
 }
+
+export function getSimulatorRoute(currentRoute: string) {
+  return currentRoute.replace(/compositions|components|elements/g, 'simulator')
+}
