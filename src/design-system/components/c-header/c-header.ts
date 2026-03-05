@@ -3,10 +3,10 @@ import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
-import styles from './e-header.style.scss?inline'
+import styles from './c-header.style.scss?inline'
 
-@customElement('e-header')
-export class EButton extends LitElement {
+@customElement('c-header')
+export class CHeader extends LitElement {
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -22,25 +22,25 @@ export class EButton extends LitElement {
 
   render() {
     const classes = classMap({
-      'e-header': true,
-      'e-header--bg': this.bg
+      'c-header': true,
+      'c-header--bg': this.bg
     })
 
     return html`
       <section class=${classes}>
         ${when(this.bg, () => html`
-          <img class="e-header__background" src=${this.bg} alt="Picture about ${this.heading}" loading="lazy" height="240" width="1500" />
+          <img class="c-header__background" src=${this.bg} alt="Picture about ${this.heading}" loading="lazy" height="240" width="1500" />
         `)}
-        <div class="e-header__content">
+        <div class="c-header__content">
           ${when(this.url, () => html`
-            <a class="e-header__link" href=${this.url} title="Ir atrás">
+            <a class="c-header__link" href=${this.url} title="Ir atrás">
               <e-icon icon="arrow-left" size="l"></e-icon>
             </a>
           `)}
-          <h1 class="e-header__title">${this.heading}</h1>
+          <h1 class="c-header__title">${this.heading}</h1>
           ${when(this.subheading, () => html`
-            <p class="e-header__subtitle">
-              <e-icon icon="calendar" size="s"></e-icon> ${this.subheading} <span class="e-header__separator">·</span> <e-icon icon="group" size="s"></e-icon> ${this.complement}
+            <p class="c-header__subtitle">
+              <e-icon icon="calendar" size="s"></e-icon> ${this.subheading} <span class="c-header__separator">·</span> <e-icon icon="group" size="s"></e-icon> ${this.complement}
             </p>
           `)}
         </div>
