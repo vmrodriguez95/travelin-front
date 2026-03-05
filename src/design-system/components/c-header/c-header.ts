@@ -44,6 +44,9 @@ export class CHeader extends LitElement {
             </p>
           `)}
         </div>
+        <div class="c-header__actions">
+          <slot></slot>
+        </div>
       </section>
     `
   }

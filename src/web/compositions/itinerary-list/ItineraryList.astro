@@ -40,7 +40,28 @@ const { id } = Astro.props
     </c-menu>
   </div>
   <div class="u-col-4 u-col-md-12 u-col-lg-11">
-    <c-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand"></c-header>
+    <c-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand">
+      <a href="#" title="Ir a la página para ver todos los documentos del viaje">
+        <span class="u-pin-icon">
+          <e-icon icon="cards" size="l"></e-icon>
+        </span>
+      </a>
+      <c-modal-trigger>
+        <span class="u-pin-icon">
+          <e-icon icon="group" size="l"></e-icon>
+        </span>
+      </c-modal-trigger>
+      <c-modal-trigger>
+        <span class="u-pin-icon">
+          <e-icon icon="share" size="l"></e-icon>
+        </span>
+      </c-modal-trigger>
+      <c-modal-trigger>
+        <span class="u-pin-icon">
+          <e-icon icon="delete" size="l"></e-icon>
+        </span>
+      </c-modal-trigger>
+    </c-header>
     <section class="u-grid u-padding--vertical--xl u-padding--right--none">
       <div class="u-col-4 u-col-md-5 u-scroll">
         <a href="#">
