@@ -1,0 +1,16 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.u-pin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: space(6);
+  height: space(6);
+  background-color: rgba(var(--color-background), 0.3);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(var(--color-background), 1);
+  }
+}
