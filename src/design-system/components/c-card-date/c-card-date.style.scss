@@ -51,6 +51,7 @@
   &__month {
     @include body--s;
     text-transform: capitalize;
+    margin-top: space(-1.5);
   }
 
   &__content {
