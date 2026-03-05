@@ -19,7 +19,7 @@ export class CForm extends LitElement {
 
   @property({ type: Object }) data!: FormSchema
 
-  @query('form') form!: HTMLFormElement
+  @query('form') _form!: HTMLFormElement
 
   @queryAll('.c-form__field') fields!: NodeListOf<HTMLInputElement>
 
@@ -38,10 +38,10 @@ export class CForm extends LitElement {
 
   render() {
     return html`
-      <div class="c-form">
+      <form class="c-form" action=${this.action} method=${this.method} @submit=${this._onSubmit}>
         ${this._printSections(this.data.sections)}
-        <e-button class="c-form__submit" type="button" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
-      </div>
+        <e-button class="c-form__submit" type="submit" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
+      </form>
     `
   }
 
@@ -50,31 +50,6 @@ export class CForm extends LitElement {
       'c-form__field': true,
       'c-form__field--full': field.fieldSize === 'full'
     })
-  }
-
-  private _getFormData() {
-    const formData = new FormData()
-    const { sections } = this.data
-
-    Object.keys(sections).forEach((sectionKey: string) => {
-      const section = sections[sectionKey]
-
-      Object.keys(section.fields).forEach((fieldKey: string) => {
-        const field = section.fields[fieldKey]
-
-        if (!field.excludeValue) {
-          formData.append(fieldKey, field.value)
-        }
-
-        if (field.returnedValues) {
-          field.returnedValues.forEach((value: string, index: number) => {
-            formData.append(value, field.value[index])
-          })
-        }
-      })
-    })
-
-    return formData
   }
 
   private _isValid() {
@@ -89,14 +64,16 @@ export class CForm extends LitElement {
     return isValid
   }
   
-  private _onSubmit() {
-    if (!this._isValid()) return false
+  private _onSubmit(ev: Event) {
+    if (!this._isValid()) {
+      ev.preventDefault()
+      return false
+    }
 
-    const formData = this._getFormData()
-
+    const formData = new FormData(this._form)
     this._internals.setFormValue(formData)
 
-    this.dispatchEvent(new CustomEvent('submit', { detail: formData, bubbles: true, composed: true }))
+    this._form.requestSubmit()
   }
 
   private _onChange(ev: CustomEvent, field: FormField) {
@@ -155,8 +132,6 @@ export class CForm extends LitElement {
           ></e-input-search>
         `
       case 'calendar':
-        let start = '', end = '';
-
         return html`
           <e-calendar
             class=${this._getFieldClasses(field)}
@@ -167,8 +142,7 @@ export class CForm extends LitElement {
             helpmsg=${field.helpmsg}
             ?required=${field.required}
             ?readonly=${field.readonly}
-            start=${start}
-            end=${end}
+            .returnedValues=${field.returnedValues}
             @change=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-calendar>
         `

@@ -22,7 +22,7 @@ export class EButton extends LitElement {
     })
 
     return html`
-      <button class=${classes} ?disabled=${this.disabled}>
+      <button class=${classes} ?disabled=${this.disabled} type=${this.type} >
         <slot />
       </button>
     `

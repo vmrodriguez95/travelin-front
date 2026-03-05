@@ -1,0 +1,35 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+:host {
+  display: block;
+}
+
+.e-progress-bar {
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+  }
+
+  &__text {
+    @include body--m;
+    margin: 0;
+    color: rgba(var(--color-text), 1);
+  }
+
+  &__bar {
+    display: block;
+    height: space(1);
+    border-radius: space(1);
+    background-color: rgba(var(--color-background), 1);
+    box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 1);
+  }
+
+  &__progress {
+    display: block;
+    height: space(1);
+    border-radius: space(1);
+    background-color: rgba(var(--color-primary), 1);
+  }
+}

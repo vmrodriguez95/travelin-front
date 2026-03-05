@@ -1,0 +1,10 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.u-flex {
+  display: flex;
+  gap: space(1);
+
+  &--half {
+    flex: 1 0 50%;
+  }
+}

@@ -1,8 +1,9 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import styles from './c-card-date.style.scss?inline'
 import { Temporal } from '@js-temporal/polyfill'
+
+import styles from './c-card-date.style.scss?inline'
 
 @customElement('c-card-date')
 export class CCardImage extends LitElement {

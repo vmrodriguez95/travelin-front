@@ -1,0 +1,31 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.u-margin {
+  &--none {
+    margin: 0;
+  }
+  
+  &--top {
+    &--none {
+      margin-top: 0;
+    }
+  }
+
+  &--bottom {
+    &--s {
+      margin-bottom: space(1);
+    }
+
+    &--m {
+      margin-bottom: space(2);
+    }
+
+    &--l {
+      margin-bottom: space(3);
+    }
+
+    &--xl {
+      margin-bottom: space(4);
+    }
+  }
+}

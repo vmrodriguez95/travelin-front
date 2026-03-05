@@ -40,6 +40,8 @@ export class ECalendar extends LitElement {
 
   @property({ type: String }) end = ''
 
+  @property({ type: Array }) returnedValues = []
+
   @property({ type: Boolean }) required = false
 
   @property({ type: Boolean }) readonly = false
@@ -265,6 +267,7 @@ export class ECalendar extends LitElement {
   }
 
   private _onChange(day: number) {
+    const formData = new FormData()
     const newDate = getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString()
 
     if (!this.start && !this.end) {
@@ -281,8 +284,13 @@ export class ECalendar extends LitElement {
       this.end = ''
     }
 
+    if (this.returnedValues.length) {
+      formData.append(this.returnedValues[0], this.start)
+      formData.append(this.returnedValues[1], this.end || '')
+    }
+
     this._validate()
-    this._internals.setFormValue(this.value)
+    this._internals.setFormValue(formData)
     this.dispatchEvent(new CustomEvent('change', { detail: [this.start, this.end] }))
   }
 

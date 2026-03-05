@@ -8,8 +8,14 @@
 @use './base/base.scss' as *;
 
 // Utils
-@use './utils/color.scss' as *;
 @use './utils/background.scss' as *;
+@use './utils/border.scss' as *;
+@use './utils/color.scss' as *;
 @use './utils/cols.scss' as *;
+@use './utils/flex.scss' as *;
 @use './utils/grid.scss' as *;
+@use './utils/margin.scss' as *;
+@use './utils/padding.scss' as *;
+@use './utils/scroll.scss' as *;
+@use './utils/spinner.scss' as *;
 @use './utils/text.scss' as *;

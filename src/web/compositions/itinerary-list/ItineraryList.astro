@@ -40,49 +40,84 @@ const { id } = Astro.props
     </c-menu>
   </div>
   <div class="u-col-4 u-col-md-12 u-col-lg-11">
-    <e-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/japan"></e-header>
-    <section class="u-grid u-scroll">
-      <div class="u-col-4 u-col-md-6">
+    <e-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand"></e-header>
+    <section class="u-grid u-padding--vertical--xl u-padding--right--none">
+      <div class="u-col-4 u-col-md-5 u-scroll">
         <a href="#">
-          <c-card-date index="1" date="2025-05-12" text="Llegada a Bangkok">
+          <c-card-date class="u-margin--bottom--l" index="1" date="2025-05-12" text="Llegada a Bangkok">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date index="2" date="2025-05-13" text="Ruta por los templos">
+          <c-card-date class="u-margin--bottom--l" index="2" date="2025-05-13" text="Ruta por los templos">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date index="3" date="2025-05-14" text="Vuelo a Chiang May">
+          <c-card-date class="u-margin--bottom--l" index="3" date="2025-05-14" text="Vuelo a Chiang May">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date index="4" date="2025-05-15" text="Día por Chiang Rai">
+          <c-card-date class="u-margin--bottom--l" index="4" date="2025-05-15" text="Día por Chiang Rai">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date index="5" date="2025-05-16" text="Llegada a Bangkok">
+          <c-card-date class="u-margin--bottom--l" index="5" date="2025-05-16" text="Llegada a Bangkok">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
       </div>
-      <div class="u-col-4 u-col-md-6">
-        <!-- TODO: Poner mapa de google -->
-        <!-- TODO: Poner resumen de viaje -->
-        <!-- TODO: Poner addons -->
+      <div class="u-col-4 u-col-md-7">
+        <div class="u-grid u-padding--right--none">
+          <div class="u-col-4 u-col-md-12">
+            <iframe
+              width="600"
+              height="450"
+              style="border:0;"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=${lat},${lng}&z=10&output=embed">
+            </iframe>
+          </div>
+          <div class="u-col-4 u-col-md-6 u-bg--light u-padding--m u-border--radius--xl">
+            <p class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--s">Resumen del viaje</p>
+            <e-progress-bar class="u-margin--bottom--s" label="Días planificados" value="4" total="16"></e-progress-bar>
+            <div class="u-flex">
+              <div class="u-bg--dark u-padding--s u-border--radius--xl u-flex--half">
+                <p class="u-text--m u-color--text-light u-margin--none">Presupuesto</p>
+                <p class="u-text--l u-color--text-light u-margin--none">2.678€</p>
+              </div>
+              <div class="u-bg--dark u-padding--s u-border--radius--xl u-flex--half">
+                <p class="u-text--m u-color--text-light u-margin--none">Actividades</p>
+                <p class="u-text--l u-color--text-light u-margin--none">45</p>
+              </div>
+            </div>
+          </div>
+          <div class="u-col-4 u-col-md-6 u-bg--light u-padding--m u-border--radius--xl">
+            <div class="u-bg--dark u-padding--s u-border--radius--s u-margin--bottom--s">
+              <p class="u-text--l u-color--text-light u-margin--none">Pronóstico del tiempo</p>
+            </div>
+            <div class="u-bg--dark u-padding--s u-border--radius--s u-margin--bottom--s">
+              <p class="u-text--l u-color--text-light u-margin--none">Cambio de divisa</p>
+            </div>
+            <div class="u-bg--dark u-padding--s u-border--radius--s u-margin--bottom--s">
+              <p class="u-text--l u-color--text-light u-margin--none">Información</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>

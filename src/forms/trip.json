@@ -1,4 +1,8 @@
 {
+  "form": {
+    "entity": "trip",
+    "method": "POST"
+  },
   "sections": {
     "core": {
       "legend": "Creación de un nuevo viaje",
@@ -18,7 +22,7 @@
           "label": "¿Donde viajas?",
           "helpmsg": "El campo necesita de al menos 3 caracteres para empezar la búsqueda.",
           "type": "search",
-          "api": "/api/places.json",
+          "api": "",
           "required": true,
           "readonly": false
         },
@@ -32,7 +36,7 @@
           "excludeValue": true,
           "required": true,
           "readonly": false,
-          "returnedValues": ["startDate", "endDate"]
+          "returnedValues": ["dateStart", "dateEnd"]
         }
       }
     }
