@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 .ti-configuration {
   display: block;
@@ -42,7 +43,7 @@
     flex: 1 0 100%;
     padding: space(2);
     border: 1px solid rgba(var(--color-gray), 0.5);
-    border-radius: space(1);
+    border-radius: $border-radius-s;
     background-color: rgba(var(--color-white), 1);
     box-sizing: border-box;
     appearance: none;
@@ -54,7 +55,7 @@
     height: space(4);
     margin-left: auto;
     border: 1px solid rgba(var(--color-gray), 0.5);
-    border-radius: space(1);
+    border-radius: $border-radius-s;
     background-color: rgba(var(--color-white), 1);
     box-sizing: border-box;
     cursor: pointer;

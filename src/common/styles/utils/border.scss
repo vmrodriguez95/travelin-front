@@ -1,19 +1,21 @@
+@use '@common/styles/variables/border-radius.scss' as *;
+
 .u-border {
   &--radius {
     &--s {
-      border-radius: 8px;
+      border-radius: $border-radius-s;
     }
 
     &--m {
-      border-radius: 12px;
+      border-radius: $border-radius-m;
     }
 
     &--l {
-      border-radius: 16px;
+      border-radius: $border-radius-l;
     }
 
     &--xl {
-      border-radius: 20px;
+      border-radius: $border-radius-xl;
     }
   }
 }

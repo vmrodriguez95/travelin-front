@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 .e-calendar {
   $block: &;
@@ -75,7 +76,7 @@
     font-family: inherit;
     color: rgba(var(--color-text), 1);
     background-color: rgba(var(--color-background--secondary), 1);
-    border-radius: space(1);
+    border-radius: $border-radius-s;
     cursor: pointer;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-radius 0.2s ease-in-out, margin 0.2s ease-in-out;
