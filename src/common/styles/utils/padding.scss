@@ -39,6 +39,24 @@
     }
   }
 
+  &--bottom {
+    &--s {
+      padding-bottom: space(1);
+    }
+
+    &--m {
+      padding-bottom: space(2);
+    }
+
+    &--l {
+      padding-bottom: space(3);
+    }
+
+    &--xl {
+      padding-bottom: space(4);
+    }
+  }
+
   &--right {
     &--none {
       padding-right: 0;
