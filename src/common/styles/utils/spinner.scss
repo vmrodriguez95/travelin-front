@@ -1,4 +1,4 @@
-@use '@common/styles/@common/styles/style/generic/generic.tools.scss' as *;
+@use '@common/styles/tools/tools.scss' as *;
 
 .u-spinner {
   border: solid rem(5px) rgba(var(--spinner-color, var(--color-primary)), 1);

@@ -1,0 +1,22 @@
+---
+import '@ds/elements'
+
+import { simulator } from '@web/registry/simulator'
+
+// Styles
+import '@web/styles/index.scss'
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Travel In - Design System</title>
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/design-system/elements/index.ts"></script>
+    <script type="module" src="/src/design-system/components/index.ts"></script>
+  </head>
+  <body class="u-bg--dark">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,73 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+
+:host {
+  display: block;
+}
+
+.c-card-date {
+  display: inline-flex;
+  position: relative;
+  border-radius: 20px;
+  border: none;
+  overflow: hidden;
+  width: 100%;
+  color: rgba(var(--color-text), 1);
+  background-color: rgba(var(--color-background--secondary), 1);
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: space(8);
+    color: rgba(var(--color-text--light), 1);
+    background-color: rgba(var(--color-background--light), 1);
+  }
+  
+  &__index,
+  &__day,
+  &__month {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  &__index {
+    @include body--s;
+  }
+  
+  &__day {
+    @include body--l(600);
+  }
+  
+  &__month {
+    @include body--s;
+    text-transform: capitalize;
+  }
+
+  &__content {
+    padding: space(1);
+  }
+
+  &__title {
+    @include body--m();
+    margin: 0 0 space(0.5);
+  }
+  
+  ::slotted(*) {
+    @include body--m();
+    position: relative;
+    margin: 0 0 space(1);
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: space(2);
+      height: space(2);
+      background-color: rgba(var(--color-gray), 1);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: space(1);
+    }
+  }
+}

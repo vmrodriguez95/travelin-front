@@ -16,7 +16,6 @@ if (!composition) {
 }
 
 const Demo = composition.Demo
-const config = composition.config
 
 export async function getStaticPaths() {
   return compositions.map((c) => ({ params: { tag: c.meta.tag } }))

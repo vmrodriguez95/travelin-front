@@ -1,0 +1,19 @@
+.u-border {
+  &--radius {
+    &--s {
+      border-radius: 8px;
+    }
+
+    &--m {
+      border-radius: 12px;
+    }
+
+    &--l {
+      border-radius: 16px;
+    }
+
+    &--xl {
+      border-radius: 20px;
+    }
+  }
+}
