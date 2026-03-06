@@ -1,0 +1,30 @@
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/tools/tools.scss' as *;
+
+.u-grid-main {
+  display: grid;
+  grid-template-areas:
+    'main'
+    'sidebar'
+  ;
+  box-sizing: border-box;
+  width: 100%;
+  
+  @media (min-width: $breakpoint-lg) {
+    grid-template-areas: 'sidebar main';
+    grid-template-columns: space(14) 1fr;
+  }
+  
+  &--main {
+    grid-area: main;
+    padding-bottom: space(12);
+    
+    @media (min-width: $breakpoint-lg) {
+      padding-bottom: space(4);
+    }
+  }
+
+  &--sidebar {
+    grid-area: sidebar;
+  }
+}

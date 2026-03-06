@@ -14,21 +14,8 @@
 
   &--bg {
     display: flex;
-    max-height: space(30);
+    height: space(30);
     overflow: hidden;
-    margin: 0 space(-0.5);
-
-    @media (min-width: $breakpoint-md) {
-      margin: 0 space(-1);
-    }
-    
-    @media (min-width: $breakpoint-lg) {
-      margin: 0 space(-2);
-    }
-    
-    @media (min-width: $breakpoint-xl) {
-      margin: 0 space(-4);
-    }
   }
   
   &__background {
@@ -41,7 +28,6 @@
   &__content {
     position: relative;
     padding: space(2) 0;
-    z-index: 1;
     
     #{$block}--bg & {
       position: absolute;
@@ -89,7 +75,7 @@
   &__link {
     --eIconColor: var(--color-text);
     position: absolute;
-    left: 0;
+    left: space(0.5);
     top: space(2);
     text-decoration: none;
     border-radius: 50%;
@@ -101,20 +87,16 @@
     background-color: rgba(var(--color-background--secondary), 1);
     transition: box-shadow 0.1s ease, transform 0.2s ease-in-out;
 
-    #{$block}--bg & {
-      left: space(0.5);
-  
-      @media (min-width: $breakpoint-md) {
-        left: space(1);
-      }
-      
-      @media (min-width: $breakpoint-lg) {
-        left: space(2);
-      }
-      
-      @media (min-width: $breakpoint-xl) {
-        left: space(4);
-      }
+    @media (min-width: $breakpoint-md) {
+      left: space(1);
+    }
+    
+    @media (min-width: $breakpoint-lg) {
+      left: space(2);
+    }
+    
+    @media (min-width: $breakpoint-xl) {
+      left: space(4);
     }
 
     &:active {
