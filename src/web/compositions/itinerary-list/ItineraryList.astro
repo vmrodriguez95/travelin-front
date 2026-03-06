@@ -2,9 +2,8 @@
 const { id } = Astro.props
 ---
 
-<section id={id} class="u-grid u-bg--dark" data-component>
-  <div class="u-col-4 u-col-md-12 u-col-lg-1">
-    <!-- Menu -->
+<section id={id} class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
     <c-menu>
       <a slot="logo" href="#">
         <img src="/images/logo.png" alt="Logo" width="42" height="48">
@@ -39,7 +38,7 @@ const { id } = Astro.props
       </a>
     </c-menu>
   </div>
-  <div class="u-col-4 u-col-md-12 u-col-lg-11">
+  <div class="u-grid-main--main">
     <c-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand">
       <a href="#" title="Ir a la página para ver todos los documentos del viaje">
         <span class="u-pin-icon">
@@ -62,8 +61,8 @@ const { id } = Astro.props
         </span>
       </c-modal-trigger>
     </c-header>
-    <section class="u-grid u-padding--vertical--xl u-padding--right--none">
-      <div class="u-col-4 u-col-md-5 u-scroll">
+    <section class="u-grid u-padding--vertical--xl">
+      <div class="u-col-4 u-col-md-5">
         <a href="#">
           <c-card-date class="u-margin--bottom--l" index="1" date="2026-03-03" text="Llegada a Bangkok">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
@@ -101,7 +100,7 @@ const { id } = Astro.props
         </a>
       </div>
       <div class="u-col-4 u-col-md-7">
-        <div class="u-grid u-padding--right--none">
+        <div class="u-grid u-padding--horizontal--none">
           <div class="u-col-4 u-col-md-12">
             <e-map latitude="40.7127837" longitude="-74.0059413"></e-map>
           </div>

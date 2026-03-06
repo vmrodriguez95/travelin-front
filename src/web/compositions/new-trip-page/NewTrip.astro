@@ -8,9 +8,8 @@ formatedData.sections.core.fields.location.api = '/api/places.json'
 const finalData = JSON.stringify(formatedData)
 ---
 
-<section id={id} class="u-grid u-bg--dark" data-component>
-  <div class="u-col-4 u-col-md-12 u-col-lg-1">
-    <!-- Menu -->
+<section id={id} class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
     <c-menu>
       <a slot="logo" href="#">
         <img src="/images/logo.png" alt="Logo" width="42" height="48">
@@ -45,8 +44,12 @@ const finalData = JSON.stringify(formatedData)
       </a>
     </c-menu>
   </div>
-  <div class="u-col-4 u-col-md-12 u-col-lg-11 u-padding--bottom--xl">
+  <div class="u-grid-main--main">
     <c-header heading="Nuevo viaje" subheading="" url="#" bg=""></c-header>
-    <c-form action="/" method="POST" data={finalData} submitLabel="Crear viaje"></c-form>
+    <div class="u-grid">
+      <div class="u-col-4 u-col-md-12">
+        <c-form action="/" method="POST" data={finalData} submitLabel="Crear viaje"></c-form>
+      </div>
+    </div>
   </div>
 </section>
