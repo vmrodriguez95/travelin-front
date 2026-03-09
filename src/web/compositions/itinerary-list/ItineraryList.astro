@@ -42,31 +42,31 @@ const { id, data } = Astro.props
     <c-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand">
       <a href="#" title="Ir a la página para ver todos los documentos del viaje">
         <span class="u-pin-icon">
-          <e-icon icon="cards" size="l"></e-icon>
+          <e-icon icon="cards" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
         <span class="u-pin-icon">
-          <e-icon icon="group" size="l"></e-icon>
+          <e-icon icon="group" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <a href="#" title="Ir a la página para ver todos los gastos del viaje">
         <span class="u-pin-icon">
-          <e-icon icon="money" size="l"></e-icon>
+          <e-icon icon="money" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
         <span class="u-pin-icon">
-          <e-icon icon="share" size="l"></e-icon>
+          <e-icon icon="share" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <e-modal-trigger modal="delete">
         <span class="u-pin-icon">
-          <e-icon icon="delete" size="l"></e-icon>
+          <e-icon icon="delete" size="m"></e-icon>
         </span>
       </e-modal-trigger>
     </c-header>
-    <section class="u-grid u-padding--vertical--xl">
+    <section class="u-grid u-padding--top--xl">
       <div class="u-col-4 u-col-md-5">
         <a href="#">
           <c-card-date class="u-margin--bottom--m" index="1" date="2026-03-03" text="Llegada a Bangkok">
@@ -142,5 +142,5 @@ const { id, data } = Astro.props
 <c-modal id="delete">
   <h2 slot="title">Eliminar viaje</h2>
   <p slot="description">Estas a punto de eliminar este viaje. Si lo eliminas, perderás todos los archivos e información adjunta al viaje y no habrá vuelta atrás. ¿Realmente estás seguro de que quieres eliminarlo?</p>
-  <c-form action="/" method="DELETE" data={data} submitLabel="Eliminar viaje"></c-form>
+  <c-form action="/" method={data.form.method} type={data.form.action} data={JSON.stringify(data)} submitLabel="Eliminar viaje"></c-form>
 </c-modal>
