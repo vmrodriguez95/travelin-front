@@ -3,6 +3,7 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 
 .c-form {
+  $block: &;
   display: block;
 
   &__section {
@@ -35,5 +36,9 @@
 
   &__submit {
     margin-top: space(4);
+
+    #{$block}[method="DELETE"] & {
+      --eButtonColor: var(--color-error);
+    }
   }
 }

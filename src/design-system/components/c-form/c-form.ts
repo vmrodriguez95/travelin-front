@@ -1,6 +1,7 @@
-import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, queryAll } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
+import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
@@ -157,7 +158,9 @@ export class CForm extends LitElement {
 
       return html`
         <fieldset class="c-form__section">
-          <legend class="c-form__title">${section.legend}</legend>
+          ${when(section.legend, () => html`
+            <legend class="c-form__title">${section.legend}</legend>
+          `)}
           ${map(Object.keys(section.fields), (fieldKey: string) => this._printFields(section.fields[fieldKey]))}
         </fieldset>
       `

@@ -1,4 +1,10 @@
+interface FormInfo {
+  entity: string
+  method: string
+}
+
 export interface FormSchema {
+  form: FormInfo
   sections: Record<string, FormSection>
 }
 

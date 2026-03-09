@@ -1,4 +1,4 @@
-{
+[{
   "form": {
     "entity": "trip",
     "method": "POST"
@@ -41,4 +41,27 @@
       }
     }
   }
+},
+{
+  "form": {
+    "entity": "trip",
+    "method": "DELETE"
+  },
+  "sections": {
+    "core": {
+      "legend": "",
+      "removeMainKey": true,
+      "fields": {
+        "id": {
+          "id": "tripId",
+          "name": "id",
+          "label": "Identificador",
+          "type": "hidden",
+          "required": true,
+          "readonly": false
+        }
+      }
+    }
+  }
 }
+]

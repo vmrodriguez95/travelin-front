@@ -12,11 +12,12 @@
 
 .e-button {
   @include body--s(600);
+  font-family: inherit;
   padding: space(2) space(3);
   border-radius: $border-radius-s;
   border: none;
   text-transform: uppercase;
-  background: rgba(var(--color-primary), 1);
+  background-color: rgba(var(--eButtonColor, var(--color-primary)), 1);
   color: rgba(var(--color-text), 1);
   cursor: pointer;
   transition: box-shadow 0.1s ease, background-color 0.2s ease-in-out;
