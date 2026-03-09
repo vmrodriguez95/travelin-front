@@ -1,5 +1,5 @@
 ---
-const { id } = Astro.props
+const { id, data } = Astro.props
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -45,54 +45,59 @@ const { id } = Astro.props
           <e-icon icon="cards" size="l"></e-icon>
         </span>
       </a>
-      <c-modal-trigger>
+      <e-modal-trigger>
         <span class="u-pin-icon">
           <e-icon icon="group" size="l"></e-icon>
         </span>
-      </c-modal-trigger>
-      <c-modal-trigger>
+      </e-modal-trigger>
+      <a href="#" title="Ir a la página para ver todos los gastos del viaje">
+        <span class="u-pin-icon">
+          <e-icon icon="money" size="l"></e-icon>
+        </span>
+      </a>
+      <e-modal-trigger>
         <span class="u-pin-icon">
           <e-icon icon="share" size="l"></e-icon>
         </span>
-      </c-modal-trigger>
-      <c-modal-trigger>
+      </e-modal-trigger>
+      <e-modal-trigger modal="delete">
         <span class="u-pin-icon">
           <e-icon icon="delete" size="l"></e-icon>
         </span>
-      </c-modal-trigger>
+      </e-modal-trigger>
     </c-header>
     <section class="u-grid u-padding--vertical--xl">
       <div class="u-col-4 u-col-md-5">
         <a href="#">
-          <c-card-date class="u-margin--bottom--l" index="1" date="2026-03-03" text="Llegada a Bangkok">
+          <c-card-date class="u-margin--bottom--m" index="1" date="2026-03-03" text="Llegada a Bangkok">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date class="u-margin--bottom--l" index="2" date="2026-03-04" text="Ruta por los templos">
+          <c-card-date class="u-margin--bottom--m" index="2" date="2026-03-04" text="Ruta por los templos">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date class="u-margin--bottom--l" index="3" date="2026-03-05" text="Vuelo a Chiang May">
+          <c-card-date class="u-margin--bottom--m" index="3" date="2026-03-05" text="Vuelo a Chiang May">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date class="u-margin--bottom--l" index="4" date="2026-03-06" text="Día por Chiang Rai">
+          <c-card-date class="u-margin--bottom--m" index="4" date="2026-03-06" text="Día por Chiang Rai">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
           </c-card-date>
         </a>
         <a href="#">
-          <c-card-date class="u-margin--bottom--l" index="5" date="2026-03-07" text="Llegada a Bangkok">
+          <c-card-date class="u-margin--bottom--m" index="5" date="2026-03-07" text="Llegada a Bangkok">
             <p>9:00 AM - Aterrizaje en Bangkok</p>
             <p>Checkin en Rambutti Village Palace</p>
             <p>Khao Sand Road</p>
@@ -134,3 +139,8 @@ const { id } = Astro.props
     </section>
   </div>
 </section>
+<c-modal id="delete">
+  <h2 slot="title">Eliminar viaje</h2>
+  <p slot="description">Estas a punto de eliminar este viaje. Si lo eliminas, perderás todos los archivos e información adjunta al viaje y no habrá vuelta atrás. ¿Realmente estás seguro de que quieres eliminarlo?</p>
+  <c-form action="/" method="DELETE" data={data} submitLabel="Eliminar viaje"></c-form>
+</c-modal>

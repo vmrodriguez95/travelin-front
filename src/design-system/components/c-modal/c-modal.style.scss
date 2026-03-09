@@ -1,0 +1,65 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.c-modal {
+  display: block;
+  position: relative;
+  padding: space(4);
+  width: 100%;
+  background-color: rgba(var(--color-background--secondary), 1);
+  max-width: 768px;
+  opacity: 0;
+  transform: scale(0.95);
+  border-radius: $border-radius-xl;
+  border: none;
+  box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  transition: opacity .2s ease, transform .2s ease;
+
+
+  &::backdrop {
+    background-color: rgba(var(--color-background--secondary), 0.6);
+  }
+
+  &[open] {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &.is-closing {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  &__close {
+    --eIconColor: var(--color-text);
+    position: absolute;
+    top: space(2);
+    right: space(2);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: transform .2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  ::slotted([slot="title"]) {
+    @include body--xl;
+    margin: 0 0 space(2);
+    text-align: center;
+    color: rgba(var(--color-text), 1);
+  }
+  
+  ::slotted([slot="description"]) {
+    @include body--m;
+    margin: 0 0 space(2);
+    text-align: center;
+    color: rgba(var(--color-text), 1);
+  }
+}

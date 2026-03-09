@@ -1,8 +1,10 @@
-import type { FormSchema } from '@web/types/form'
+import type { FormSchema } from '@ds/components/c-form/c-form.types'
 
 const jsonGlob = import.meta.glob('../../../forms/trip.json', { eager: true })
 
-const formSchema = Object.values(jsonGlob)[0] as FormSchema
+const tripForms = Object.values(jsonGlob)[0] as any
+
+const formSchema = tripForms.default.find((formSchema: FormSchema) => formSchema.form.method === 'POST')
 
 export const config = {
   props: {
