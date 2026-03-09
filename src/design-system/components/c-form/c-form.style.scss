@@ -2,6 +2,10 @@
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
+:host([type="delete"]) {
+  --eButtonColor: var(--color-error);
+}
+
 .c-form {
   $block: &;
   display: block;
@@ -36,9 +40,5 @@
 
   &__submit {
     margin-top: space(4);
-
-    #{$block}[method="DELETE"] & {
-      --eButtonColor: var(--color-error);
-    }
   }
 }

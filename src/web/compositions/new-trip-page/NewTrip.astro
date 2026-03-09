@@ -1,11 +1,11 @@
 ---
 const { id, data } = Astro.props
 
-const formatedData = JSON.parse(data)
+let finalData = data
 
-formatedData.sections.core.fields.location.api = '/api/places.json'
+finalData.sections.core.fields.location.api = '/api/places.json'
 
-const finalData = JSON.stringify(formatedData)
+finalData = JSON.stringify(finalData)
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>

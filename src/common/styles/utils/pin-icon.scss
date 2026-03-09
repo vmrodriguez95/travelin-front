@@ -4,13 +4,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: space(6);
-  height: space(6);
-  background-color: rgba(var(--color-background), 0.3);
+  width: space(5);
+  height: space(5);
+  background-color: rgba(var(--color-background), 1);
   border-radius: 50%;
-  transition: background-color 0.2s ease;
+  transition: transform 0.2s ease;
 
   &:hover {
-    background-color: rgba(var(--color-background), 1);
+    transform: scale(1.2);
   }
 }

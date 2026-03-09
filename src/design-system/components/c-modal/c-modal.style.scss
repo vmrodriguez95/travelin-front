@@ -4,7 +4,6 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .c-modal {
-  display: block;
   position: relative;
   padding: space(4);
   width: 100%;
@@ -17,19 +16,36 @@
   box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
   transition: opacity .2s ease, transform .2s ease;
 
-
   &::backdrop {
-    background-color: rgba(var(--color-background--secondary), 0.6);
+    background-color: rgba(var(--color-background--light), 0);
+    transition: background-color .2s ease;
   }
 
   &[open] {
     opacity: 1;
     transform: scale(1);
+
+    @starting-style {
+      opacity: 0;
+      transform: scale(.95);
+    }
+    
+    &::backdrop {
+      background-color: rgba(var(--color-background--light), 0.4);
+
+      @starting-style {
+        background-color: rgba(var(--color-background--light), 0);
+      }
+    }
   }
 
   &.is-closing {
     opacity: 0;
     transform: scale(0.95);
+
+    &::backdrop {
+      background-color: rgba(var(--color-background--light), 0);
+    }
   }
 
   &__close {

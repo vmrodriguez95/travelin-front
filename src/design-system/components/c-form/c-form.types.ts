@@ -1,4 +1,5 @@
 interface FormInfo {
+  action: string
   entity: string
   method: string
 }
