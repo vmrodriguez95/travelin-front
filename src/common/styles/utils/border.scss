@@ -1,6 +1,24 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .u-border {
+  &--bottom {
+    border-bottom: 1px solid rgba(var(--color-gray), 1);
+  }
+
+  &--bottom-after {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(var(--color-gray), 1);
+    }
+  }
+
   &--radius {
     &--s {
       border-radius: $border-radius-s;

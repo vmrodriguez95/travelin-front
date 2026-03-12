@@ -1,0 +1,62 @@
+---
+const { id } = Astro.props
+---
+
+<section id={id} class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <c-menu>
+      <a slot="logo" href="#">
+        <img src="/images/logo.png" alt="Logo" width="42" height="48">
+      </a>
+      <li slot="links" class="active">
+        <a href="#" title="Ir a home">
+          <e-icon icon="home" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes">
+          <e-icon icon="map" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a configuración">
+          <e-icon icon="settings" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a usuarios">
+          <e-icon icon="person" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes destacados">
+          <e-icon icon="bookmark" size="l"></e-icon>
+        </a>
+      </li>
+      <a slot="profile" href="#">
+        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
+      </a>
+    </c-menu>
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/tailand"></c-header>
+    <section class="u-grid u-padding--top--xl">
+      <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal">
+        {Array.from({ length: 15 }, (_, i) => (
+          <a href="#" title={`Ir al día ${i + 1}`} class="u-date">
+            <p class="u-date__date">{12 + i} May</p>
+            <p class="u-date__day">Día {12 + i}</p>
+          </a>
+        ))}
+      </div>
+      <div class="u-col-4 u-col-md-5">
+        <!-- <c-card-poi class="u-margin--bottom--m" poi={poi}></c-card-poi> -->
+      </div>
+      <div class="u-col-4 u-col-md-7">
+        <c-map fullheight latitude="40.7127837" longitude="-74.0059413">
+          <c-search api="/api/pois.json"></c-search>
+        </c-map>
+      </div>
+    </section>
+  </div>
+</section>

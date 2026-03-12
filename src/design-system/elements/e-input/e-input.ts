@@ -20,6 +20,8 @@ export class EInput extends LitElement {
 
   @property({ type: String }) type = ''
 
+  @property({ type: String }) icon = ''
+
   @property({ type: String }) autocomplete = 'off'
 
   @property({ type: String, reflect: true }) value!: string | number
@@ -78,6 +80,9 @@ export class EInput extends LitElement {
             @input=${this._onInput}
             @blur=${this._onBlur}
           />
+          ${when(this.icon, () => html`
+            <e-icon class="e-input__icon" icon=${this.icon} size="m"></e-icon>
+          `)}
           ${when(this.value, () => html`
             <button class="e-input__clear" @click=${this._onClean}>
               <e-icon icon="close" size="s"></e-icon>

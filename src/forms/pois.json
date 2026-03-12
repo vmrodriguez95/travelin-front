@@ -1,0 +1,117 @@
+[
+  {
+    "id": "177278946269aa9ed6b396c",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "coordenadas",
+    "name": "Tokyo",
+    "time": "9:00",
+    "image": "",
+    "notes": {
+      "0": {
+        "icon": "info",
+        "text": "Número de Reserva: 4262526594"
+      },
+      "1": {
+        "icon": "money",
+        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
+      },
+      "2": {
+        "icon": "fork",
+        "text": "Desayuno incluido"
+      }
+    },
+    "icon": "city",
+    "reminder": false,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "type": [
+      "country",
+      "political"
+    ],
+    "order": 1,
+    "idUser": "177263595469a847322fb6d"
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "coordenadas",
+    "name": "Nara",
+    "time": "12:00",
+    "image": "",
+    "notes": {
+      "0": {
+        "icon": "info",
+        "text": "Número de Reserva: 4262526594"
+      },
+      "1": {
+        "icon": "money",
+        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
+      },
+      "2": {
+        "icon": "fork",
+        "text": "Desayuno incluido"
+      }
+    },
+    "icon": "city",
+    "reminder": false,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "type": [
+      "locality",
+      "political"
+    ],
+    "order": 2,
+    "idUser": "177263595469a847322fb6d"
+  },
+  {
+    "id": "177278946269aa8ed6b396a",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "coordenadas",
+    "name": "Ninja Ramen",
+    "time": "14:00",
+    "image": "",
+    "notes": {
+      "0": {
+        "icon": "info",
+        "text": "Número de Reserva: 4262526594"
+      },
+      "1": {
+        "icon": "money",
+        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
+      },
+      "2": {
+        "icon": "fork",
+        "text": "Desayuno incluido"
+      }
+    },
+    "type": [
+      "ramen_restaurant",
+      "japanese_restaurant",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "icon": "restaurant",
+    "reminder": false,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739Z"
+    },
+    "order": 3,
+    "idUser": "177263595469a847322fb6d"
+  }
+]

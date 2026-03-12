@@ -40,7 +40,10 @@ export class CHeader extends LitElement {
           <h1 class="c-header__title">${this.heading}</h1>
           ${when(this.subheading, () => html`
             <p class="c-header__subtitle">
-              <e-icon icon="calendar" size="s"></e-icon> ${this.subheading} <span class="c-header__separator">·</span> <e-icon icon="group" size="s"></e-icon> ${this.complement}
+              <e-icon icon="calendar" size="s"></e-icon> ${this.subheading}
+              ${when(this.complement, () => html`
+                <span class="c-header__separator">·</span> <e-icon icon="group" size="s"></e-icon> ${this.complement}
+              `)}
             </p>
           `)}
         </div>

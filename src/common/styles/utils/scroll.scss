@@ -1,4 +1,16 @@
 .u-scroll {
   overflow: auto;
   scroll-behavior: smooth;
+
+  &--horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+
+    > * {
+      flex: 0 0 auto;
+    }
+  }
 }

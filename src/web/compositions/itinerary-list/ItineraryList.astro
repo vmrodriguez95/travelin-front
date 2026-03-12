@@ -41,68 +41,62 @@ const { id, data } = Astro.props
   <div class="u-grid-main--main">
     <c-header heading="TAILANDIA" subheading="12-05-2024 / 26-05-2024" complement="1 adulto" url="#" bg="https://loremflickr.com/2000/600/tailand">
       <a href="#" title="Ir a la página para ver todos los documentos del viaje">
-        <span class="u-pin-icon">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="cards" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="group" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <a href="#" title="Ir a la página para ver todos los gastos del viaje">
-        <span class="u-pin-icon">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="money" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="share" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <e-modal-trigger modal="delete">
-        <span class="u-pin-icon">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="delete" size="m"></e-icon>
         </span>
       </e-modal-trigger>
     </c-header>
     <section class="u-grid u-padding--top--xl">
       <div class="u-col-4 u-col-md-5">
-        <a href="#">
-          <c-card-date class="u-margin--bottom--m" index="1" date="2026-03-03" text="Llegada a Bangkok">
-            <p>9:00 AM - Aterrizaje en Bangkok</p>
-            <p>Checkin en Rambutti Village Palace</p>
-            <p>Khao Sand Road</p>
-          </c-card-date>
-        </a>
-        <a href="#">
-          <c-card-date class="u-margin--bottom--m" index="2" date="2026-03-04" text="Ruta por los templos">
-            <p>9:00 AM - Aterrizaje en Bangkok</p>
-            <p>Checkin en Rambutti Village Palace</p>
-            <p>Khao Sand Road</p>
-          </c-card-date>
-        </a>
-        <a href="#">
-          <c-card-date class="u-margin--bottom--m" index="3" date="2026-03-05" text="Vuelo a Chiang May">
-            <p>9:00 AM - Aterrizaje en Bangkok</p>
-            <p>Checkin en Rambutti Village Palace</p>
-            <p>Khao Sand Road</p>
-          </c-card-date>
-        </a>
-        <a href="#">
-          <c-card-date class="u-margin--bottom--m" index="4" date="2026-03-06" text="Día por Chiang Rai">
-            <p>9:00 AM - Aterrizaje en Bangkok</p>
-            <p>Checkin en Rambutti Village Palace</p>
-            <p>Khao Sand Road</p>
-          </c-card-date>
-        </a>
-        <a href="#">
-          <c-card-date class="u-margin--bottom--m" index="5" date="2026-03-07" text="Llegada a Bangkok">
-            <p>9:00 AM - Aterrizaje en Bangkok</p>
-            <p>Checkin en Rambutti Village Palace</p>
-            <p>Khao Sand Road</p>
-          </c-card-date>
-        </a>
+        {Array.from({ length: 15 }, (_, i) => (
+          <a href="#" title="Ir al itinerario del día 03-03-2026">
+            <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
+              <p slot="index">Día {i + 1}</p>
+              <p slot="day">{3 + i}</p>
+              <p slot="month">Marzo</p>
+              <ul>
+                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                  <span class="u-pin-icon u-pin-icon--s">
+                    <e-icon icon="fly" size="s"></e-icon>
+                  </span>
+                  <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
+                </li>
+                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                  <span class="u-pin-icon u-pin-icon--s">
+                    <e-icon icon="hotel" size="s"></e-icon>
+                  </span>
+                  <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
+                </li>
+                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                  <span class="u-pin-icon u-pin-icon--s">
+                    <e-icon icon="monument" size="s"></e-icon>
+                  </span>
+                  <p class="u-margin--vertical--none">Khao Sand Road</p>
+                </li>
+              </ul>
+            </c-card-date>
+          </a>
+        ))}
       </div>
       <div class="u-col-4 u-col-md-7">
         <div class="u-grid u-padding--horizontal--none">

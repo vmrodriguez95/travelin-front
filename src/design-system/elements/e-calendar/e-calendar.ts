@@ -206,9 +206,11 @@ export class ECalendar extends LitElement {
   }
 
   private _getDayClasses(day: number) {
+    const actualDate = getDateFrom({day, month: this._actualMonth, year: this._actualYear})
+
     return classMap({
       'e-calendar__day': true,
-      'e-calendar__day--today': isToday(day, this._actualMonth, this._actualYear),
+      'e-calendar__day--today': isToday(actualDate),
       'e-calendar__day--single': this._isSingle(day),
       'e-calendar__day--start': this._isStart(day),
       'e-calendar__day--middle': this._isMiddle(day),

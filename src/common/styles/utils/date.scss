@@ -1,0 +1,46 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.u-date {
+  $block: &;
+  display: inline-block;
+  text-align: center;
+  color: rgba(var(--color-text), 1);
+  text-decoration: none;
+  padding: space(1) space(2);
+  
+  &--today {
+    position: relative;
+    border-top-left-radius: $border-radius-l;
+    border-top-right-radius: $border-radius-l;
+    background-color: rgba(var(--color-background--secondary), 1);
+    color: rgba(var(--color-primary), 1);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: rgba(var(--color-primary), 1);
+      z-index: 1;
+    }
+  }
+
+  &__date {
+    @include body--m;
+    margin: 0;
+    opacity: 0.4;
+
+    #{$block}--today & {
+      opacity: 0.6;
+    }
+  }
+
+  &__day {
+    @include body--m;
+    margin: 0;
+  }
+}
