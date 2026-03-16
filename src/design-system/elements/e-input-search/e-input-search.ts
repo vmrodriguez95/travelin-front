@@ -92,6 +92,8 @@ export class EInputSearch extends LitElement {
             @keyup=${this._detectEscape}
           />
 
+          <e-icon class="e-input-search__icon" icon="search" size="m"></e-icon>
+
           ${when(this._request.loading, () => html`
             <span class="u-spinner" aria-hidden="true"></span>
           `)}
@@ -112,7 +114,7 @@ export class EInputSearch extends LitElement {
                     @mousedown=${(e: MouseEvent) => e.preventDefault()}
                     @click=${() => this._onChange(result)}
                   >
-                    ${result.label}
+                    <span class="e-input-search__text">${result.label}</span>
                     ${when(result.helptext, () => html`
                       <span class="e-input-search__helptext">${result.helptext}</span>
                     `)}

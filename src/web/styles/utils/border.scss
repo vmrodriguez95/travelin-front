@@ -1,19 +1,19 @@
 .ti-border {
-  border: 1px solid rgba(var(--color-gray), 1);
+  border: 1px solid rgba(var(--color-gray--light), 1);
 
   &-top {
-    border-top: 1px solid rgba(var(--color-gray), 1);
+    border-top: 1px solid rgba(var(--color-gray--light), 1);
   }
 
   &-bottom {
-    border-bottom: 1px solid rgba(var(--color-gray), 1);
+    border-bottom: 1px solid rgba(var(--color-gray--light), 1);
   }
 
   &-left {
-    border-left: 1px solid rgba(var(--color-gray), 1);
+    border-left: 1px solid rgba(var(--color-gray--light), 1);
   }
 
   &-right {
-    border-right: 1px solid rgba(var(--color-gray), 1);
+    border-right: 1px solid rgba(var(--color-gray--light), 1);
   }
 }

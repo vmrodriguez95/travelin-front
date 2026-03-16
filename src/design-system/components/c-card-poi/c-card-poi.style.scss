@@ -1,0 +1,80 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+:host {
+  display: block;
+}
+
+.c-card-poi {
+  $block: &;
+  display: flex;
+  position: relative;
+  width: 100%;
+  padding: space(1) space(2) space(1) space(1);
+  font-family: inherit;
+  text-align: left;
+  border: none;
+  border-radius: $border-radius-xl;
+  color: rgba(var(--color-text), 1);
+  background-color: rgba(var(--color-background--secondary), 1);
+  cursor: pointer;
+
+  &__head {
+    --eIconColor: var(--color-text);
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: space(10);
+    height: space(10);
+    margin: 0;
+    border-radius: $border-radius-s;
+    background-color: rgba(var(--color-background), 1);
+    overflow: hidden;
+    
+    &--reminder {
+      background-color: rgba(var(--color-primary), 1);
+    }
+  }
+  
+  ::slotted([slot="img"]) {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    padding: 0 space(2);
+    margin: 0;
+    width: 100%;
+  }
+  
+  ::slotted([slot="title"]) {
+    @include body--l;
+    margin: 0;
+    width: 100%;
+  }
+  
+  ::slotted([slot="description"]) {
+    @include body--s;
+    margin: 0;
+    width: 100%;
+  }
+
+
+  &__end {
+    flex: 1 0 auto;
+    text-align: right;
+    margin: 0;
+  }
+  
+  ::slotted([slot="date"]) {
+    @include body--s();
+    margin: 0;
+  }
+}

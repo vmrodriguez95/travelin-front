@@ -11,4 +11,8 @@
   &--center-vertical {
     align-items: center;
   }
+
+  &--justify-between {
+    justify-content: space-between;
+  }
 }

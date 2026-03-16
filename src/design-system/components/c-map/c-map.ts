@@ -1,6 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, queryAsync, state } from 'lit/decorators.js'
-import { classMap } from 'lit/directives/class-map.js'
+import { when } from 'lit/directives/when.js'
 
 import styles from './c-map.style.scss?inline'
 
@@ -13,6 +13,8 @@ export class CMap extends LitElement {
 
   @property({ type: String }) longitude = ''
 
+  @property({ type: String }) api = ''
+
   @property({ type: Boolean }) fullheight = false
 
   @state() height = 0
@@ -20,7 +22,6 @@ export class CMap extends LitElement {
   @queryAsync('iframe') iframe!: Promise<HTMLIFrameElement>
 
   connectedCallback(): void {
-    
     this.iframe.then((iframe: HTMLIFrameElement) => {
       this.calcHeight(iframe)
       this.calcHeightOnResize(iframe)
@@ -30,12 +31,8 @@ export class CMap extends LitElement {
   }
 
   render() {
-    const classes = classMap({
-      'c-map': true,
-      'c-map--full': this.fullheight
-    })
     return html`
-      <div class=${classes}>
+      <div class="c-map">
         <iframe
           class="c-map__iframe"
           width="600"
@@ -45,7 +42,14 @@ export class CMap extends LitElement {
           referrerpolicy="no-referrer-when-downgrade"
           src="https://www.google.com/maps?q=${this.latitude},${this.longitude}&z=10&output=embed">
         </iframe>
-        <slot></slot>
+        ${when(this.api, () => html`
+          <e-input-search
+            class="c-map__search"
+            id="map-search"
+            api=${this.api}
+            name="map-search"
+          ></e-input-search>
+        `)}
       </div>
     `
   }
