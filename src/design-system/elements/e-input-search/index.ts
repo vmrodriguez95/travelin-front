@@ -1,6 +1,6 @@
 export const meta = {
   name: 'Input Search',
-  icon: 'rectangle',
+  icon: 'search',
   tag: 'e-input-search',
   description: 'Campo de búsqueda del formulario'
 }

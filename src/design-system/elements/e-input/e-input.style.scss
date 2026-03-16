@@ -25,15 +25,26 @@
     position: relative;
   }
 
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: space(2);
+    transform: translateY(-50%);
+  }
+
   &__field {
     @include body--m;
     display: block;
     width: 100%;
-    background-color: rgba(var(--color-gray), 1);
+    background-color: rgba(var(--color-gray--light), 1);
     padding: space(1) space(5) space(1) space(2);
     box-sizing: border-box;
     border: 0;
     border-radius: $border-radius-s;
+
+    &:has(+ e-icon) {
+      padding-left: space(6);
+    }
   }
 
   &__clear {

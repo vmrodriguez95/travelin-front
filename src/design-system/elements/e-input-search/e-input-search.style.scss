@@ -3,12 +3,13 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .e-input-search {
+  $block: &;
   display: block;
   position: relative;
 
   &__label {
     @include body--m;
-    color: rgba(var(--color-text), 1);
+    color: rgba(var(--color-text--light), 1);
     display: flex;
     align-items: center;
     width: 100%;
@@ -19,12 +20,20 @@
     position: relative;
   }
 
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: space(2);
+    transform: translateY(-50%);
+  }
+
   &__field {
     @include body--m;
     display: block;
     width: 100%;
-    background-color: rgba(var(--color-gray), 1);
-    padding: space(1) space(5) space(1) space(2);
+    color: rgba(var(--color-text--light), 1);
+    background-color: rgba(var(--color-gray--light), 1);
+    padding: space(1) space(5) space(1) space(6);
     box-sizing: border-box;
     border: 0;
     border-radius: space(1);
@@ -45,10 +54,9 @@
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: rgba(var(--color-background), 1);
     padding: 0;
     box-sizing: border-box;
-    border-radius: space(1);
+    border-radius: $border-radius-m;
     list-style: none;
     margin: 0;
     z-index: 1;
@@ -56,28 +64,43 @@
   }
 
   &__option {
-    @include body--m;
+    font-family: inherit;
     width: 100%;
     padding: space(1);
     text-align: left;
-    color: rgba(var(--color-text), 1);
-    background-color: rgba(var(--color-background--secondary), 1);
+    background-color: rgba(var(--color-gray--light), 1);
     border: none;
     border-radius: $border-radius-m;
     cursor: pointer;
-    border-bottom: 1px solid rgba(var(--color-background), 1);
+    border-bottom: 1px solid rgba(var(--color-gray), 1);
+    box-sizing: border-box;
+
+    &:hover {
+      > #{$block}__text,
+      > #{$block}__helptext {
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__text {
+    @include body--m;
+    display: block;
+    color: rgba(var(--color-text--light), 1);
+    transition: font-weight .2s;
   }
 
   &__helptext {
     @include body--xs;
     display: block;
-    color: rgba(var(--color-text), 1);
+    color: rgba(var(--color-text--light), 1);
+    transition: font-weight .2s;
   }
 
   &__helpmsg {
     @include body--xs;
     margin: space(1) 0 0;
-    color: rgba(var(--color-text), 1);
+    color: rgba(var(--color-text--light), 1);
   }
 
   &__error {

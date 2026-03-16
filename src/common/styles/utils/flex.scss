@@ -7,4 +7,12 @@
   &--half {
     flex: 1 0 50%;
   }
+
+  &--center-vertical {
+    align-items: center;
+  }
+
+  &--justify-between {
+    justify-content: space-between;
+  }
 }

@@ -66,10 +66,10 @@ export function getMonths() {
   })
 }
 
-export function isToday(day: number, month: number, year: number) {
-  const today = Temporal.Now.plainDateISO()
+export function isToday(date: Temporal.PlainDate | string) {
+  const now = Temporal.Now.plainDateISO()
 
-  return day === today.day && month === today.month && year === today.year
+  return compareDates(date, now) === 0
 }
 
 export function getDateFrom(date: string | object) {

@@ -28,4 +28,11 @@
       margin-bottom: space(4);
     }
   }
+
+  &--vertical {
+    &--none {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 }

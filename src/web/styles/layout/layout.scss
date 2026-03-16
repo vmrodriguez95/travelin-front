@@ -16,13 +16,13 @@
     min-height: space(8);
     padding: space(3);
     box-sizing: border-box;
-    border-bottom: 1px solid rgba(var(--color-gray), 1);
+    border-bottom: 1px solid rgba(var(--color-gray--light), 1);
     text-align: right;
   }
   
   &__aside {
     grid-area: aside;
-    border-right: 1px solid rgba(var(--color-gray), 1);
+    border-right: 1px solid rgba(var(--color-gray--light), 1);
     padding: space(3);
     box-sizing: border-box;
   }
@@ -68,11 +68,11 @@
     transition: background-color 0.3s ease-in-out;
 
     &.is-current {
-      background-color: rgba(var(--color-gray), 1);
+      background-color: rgba(var(--color-gray--light), 1);
     }
 
     &:hover {
-      background-color: rgba(var(--color-gray), 1);
+      background-color: rgba(var(--color-gray--light), 1);
     }
   }
 }

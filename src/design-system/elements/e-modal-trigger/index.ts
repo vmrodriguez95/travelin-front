@@ -1,5 +1,5 @@
 export const meta = {
-  name: 'Button',
+  name: 'Modal trigger',
   icon: 'rectangle',
   tag: 'e-modal-trigger',
   description: 'Botón para abrir modales'

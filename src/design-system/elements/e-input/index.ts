@@ -1,6 +1,6 @@
 export const meta = {
   name: 'Input',
-  icon: 'rectangle',
+  icon: 'font',
   tag: 'e-input',
   description: 'Campo de texto del formulario'
 }
