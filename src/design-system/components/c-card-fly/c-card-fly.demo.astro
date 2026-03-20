@@ -1,0 +1,9 @@
+---
+const { icon, img, title, description, date } = Astro.props
+---
+
+<c-card-fly data-component icon={icon} img={img}>
+  <h3 slot="title">${title}</h3>
+  <p slot="description">${description}</p>
+  <p slot="date">${date}</p>
+</c-card-fly>

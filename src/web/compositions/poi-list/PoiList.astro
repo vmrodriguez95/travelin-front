@@ -1,5 +1,17 @@
 ---
+import { Temporal } from '@js-temporal/polyfill'
+import { getAllData } from '@web/utils/data.utils.ts'
+
 const { id } = Astro.props
+const data = getAllData()
+
+function printHotelDates(start: string, end: string) {
+  const startDate = Temporal.PlainDate.from(start)
+  const endDate = Temporal.PlainDate.from(end)
+
+  return `${startDate.day} - ${endDate.day} ${endDate.toLocaleString('es', { month: 'short' })}`
+}
+
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -41,16 +53,18 @@ const { id } = Astro.props
   <div class="u-grid-main--main">
     <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/tailand"></c-header>
     <section class="u-grid u-padding--top--xl">
-      <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal">
-        {Array.from({ length: 15 }, (_, i) => (
-          <a href="#" title={`Ir al día ${i + 1}`} class="u-date">
-            <p class="u-date__date">{12 + i} May</p>
-            <p class="u-date__day">Día {12 + i}</p>
-          </a>
-        ))}
+      <div class="u-col-4 u-col-md-12 u-scroll--horizontal">
+        {
+          Array.from({ length: 15 }, (_, i) => (
+            <a href="#" title={`Ir al día ${i + 1}`} class={i === 4 ? 'u-date u-date--today' : 'u-date'}>
+              <p class="u-date__date">{12 + i} May</p>
+              <p class="u-date__day">Día {i + 1}</p>
+            </a>
+          ))
+        }
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-flex u-scroll--horizontal u-margin--bottom--l">
+        <div class="u-scroll--horizontal u-margin--bottom--l">
           <a href="#" class="u-link-icon">
             <e-icon icon="transport" size="m"></e-icon>
             <span>Transporte</span>
@@ -80,11 +94,47 @@ const { id } = Astro.props
             <span>Guardados</span>
           </a>
         </div>
-        <c-card-poi class="u-margin--bottom--m" icon="fly">
-          <span slot="title">MAD 16:10 - 6h 45m - DOH 23:55</span>
+        {
+          data.map((poi: any) => {
+            switch(poi.type) {
+              case 'hotel':
+                return (
+                  <c-card-poi class="u-margin--bottom--m" icon={poi.icon}>
+                    {poi.image ?
+                      (
+                        <img
+                          {...{slot: 'img'}}
+                          src={poi.image}
+                          alt={poi.name}
+                          width="80"
+                          height="80"
+                          loading="lazy"
+                        />
+                      ) :
+                      null}
+                    <span slot="title">{poi.name}</span>
+                    <span slot="description">{poi.description}</span>
+                    <span slot="date">{printHotelDates(poi.dates.start, poi.dates.end)}</span>
+                  </c-card-poi>
+                )
+              case 'poi':
+                return (
+                  <c-card-poi class="u-margin--bottom--m" icon={poi.icon}>
+                    <span slot="title">{poi.name}</span>
+                    <span slot="date">{poi.time}</span>
+                  </c-card-poi>
+                )
+              default:
+                return null
+              
+            }
+          })
+        }
+        <!-- <c-card-fly class="u-margin--bottom--m">
+          <span slot="segment">MAD 16:10 - 6h 45m - DOH 23:55</span>
           <span slot="title">DOH 02:15 - 6h 55m - BKK 13:10</span>
-          <span slot="description">REF: 1234567</span>
-        </c-card-poi>
+          <span slot="ref">REF: 1234567</span>
+        </c-card-fly>
         <c-card-poi class="u-margin--bottom--m">
           <img slot="img" src="https://loremflickr.com/72/72/tailand" alt="Picture about Llegada a Bangkok" width="80" height="80" loading="lazy" />
           <span slot="title">Rambuttri Village Plaza</span>
@@ -117,7 +167,7 @@ const { id } = Astro.props
           <span slot="title">Ruta Viel del Pan</span>
           <span slot="description">16km</span>
           <span slot="date">18:20</span>
-        </c-card-poi>
+        </c-card-poi> -->
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
         <c-map fullheight latitude="40.7127837" longitude="-74.0059413" api="/api/places.json"></c-map>

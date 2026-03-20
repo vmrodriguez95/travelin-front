@@ -6,7 +6,7 @@
   display: block;
 }
 
-.c-card-poi {
+.c-card-fly {
   $block: &;
   display: flex;
   position: relative;
@@ -38,16 +38,6 @@
     background-color: rgba(var(--color-background), 1);
     overflow: hidden;
     
-    &--reminder {
-      background-color: rgba(var(--color-primary), 1);
-    }
-  }
-  
-  ::slotted([slot="img"]) {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: center;
   }
 
   &__content {
@@ -57,29 +47,5 @@
     padding: 0 space(2);
     margin: 0;
     width: 100%;
-  }
-  
-  ::slotted([slot="title"]) {
-    @include body--l;
-    margin: 0;
-    width: 100%;
-  }
-  
-  ::slotted([slot="description"]) {
-    @include body--s;
-    margin: 0;
-    width: 100%;
-  }
-
-
-  &__end {
-    flex: 1 0 auto;
-    text-align: right;
-    margin: 0;
-  }
-  
-  ::slotted([slot="date"]) {
-    @include body--s();
-    margin: 0;
   }
 }

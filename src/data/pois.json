@@ -1,117 +1,174 @@
 [
   {
     "id": "177278946269aa9ed6b396c",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
-    "name": "Tokyo",
-    "time": "9:00",
-    "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
-      },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
-      },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
-      }
+    "location": {
+      "latitude": "40.7127837",
+      "longitude": "-74.0059413"
     },
-    "icon": "city",
-    "reminder": false,
+    "icon": "hotel",
+    "name": "Hotel Plaza",
+    "type": "hotel",
+    "dates": {
+      "start": "2025-05-13T00:00:00.000",
+      "end": "2025-05-17T00:00:00.000"
+    },
+    "image": "https://loremflickr.com/72/72/thailand",
+    "file": "",
+    "notes": [
+      {
+        "icon": "launch",
+        "text": "Solo desayuno"
+      },
+      {
+        "icon": "star",
+        "text": "4 estrellas"
+      },
+      {
+        "icon": "bed",
+        "text": "Cama de matrimonio"
+      },
+      {
+        "icon": "wifi",
+        "text": "Wifi gratis"
+      },
+      {
+        "icon": "check-in-out",
+        "text": "Checkin a partir de las 15:00. Checkout antes de las 11:00"
+      }
+    ],
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396c",
+    "idTrip": "177272350469a99d30551f1",
+    "idUser": "177263595469a847322fb6d",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": {
+      "latitude": "35.6895",
+      "longitude": "139.69171"
     },
-    "type": [
-      "country",
-      "political"
+    "name": "Vuelo a tu puta madre",
+    "type": "flight",
+    "file": "",
+    "segments": [
+      {
+        "origin": "MAD",
+        "destination": "Tokio",
+        "departure": "2026-03-06T09:31:02.739",
+        "arrival": "2026-03-06T09:31:02.739"
+      },
+      {
+        "origin": "Tokio",
+        "destination": "Osaka",
+        "departure": "2026-03-06T09:31:02.739",
+        "arrival": "2026-03-06T09:31:02.739"
+      }
     ],
-    "order": 1,
-    "idUser": "177263595469a847322fb6d"
+    "notes": [],
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
   },
   {
     "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
+    "location": {
+      "latitude": "35.6895",
+      "longitude": "139.69171"
+    },
     "name": "Nara",
     "time": "12:00",
     "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
-      },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
-      },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
-      }
-    },
-    "icon": "city",
-    "reminder": false,
+    "notes": [],
+    "type": "poi",
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
-    },
-    "type": [
-      "locality",
-      "political"
-    ],
-    "order": 2,
-    "idUser": "177263595469a847322fb6d"
+      "$date": "2026-03-06T09:31:02.739"
+    }
   },
   {
-    "id": "177278946269aa8ed6b396a",
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
-    "name": "Ninja Ramen",
-    "time": "14:00",
-    "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
-      },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
-      },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
-      }
+    "location": {
+      "latitude": "35.6895",
+      "longitude": "139.69171"
     },
-    "type": [
-      "ramen_restaurant",
-      "japanese_restaurant",
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
-    "icon": "restaurant",
-    "reminder": false,
+    "name": "Nara",
+    "time": "12:00",
+    "file": "",
+    "icon": "",
+    "notes": [],
+    "type": "activity",
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Tiempo libre de dos horas",
+    "time": "16:00",
+    "icon": "",
+    "notes": [],
+    "type": "note",
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
     },
-    "order": 3,
-    "idUser": "177263595469a847322fb6d"
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Nara",
+    "time": "12:00",
+    "notes": [],
+    "type": "reminder",
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Nara",
+    "type": "flight",
+    "size": "2MB",
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
   }
 ]

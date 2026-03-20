@@ -5,17 +5,24 @@
 .u-date {
   $block: &;
   display: inline-block;
+  padding: space(1) space(2);
   text-align: center;
   color: rgba(var(--color-text), 1);
   text-decoration: none;
-  padding: space(1) space(2);
+  white-space: nowrap;
+  border-radius: $border-radius-m;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgba(var(--color-background--secondary), 1);
+  }
   
   &--today {
     position: relative;
-    border-top-left-radius: $border-radius-l;
-    border-top-right-radius: $border-radius-l;
     background-color: rgba(var(--color-background--secondary), 1);
     color: rgba(var(--color-primary), 1);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 
     &::after {
       content: '';

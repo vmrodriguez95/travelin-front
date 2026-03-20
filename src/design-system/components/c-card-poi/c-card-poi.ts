@@ -12,7 +12,7 @@ export class CCardPoi extends LitElement {
 
   @property({ type: String }) icon = ''
 
-  @state() hasImage = false
+  @state() _hasImage = false
 
   render() {
     const headClasses = classMap({
@@ -23,8 +23,8 @@ export class CCardPoi extends LitElement {
     return html`
       <button class="c-card-poi">
         <p class=${headClasses}>
-          <slot name="img" @slotchange=${this.handleSlotChange}></slot>
-          ${when(this.icon && !this.hasImage,
+          <slot name="img" @slotchange=${this._handleSlotChange}></slot>
+          ${when(this.icon && !this._hasImage,
             () => html`<e-icon class="c-card-poi__icon" icon=${this.icon} size="xl"></e-icon>`
           )}
         </p>
@@ -39,9 +39,9 @@ export class CCardPoi extends LitElement {
     `
   }
 
-  private handleSlotChange(e: Event) {
+  private _handleSlotChange(e: Event) {
     const slot = e.target as HTMLSlotElement
 
-    this.hasImage = slot.assignedElements().length > 0
+    this._hasImage = slot.assignedElements().length > 0
   }
 }
