@@ -1,0 +1,64 @@
+[
+  { "value": "EUR", "label": "Euro", "symbol": "€", "country": "European Union", "countryCode": "EU" },
+  { "value": "USD", "label": "US Dollar", "symbol": "$", "country": "United States", "countryCode": "US" },
+  { "value": "GBP", "label": "British Pound", "symbol": "£", "country": "United Kingdom", "countryCode": "GB" },
+  { "value": "JPY", "label": "Japanese Yen", "symbol": "¥", "country": "Japan", "countryCode": "JP" },
+  { "value": "CNY", "label": "Chinese Yuan", "symbol": "¥", "country": "China", "countryCode": "CN" },
+
+  { "value": "AUD", "label": "Australian Dollar", "symbol": "$", "country": "Australia", "countryCode": "AU" },
+  { "value": "CAD", "label": "Canadian Dollar", "symbol": "$", "country": "Canada", "countryCode": "CA" },
+  { "value": "CHF", "label": "Swiss Franc", "symbol": "CHF", "country": "Switzerland", "countryCode": "CH" },
+
+  { "value": "SEK", "label": "Swedish Krona", "symbol": "kr", "country": "Sweden", "countryCode": "SE" },
+  { "value": "NOK", "label": "Norwegian Krone", "symbol": "kr", "country": "Norway", "countryCode": "NO" },
+  { "value": "DKK", "label": "Danish Krone", "symbol": "kr", "country": "Denmark", "countryCode": "DK" },
+
+  { "value": "PLN", "label": "Polish Zloty", "symbol": "zł", "country": "Poland", "countryCode": "PL" },
+  { "value": "CZK", "label": "Czech Koruna", "symbol": "Kč", "country": "Czech Republic", "countryCode": "CZ" },
+  { "value": "HUF", "label": "Hungarian Forint", "symbol": "Ft", "country": "Hungary", "countryCode": "HU" },
+  { "value": "RON", "label": "Romanian Leu", "symbol": "lei", "country": "Romania", "countryCode": "RO" },
+  { "value": "BGN", "label": "Bulgarian Lev", "symbol": "лв", "country": "Bulgaria", "countryCode": "BG" },
+
+  { "value": "TRY", "label": "Turkish Lira", "symbol": "₺", "country": "Turkey", "countryCode": "TR" },
+  { "value": "RUB", "label": "Russian Ruble", "symbol": "₽", "country": "Russia", "countryCode": "RU" },
+  { "value": "UAH", "label": "Ukrainian Hryvnia", "symbol": "₴", "country": "Ukraine", "countryCode": "UA" },
+
+  { "value": "INR", "label": "Indian Rupee", "symbol": "₹", "country": "India", "countryCode": "IN" },
+  { "value": "KRW", "label": "South Korean Won", "symbol": "₩", "country": "South Korea", "countryCode": "KR" },
+  { "value": "SGD", "label": "Singapore Dollar", "symbol": "$", "country": "Singapore", "countryCode": "SG" },
+  { "value": "HKD", "label": "Hong Kong Dollar", "symbol": "$", "country": "Hong Kong", "countryCode": "HK" },
+  { "value": "THB", "label": "Thai Baht", "symbol": "฿", "country": "Thailand", "countryCode": "TH" },
+  { "value": "MYR", "label": "Malaysian Ringgit", "symbol": "RM", "country": "Malaysia", "countryCode": "MY" },
+  { "value": "IDR", "label": "Indonesian Rupiah", "symbol": "Rp", "country": "Indonesia", "countryCode": "ID" },
+  { "value": "PHP", "label": "Philippine Peso", "symbol": "₱", "country": "Philippines", "countryCode": "PH" },
+  { "value": "VND", "label": "Vietnamese Dong", "symbol": "₫", "country": "Vietnam", "countryCode": "VN" },
+
+  { "value": "MXN", "label": "Mexican Peso", "symbol": "$", "country": "Mexico", "countryCode": "MX" },
+  { "value": "BRL", "label": "Brazilian Real", "symbol": "R$", "country": "Brazil", "countryCode": "BR" },
+  { "value": "ARS", "label": "Argentine Peso", "symbol": "$", "country": "Argentina", "countryCode": "AR" },
+  { "value": "CLP", "label": "Chilean Peso", "symbol": "$", "country": "Chile", "countryCode": "CL" },
+  { "value": "COP", "label": "Colombian Peso", "symbol": "$", "country": "Colombia", "countryCode": "CO" },
+  { "value": "PEN", "label": "Peruvian Sol", "symbol": "S/", "country": "Peru", "countryCode": "PE" },
+
+  { "value": "ZAR", "label": "South African Rand", "symbol": "R", "country": "South Africa", "countryCode": "ZA" },
+  { "value": "EGP", "label": "Egyptian Pound", "symbol": "£", "country": "Egypt", "countryCode": "EG" },
+  { "value": "MAD", "label": "Moroccan Dirham", "symbol": "د.م.", "country": "Morocco", "countryCode": "MA" },
+  { "value": "NGN", "label": "Nigerian Naira", "symbol": "₦", "country": "Nigeria", "countryCode": "NG" },
+
+  { "value": "AED", "label": "UAE Dirham", "symbol": "د.إ", "country": "United Arab Emirates", "countryCode": "AE" },
+  { "value": "SAR", "label": "Saudi Riyal", "symbol": "﷼", "country": "Saudi Arabia", "countryCode": "SA" },
+  { "value": "ILS", "label": "Israeli Shekel", "symbol": "₪", "country": "Israel", "countryCode": "IL" },
+  { "value": "QAR", "label": "Qatari Riyal", "symbol": "﷼", "country": "Qatar", "countryCode": "QA" },
+  { "value": "KWD", "label": "Kuwaiti Dinar", "symbol": "د.ك", "country": "Kuwait", "countryCode": "KW" },
+  { "value": "OMR", "label": "Omani Rial", "symbol": "﷼", "country": "Oman", "countryCode": "OM" },
+
+  { "value": "NZD", "label": "New Zealand Dollar", "symbol": "$", "country": "New Zealand", "countryCode": "NZ" },
+
+  { "value": "XOF", "label": "West African CFA Franc", "symbol": "CFA", "country": "West Africa", "countryCode": "SN" },
+  { "value": "XAF", "label": "Central African CFA Franc", "symbol": "FCFA", "country": "Central Africa", "countryCode": "CM" },
+
+  { "value": "XCD", "label": "East Caribbean Dollar", "symbol": "$", "country": "Caribbean", "countryCode": "AG" },
+
+  { "value": "BTC", "label": "Bitcoin", "symbol": "₿", "country": "Decentralized", "countryCode": "XX" },
+  { "value": "ETH", "label": "Ethereum", "symbol": "Ξ", "country": "Decentralized", "countryCode": "XX" }
+]

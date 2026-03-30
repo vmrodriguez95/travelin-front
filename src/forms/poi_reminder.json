@@ -1,0 +1,120 @@
+[{
+  "form": {
+    "entity": "poi_reminder",
+    "method": "POST",
+    "action": "create"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nuevo recordatorio",
+      "removeMainKey": true,
+      "fields": {
+        "order": {
+          "id": "poiReminderOrder",
+          "name": "order",
+          "label": "Orden",
+          "type": "hidden",
+          "fillValue": 1,
+          "required": false,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiReminderName",
+          "name": "name",
+          "label": "Nombre para la nota",
+          "type": "text",
+          "required": true,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiReminderTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiReminderNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiReminderNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+},{
+  "form": {
+    "entity": "poi_reminder",
+    "method": "PATCH",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Editar recordatorio",
+      "removeMainKey": true,
+      "fields": {
+        "name": {
+          "id": "poiReminderName",
+          "name": "name",
+          "label": "Nombre para el recordatorio",
+          "type": "text",
+          "required": true,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiReminderTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiReminderNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiReminderNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}]

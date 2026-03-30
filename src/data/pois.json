@@ -1,117 +1,242 @@
 [
   {
     "id": "177278946269aa9ed6b396c",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
-    "name": "Tokyo",
-    "time": "9:00",
-    "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
+    "location": "",
+    "coordenates": ["-74.0059413", "40.7127837"],
+    "name": "Hotel Plaza",
+    "type": ["hotel"],
+    "dateStart": "2025-05-13T00:00:00.000",
+    "dateEnd": "2025-05-17T00:00:00.000",
+    "image": "https://loremflickr.com/72/72/thailand",
+    "file": "",
+    "notes": [
+      {
+        "icon": "launch",
+        "text": "Solo desayuno"
       },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
+      {
+        "icon": "star",
+        "text": "4 estrellas"
       },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
+      {
+        "icon": "bed",
+        "text": "Cama doble"
+      },
+      {
+        "icon": "wifi",
+        "text": "Wifi gratis"
+      },
+      {
+        "icon": "check-in-out",
+        "text": "Checkin a partir de las 15:00. Checkout antes de las 11:00"
       }
-    },
-    "icon": "city",
-    "reminder": false,
+    ],
+    "order": 0,
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "string",
+    "idTrip": "string",
+    "idUser": "string",
+    "idItinerary": "string",
+
+    "name": "Vuelo Madrid - Tokio",
+    "type": "flight",
+
+    "file": "",
+
+    "booking": {
+      "reference": "ABC123",
+      "ticketNumber": "1234567890",
+      "provider": "Skyscanner",
+      "price": 850,
+      "currency": "EUR"
     },
-    "type": [
-      "country",
-      "political"
+
+    "segments": [
+      {
+        "origin": {
+          "code": "MAD",
+          "name": "Adolfo Suárez Madrid-Barajas",
+          "city": "Madrid",
+          "country": "España",
+          "location": ["-3.560", "40.472"],
+          "platform": "T1",
+          "type": "airport"
+        },
+        "destination": {
+          "code": "HND",
+          "name": "Haneda Airport",
+          "city": "Tokio",
+          "country": "Japón",
+          "location": ["139.779", "35.549"],
+          "platform": "T3",
+          "type": "airport"
+        },
+
+        "departureDate": "2025-10-28T10:30:00.000Z",
+        "arrivalDate": "2025-10-29T18:30:00.000Z",
+
+        "operator": {
+          "name": "China Eastern Airlines",
+          "code": "MU"
+        },
+
+        "transportNumber": "MU 523",
+
+        "vehicle": {
+          "type": "aircraft",
+          "model": "Airbus A330"
+        }
+      }
     ],
-    "order": 1,
-    "idUser": "177263595469a847322fb6d"
+
+    "people": [
+      {
+        "name": "Victor",
+        "seat": "12A",
+        "class": "economy",
+        "ticketNumber": "1234567890"
+      },
+      {
+        "name": "Estefanía",
+        "seat": "12B",
+        "class": "economy"
+      }
+    ],
+
+    "order": 0,
+
+    "createdAt": "2026-03-06T09:31:02.739Z",
+    "updatedAt": "2026-03-06T09:31:02.739Z"
   },
   {
     "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
-    "name": "Nara",
+    "location": ["139.69171", "35.6895"],
+    "name": "Ritual del té",
     "time": "12:00",
     "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
-      },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
-      },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
+    "notes": [
+      {
+        "icon": "cup",
+        "text": "El ritual del té es una tradición japonesa..."
       }
-    },
-    "icon": "city",
-    "reminder": false,
+    ],
+    "type": ["poi"],
+    "file": "",
+    "order": 0,
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
-    },
-    "type": [
-      "locality",
-      "political"
-    ],
-    "order": 2,
-    "idUser": "177263595469a847322fb6d"
+      "$date": "2026-03-06T09:31:02.739"
+    }
   },
   {
-    "id": "177278946269aa8ed6b396a",
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": "coordenadas",
-    "name": "Ninja Ramen",
-    "time": "14:00",
+    "location": ["139.69171", "35.6895"],
+    "name": "Paseo con kimono",
+    "time": "12:00",
     "image": "",
-    "notes": {
-      "0": {
-        "icon": "info",
-        "text": "Número de Reserva: 4262526594"
-      },
-      "1": {
-        "icon": "money",
-        "text": "Precio: 65.79€ - 2550.55 THBEl pago se efectuará el día 8 de Mayo íntegro."
-      },
-      "2": {
-        "icon": "fork",
-        "text": "Desayuno incluido"
-      }
-    },
-    "type": [
-      "ramen_restaurant",
-      "japanese_restaurant",
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
-    "icon": "restaurant",
-    "reminder": false,
+    "notes": [],
+    "type": ["poi"],
+    "file": "",
+    "order": 0,
     "createdAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
     },
     "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739Z"
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "",
+    "coordenates": ["139.69171", "35.6895"],
+    "name": "Estatua de Hachiko",
+    "time": "12:00",
+    "image": "",
+    "notes": [],
+    "type": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
     },
-    "order": 3,
-    "idUser": "177263595469a847322fb6d"
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": ["139.69171", "35.6895"],
+    "name": "Visita al templo Sensoji",
+    "time": "12:00",
+    "image": "",
+    "notes": [],
+    "type": ["poi", "temple"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Tiempo libre de dos horas",
+    "time": "16:00",
+    "icon": "",
+    "notes": [],
+    "type": ["note"],
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Nara",
+    "time": "12:00",
+    "notes": [],
+    "type": "reminder",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
   }
 ]

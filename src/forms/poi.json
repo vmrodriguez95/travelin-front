@@ -1,0 +1,169 @@
+[{
+  "form": {
+    "entity": "poi",
+    "method": "POST",
+    "action": "create"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nuevo punto de interés",
+      "removeMainKey": true,
+      "fields": {
+        "order": {
+          "id": "poiOrder",
+          "name": "order",
+          "label": "Orden",
+          "type": "hidden",
+          "fillValue": 1,
+          "required": false,
+          "readonly": false
+        },
+        "location": {
+          "id": "poiLocation",
+          "name": "location",
+          "label": "Busca el punto de interés",
+          "type": "search",
+          "api": "",
+          "required": true,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiFile",
+          "name": "file",
+          "label": "Archivo asociado",
+          "type": "file",
+          "file": {
+            "api": "",
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": true,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiName",
+          "name": "name",
+          "label": "Nombre del punto de interés",
+          "type": "text",
+          "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
+          "required": false,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+},
+{
+  "form": {
+    "entity": "poi",
+    "method": "PATCH",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nuevo punto de interés",
+      "removeMainKey": true,
+      "fields": {
+        "location": {
+          "id": "poiLocation",
+          "name": "location",
+          "label": "Busca el punto de interés",
+          "type": "search",
+          "api": "",
+          "required": true,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiFile",
+          "name": "file",
+          "label": "Archivo asociado",
+          "type": "file",
+          "file": {
+            "api": "",
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": true,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiName",
+          "name": "name",
+          "label": "Nombre del punto de interés",
+          "type": "text",
+          "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
+          "required": false,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}]
