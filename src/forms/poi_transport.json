@@ -31,7 +31,6 @@
           "name": "file",
           "label": "Archivo",
           "file": {
-            "api": "",
             "extensions": ".pdf",
             "maxSize": 521000,
             "multiple": false
