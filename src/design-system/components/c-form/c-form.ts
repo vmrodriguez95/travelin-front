@@ -5,7 +5,7 @@ import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
-import type { FormSchema, FormField } from './c-form.types'
+import type { FormSchema, BasicFormField, SearchFormField, CalendarFormField, FileFormField } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
 
@@ -19,6 +19,8 @@ export class CForm extends LitElement {
   @property({ type: String }) type = ''
 
   @property({ type: String }) submitLabel = ''
+
+  @property({ type: String }) enctype = 'application/x-www-form-urlencoded'
 
   @property({ type: Object }) data!: FormSchema
 
@@ -41,14 +43,14 @@ export class CForm extends LitElement {
 
   render() {
     return html`
-      <form class="c-form" action=${this.action} method=${this.method} @submit=${this._onSubmit}>
+      <form class="c-form" action=${this.action} method=${this.method} enctype=${this.enctype} @submit=${this._onSubmit}>
         ${this._printSections(this.data.sections)}
         <e-button class="c-form__submit" type="submit" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
       </form>
     `
   }
 
-  private _getFieldClasses(field: FormField) {
+  private _getFieldClasses(field: BasicFormField) {
     return classMap({
       'c-form__field': true,
       'c-form__field--full': field.fieldSize === 'full'
@@ -79,7 +81,7 @@ export class CForm extends LitElement {
     this._form.requestSubmit()
   }
 
-  private _onChange(ev: CustomEvent, field: FormField) {
+  private _onChange(ev: CustomEvent, field: BasicFormField) {
     const target = ev.currentTarget as HTMLInputElement
 
     switch (field.type) {
@@ -91,7 +93,7 @@ export class CForm extends LitElement {
     }
   }
 
-  private _printFields(field: FormField) {
+  private _printFields(field: BasicFormField) {
     if ('dependsOn' in field) {
       this._dependencies.push({
         field: field.id,
@@ -120,33 +122,57 @@ export class CForm extends LitElement {
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-input>
         `
+      case 'file':
+        const fieldFile = field as FileFormField
+
+        return html`
+          <e-input-file
+            class=${this._getFieldClasses(fieldFile)}
+            id=${fieldFile.id}
+            name=${fieldFile.name}
+            label=${fieldFile.label}
+            type=${fieldFile.type}
+            helpmsg=${fieldFile.helpmsg}
+            ?required=${fieldFile.required}
+            ?readonly=${fieldFile.readonly}
+            value=${fieldFile.fillValue}
+            extensions=${fieldFile.file.extensions}
+            size=${fieldFile.file.maxSize}
+            ?multiple=${fieldFile.file.multiple}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldFile)}
+          ></e-input-file>
+        `
       case 'search':
+        const fieldSearch = field as SearchFormField
+
         return html`
           <e-input-search
-            class=${this._getFieldClasses(field)}
-            id=${field.id}
-            api=${field.api}
-            name=${field.name}
-            label=${field.label}
-            helpmsg=${field.helpmsg}
-            ?required=${field.required}
-            ?readonly=${field.readonly}
-            @change=${(ev: CustomEvent) => this._onChange(ev, field)}
+            class=${this._getFieldClasses(fieldSearch)}
+            id=${fieldSearch.id}
+            api=${fieldSearch.api}
+            name=${fieldSearch.name}
+            label=${fieldSearch.label}
+            helpmsg=${fieldSearch.helpmsg}
+            ?required=${fieldSearch.required}
+            ?readonly=${fieldSearch.readonly}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch)}
           ></e-input-search>
         `
       case 'calendar':
+        const fieldCalendar = field as CalendarFormField
+
         return html`
           <e-calendar
-            class=${this._getFieldClasses(field)}
-            id=${field.id}
-            name=${field.name}
-            label=${field.label}
-            type=${field.type}
-            helpmsg=${field.helpmsg}
-            ?required=${field.required}
-            ?readonly=${field.readonly}
-            .returnedValues=${field.returnedValues}
-            @change=${(ev: CustomEvent) => this._onChange(ev, field)}
+            class=${this._getFieldClasses(fieldCalendar)}
+            id=${fieldCalendar.id}
+            name=${fieldCalendar.name}
+            label=${fieldCalendar.label}
+            type=${fieldCalendar.type}
+            helpmsg=${fieldCalendar.helpmsg}
+            ?required=${fieldCalendar.required}
+            ?readonly=${fieldCalendar.readonly}
+            .returnedValues=${fieldCalendar.returnedValues}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldCalendar)}
           ></e-calendar>
         `
     }

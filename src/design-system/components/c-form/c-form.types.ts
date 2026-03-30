@@ -12,15 +12,14 @@ export interface FormSchema {
 export interface FormSection {
   legend: string
   removeMainKey?: boolean
-  fields: Record<string, FormField>
+  fields: Record<string, BasicFormField>
 }
 
-export interface FormField {
+export interface BasicFormField {
   id: string
   name: string
   label: string
   type: string
-  api?: string
   helpmsg?: string
   fieldSize?: string
   value: string
@@ -29,5 +28,22 @@ export interface FormField {
   required: boolean
   readonly: boolean
   excludeValue?: boolean
-  returnedValues?: Array<string>
+}
+
+export interface CalendarFormField extends BasicFormField {
+  returnedValues: Array<string>
+}
+export interface SearchFormField extends BasicFormField {
+  api: string
+}
+
+interface FileFieldInfo {
+  api: string
+  extensions: string
+  maxSize: number
+  multiple: boolean
+}
+
+export interface FileFormField extends BasicFormField {
+  file: FileFieldInfo
 }

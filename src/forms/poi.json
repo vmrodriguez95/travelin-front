@@ -33,7 +33,6 @@
           "label": "Archivo asociado",
           "type": "file",
           "file": {
-            "api": "",
             "extensions": ".pdf",
             "maxSize": 521000,
             "multiple": false
@@ -113,7 +112,6 @@
           "label": "Archivo asociado",
           "type": "file",
           "file": {
-            "api": "",
             "extensions": ".pdf",
             "maxSize": 521000,
             "multiple": false

@@ -31,10 +31,8 @@
           "id": "poiHotelFile",
           "name": "file",
           "label": "Archivo de reserva",
-          "helpmsg": "Sube tu archivo de reserva y recogeremos los datos automáticamente para que no los tengas que rellenar tú",
           "type": "file",
           "file": {
-            "api": "",
             "extensions": ".pdf",
             "maxSize": 521000,
             "multiple": false
@@ -100,7 +98,6 @@
           "label": "Archivo de reserva",
           "type": "file",
           "file": {
-            "api": "",
             "extensions": ".pdf",
             "maxSize": 521000,
             "multiple": false
