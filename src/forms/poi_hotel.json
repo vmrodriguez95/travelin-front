@@ -1,0 +1,159 @@
+[{
+  "form": {
+    "entity": "poi_hotel",
+    "method": "POST",
+    "action": "create"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nueva estancia",
+      "removeMainKey": true,
+      "fields": {
+        "order": {
+          "id": "poiHotelOrder",
+          "name": "order",
+          "label": "Orden",
+          "type": "hidden",
+          "fillValue": 0,
+          "required": false,
+          "readonly": false
+        },
+        "location": {
+          "id": "poiHotelLocation",
+          "name": "location",
+          "label": "Busca tu alojamiento",
+          "type": "search",
+          "api": "",
+          "required": true,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiHotelFile",
+          "name": "file",
+          "label": "Archivo de reserva",
+          "helpmsg": "Sube tu archivo de reserva y recogeremos los datos automáticamente para que no los tengas que rellenar tú",
+          "type": "file",
+          "file": {
+            "api": "",
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": false,
+          "readonly": false
+        },
+        "date": {
+          "id": "poiHotelDate",
+          "name": "date",
+          "label": "Elige las fechas de tu estancia",
+          "helpmsg": "Puedes elegir solo una fecha o un rango de fechas.",
+          "type": "calendar",
+          "fieldSize": "full",
+          "limitDates": [],
+          "excludeValue": true,
+          "required": true,
+          "readonly": false,
+          "returnedValues": ["dateStart", "dateEnd"]
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiHotelNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiHotelNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+},
+{
+  "form": {
+    "entity": "poi_hotel",
+    "method": "PATCH",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Modificación de la estancia",
+      "removeMainKey": true,
+      "fields": {
+        "file": {
+          "id": "poiHotelFile",
+          "name": "file",
+          "label": "Archivo de reserva",
+          "type": "file",
+          "file": {
+            "api": "",
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": false,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiHotelName",
+          "name": "name",
+          "label": "Nombre del alojamiento",
+          "type": "text",
+          "required": true,
+          "readonly": true
+        },
+        "date": {
+          "id": "poiHotelDate",
+          "name": "date",
+          "label": "Elige las fechas de tu estancia",
+          "helpmsg": "Puedes elegir solo una fecha o un rango de fechas.",
+          "type": "calendar",
+          "fieldSize": "full",
+          "limitDates": [],
+          "excludeValue": true,
+          "required": true,
+          "readonly": false,
+          "returnedValues": ["dateStart", "dateEnd"]
+        },
+        "notes": {
+          "sectionTitle": "Notas",
+          "canAdd": true,
+          "schema": [
+            {
+              "icon": {
+                "id": "poiHotelNotesIcon",
+                "name": "icon",
+                "label": "Icono",
+                "type": "icon",
+                "required": false,
+                "readonly": false
+              },
+              "text": {
+                "id": "poiHotelNotesText",
+                "name": "text",
+                "label": "Texto",
+                "type": "textarea",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}]
