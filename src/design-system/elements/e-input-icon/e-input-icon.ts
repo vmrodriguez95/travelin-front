@@ -2,12 +2,13 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
+import { live } from 'lit/directives/live.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 import { EICON_LIST } from '@ds/elements/e-icon/e-icon.list'
 
 // Styles
 import style from './e-input-icon.style.scss?inline'
-import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('e-input-icon')
 export class EInputIcon extends LitElement {
@@ -20,7 +21,7 @@ export class EInputIcon extends LitElement {
 
   @property({ type: String }) label = ''
 
-  @property({ type: String }) value = ''
+  @property({ type: String, reflect: true }) value = ''
 
   @property({ type: String }) helpmsg = ''
 
@@ -60,10 +61,10 @@ export class EInputIcon extends LitElement {
             aria-label=${this.label}
             class="e-input-icon__field"
             type="hidden"
-            value=${this.value}
+            .value=${live(this.value)}
           />
           <button class="e-input-icon__choose" @click=${this._openPopup}>
-            <e-icon icon=${this.value || 'smile-add'} size="l"></e-icon>
+            <e-icon .icon=${this.value || 'smile-add'} size="l"></e-icon>
           </button>
           <div class=${popupClasses}>
             <div class="e-input-icon__popup__list">
@@ -112,6 +113,7 @@ export class EInputIcon extends LitElement {
 
     this._validate()
     this._internals.setFormValue(this.value)
+    this.dispatchEvent(new Event('change'))
   }
 
   private _validate() {

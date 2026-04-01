@@ -5,7 +5,16 @@ import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
-import type { FormSchema, BasicFormField, SearchFormField, CalendarFormField, FileFormField, FormSection, FormArraySection } from './c-form.types'
+import type {
+  FormSchema,
+  BasicFormField,
+  SearchFormField,
+  CalendarFormField,
+  FileFormField,
+  FormSection,
+  FormArraySection,
+  FormBlock
+} from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
 import { repeat } from 'lit/directives/repeat.js'
@@ -100,11 +109,15 @@ export class CForm extends LitElement {
     }
 
     const newBlock = window.structuredClone(section.schema[0])
+
+    // @ts-ignore
+    newBlock.randomId = crypto.randomUUID()
+
     section.fields.push(newBlock)
     this.requestUpdate()
   }
 
-  private _removeBlock(fields: Array<Record<string, BasicFormField | FormSection>>, index: number) {
+  private _removeBlock(fields: Array<FormBlock>, index: number) {
     fields.splice(index, 1)
     this.requestUpdate()
   }
@@ -151,7 +164,7 @@ export class CForm extends LitElement {
             ?autofocus=${field.autofocus}
             ?required=${field.required}
             ?readonly=${field.readonly}
-            value=${field.fillValue}
+            value=${field.fillValue || field.value}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-textarea>
         `
@@ -202,6 +215,7 @@ export class CForm extends LitElement {
             name=${field.name}
             label=${field.label}
             helpmsg=${field.helpmsg}
+            value=${field.fillValue || field.value}
             ?required=${field.required}
             ?readonly=${field.readonly}
             @change=${(ev: CustomEvent) => this._onChange(ev, field)}
@@ -235,7 +249,7 @@ export class CForm extends LitElement {
     if ('schema' in section) {
       // En caso de que la casuística sea un FormArraySection
       const arraySection = section as FormArraySection
-      const fields = arraySection.fields as Array<Record<string, BasicFormField | FormSection>>
+      const fields = arraySection.fields as Array<FormBlock>
 
       return html`
         <div class="c-form__repeater">
@@ -244,10 +258,16 @@ export class CForm extends LitElement {
           <p class="c-form__helpmsg">${section.helpmsg}</p>
         `)}
           ${when('fields' in section && fields.length > 0,
-            () => map(fields, (fieldBlock: Record<string, BasicFormField | FormSection>, index: number) => html`
+            () => map(
+              fields,
+              (fieldBlock: FormBlock, index: number) => html`
               <div class="c-form__repeater__block">
                 <div class="c-form__repeater__fields">
-                  ${map(Object.keys(fieldBlock), (key: string) => this._printSection(fieldBlock[key]))}
+                  ${repeat(
+                    Object.keys(fieldBlock),
+                    () => fieldBlock.randomId,
+                    (key: string) => key !== 'randomId' ? this._printSection(fieldBlock[key]) : ''
+                  )}
                 </div>
                 <div class="c-form__repeater__actions">
                   ${when(arraySection.canRemove, () => html`
@@ -273,15 +293,11 @@ export class CForm extends LitElement {
 
     if ('fields' in section && !Array.isArray(section.fields)) {
       // En caso de que la casuística sea un FormSection
-      const fields = section.fields as Record<string, BasicFormField | FormSection>
+      const fields = section.fields as FormBlock
 
       return html`
         <div class="c-form__subsection">
-          ${repeat(
-            Object.keys(fields),
-            (key: string) => key,
-            (key: string) => this._printSection(fields[key])
-          )}
+          ${map(Object.keys(fields), (key: string) => this._printSection(fields[key]))}
         </div>
       `
     }
