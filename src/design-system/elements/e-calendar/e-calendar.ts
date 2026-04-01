@@ -78,13 +78,6 @@ export class ECalendar extends LitElement {
     super.connectedCallback()
   }
 
-  protected updated(changed: Map<string, unknown>) {
-    if (changed.has('value') || changed.has('required')) {
-      this._internals.setFormValue(this.value.toString() || null)
-      this._validate()
-    }
-  }
-
   render() {
     const inputClasses = classMap({
       'e-calendar': true,

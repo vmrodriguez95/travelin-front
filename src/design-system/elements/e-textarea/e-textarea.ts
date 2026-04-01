@@ -1,12 +1,13 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
+import { live } from 'lit/directives/live.js'
 
 // Styles
-import style from './e-input-file.style.scss?inline'
+import style from './e-textarea.style.scss?inline'
 
-@customElement('e-input-file')
-export class EInputFile extends LitElement {
+@customElement('e-textarea')
+export class ETextarea extends LitElement {
 
   private _internals: ElementInternals
 
@@ -20,17 +21,11 @@ export class EInputFile extends LitElement {
 
   @property({ type: String }) helpmsg = ''
 
-  @property({ type: String }) extensions = ''
-
-  @property({ type: String }) size = 1024 * 500 // 500kb
-
   @property({ type: Boolean }) required = false
 
   @property({ type: Boolean }) readonly = false
 
-  @property({ type: Boolean }) multiple = false
-
-  @query('input') _input!: HTMLInputElement
+  @query('textarea') _input!: HTMLInputElement
 
   static styles = css`${unsafeCSS(style)}`
 
@@ -43,48 +38,35 @@ export class EInputFile extends LitElement {
 
   render() {
     return html`
-      <div class="e-input-file">
+      <div class="e-textarea">
         ${when(this.label, () => html`
-          <label class="e-input-file__label" for=${this.id}>
+          <label class="e-textarea__label" for=${this.id}>
             ${this.label} ${when(this.required, () => html`*`)}
           </label>
         `)}
-        <div class="e-input-file__wrapper">
-          <input
+        <div class="e-textarea__wrapper">
+          <textarea
             id=${this.id}
             name=${this.name}
-            class="e-input-file__field"
-            type="file"
+            class="e-textarea__field"
             ?readonly=${this.readonly}
             ?required=${this.required}
-            value=${this.value}
-            accept=${this.extensions}
-            @change=${this._onChange}
-          />
-          <button class="e-input-file__fake-field" @click=${this._openFileBrowser}>
-            <e-icon icon="attach-file" size="m"></e-icon> ${this.value}
-          </button>
-          ${when(this.value, () => html`
-            <button class="e-input-file__clear" @click=${this._onClean}>
-              <e-icon icon="close" size="s"></e-icon>
-            </button>
-          `)}
+            .value=${live(this.value)}
+            @input=${this._onInput}
+            @blur=${this._onBlur}
+          ></textarea>
         </div>
         ${when(this._internals.validationMessage, () => html`
-          <p class="e-input-file__error">${this._internals.validationMessage}</p>
+          <p class="e-textarea__error">${this._internals.validationMessage}</p>
         `)}
         ${when(this.helpmsg, () => html`
-          <p class="e-input-file__helpmsg">${this.helpmsg}</p>
+          <p class="e-textarea__helpmsg">${this.helpmsg}</p>
         `)}
       </div>
     `
   }
 
-  private _openFileBrowser() {
-    this._input.click()
-  }
-
-  private _onChange(e: Event) {
+  private _onInput(e: Event) {
     const target = e.target as HTMLInputElement
     this.value = target.value
 
@@ -92,13 +74,8 @@ export class EInputFile extends LitElement {
     this._internals.setFormValue(this.value)
   }
 
-  private _onClean() {
-    this.value = ''
-
+  private _onBlur() {
     this._validate()
-    this._internals.setFormValue(this.value)
-
-    this.dispatchEvent(new Event('change'))
   }
 
   private _validate() {

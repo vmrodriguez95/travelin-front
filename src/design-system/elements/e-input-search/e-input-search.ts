@@ -60,13 +60,6 @@ export class EInputSearch extends LitElement {
     this._internals = this.attachInternals()
   }
 
-  protected updated(changed: Map<string, unknown>) {
-    if (changed.has('value') || changed.has('required')) {
-      this._internals.setFormValue(this.value || null)
-      this._validate()
-    }
-  }
-
   render() {
     return html`
       <div class="e-input-search">
@@ -208,7 +201,7 @@ export class EInputSearch extends LitElement {
     this._internals.setValidity(
       validity.state,
       validity.message,
-      this
+      this._input
     )
   }
 

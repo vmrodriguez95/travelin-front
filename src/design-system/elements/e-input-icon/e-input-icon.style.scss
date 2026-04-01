@@ -6,15 +6,6 @@
   display: block;
   position: relative;
 
-  &__label {
-    @include body--m;
-    color: rgba(var(--color-text), 1);
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin: 0 0 space(0.5);
-  }
-
   &__wrapper {
     position: relative;
   }
@@ -25,6 +16,14 @@
     padding: space(2);
     border: none;
     cursor: pointer;
+
+    e-icon {
+      transition: transform .2s ease;
+    }
+
+    &:hover e-icon {
+      transform: scale(1.2);
+    }
   }
 
   &__popup {
@@ -34,7 +33,7 @@
     top: 117%;
     left: 0;
     padding: space(2) 0;
-    max-width: space(24);
+    width: space(34);
     background-color: rgba(var(--color-background--secondary), 1);
     box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
     border-radius: $border-radius-l;
@@ -63,7 +62,7 @@
       flex-flow: wrap;
       align-items: center;
       justify-content: space-between;
-      max-height: space(20);
+      height: space(20);
       gap: space(1);
       padding: 0 space(2);
       overflow-y: auto;

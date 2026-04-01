@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 import { classMap } from 'lit/directives/class-map.js'
@@ -33,6 +33,8 @@ export class EInput extends LitElement {
   @property({ type: Boolean, reflect: true }) required = false
 
   @property({ type: Boolean }) readonly = false
+
+  @query('input') _input!: HTMLInputElement
 
   static styles = css`${unsafeCSS(style)}`
 
@@ -126,7 +128,7 @@ export class EInput extends LitElement {
     this._internals.setValidity(
       validity.state,
       validity.message,
-      this
+      this._input
     )
   }
 

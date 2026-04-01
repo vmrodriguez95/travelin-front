@@ -9,7 +9,7 @@
 
   &__label {
     @include body--m;
-    color: rgba(var(--color-text--light), 1);
+    color: rgba(var(--color-text), 1);
     display: flex;
     align-items: center;
     width: 100%;

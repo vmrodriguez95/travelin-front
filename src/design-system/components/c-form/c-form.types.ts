@@ -10,9 +10,25 @@ export interface FormSchema {
 }
 
 export interface FormSection {
+  id: string
   legend: string
+  helpmsg: string
   removeMainKey?: boolean
-  fields: Record<string, BasicFormField>
+  fields: Record<string, BasicFormField | FormSection>
+}
+
+export interface FormArraySection {
+  id: string
+  legend: string
+  helpmsg: string
+  canAdd: boolean
+  addLabel: string
+  canMove: boolean
+  canRemove: boolean
+  emptyMsg: string
+  removeMainKey?: boolean
+  schema: Array<Record<string, BasicFormField | FormSection>>
+  fields?: Array<Record<string, BasicFormField | FormSection>>
 }
 
 export interface BasicFormField {
@@ -25,6 +41,7 @@ export interface BasicFormField {
   value: string
   fillValue?: string | Array<string>
   dependsOn?: Array<string>
+  autofocus?: boolean
   required: boolean
   readonly: boolean
   excludeValue?: boolean
