@@ -17,7 +17,7 @@ export class ETextarea extends LitElement {
 
   @property({ type: String }) label = ''
 
-  @property({ type: String }) value = ''
+  @property({ type: String, reflect: true }) value = ''
 
   @property({ type: String }) helpmsg = ''
 

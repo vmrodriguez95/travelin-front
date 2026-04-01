@@ -9,12 +9,14 @@ export interface FormSchema {
   sections: Record<string, FormSection>
 }
 
+export interface FormBlock extends Record<string, BasicFormField | FormSection> {}
+
 export interface FormSection {
   id: string
   legend: string
   helpmsg: string
   removeMainKey?: boolean
-  fields: Record<string, BasicFormField | FormSection>
+  fields: FormBlock
 }
 
 export interface FormArraySection {
@@ -27,8 +29,8 @@ export interface FormArraySection {
   canRemove: boolean
   emptyMsg: string
   removeMainKey?: boolean
-  schema: Array<Record<string, BasicFormField | FormSection>>
-  fields?: Array<Record<string, BasicFormField | FormSection>>
+  schema: Array<FormBlock>
+  fields?: Array<FormBlock>
 }
 
 export interface BasicFormField {

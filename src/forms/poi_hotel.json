@@ -66,7 +66,7 @@
             {
               "icon": {
                 "id": "poiHotelNotesIcon",
-                "name": "icon",
+                "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
                 "required": false,
@@ -74,7 +74,7 @@
               },
               "text": {
                 "id": "poiHotelNotesText",
-                "name": "text",
+                "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
                 "fieldSize": "full",
