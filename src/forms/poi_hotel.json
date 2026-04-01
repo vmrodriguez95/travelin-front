@@ -6,7 +6,8 @@
   },
   "sections": {
     "core": {
-      "legend": "Nueva estancia",
+      "legend": "Datos generales",
+      "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
         "order": {
@@ -54,8 +55,13 @@
           "returnedValues": ["dateStart", "dateEnd"]
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiHotelNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -71,6 +77,7 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
                 "required": false,
                 "readonly": false
               }
@@ -127,8 +134,13 @@
           "returnedValues": ["dateStart", "dateEnd"]
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiHotelNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -144,6 +156,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }

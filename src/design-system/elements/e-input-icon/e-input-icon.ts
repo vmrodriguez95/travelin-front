@@ -53,15 +53,11 @@ export class EInputIcon extends LitElement {
 
     return html`
       <div class="e-input-icon">
-        ${when(this.label, () => html`
-          <label class="e-input-icon__label" for=${this.id}>
-            ${this.label} ${when(this.required, () => html`*`)}
-          </label>
-        `)}
         <div class="e-input-icon__wrapper">
           <input
             id=${this.id}
             name=${this.name}
+            aria-label=${this.label}
             class="e-input-icon__field"
             type="hidden"
             value=${this.value}

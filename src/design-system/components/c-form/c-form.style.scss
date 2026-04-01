@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 :host([type="delete"]) {
   --eButtonColor: var(--color-error);
@@ -11,19 +12,69 @@
   display: block;
 
   &__section {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: space(4);
     border: none;
     padding: 0;
     margin: 0;
+  }
+
+  &__subsection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: space(4);
+    padding: 0 space(2);
+  }
+
+  &__repeater {
+    grid-column: span 2;
+    text-align: right;
+
+    &__block {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: space(2);
+      margin-bottom: space(2);
+    }
+    
+    &__fields {
+      display: flex;
+      flex: 1 0 auto;
+      flex-wrap: wrap;
+      gap: space(2);
+    }
+
+    &__actions {
+      display: flex;
+    }
   }
 
   &__title {
     @include body--xl;
     color: rgba(var(--color-text), 1);
     grid-column: span 2;
-    margin-bottom: space(4);
+    margin: 0;
+
+    &:not(:has(+ #{$block}__helpmsg)) {
+      margin-bottom: space(4);
+    }
+  }
+
+  &__subtitle {
+    @include body--l;
+    text-align: left;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+    
+    &:not(:has(+ #{$block}__helpmsg)) {
+      margin-bottom: space(4);
+    }
+  }
+
+  &__helpmsg {
+    @include body--s;
+    text-align: left;
+    color: rgba(var(--color-text), 1);
+    margin: 0 0 space(4);
   }
 
   &__field {
@@ -35,6 +86,54 @@
 
     &--full {
       grid-column: span 2;
+      flex: 1 0 auto;
+    }
+  }
+
+  &__empty {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    text-align: center;
+    padding: space(4);
+    margin: 0;
+    border: dashed 1px rgba(var(--color-text), 1);
+    border-radius: $border-radius-l;
+  }
+
+  &__add {
+    @include body--m;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    margin-top: space(2);
+    gap: space(0.5);
+    color: rgba(var(--color-primary), 1);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+
+    e-icon {
+      transition: transform .2s ease;
+    }
+
+    &:hover e-icon {
+      transform: scale(1.2);
+    }
+  }
+
+  &__remove {
+    --eIconColor: var(--color-text);
+    display: inline-flex;
+    background-color: rgba(var(--color-primary), 1);
+    border: 0;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    transition: transform .2s ease;
+
+    &:hover {
+      transform: scale(1.2);
     }
   }
 

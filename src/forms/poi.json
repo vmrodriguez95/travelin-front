@@ -7,6 +7,7 @@
   "sections": {
     "core": {
       "legend": "Nuevo punto de interés",
+      "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
         "order": {
