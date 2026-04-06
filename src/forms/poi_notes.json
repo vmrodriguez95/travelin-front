@@ -9,6 +9,15 @@
       "legend": "Nueva nota",
       "helpmsg": "Los campos con * son obligatorios.",
       "fields": {
+        "type": {
+          "id": "poiNotesType",
+          "name": "type",
+          "label": "Tipo",
+          "type": "hidden",
+          "fillValue": ["note"],
+          "required": false,
+          "readonly": false
+        },
         "order": {
           "id": "poiNotesOrder",
           "name": "order",
@@ -80,6 +89,14 @@
     "core": {
       "legend": "Editar nota",
       "fields": {
+        "type": {
+          "id": "poiNotesType",
+          "name": "type",
+          "label": "Tipo",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
         "name": {
           "id": "poiNotesName",
           "name": "name",

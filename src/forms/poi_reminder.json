@@ -9,6 +9,15 @@
       "legend": "Nuevo recordatorio",
       "helpmsg": "Los campos con * son obligatorios.",
       "fields": {
+        "types": {
+          "id": "poiReminderType",
+          "name": "type",
+          "label": "Tipo",
+          "type": "hidden",
+          "fillValue": ["reminder"],
+          "required": false,
+          "readonly": false
+        },
         "order": {
           "id": "poiReminderOrder",
           "name": "order",
@@ -21,8 +30,9 @@
         "name": {
           "id": "poiReminderName",
           "name": "name",
-          "label": "Nombre para la nota",
+          "label": "Nombre para el recordatorio",
           "type": "text",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -32,12 +42,17 @@
           "label": "Elige la hora",
           "type": "time",
           "fieldSize": "full",
-          "required": false,
+          "required": true,
           "readonly": false
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiReminderNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -53,6 +68,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }
@@ -86,12 +103,17 @@
           "label": "Elige la hora",
           "type": "time",
           "fieldSize": "full",
-          "required": false,
+          "required": true,
           "readonly": false
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiReminderNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -107,6 +129,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }
