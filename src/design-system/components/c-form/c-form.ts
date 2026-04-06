@@ -110,7 +110,7 @@ export class CForm extends LitElement {
 
     const newBlock = window.structuredClone(section.schema[0])
 
-    // @ts-ignore
+    // @ts-ignore - Agregamos un id único a cada bloque para optimizar el renderizado con repeat
     newBlock.randomId = crypto.randomUUID()
 
     section.fields.push(newBlock)
@@ -266,7 +266,17 @@ export class CForm extends LitElement {
                   ${repeat(
                     Object.keys(fieldBlock),
                     () => fieldBlock.randomId,
-                    (key: string) => key !== 'randomId' ? this._printSection(fieldBlock[key]) : ''
+                    (key: string) => {
+                      console.log(fieldBlock[key])
+                      if (key !== 'randomId') {
+                        if ('name' in fieldBlock[key]) {
+                          fieldBlock[key].name = fieldBlock[key].name.replace('[]', `[${index}]`)
+                        }
+                        return this._printSection(fieldBlock[key])
+                      }
+
+                      return ''
+                    }
                   )}
                 </div>
                 <div class="c-form__repeater__actions">
