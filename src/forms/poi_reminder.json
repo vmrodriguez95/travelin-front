@@ -8,7 +8,6 @@
     "core": {
       "legend": "Nuevo recordatorio",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiReminderOrder",
@@ -72,7 +71,6 @@
   "sections": {
     "core": {
       "legend": "Editar recordatorio",
-      "removeMainKey": true,
       "fields": {
         "name": {
           "id": "poiReminderName",
