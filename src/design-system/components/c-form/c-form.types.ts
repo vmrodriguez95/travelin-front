@@ -49,6 +49,11 @@ export interface BasicFormField {
   excludeValue?: boolean
 }
 
+export interface TimeFormField extends BasicFormField {
+  min: string
+  max: string
+}
+
 export interface CalendarFormField extends BasicFormField {
   returnedValues: Array<string>
 }
