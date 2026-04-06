@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
 // Styles
@@ -16,7 +16,7 @@ export class EInputFile extends LitElement {
 
   @property({ type: String }) label = ''
 
-  @property({ type: String }) value = ''
+  @property({ type: Object }) value: FileList | null = null
 
   @property({ type: String }) helpmsg = ''
 
@@ -29,6 +29,8 @@ export class EInputFile extends LitElement {
   @property({ type: Boolean }) readonly = false
 
   @property({ type: Boolean }) multiple = false
+
+  @state() _filename: string = ''
 
   @query('input') _input!: HTMLInputElement
 
@@ -62,7 +64,7 @@ export class EInputFile extends LitElement {
             @change=${this._onChange}
           />
           <button class="e-input-file__fake-field" @click=${this._openFileBrowser}>
-            <e-icon icon="attach-file" size="m"></e-icon> ${this.value}
+            <e-icon icon="attach-file" size="m"></e-icon> ${this._filename}
           </button>
           ${when(this.value, () => html`
             <button class="e-input-file__clear" @click=${this._onClean}>
@@ -86,15 +88,19 @@ export class EInputFile extends LitElement {
 
   private _onChange(e: Event) {
     const target = e.target as HTMLInputElement
-    this.value = target.value
+    this.value = target.files
+
+    if (this.value && this.value.length > 0) {
+      this._filename = this.value[0].name
+    }
 
     this._validate()
-    this._internals.setFormValue(this.value)
+    this._internals.setFormValue(this.value?.[0] || '')
   }
 
   private _onClean() {
-    this.value = ''
-
+    this.value = null
+    this._filename = ''
     this._validate()
     this._internals.setFormValue(this.value)
 

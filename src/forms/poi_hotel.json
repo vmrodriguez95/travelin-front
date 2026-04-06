@@ -10,6 +10,15 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
+        "icon": {
+          "id": "poiHotelIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "hotel",
+          "required": false,
+          "readonly": false
+        },
         "order": {
           "id": "poiHotelOrder",
           "name": "order",
@@ -24,6 +33,7 @@
           "name": "location",
           "label": "Busca tu alojamiento",
           "type": "search",
+          "fieldSize": "full",
           "api": "",
           "required": true,
           "readonly": false
@@ -33,6 +43,7 @@
           "name": "file",
           "label": "Archivo de reserva",
           "type": "file",
+          "fieldSize": "full",
           "file": {
             "extensions": ".pdf",
             "maxSize": 521000,
@@ -99,11 +110,21 @@
       "legend": "Modificación de la estancia",
       "removeMainKey": true,
       "fields": {
+        "icon": {
+          "id": "poiHotelIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "hotel",
+          "required": false,
+          "readonly": false
+        },
         "file": {
           "id": "poiHotelFile",
           "name": "file",
           "label": "Archivo de reserva",
           "type": "file",
+          "fieldSize": "full",
           "file": {
             "extensions": ".pdf",
             "maxSize": 521000,
@@ -117,6 +138,7 @@
           "name": "name",
           "label": "Nombre del alojamiento",
           "type": "text",
+          "fieldSize": "full",
           "required": true,
           "readonly": true
         },
