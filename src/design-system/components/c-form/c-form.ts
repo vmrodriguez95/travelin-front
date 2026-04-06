@@ -13,7 +13,8 @@ import type {
   FileFormField,
   FormSection,
   FormArraySection,
-  FormBlock
+  FormBlock,
+  TimeFormField
 } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
@@ -238,6 +239,25 @@ export class CForm extends LitElement {
             .returnedValues=${fieldCalendar.returnedValues}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldCalendar)}
           ></e-calendar>
+        `
+
+      case 'time':
+        const fieldTime = field as TimeFormField
+
+        return html`
+          <e-input-time
+            class=${this._getFieldClasses(fieldTime)}
+            id=${fieldTime.id}
+            name=${fieldTime.name}
+            label=${fieldTime.label}
+            helpmsg=${fieldTime.helpmsg}
+            min=${fieldTime.min}
+            max=${fieldTime.max}
+            value=${fieldTime.fillValue || fieldTime.value}
+            ?required=${fieldTime.required}
+            ?readonly=${fieldTime.readonly}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldTime)}
+          ></e-input-time>
         `
 
       default:
