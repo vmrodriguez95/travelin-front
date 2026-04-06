@@ -8,7 +8,6 @@
     "core": {
       "legend": "Creación de un nuevo viaje",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "name": {
           "id": "tripName",
@@ -53,7 +52,6 @@
   "sections": {
     "core": {
       "legend": "",
-      "removeMainKey": true,
       "fields": {
         "id": {
           "id": "tripId",

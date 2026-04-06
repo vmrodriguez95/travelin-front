@@ -8,7 +8,6 @@
     "core": {
       "legend": "Nueva nota",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiNotesOrder",
@@ -24,6 +23,7 @@
           "name": "name",
           "label": "Nombre para la nota",
           "type": "text",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -37,8 +37,13 @@
           "readonly": false
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiNotesNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -54,6 +59,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }
@@ -72,7 +79,6 @@
   "sections": {
     "core": {
       "legend": "Editar nota",
-      "removeMainKey": true,
       "fields": {
         "name": {
           "id": "poiNotesName",
@@ -92,8 +98,13 @@
           "readonly": false
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiNotesNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -109,6 +120,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }

@@ -8,7 +8,6 @@
     "core": {
       "legend": "Nuevo punto de interés",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiOrder",
@@ -106,7 +105,6 @@
   "sections": {
     "core": {
       "legend": "Nuevo punto de interés",
-      "removeMainKey": true,
       "fields": {
         "location": {
           "id": "poiLocation",

@@ -8,7 +8,6 @@
     "core": {
       "legend": "Datos generales",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "icon": {
           "id": "poiHotelIcon",
@@ -108,7 +107,6 @@
   "sections": {
     "core": {
       "legend": "Modificación de la estancia",
-      "removeMainKey": true,
       "fields": {
         "icon": {
           "id": "poiHotelIcon",

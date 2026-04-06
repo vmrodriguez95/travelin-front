@@ -8,7 +8,6 @@
     "core": {
       "legend": "Datos principales",
       "helpmsg": "Los campos con * son obligatorios.",
-      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiTransportOrder",
