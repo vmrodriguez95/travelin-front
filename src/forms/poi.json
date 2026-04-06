@@ -24,6 +24,7 @@
           "name": "location",
           "label": "Busca el punto de interés",
           "type": "search",
+          "fieldSize": "full",
           "api": "",
           "required": true,
           "readonly": false
@@ -33,6 +34,7 @@
           "name": "file",
           "label": "Archivo asociado",
           "type": "file",
+          "fieldSize": "full",
           "file": {
             "extensions": ".pdf",
             "maxSize": 521000,
@@ -46,6 +48,7 @@
           "name": "name",
           "label": "Nombre del punto de interés",
           "type": "text",
+          "fieldSize": "full",
           "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
           "required": false,
           "readonly": false
@@ -60,8 +63,13 @@
           "readonly": false
         },
         "notes": {
-          "sectionTitle": "Notas",
+          "id": "poiNotes",
+          "legend": "Notas",
+          "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -77,6 +85,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }
@@ -103,6 +113,7 @@
           "name": "location",
           "label": "Busca el punto de interés",
           "type": "search",
+          "fieldSize": "full",
           "api": "",
           "required": true,
           "readonly": false
@@ -112,6 +123,7 @@
           "name": "file",
           "label": "Archivo asociado",
           "type": "file",
+          "fieldSize": "full",
           "file": {
             "extensions": ".pdf",
             "maxSize": 521000,
@@ -125,6 +137,7 @@
           "name": "name",
           "label": "Nombre del punto de interés",
           "type": "text",
+          "fieldSize": "full",
           "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
           "required": false,
           "readonly": false
