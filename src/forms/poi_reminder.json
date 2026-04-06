@@ -11,7 +11,7 @@
       "fields": {
         "types": {
           "id": "poiReminderType",
-          "name": "type",
+          "name": "types",
           "label": "Tipo",
           "type": "hidden",
           "fillValue": ["reminder"],
@@ -89,6 +89,22 @@
     "core": {
       "legend": "Editar recordatorio",
       "fields": {
+        "types": {
+          "id": "poiReminderType",
+          "name": "types",
+          "label": "Tipo",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "order": {
+          "id": "poiReminderOrder",
+          "name": "order",
+          "label": "Orden",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
         "name": {
           "id": "poiReminderName",
           "name": "name",

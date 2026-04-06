@@ -39,9 +39,9 @@
           "required": false,
           "readonly": false
         },
-        "type": {
-          "id": "poiTransportType",
-          "name": "type",
+        "types": {
+          "id": "poiTransportTypes",
+          "name": "types",
           "label": "Tipo de transporte",
           "type": "select",
           "options": [
