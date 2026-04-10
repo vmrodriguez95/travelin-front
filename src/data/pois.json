@@ -7,7 +7,7 @@
     "location": "",
     "coordenates": [-74.0059413, 40.7127837],
     "name": "Hotel Plaza",
-    "type": ["hotel"],
+    "types": ["hotel"],
     "dateStart": "2025-05-13T00:00:00.000",
     "dateEnd": "2025-05-17T00:00:00.000",
     "image": "https://loremflickr.com/72/72/thailand",
@@ -69,45 +69,91 @@
           "name": "Adolfo Suárez Madrid-Barajas",
           "city": "Madrid",
           "country": "España",
-          "location": [-3.560, 40.472],
+          "coordenates": [-3.560, 40.472],
           "platform": "T1",
-          "type": "airport"
+          "type": "airport",
+          "date": "2025-10-28T10:30:00.000"
         },
+        "duration": "6h 45m",
         "destination": {
-          "code": "HND",
-          "name": "Haneda Airport",
-          "city": "Tokio",
-          "country": "Japón",
-          "location": [139.779, 35.549],
-          "platform": "T3",
-          "type": "airport"
+          "code": "PVG",
+          "name": "Shanghai Pudong International Airport",
+          "city": "Shanghai",
+          "country": "China",
+          "coordenates": [139.779, 35.549],
+          "platform": "T1",
+          "type": "airport",
+          "date": "2025-10-29T06:20:00.000"
         },
-
-        "departureDate": "2025-10-28T10:30:00.000Z",
-        "arrivalDate": "2025-10-29T18:30:00.000Z",
 
         "operator": {
           "name": "China Eastern Airlines",
           "code": "MU"
         },
 
-        "transportNumber": "MU 523",
+        "transportNumber": "MU 710",
 
         "vehicle": {
           "type": "aircraft",
           "model": "Airbus A330"
-        }
-      }
-    ],
+        },
 
-    "people": [
-      {
-        "name": "Victor",
-        "seat": "12A"
+        "passengers": [
+          {
+            "name": "Victor",
+            "seat": "69A"
+          },
+          {
+            "name": "Estefanía",
+            "seat": "69B"
+          }
+        ]
       },
       {
-        "name": "Estefanía",
-        "seat": "12B"
+        "origin": {
+          "code": "PVG",
+          "name": "Shanghai Pudong International Airport",
+          "city": "Shanghai",
+          "country": "China",
+          "coordenates": [139.779, 35.549],
+          "platform": "T1",
+          "type": "airport",
+          "date": "2025-10-29T14:55:00.000"
+        },
+        "duration": "6h 55m",
+        "destination": {
+          "code": "HND",
+          "name": "Haneda Airport",
+          "city": "Tokio",
+          "country": "Japón",
+          "coordenates": [139.779, 35.549],
+          "platform": "T3",
+          "type": "airport",
+          "date": "2025-10-29T18:30:00.000"
+        },
+
+        "operator": {
+          "name": "China Eastern Airlines",
+          "code": "MU"
+        },
+
+        "transportNumber": "MU 539",
+
+        "vehicle": {
+          "type": "aircraft",
+          "model": "Airbus A330"
+        },
+
+        "passengers": [
+          {
+            "name": "Victor",
+            "seat": "69A"
+          },
+          {
+            "name": "Estefanía",
+            "seat": "69B"
+          }
+        ]
       }
     ],
 
@@ -121,7 +167,8 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": [139.69171, 35.6895],
+    "location": "",
+    "coordenates": [139.69171, 35.6895],
     "name": "Ritual del té",
     "time": "12:00",
     "price": 0,

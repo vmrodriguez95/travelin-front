@@ -9,6 +9,9 @@
 .c-card-transport {
   $block: &;
   display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  gap: space(2);
   position: relative;
   width: 100%;
   padding: space(1) space(2) space(1) space(1);
@@ -22,12 +25,12 @@
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 
   &__head {
     --eIconColor: var(--color-text);
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,24 +41,38 @@
     background-color: rgba(var(--color-background), 1);
     overflow: hidden; 
   }
-  
-  &__content {
+
+  &__segment {
+    @include body--m;
     display: flex;
-    flex-wrap: wrap;
-    align-content: center;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+  }
+
+  &__duration {
+    @include body--xxs;
+    position: relative;
+    top: -8px;
     padding: 0 space(2);
-    margin: 0;
-    width: 100%;
+    margin: 0 space(1);
+    border-bottom: 1px solid rgba(var(--color-text), 1);
+
+    // &::after {
+    //   content: '';
+    //   display: block;
+    //   position: absolute;
+    //   left: 0;
+    //   top: 50%;
+    //   width: 100%;
+    //   height: 1px;
+    //   background-color: rgba(var(--color-text), 1);
+    // }
   }
-  
-  ::slotted([slot="segment"]) {
-    @include body--l;
-    margin: 0;
-    width: 100%;
-  }
-  
-  ::slotted([slot="ref"]) {
+
+  &__ref {
     @include body--xs;
+    grid-area: ref;
     margin: 0;
     width: 100%;
   }
