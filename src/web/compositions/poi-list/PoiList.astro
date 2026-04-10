@@ -1,5 +1,45 @@
 ---
 const { id } = Astro.props
+
+const buttons = [
+  {
+    label: 'Transporte',
+    icon: 'transport',
+  },
+  {
+    label: 'Alojamiento',
+    icon: 'hotel',
+  },
+  {
+    label: 'POI',
+    icon: 'location',
+  },
+  {
+    label: 'Recordatorio',
+    icon: 'reminder',
+  },
+  {
+    label: 'Archivo',
+    icon: 'attach-file',
+  },
+  {
+    label: 'Guardados',
+    icon: 'bookmark',
+  },
+]
+
+const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
+const pois = (Object.values(poisGlob)[0] as any)?.default
+
+function formatDate(dateStart: string, dateEnd: string) {
+  const start = new Date(dateStart)
+  const end = new Date(dateEnd)
+
+  const formattedStart = start.toLocaleDateString('es-ES', { day: '2-digit' })
+  const formattedEnd = end.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+
+  return `${formattedStart} - ${formattedEnd}`
+}
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -39,7 +79,7 @@ const { id } = Astro.props
     </c-menu>
   </div>
   <div class="u-grid-main--main">
-    <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/tailand"></c-header>
+    <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/thailand"></c-header>
     <section class="u-grid u-padding--top--xl">
       <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal">
         {Array.from({ length: 15 }, (_, i) => (
@@ -50,74 +90,30 @@ const { id } = Astro.props
         ))}
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-flex u-scroll--horizontal u-margin--bottom--l">
-          <a href="#" class="u-link-icon">
-            <e-icon icon="transport" size="m"></e-icon>
-            <span>Transporte</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="hotel" size="m"></e-icon>
-            <span>Alojamiento</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="activity" size="m"></e-icon>
-            <span>Actividad</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="reminder" size="m"></e-icon>
-            <span>Alarma</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="attach-file" size="m"></e-icon>
-            <span>Archivo</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="notes" size="m"></e-icon>
-            <span>Notas</span>
-          </a>
-          <a href="#" class="u-link-icon">
-            <e-icon icon="bookmark" size="m"></e-icon>
-            <span>Guardados</span>
-          </a>
+        <div class="u-flex u-scroll--horizontal u-margin--bottom--l u-padding--vertical--s">
+          {buttons.map((button) => (
+            <a href="#" class="u-link-icon">
+              <e-icon icon={button.icon} size="m"></e-icon>
+              <span class="u-link-icon__text">{button.label}</span>
+            </a>
+          ))}
         </div>
-        <c-card-poi class="u-margin--bottom--m" icon="fly">
-          <span slot="title">MAD 16:10 - 6h 45m - DOH 23:55</span>
-          <span slot="title">DOH 02:15 - 6h 55m - BKK 13:10</span>
-          <span slot="description">REF: 1234567</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m">
-          <img slot="img" src="https://loremflickr.com/72/72/tailand" alt="Picture about Llegada a Bangkok" width="80" height="80" loading="lazy" />
-          <span slot="title">Rambuttri Village Plaza</span>
-          <span slot="description">65,59€ - 2556,33thb</span>
-          <span slot="date">13 - 16 May</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m">
-          <img slot="img" src="https://loremflickr.com/72/72/tailand" alt="Picture about Wat arun" width="80" height="80" loading="lazy" />
-          <span slot="title">Wat arun</span>
-          <span slot="description">40thb</span>
-          <span slot="date">15:30</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m" icon="reminder">
-          <span slot="title">Sacar las entrada para el Santuario de elefantes</span>
-          <span slot="date">16:00</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m">
-          <img slot="img" src="https://loremflickr.com/72/72/tailand" alt="Picture about Wat arun" width="80" height="80" loading="lazy" />
-          <span slot="title">Wat Sacket</span>
-          <span slot="description">40thb</span>
-          <span slot="date">16:50</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m">
-          <img slot="img" src="https://loremflickr.com/72/72/tailand" alt="Picture about Wat arun" width="80" height="80" loading="lazy" />
-          <span slot="title">Buda de oro</span>
-          <span slot="description">Gratis</span>
-          <span slot="date">17:30</span>
-        </c-card-poi>
-        <c-card-poi class="u-margin--bottom--m" icon="route">
-          <span slot="title">Ruta Viel del Pan</span>
-          <span slot="description">16km</span>
-          <span slot="date">18:20</span>
-        </c-card-poi>
+        {pois.map((poi: any) => (
+          poi.types?.includes('transport') ? (
+            <c-card-transport class="u-margin--bottom--m" icon={poi.type} data={JSON.stringify(poi)} />
+          ) : (
+            <c-card-poi class="u-margin--bottom--m" icon={poi.icon}>
+              {
+                poi.image && (
+                  <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="80" height="80" loading="lazy" />
+                )
+              }
+              <span slot="title">{poi.name}</span>
+              <span slot="description">{poi.price}</span>
+              <span slot="date">{poi.time || formatDate(poi.dateStart, poi.dateEnd)}</span>
+            </c-card-poi>
+          )
+        ))}
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
         <c-map fullheight latitude="40.7127837" longitude="-74.0059413" api="/api/places.json"></c-map>

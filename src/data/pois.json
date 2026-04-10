@@ -5,7 +5,7 @@
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
     "location": "",
-    "coordenates": ["-74.0059413", "40.7127837"],
+    "coordenates": [-74.0059413, 40.7127837],
     "name": "Hotel Plaza",
     "type": ["hotel"],
     "dateStart": "2025-05-13T00:00:00.000",
@@ -43,13 +43,14 @@
     }
   },
   {
-    "id": "string",
-    "idTrip": "string",
-    "idUser": "string",
-    "idItinerary": "string",
+    "id": "177278946269aa9ed6b396c",
+    "idTrip": "177278946269aa9ed6b396c",
+    "idUser": "177278946269aa9ed6b396c",
+    "idItinerary": "177278946269aa9ed6b396c",
 
     "name": "Vuelo Madrid - Tokio",
     "type": "flight",
+    "types": ["transport"],
 
     "file": "",
 
@@ -68,7 +69,7 @@
           "name": "Adolfo Suárez Madrid-Barajas",
           "city": "Madrid",
           "country": "España",
-          "location": ["-3.560", "40.472"],
+          "location": [-3.560, 40.472],
           "platform": "T1",
           "type": "airport"
         },
@@ -77,7 +78,7 @@
           "name": "Haneda Airport",
           "city": "Tokio",
           "country": "Japón",
-          "location": ["139.779", "35.549"],
+          "location": [139.779, 35.549],
           "platform": "T3",
           "type": "airport"
         },
@@ -102,14 +103,11 @@
     "people": [
       {
         "name": "Victor",
-        "seat": "12A",
-        "class": "economy",
-        "ticketNumber": "1234567890"
+        "seat": "12A"
       },
       {
         "name": "Estefanía",
-        "seat": "12B",
-        "class": "economy"
+        "seat": "12B"
       }
     ],
 
@@ -123,17 +121,18 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": ["139.69171", "35.6895"],
+    "location": [139.69171, 35.6895],
     "name": "Ritual del té",
     "time": "12:00",
-    "image": "",
+    "price": 0,
+    "image": "https://loremflickr.com/72/72/thailand",
     "notes": [
       {
         "icon": "cup",
         "text": "El ritual del té es una tradición japonesa..."
       }
     ],
-    "type": ["poi"],
+    "types": ["poi"],
     "file": "",
     "order": 0,
     "createdAt": {
@@ -148,72 +147,14 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "location": ["139.69171", "35.6895"],
+    "location": [139.69171, 35.6895],
     "name": "Paseo con kimono",
     "time": "12:00",
+    "price": 0,
     "image": "",
     "notes": [],
-    "type": ["poi"],
+    "types": ["poi"],
     "file": "",
-    "order": 0,
-    "createdAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    },
-    "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    }
-  },
-  {
-    "id": "177278946269aa9ed6b396a",
-    "idUser": "177263595469a847322fb6d",
-    "idTrip": "177272350469a99d30551f1",
-    "idItinerary": "177272350569a99d317d3fe",
-    "location": "",
-    "coordenates": ["139.69171", "35.6895"],
-    "name": "Estatua de Hachiko",
-    "time": "12:00",
-    "image": "",
-    "notes": [],
-    "type": ["poi"],
-    "file": "",
-    "order": 0,
-    "createdAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    },
-    "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    }
-  },
-  {
-    "id": "177278946269aa9ed6b396a",
-    "idUser": "177263595469a847322fb6d",
-    "idTrip": "177272350469a99d30551f1",
-    "idItinerary": "177272350569a99d317d3fe",
-    "location": ["139.69171", "35.6895"],
-    "name": "Visita al templo Sensoji",
-    "time": "12:00",
-    "image": "",
-    "notes": [],
-    "type": ["poi", "temple"],
-    "file": "",
-    "order": 0,
-    "createdAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    },
-    "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    }
-  },
-  {
-    "id": "177278946269aa9ed6b396a",
-    "idUser": "177263595469a847322fb6d",
-    "idTrip": "177272350469a99d30551f1",
-    "idItinerary": "177272350569a99d317d3fe",
-    "name": "Tiempo libre de dos horas",
-    "time": "16:00",
-    "icon": "",
-    "notes": [],
-    "type": ["note"],
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -230,7 +171,68 @@
     "name": "Nara",
     "time": "12:00",
     "notes": [],
-    "type": "reminder",
+    "types": "reminder",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "",
+    "coordenates": [139.69171, 35.6895],
+    "name": "Estatua de Hachiko",
+    "time": "12:00",
+    "image": "https://loremflickr.com/72/72/thailand",
+    "price": 0,
+    "notes": [],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": [139.69171, 35.6895],
+    "name": "Visita al templo Sensoji",
+    "time": "12:00",
+    "image": "https://loremflickr.com/72/72/thailand",
+    "notes": [],
+    "types": ["poi", "temple"],
+    "price": 0,
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Tiempo libre de dos horas",
+    "time": "16:00",
+    "icon": "route",
+    "notes": [],
+    "types": ["note"],
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"

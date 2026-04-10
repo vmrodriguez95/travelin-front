@@ -18,12 +18,21 @@
           "required": false,
           "readonly": false
         },
+        "types": {
+          "id": "poiTransportTypes",
+          "name": "types",
+          "label": "Tipos",
+          "type": "hidden",
+          "fillValue": ["transport"],
+          "required": false,
+          "readonly": false
+        },
         "name": {
           "id": "poiTransportName",
           "name": "name",
           "label": "Nombre para el transporte",
           "type": "text",
-          "required": false,
+          "required": true,
           "readonly": false
         },
         "file": {
@@ -39,9 +48,9 @@
           "required": false,
           "readonly": false
         },
-        "types": {
-          "id": "poiTransportTypes",
-          "name": "types",
+        "type": {
+          "id": "poiTransportType",
+          "name": "type",
           "label": "Tipo de transporte",
           "type": "select",
           "options": [
@@ -123,7 +132,7 @@
       }
     },
     "segments": {
-      "sectionTitle": "Trayectos",
+      "sectionTitle": "Información sobre los trayectos",
       "schema": {
         "origin": {
           "sectionTitle": "Origen",
@@ -174,13 +183,21 @@
       }
     },
     "passengers": {
-      "sectionTitle": "Pasajeros",
+      "sectionTitle": "Información sobre los pasajeros",
       "schema": [
         {
           "name": {
             "id": "poiTransportPassengersName",
             "name": "name",
             "label": "Nombre",
+            "type": "text",
+            "required": false,
+            "readonly": false
+          },
+          "seat": {
+            "id": "poiTransportPassengersSeat",
+            "name": "seat",
+            "label": "Asiento/camarote",
             "type": "text",
             "required": false,
             "readonly": false
