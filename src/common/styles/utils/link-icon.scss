@@ -4,13 +4,22 @@
 
 .u-link-icon {
   @include body--s;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
+  display: inline-block;
+  min-width: space(13);
   font-family: inherit;
+  text-align: center;
   text-decoration: none;
   padding: space(1);
   border-radius: $border-radius-s;
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
+  transition: transform .2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &__text {
+    display: block;
+  }
 }

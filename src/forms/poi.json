@@ -61,6 +61,15 @@
           "required": true,
           "readonly": false
         },
+        "price": {
+          "id": "poiPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "text",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
         "notes": {
           "id": "poiNotes",
           "legend": "Notas",

@@ -49,7 +49,7 @@ export interface BasicFormField {
   excludeValue?: boolean
 }
 
-export interface TimeFormField extends BasicFormField {
+export interface DateFormField extends BasicFormField {
   min: string
   max: string
 }

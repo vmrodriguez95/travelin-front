@@ -60,6 +60,16 @@
           "required": false,
           "readonly": false
         },
+        "price": {
+          "id": "poiHotelPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "number",
+          "fieldSize": "full",
+          "fillValue": 0,
+          "required": false,
+          "readonly": false
+        },
         "date": {
           "id": "poiHotelDate",
           "name": "date",
@@ -156,6 +166,16 @@
           "fieldSize": "full",
           "required": true,
           "readonly": true
+        },
+        "price": {
+          "id": "poiHotelPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "number",
+          "fieldSize": "full",
+          "fillValue": 0,
+          "required": false,
+          "readonly": false
         },
         "date": {
           "id": "poiHotelDate",

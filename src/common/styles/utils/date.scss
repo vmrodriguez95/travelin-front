@@ -9,11 +9,16 @@
   color: rgba(var(--color-text), 1);
   text-decoration: none;
   padding: space(1) space(2);
+  border-top-left-radius: $border-radius-l;
+  border-top-right-radius: $border-radius-l;
+  transition: background-color .2s ease;
+
+  &:hover {
+    background-color: rgba(var(--color-background--secondary), 1);
+  }
   
   &--today {
     position: relative;
-    border-top-left-radius: $border-radius-l;
-    border-top-right-radius: $border-radius-l;
     background-color: rgba(var(--color-background--secondary), 1);
     color: rgba(var(--color-primary), 1);
 

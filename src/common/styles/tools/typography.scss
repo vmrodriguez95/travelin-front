@@ -34,3 +34,9 @@
   font-size: rem(12px);
   line-height: rem(20px);
 }
+
+@mixin body--xxs($font-weight: 400) {
+  font-weight: $font-weight;
+  font-size: rem(10px);
+  line-height: rem(16px);
+}

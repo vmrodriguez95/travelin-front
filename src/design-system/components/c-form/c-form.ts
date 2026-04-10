@@ -14,7 +14,7 @@ import type {
   FormSection,
   FormArraySection,
   FormBlock,
-  TimeFormField
+  DateFormField
 } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
@@ -240,24 +240,25 @@ export class CForm extends LitElement {
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldCalendar)}
           ></e-calendar>
         `
-
+      case 'date':
       case 'time':
-        const fieldTime = field as TimeFormField
+        const fieldDate = field as DateFormField
 
         return html`
-          <e-input-time
-            class=${this._getFieldClasses(fieldTime)}
-            id=${fieldTime.id}
-            name=${fieldTime.name}
-            label=${fieldTime.label}
-            helpmsg=${fieldTime.helpmsg}
-            min=${fieldTime.min}
-            max=${fieldTime.max}
-            value=${fieldTime.fillValue || fieldTime.value}
-            ?required=${fieldTime.required}
-            ?readonly=${fieldTime.readonly}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldTime)}
-          ></e-input-time>
+          <e-input-date
+            class=${this._getFieldClasses(fieldDate)}
+            id=${fieldDate.id}
+            name=${fieldDate.name}
+            label=${fieldDate.label}
+            helpmsg=${fieldDate.helpmsg}
+            type=${fieldDate.type}
+            min=${fieldDate.min}
+            max=${fieldDate.max}
+            value=${fieldDate.fillValue || fieldDate.value}
+            ?required=${fieldDate.required}
+            ?readonly=${fieldDate.readonly}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldDate)}
+          ></e-input-date>
         `
 
       default:

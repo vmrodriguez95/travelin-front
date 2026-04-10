@@ -14,10 +14,6 @@ function getStartOfWeek() {
   return today.subtract({ days: offset >= 0 ? offset : 7 + offset })
 }
 
-export function getPlainDate(date: string) {
-  return Temporal.PlainDate.from(date)
-}
-
 export function getYear(date: string) {
   return date ? Temporal.PlainDate.from(date).year : Temporal.Now.plainDateISO().year
 }
@@ -72,8 +68,12 @@ export function isToday(date: Temporal.PlainDate | string) {
   return compareDates(date, now) === 0
 }
 
-export function getDateFrom(date: string | object) {
+export function getDateFrom(date: string | Temporal.PlainDate) {
   return Temporal.PlainDate.from(date)
+}
+
+export function getTimeFrom(date: string) {
+  return Temporal.PlainTime.from(date).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' })
 }
 
 export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal.PlainDate | string) {
