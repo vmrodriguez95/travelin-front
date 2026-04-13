@@ -14,7 +14,8 @@ import type {
   FormSection,
   FormArraySection,
   FormBlock,
-  DateFormField
+  DateFormField,
+  SelectFormField
 } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
@@ -169,6 +170,25 @@ export class CForm extends LitElement {
             value=${field.fillValue || field.value}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-textarea>
+        `
+
+      case 'select':
+        const fieldSelect = field as SelectFormField
+
+        return html`
+          <e-select
+            class=${this._getFieldClasses(fieldSelect)}
+            id=${fieldSelect.id}
+            name=${fieldSelect.name}
+            label=${fieldSelect.label}
+            type=${fieldSelect.type}
+            helpmsg=${fieldSelect.helpmsg}
+            options=${fieldSelect.options}
+            ?required=${fieldSelect.required}
+            ?readonly=${fieldSelect.readonly}
+            value=${fieldSelect.fillValue}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSelect)}
+          ></e-input>
         `
 
       case 'file':

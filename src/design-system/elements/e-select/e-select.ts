@@ -1,0 +1,141 @@
+import { LitElement, html, css, unsafeCSS } from 'lit'
+import { customElement, property, query } from 'lit/decorators.js'
+import { when } from 'lit/directives/when.js'
+
+// Types
+import type { SelectOption } from '@ds/components/c-form/c-form.types'
+
+// Styles
+import style from './e-select.style.scss?inline'
+
+@customElement('e-select')
+export class ESelect extends LitElement {
+
+  private _internals: ElementInternals
+
+  @property({ type: String }) id = ''
+
+  @property({ type: String }) name = ''
+
+  @property({ type: String }) label = ''
+
+  @property({ type: String }) default = ''
+
+  @property({ type: String }) value: string = ''
+
+  @property({ type: String }) helpmsg = ''
+
+  @property({ type: Array }) options: SelectOption[] = []
+
+  @property({ type: Boolean, reflect: true }) required = false
+
+  @property({ type: Boolean }) readonly = false
+
+  @query('select') _select!: HTMLSelectElement
+
+  static styles = css`${unsafeCSS(style)}`
+
+  static formAssociated = true
+
+  constructor() {
+    super()
+    this._internals = this.attachInternals()
+  }
+
+  protected updated(changed: Map<string, unknown>) {
+    if (changed.has('value') || changed.has('required')) {
+      this._internals.setFormValue(this.value.toString() || null)
+      this._validate()
+    }
+  }
+
+  render() {
+    return html`
+      <div class="e-select">
+        ${when(this.label, () => html`
+          <label class="e-select__label" for=${this.id}>
+            ${this.label} ${when(this.required, () => html`*`)}
+          </label>
+        `)}
+        <div class="e-select__wrapper">
+          <select
+            id=${this.id}
+            name=${this.name}
+            class="e-select__field"
+            ?readonly=${this.readonly}
+            ?required=${this.required}
+            value=${this.value}
+            @change=${this._onChange}
+          >
+            <option value="">${this.default}</option>
+            ${this.options.map(option => html`
+              <option value=${option.value} ?selected=${option.value === this.value}>
+                ${option.label}
+              </option>
+            `)}
+          </select>
+        </div>
+        ${when(this._internals.validationMessage, () => html`
+          <p class="e-select__error">${this._internals.validationMessage}</p>
+        `)}
+        ${when(this.helpmsg, () => html`
+          <p class="e-select__helpmsg">${this.helpmsg}</p>
+        `)}
+      </div>
+    `
+  }
+
+  private _onChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    this.value = target.value
+
+    this._validate()
+    this._internals.setFormValue(this.value)
+  }
+
+  private _validate() {
+    const validity = this._calculateValidity()
+    
+    if (validity.valid) {
+      this._internals.setValidity({})
+      return
+    }
+
+    this._internals.setValidity(
+      validity.state,
+      validity.message,
+      this._select
+    )
+  }
+
+  private _getDefaultValidy() {
+    return { valid: true, message: "", state: {} as any }
+  }
+
+  private _getRequiredValidy() {
+    return {
+      valid: false,
+      message: "Este campo es obligatorio",
+      state: { valueMissing: true }
+    }
+  }
+
+  private _calculateValidity() {
+    // required
+    if (this.required && !this.value) {
+      return this._getRequiredValidy()
+    }
+    
+    return this._getDefaultValidy() 
+  }
+
+  reportValidity() {
+    this._validate()
+    return this._internals.reportValidity()
+  }
+
+  checkValidity() {
+    this._validate()
+    return this._internals.checkValidity()
+  }
+}
