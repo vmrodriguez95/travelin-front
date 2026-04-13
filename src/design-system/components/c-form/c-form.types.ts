@@ -33,6 +33,7 @@ export interface FormArraySection {
   fields?: Array<FormBlock>
 }
 
+// Fields
 export interface BasicFormField {
   id: string
   name: string
@@ -47,6 +48,16 @@ export interface BasicFormField {
   required: boolean
   readonly: boolean
   excludeValue?: boolean
+}
+
+export interface SelectOption {
+  label: string
+  value: string | number
+}
+
+export interface SelectFormField extends BasicFormField {
+  options: Array<SelectOption>
+  default: string
 }
 
 export interface DateFormField extends BasicFormField {

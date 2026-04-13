@@ -19,10 +19,14 @@
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 
   &:hover {
     transform: scale(1.03);
+  }
+
+  &--active {
+    background-color: rgba(var(--color-primary), 0.8);
   }
 
   &__head {

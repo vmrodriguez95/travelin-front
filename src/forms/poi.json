@@ -28,20 +28,6 @@
           "required": true,
           "readonly": false
         },
-        "file": {
-          "id": "poiFile",
-          "name": "file",
-          "label": "Archivo asociado",
-          "type": "file",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "required": true,
-          "readonly": false
-        },
         "name": {
           "id": "poiName",
           "name": "name",
@@ -67,7 +53,21 @@
           "label": "Precio",
           "type": "text",
           "fieldSize": "full",
-          "required": true,
+          "required": false,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiFile",
+          "name": "file",
+          "label": "Archivo asociado",
+          "type": "file",
+          "fieldSize": "full",
+          "file": {
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": false,
           "readonly": false
         },
         "notes": {
@@ -125,20 +125,6 @@
           "required": true,
           "readonly": false
         },
-        "file": {
-          "id": "poiFile",
-          "name": "file",
-          "label": "Archivo asociado",
-          "type": "file",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "required": true,
-          "readonly": false
-        },
         "name": {
           "id": "poiName",
           "name": "name",
@@ -156,6 +142,29 @@
           "type": "time",
           "fieldSize": "full",
           "required": true,
+          "readonly": false
+        },
+        "price": {
+          "id": "poiPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "text",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiFile",
+          "name": "file",
+          "label": "Archivo asociado",
+          "type": "file",
+          "fieldSize": "full",
+          "file": {
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "required": false,
           "readonly": false
         },
         "notes": {
