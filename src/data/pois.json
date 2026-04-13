@@ -14,7 +14,7 @@
     "file": "",
     "notes": [
       {
-        "icon": "launch",
+        "icon": "restaurant",
         "text": "Solo desayuno"
       },
       {
@@ -196,7 +196,7 @@
     "name": "Paseo con kimono",
     "time": "12:00",
     "price": 0,
-    "image": "",
+    "image": "https://loremflickr.com/72/72/thailand",
     "notes": [],
     "types": ["poi"],
     "file": "",
@@ -213,10 +213,11 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "name": "Nara",
+    "name": "Sacar entradas para ver la estatua de Hachiko",
     "time": "12:00",
     "notes": [],
-    "types": "reminder",
+    "icon": "reminder",
+    "types": ["reminder"],
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"

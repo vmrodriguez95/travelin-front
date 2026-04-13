@@ -1,6 +1,6 @@
 [{
   "form": {
-    "entity": "poi_notes",
+    "entity": "poi_note",
     "method": "POST",
     "action": "create"
   },
@@ -10,7 +10,7 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "fields": {
         "types": {
-          "id": "poiNotesTypes",
+          "id": "poiNoteTypes",
           "name": "types",
           "label": "Tipo",
           "type": "hidden",
@@ -19,7 +19,7 @@
           "readonly": false
         },
         "order": {
-          "id": "poiNotesOrder",
+          "id": "poiNoteOrder",
           "name": "order",
           "label": "Orden",
           "type": "hidden",
@@ -37,7 +37,7 @@
           "readonly": false
         },
         "name": {
-          "id": "poiNotesName",
+          "id": "poiNoteName",
           "name": "name",
           "label": "Nombre para la nota",
           "type": "text",
@@ -46,7 +46,7 @@
           "readonly": false
         },
         "time": {
-          "id": "poiNotesTime",
+          "id": "poiNoteTime",
           "name": "time",
           "label": "Elige la hora",
           "type": "time",
@@ -55,7 +55,7 @@
           "readonly": false
         },
         "notes": {
-          "id": "poiNotesNotes",
+          "id": "poiNoteNotes",
           "legend": "Notas",
           "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
@@ -65,7 +65,7 @@
           "schema": [
             {
               "icon": {
-                "id": "poiNotesNotesIcon",
+                "id": "poiNoteNotesIcon",
                 "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
@@ -73,7 +73,7 @@
                 "readonly": false
               },
               "text": {
-                "id": "poiNotesNotesText",
+                "id": "poiNoteNotesText",
                 "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
@@ -90,7 +90,7 @@
   }
 },{
   "form": {
-    "entity": "poi_notes",
+    "entity": "poi_note",
     "method": "PATCH",
     "action": "edit"
   },
@@ -99,7 +99,7 @@
       "legend": "Editar nota",
       "fields": {
         "types": {
-          "id": "poiNotesTypes",
+          "id": "poiNoteTypes",
           "name": "types",
           "label": "Tipo",
           "type": "hidden",
@@ -116,7 +116,7 @@
           "readonly": false
         },
         "name": {
-          "id": "poiNotesName",
+          "id": "poiNoteName",
           "name": "name",
           "label": "Nombre para la nota",
           "type": "text",
@@ -124,7 +124,7 @@
           "readonly": false
         },
         "time": {
-          "id": "poiNotesTime",
+          "id": "poiNoteTime",
           "name": "time",
           "label": "Elige la hora",
           "type": "time",
@@ -133,7 +133,7 @@
           "readonly": false
         },
         "notes": {
-          "id": "poiNotesNotes",
+          "id": "poiNoteNotes",
           "legend": "Notas",
           "helpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
@@ -143,7 +143,7 @@
           "schema": [
             {
               "icon": {
-                "id": "poiNotesNotesIcon",
+                "id": "poiNoteNotesIcon",
                 "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
@@ -151,7 +151,7 @@
                 "readonly": false
               },
               "text": {
-                "id": "poiNotesNotesText",
+                "id": "poiNoteNotesText",
                 "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",

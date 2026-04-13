@@ -102,7 +102,7 @@ function formatDate(dateStart: string, dateEnd: string) {
           poi.types?.includes('transport') ? (
             <c-card-transport class="u-margin--bottom--m" icon={poi.type} data={JSON.stringify(poi)} />
           ) : (
-            <c-card-poi class="u-margin--bottom--m" icon={poi.icon}>
+            <c-card-poi class="u-margin--bottom--m" icon={poi.icon} data={JSON.stringify(poi)}>
               {
                 poi.image && (
                   <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="80" height="80" loading="lazy" />
@@ -115,8 +115,9 @@ function formatDate(dateStart: string, dateEnd: string) {
           )
         ))}
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6">
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 u-pos--relative">
         <c-map fullheight latitude="40.7127837" longitude="-74.0059413" api="/api/places.json"></c-map>
+        <c-poi-detail />
       </div>
     </section>
   </div>
