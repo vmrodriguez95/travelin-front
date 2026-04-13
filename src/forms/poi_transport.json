@@ -23,7 +23,7 @@
           "name": "types",
           "label": "Tipos",
           "type": "hidden",
-          "fillValue": ["transport"],
+          "fillValue": "transport",
           "required": false,
           "readonly": false
         },
@@ -137,34 +137,20 @@
         "origin": {
           "sectionTitle": "Origen",
           "fields": {
-            "code": {
-              "id": "poiTransportSegmentsCode",
-              "name": "code",
-              "label": "Código IATA del origen",
-              "type": "text",
-              "required": false,
+            "location": {
+              "id": "poiLocation",
+              "name": "location",
+              "label": "Busca la localización desde la que sales",
+              "type": "search",
+              "fieldSize": "full",
+              "api": "",
+              "required": true,
               "readonly": false
             },
-            "name": {
-              "id": "poiTransportSegmentsName",
-              "name": "name",
-              "label": "Aeropuerto, puerto, estación... de origen",
-              "type": "text",
-              "required": false,
-              "readonly": false
-            },
-            "city": {
-              "id": "poiTransportSegmentsCity",
-              "name": "city",
-              "label": "Ciudad",
-              "type": "text",
-              "required": false,
-              "readonly": false
-            },
-            "country": {
-              "id": "poiTransportSegmentsCountry",
-              "name": "country",
-              "label": "País",
+            "platform": {
+              "id": "poiTransportSegmentsPlatform",
+              "name": "platform",
+              "label": "Terminal/Plataforma",
               "type": "text",
               "required": false,
               "readonly": false
@@ -179,31 +165,63 @@
               "readonly": false
             }
           }
+        },
+        "destiny": {
+          "sectionTitle": "Destino",
+          "fields": {
+            "location": {
+              "id": "poiLocation",
+              "name": "location",
+              "label": "Busca la localización desde la que sales",
+              "type": "search",
+              "fieldSize": "full",
+              "api": "",
+              "required": true,
+              "readonly": false
+            },
+            "platform": {
+              "id": "poiTransportSegmentsPlatform",
+              "name": "platform",
+              "label": "Terminal/Plataforma",
+              "type": "text",
+              "required": false,
+              "readonly": false
+            },
+            "date": {
+              "id": "poiTransportSegmentsDate",
+              "name": "date",
+              "label": "Elige las fecha del vuelo",
+              "type": "date",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
+            }
+          }
+        },
+        "passengers": {
+          "sectionTitle": "Información sobre los pasajeros",
+          "schema": [
+            {
+              "name": {
+                "id": "poiTransportPassengersName",
+                "name": "name",
+                "label": "Nombre",
+                "type": "text",
+                "required": false,
+                "readonly": false
+              },
+              "seat": {
+                "id": "poiTransportPassengersSeat",
+                "name": "seat",
+                "label": "Asiento/camarote",
+                "type": "text",
+                "required": false,
+                "readonly": false
+              }
+            }
+          ]
         }
       }
-    },
-    "passengers": {
-      "sectionTitle": "Información sobre los pasajeros",
-      "schema": [
-        {
-          "name": {
-            "id": "poiTransportPassengersName",
-            "name": "name",
-            "label": "Nombre",
-            "type": "text",
-            "required": false,
-            "readonly": false
-          },
-          "seat": {
-            "id": "poiTransportPassengersSeat",
-            "name": "seat",
-            "label": "Asiento/camarote",
-            "type": "text",
-            "required": false,
-            "readonly": false
-          }
-        }
-      ]
     }
   }
 }]

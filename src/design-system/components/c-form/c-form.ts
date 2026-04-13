@@ -135,10 +135,11 @@ export class CForm extends LitElement {
     switch(field.type) {
       case 'hidden':
         return html`
-          <input type="hidden" name=${field.name} value=${field.fillValue} />
+          <input type="hidden" name=${field.name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
         `
 
       case 'text':
+      case 'number':
         return html`
           <e-input
             class=${this._getFieldClasses(field)}
