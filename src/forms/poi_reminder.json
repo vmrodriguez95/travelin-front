@@ -9,12 +9,21 @@
       "legend": "Nuevo recordatorio",
       "helpmsg": "Los campos con * son obligatorios.",
       "fields": {
+        "icon": {
+          "id": "poiReminderIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "reminder",
+          "required": false,
+          "readonly": false
+        },
         "types": {
           "id": "poiReminderType",
           "name": "types",
           "label": "Tipo",
           "type": "hidden",
-          "fillValue": ["reminder"],
+          "fillValue": "reminder",
           "required": false,
           "readonly": false
         },
@@ -57,7 +66,7 @@
             {
               "icon": {
                 "id": "poiReminderNotesIcon",
-                "name": "icon",
+                "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
                 "required": false,
@@ -65,11 +74,10 @@
               },
               "text": {
                 "id": "poiReminderNotesText",
-                "name": "text",
+                "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
                 "fieldSize": "full",
-                "autofocus": true,
                 "required": false,
                 "readonly": false
               }
@@ -89,6 +97,15 @@
     "core": {
       "legend": "Editar recordatorio",
       "fields": {
+        "icon": {
+          "id": "poiReminderIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "reminder",
+          "required": false,
+          "readonly": false
+        },
         "types": {
           "id": "poiReminderType",
           "name": "types",
@@ -134,7 +151,7 @@
             {
               "icon": {
                 "id": "poiReminderNotesIcon",
-                "name": "icon",
+                "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
                 "required": false,
@@ -142,11 +159,10 @@
               },
               "text": {
                 "id": "poiReminderNotesText",
-                "name": "text",
+                "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
                 "fieldSize": "full",
-                "autofocus": true,
                 "required": false,
                 "readonly": false
               }

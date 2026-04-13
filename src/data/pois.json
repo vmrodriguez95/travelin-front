@@ -71,7 +71,6 @@
           "country": "España",
           "coordenates": [-3.560, 40.472],
           "platform": "T1",
-          "type": "airport",
           "date": "2025-10-28T10:30:00.000"
         },
         "duration": "6h 45m",
@@ -82,7 +81,6 @@
           "country": "China",
           "coordenates": [139.779, 35.549],
           "platform": "T1",
-          "type": "airport",
           "date": "2025-10-29T06:20:00.000"
         },
 

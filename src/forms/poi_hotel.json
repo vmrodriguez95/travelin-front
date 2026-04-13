@@ -14,7 +14,7 @@
           "name": "types",
           "label": "Tipo",
           "type": "hidden",
-          "fillValue": ["hotel"],
+          "fillValue": "hotel",
           "required": false,
           "readonly": false
         },

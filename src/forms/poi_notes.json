@@ -14,7 +14,7 @@
           "name": "types",
           "label": "Tipo",
           "type": "hidden",
-          "fillValue": ["note"],
+          "fillValue": "note",
           "required": false,
           "readonly": false
         },
@@ -24,6 +24,15 @@
           "label": "Orden",
           "type": "hidden",
           "fillValue": 1,
+          "required": false,
+          "readonly": false
+        },
+        "icon": {
+          "id": "poiReminderIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "icon",
+          "fillValue": "reminder",
           "required": false,
           "readonly": false
         },
@@ -57,7 +66,7 @@
             {
               "icon": {
                 "id": "poiNotesNotesIcon",
-                "name": "icon",
+                "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
                 "required": false,
@@ -65,7 +74,7 @@
               },
               "text": {
                 "id": "poiNotesNotesText",
-                "name": "text",
+                "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
                 "fieldSize": "full",
@@ -97,6 +106,15 @@
           "required": false,
           "readonly": false
         },
+        "icon": {
+          "id": "poiReminderIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "icon",
+          "fillValue": "reminder",
+          "required": false,
+          "readonly": false
+        },
         "name": {
           "id": "poiNotesName",
           "name": "name",
@@ -126,7 +144,7 @@
             {
               "icon": {
                 "id": "poiNotesNotesIcon",
-                "name": "icon",
+                "name": "notes[][icon]",
                 "label": "Icono",
                 "type": "icon",
                 "required": false,
@@ -134,7 +152,7 @@
               },
               "text": {
                 "id": "poiNotesNotesText",
-                "name": "text",
+                "name": "notes[][text]",
                 "label": "Texto",
                 "type": "textarea",
                 "fieldSize": "full",

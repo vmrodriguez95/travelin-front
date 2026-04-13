@@ -22,6 +22,7 @@
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
   cursor: pointer;
+  box-sizing: border-box;
   transition: transform 0.2s ease-in-out;
 
   &:hover {
