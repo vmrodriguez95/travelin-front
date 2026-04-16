@@ -6,16 +6,28 @@
   display: block;
 }
 
+:host([fullheight="auto"]) {
+  height: 100%;
+}
+
 .c-map {
   $block: &;
   display: block;
   width: 100%;
   position: relative;
 
+  &--height-auto {
+    height: 100%;
+  }
+
   &__iframe {
     width: 100%;
     border: 0;
     border-radius: $border-radius-xl;
+
+    #{$block}--height-auto & {
+      height: 100%;
+    }
   }
 
   &__search {
