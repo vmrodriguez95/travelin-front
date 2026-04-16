@@ -15,6 +15,7 @@
   font-family: inherit;
   text-align: left;
   border: none;
+  box-sizing: border-box;
   border-radius: $border-radius-l;
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
@@ -26,6 +27,7 @@
   }
 
   &--active {
+    --eIconColor: var(--color-text);
     background-color: rgba(var(--color-primary), 0.8);
   }
 
@@ -76,6 +78,8 @@
   }
 
   &__end {
+    display: flex;
+    flex-direction: column;
     flex: 1 0 auto;
     text-align: right;
     margin: 0;
@@ -84,5 +88,15 @@
   ::slotted([slot="date"]) {
     @include body--s();
     margin: 0;
+  }
+
+  &__actions {
+    margin-top: auto;
+  }
+
+  ::slotted(a[slot="action"]) {
+    display: inline-block;
+    margin-right: space(1);
+    text-decoration: none;
   }
 }

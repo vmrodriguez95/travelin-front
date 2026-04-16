@@ -36,7 +36,12 @@ export class CModal extends LitElement {
     })
   }
 
-  showModal() {
+  showModal(template: HTMLTemplateElement) {
+    this.innerHTML = ''
+    this.appendChild(template.content.cloneNode(true))
+
+    this._detectFetchElement()
+
     this._dialog.showModal()
   }
 
@@ -47,5 +52,15 @@ export class CModal extends LitElement {
       this._dialog.close()
       this._dialog.classList.remove('is-closing')
     }, 201)
+  }
+
+  private _detectFetchElement() {
+    const fetchElement = this.querySelector('e-fetch')
+
+    if (fetchElement) {
+      fetchElement.addEventListener('success', () => {
+        this.closeModal()
+      })
+    }
   }
 }

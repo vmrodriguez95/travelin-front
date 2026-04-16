@@ -28,8 +28,6 @@ export class CForm extends LitElement {
 
   @property({ type: String }) method = ''
   
-  @property({ type: String }) type = ''
-
   @property({ type: String }) submitLabel = ''
 
   @property({ type: String }) enctype = 'application/x-www-form-urlencoded'
