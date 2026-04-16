@@ -1,13 +1,7 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property, queryAsync, state } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
-import { map } from 'lit/directives/map.js'
-
-// Types
-import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
-import type { CCardPoi } from '../c-card-poi/c-card-poi'
-import type { CCardTransport } from '../c-card-transport/c-card-transport'
 
 // Styles
 import styles from './c-slider.style.scss?inline'
@@ -15,100 +9,91 @@ import styles from './c-slider.style.scss?inline'
 @customElement('c-slider')
 export class CSlider extends LitElement {
 
-  @state() _data: Poi | PoiHotel | Reminder | Note | null = null
-  
-  @state() _height = 0
+  @state() _slideCounter: number = 0
 
-  @queryAsync('.c-slider') _container!: Promise<HTMLElement>
+  @state() _actualSlide: number = 0
 
-  _cardList!: NodeList
-  
   static styles = css`${unsafeCSS(styles)}`
 
-  connectedCallback(): void {
-    this._cardList = document.querySelectorAll('c-card-poi, c-card-transport')
-
-    this._activeCalcHeight()
-    this._listenCardClick()
-
-    super.connectedCallback()
-  }
-
   render() {
-    const classes = classMap({
-      'c-slider': true,
-      'c-slider--active': this._data !== null
-    })
-
     return html`
-      <div class=${classes} style="height: ${this._data !== null ? this._height : 0}px">
-        <div class="c-slider__actions">
-          <button class="c-slider__close" @click=${this._onClose.bind(this)}>
-            <e-icon icon="close" size="l"></e-icon>
-          </button>
-        </div>
+      <div class="c-slider">
         <div class="c-slider__content">
-          ${when(this._data, () => map(this._data?.notes, (note) => html`
-            <div class="c-slider__note">
-              <e-icon icon=${note.icon} size="xl"></e-icon>
-              <p class="c-slider__text">${note.text}</p>
-            </div>
-          `))}
+          <slot @slotchange=${this._updateSlideCounter}></slot>
         </div>
+        ${when(this._slideCounter > 1, () => html`
+          <div class="c-slider__actions">
+            <button class=${this._getArrowLeftClasses(this._actualSlide - 1)} @click=${this._arrowLeftAction}>
+              <e-icon icon="arrow-left" size="l"></e-icon>
+            </button>
+            ${Array.from({ length: this._slideCounter }, (_, i) => html`
+              <button class=${this._getSlideButtonClasses(i)} @click=${() => this._goToSlide(i)}></button>
+            `)}
+            <button class=${this._getArrowRightClasses(this._actualSlide + 1)} @click=${this._arrowRightAction}>
+              <e-icon icon="arrow-right" size="l"></e-icon>
+            </button>
+          </div>
+        `)}
       </div>
     `
   }
 
-  private _listenCardClick() {
-    this._cardList.forEach((card) => {
-      card.addEventListener('showme', (ev) => {
-        const target = ev.target as CCardPoi | CCardTransport
+  private _updateSlideCounter(e: Event) {
+    const childNodes = (e.target as HTMLSlotElement).assignedElements({ flatten: true })
 
-        if (target.active) return
+    this._slideCounter = childNodes.length
+  }
 
-        this._resetCards()
-
-        target.active = true
-
-        const customevent = ev as CustomEvent
-        this._data = customevent.detail
-      })
+  private _getArrowLeftClasses(index: number) {
+    return classMap({
+      'c-slider__arrow': true,
+      'c-slider__arrow--disabled': index < 0
     })
   }
 
-  private _resetCards() {
-    this._cardList.forEach((card) => {
-      const cardTarget = card as CCardPoi | CCardTransport
-      cardTarget.active = false
+  private _getArrowRightClasses(index: number) {
+    return classMap({
+      'c-slider__arrow': true,
+      'c-slider__arrow--disabled': index === this._slideCounter
     })
   }
 
-  private _onClose() {
-    this._resetCards()
-    this._data = null
-  }
-
-  private _activeCalcHeight() {
-    this._container.then((container: HTMLElement) => {
-      this._calcHeight(container)
-      this._calcHeightOnResize(container)
+  private _getSlideButtonClasses(index: number) {
+    return classMap({
+      'c-slider__action': true,
+      'c-slider__action--active': index === this._actualSlide
     })
   }
 
-  private _setHeight(height: number) {
-    this._height = height
+  private _goToSlide(index: number) {
+    this._actualSlide = index
+
+    const content = this.shadowRoot?.querySelector('.c-slider__content') as HTMLElement
+
+    if (content) {
+      content.style.transform = `translateX(-${index * 100}%)`
+    }
   }
 
-  private _calcHeight(container: HTMLElement) {
-    // Altura de la ventana - altura de la cabecera
-    const height = window.innerHeight - container.offsetTop - 40
+  private _arrowRightAction() {
+    if (this._actualSlide === this._slideCounter - 1) return
 
-    this._setHeight(height)
+    this._actualSlide++
+
+    this._goToSlide(this._actualSlide)
   }
 
-  private _calcHeightOnResize(container: HTMLElement) {
-    window.addEventListener('resize', () => {
-      this._calcHeight(container)
-    })
+  private _arrowLeftAction() {
+    if (this._actualSlide === 0) return
+
+    this._actualSlide--
+
+    this._goToSlide(this._actualSlide)
+  }
+
+  reset() {
+    this._actualSlide = 0
+
+    this._goToSlide(this._actualSlide)
   }
 }

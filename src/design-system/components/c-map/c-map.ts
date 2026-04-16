@@ -1,5 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, queryAsync, state } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
 import styles from './c-map.style.scss?inline'
@@ -15,7 +16,7 @@ export class CMap extends LitElement {
 
   @property({ type: String }) api = ''
 
-  @property({ type: Boolean }) fullheight = false
+  @property({ type: String }) fullheight = 'full'
 
   @property({ type: Number }) gap = 0
 
@@ -24,17 +25,19 @@ export class CMap extends LitElement {
   @queryAsync('iframe') _iframe!: Promise<HTMLIFrameElement>
 
   connectedCallback(): void {
-    this._iframe.then((iframe: HTMLIFrameElement) => {
-      this._calcHeight(iframe)
-      this._calcHeightOnResize(iframe)
-    })
+    this._activateFullHeight()
 
     super.connectedCallback()
   }
 
   render() {
+    const classes = classMap({
+      'c-map': true,
+      'c-map--height-auto': this.fullheight === 'auto'
+    })
+
     return html`
-      <div class="c-map">
+      <div class=${classes}>
         <iframe
           class="c-map__iframe"
           width="600"
@@ -62,11 +65,7 @@ export class CMap extends LitElement {
 
   private  _calcHeight(iframe: HTMLIFrameElement) {
     // Altura de la ventana - altura de la cabecera
-    let height = window.innerHeight - iframe.offsetTop - 40
-
-    if (!this.fullheight) {
-      height -= this.gap
-    }
+    let height = window.innerHeight - iframe.offsetTop - 40 - this.gap
 
     this._setHeight(height)
   }
@@ -75,5 +74,14 @@ export class CMap extends LitElement {
     window.addEventListener('resize', () => {
       this._calcHeight(iframe)
     })
+  }
+
+  private _activateFullHeight() {
+    if (this.fullheight === 'full') {
+      this._iframe.then((iframe: HTMLIFrameElement) => {
+        this._calcHeight(iframe)
+        this._calcHeightOnResize(iframe)
+      })
+    }
   }
 }

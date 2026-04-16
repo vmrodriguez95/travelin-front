@@ -14,14 +14,15 @@
   overflow: hidden;
   
   &--active {
-    display: block;
-    padding: space(2);
+    display: flex;
+    flex-direction: column;
   }
 
   &__actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    padding: space(2);
     margin-bottom: space(2);
 
     button {
@@ -36,16 +37,31 @@
     }
   }
 
+  &__content {
+    height: 100%;
+  }
+
+  &__empty {
+    padding: space(4);
+    border-radius: $border-radius-l;
+    border: 1px dashed rgba(var(--color-text), 1);
+    text-align: center;
+  }
+
   &__note {
-    @include body--m;
     --eIconColor: var(--color-text);
     display: flex;
     align-items: center;
     gap: space(1);
     padding: space(1);
     margin-bottom: space(1);
-    color: rgba(var(--color-text), 1);
     background-color: rgba(var(--color-background), 1);
     border-radius: $border-radius-s;
+  }
+
+  &__text {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
   }
 }

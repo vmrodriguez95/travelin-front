@@ -1,12 +1,13 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property, queryAsync, state } from 'lit/decorators.js'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { customElement, property, query, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import { map } from 'lit/directives/map.js'
 
 // Types
-import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
+import type { CSlider } from '../c-slider/c-slider'
 import type { CCardPoi } from '../c-card-poi/c-card-poi'
+import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
 import type { CCardTransport } from '../c-card-transport/c-card-transport'
 
 // Styles
@@ -15,9 +16,13 @@ import styles from './c-poi-detail.style.scss?inline'
 @customElement('c-poi-detail')
 export class CPoiDetail extends LitElement {
 
-  @state() _data: Poi | PoiHotel | Reminder | Note | null = null
-  
+  @property({ type: Number }) gap = 0
+
   @state() _height = 0
+
+  @state() _data: Poi | PoiHotel | Reminder | Note | null = null
+
+  @query('c-slider') slider!: CSlider
 
   @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
 
@@ -34,6 +39,14 @@ export class CPoiDetail extends LitElement {
     super.connectedCallback()
   }
 
+  protected shouldUpdate(_changedProperties: PropertyValues) {
+    if (_changedProperties.has('_data')) {
+      this.slider?.reset()
+    }
+
+    return true
+  }
+
   render() {
     const classes = classMap({
       'c-poi-detail': true,
@@ -48,14 +61,43 @@ export class CPoiDetail extends LitElement {
           </button>
         </div>
         <div class="c-poi-detail__content">
-          ${when(this._data, () => map(this._data?.notes, (note) => html`
-            <div class="c-poi-detail__note">
-              <e-icon icon=${note.icon} size="xl"></e-icon>
-              <p class="c-poi-detail__text">${note.text}</p>
-            </div>
-          `))}
+          ${this._printData()}
         </div>
       </div>
+    `
+  }
+
+  private _printMap() {
+      if (!this._data || !('coordenates' in this._data)) return ''
+
+      return html`
+        <c-map longitude=${this._data?.coordenates[0]} latitude=${this._data?.coordenates[1]} fullheight="auto"></c-map>
+      `
+  }
+
+  private _printData() {
+    if (!this._data) return ''
+    
+    return html`
+      <c-slider>
+        ${when('coordenates' in this._data, () => html`
+          <div>${this._printMap()}</div>
+        `)}
+        <div>
+          ${when(this._data.notes.length === 0, () => html`
+            <div class="c-poi-detail__empty">
+              <p class="c-poi-detail__text">Todavía no has añadido ninguna nota.</p>
+            </div>
+          `, () => html`
+            ${map(this._data?.notes, (note) => html`
+              <div class="c-poi-detail__note">
+                <e-icon icon=${note.icon} size="xl"></e-icon>
+                <p class="c-poi-detail__text">${note.text}</p>
+              </div>
+            `)}
+          `)}
+        </div>
+      </c-slider>
     `
   }
 
@@ -101,7 +143,7 @@ export class CPoiDetail extends LitElement {
 
   private _calcHeight(container: HTMLElement) {
     // Altura de la ventana - altura de la cabecera
-    const height = window.innerHeight - container.offsetTop - 40
+    const height = window.innerHeight - container.offsetTop - 40 - this.gap
 
     this._setHeight(height)
   }
