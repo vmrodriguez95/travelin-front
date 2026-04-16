@@ -1,5 +1,5 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
@@ -19,6 +19,24 @@ export class CHeader extends LitElement {
   @property({ type: String }) subheading = ''
 
   @property({ type: String }) complement = ''
+
+  @property({ type: Boolean }) animated = false
+
+  @query('.c-header') _header!: HTMLElement
+
+  _headerInitialHeight = 0
+
+  connectedCallback(): void {
+    super.connectedCallback()
+
+    if (this.animated) {
+      window.addEventListener('scroll', this._onScroll.bind(this))
+    }
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this._headerInitialHeight = this._header.getBoundingClientRect().height
+  }
 
   render() {
     const classes = classMap({
@@ -52,5 +70,12 @@ export class CHeader extends LitElement {
         </div>
       </section>
     `
+  }
+
+  _onScroll() {
+    const header = this._header
+    const scrollY = window.scrollY
+
+    header.style.height = `${this._headerInitialHeight - scrollY}px`
   }
 }
