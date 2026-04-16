@@ -1,0 +1,51 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.c-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 100%;
+  border-radius: $border-radius-xl;
+  box-sizing: border-box;
+  background-color: rgba(var(--color-background--secondary), 1);
+  overflow: hidden;
+  
+  &--active {
+    display: block;
+    padding: space(2);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: space(2);
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s ease;
+  
+      &:hover {
+        transform: scale(1.3);
+      }
+    }
+  }
+
+  &__note {
+    @include body--m;
+    --eIconColor: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    padding: space(1);
+    margin-bottom: space(1);
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background), 1);
+    border-radius: $border-radius-s;
+  }
+}
