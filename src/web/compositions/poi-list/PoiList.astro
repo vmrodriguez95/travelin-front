@@ -101,7 +101,19 @@ function formatDate(dateStart: string, dateEnd: string) {
         <div class="u-scroll--vertical">
           {pois.map((poi: any) => (
             poi.types?.includes('transport') ? (
-              <c-card-transport class="u-margin--bottom--m" icon={poi.type} data={JSON.stringify(poi)} />
+              <c-card-transport class="u-margin--bottom--m" icon={poi.type} data={JSON.stringify(poi)}>
+                <a href="#" slot="action">
+                  <e-icon icon="edit" size="m"></e-icon>
+                </a>
+                <e-modal-trigger modal="modal" slot="action">
+                  <e-icon icon="delete" size="m"></e-icon>
+                  <template>
+                    <h2>Eliminar {poi.name}</h2>
+                    <p>Estas a punto de eliminar esta información de transporte. ¿Quieres quitarlo de este itinerario?</p>
+                    <e-fetch action="/api/pois/{poi.id}" method="DELETE" text="Eliminar"></e-fetch>
+                  </template>
+                </e-modal-trigger>
+              </c-card-transport>
             ) : (
               <c-card-poi class="u-margin--bottom--m" icon={poi.icon} data={JSON.stringify(poi)}>
                 {
@@ -112,6 +124,17 @@ function formatDate(dateStart: string, dateEnd: string) {
                 <span slot="title">{poi.name}</span>
                 <span slot="description">{poi.price}</span>
                 <span slot="date">{poi.time || formatDate(poi.dateStart, poi.dateEnd)}</span>
+                <a href="#" slot="action">
+                  <e-icon icon="edit" size="m"></e-icon>
+                </a>
+                <e-modal-trigger modal="modal" slot="action">
+                  <e-icon icon="delete" size="m"></e-icon>
+                  <template>
+                    <h2 slot="title">Eliminar {poi.name}</h2>
+                    <p slot="description">Estas a punto de eliminar este elemento del listado. Si lo tienes en tus guardados, no te preocupes, no se eliminará de ahí. ¿Quieres quitarlo de este itinerario?</p>
+                    <e-fetch action="/api/pois/{poi.id}" method="DELETE" text="Eliminar"></e-fetch>
+                  </template>
+                </e-modal-trigger>
               </c-card-poi>
             )
           ))}
@@ -124,3 +147,4 @@ function formatDate(dateStart: string, dateEnd: string) {
     </section>
   </div>
 </section>
+<c-modal id="modal"></c-modal>

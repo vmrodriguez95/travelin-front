@@ -1,0 +1,7 @@
+---
+const { action, method } = Astro.props
+---
+
+<e-fetch data-component action={action} method={method}>
+  <slot />
+</e-fetch>

@@ -60,10 +60,15 @@ const { id, data } = Astro.props
           <e-icon icon="share" size="m"></e-icon>
         </span>
       </e-modal-trigger>
-      <e-modal-trigger modal="delete">
+      <e-modal-trigger modal="modal">
         <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="delete" size="m"></e-icon>
         </span>
+        <template>
+          <h2 slot="title">Eliminar viaje</h2>
+          <p slot="description">Estas a punto de eliminar este viaje. Si lo eliminas, perderás todos los archivos e información adjunta al viaje y no habrá vuelta atrás. ¿Realmente estás seguro de que quieres eliminarlo?</p>
+          <c-form action="/" method={data.form.method} type={data.form.action} data={JSON.stringify(data)} submitLabel="Eliminar viaje"></c-form>
+        </template>
       </e-modal-trigger>
     </c-header>
     <section class="u-grid u-padding--top--xl">
@@ -133,8 +138,4 @@ const { id, data } = Astro.props
     </section>
   </div>
 </section>
-<c-modal id="delete">
-  <h2 slot="title">Eliminar viaje</h2>
-  <p slot="description">Estas a punto de eliminar este viaje. Si lo eliminas, perderás todos los archivos e información adjunta al viaje y no habrá vuelta atrás. ¿Realmente estás seguro de que quieres eliminarlo?</p>
-  <c-form action="/" method={data.form.method} type={data.form.action} data={JSON.stringify(data)} submitLabel="Eliminar viaje"></c-form>
-</c-modal>
+<c-modal id="modal"></c-modal>

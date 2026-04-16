@@ -34,21 +34,25 @@ export class CCardPoi extends LitElement {
     })
 
     return html`
-      <button class=${classes} @click=${this._onClick.bind(this)}>
-        <p class=${headClasses}>
+      <div class=${classes} role="button" tabindex="0" @click=${this._onClick.bind(this)}>
+        <div class=${headClasses}>
           <slot name="img" @slotchange=${this.handleSlotChange}></slot>
           ${when(this.icon && !this.hasImage,
             () => html`<e-icon class="c-card-poi__icon" icon=${this.icon} size="xl"></e-icon>`
           )}
-        </p>
-        <p class="c-card-poi__content">
+        </div>
+        <div class="c-card-poi__content">
           <slot name="title"></slot>
           <slot name="description"></slot>
-        </p>
-        <p class="c-card-poi__end">
+        </div>
+        <div class="c-card-poi__end">
           <slot name="date"></slot>
-        </p>
-      </button>
+
+          <div class="c-card-poi__actions">
+            <slot name="action"></slot>
+          </div>
+        </div>
+      </div>
     `
   }
 

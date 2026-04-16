@@ -41,6 +41,9 @@ export class CCardTransport extends LitElement {
             </p>
           `)}
         </div>
+        <div class="c-card-transport__end">
+          <slot name="action"></slot>
+        </div>
       </div>
     `
   }
