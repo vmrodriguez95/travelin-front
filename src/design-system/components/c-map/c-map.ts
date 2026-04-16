@@ -17,14 +17,16 @@ export class CMap extends LitElement {
 
   @property({ type: Boolean }) fullheight = false
 
-  @state() height = 0
+  @property({ type: Number }) gap = 0
 
-  @queryAsync('iframe') iframe!: Promise<HTMLIFrameElement>
+  @state() _height = 0
+
+  @queryAsync('iframe') _iframe!: Promise<HTMLIFrameElement>
 
   connectedCallback(): void {
-    this.iframe.then((iframe: HTMLIFrameElement) => {
-      this.calcHeight(iframe)
-      this.calcHeightOnResize(iframe)
+    this._iframe.then((iframe: HTMLIFrameElement) => {
+      this._calcHeight(iframe)
+      this._calcHeightOnResize(iframe)
     })
 
     super.connectedCallback()
@@ -36,7 +38,7 @@ export class CMap extends LitElement {
         <iframe
           class="c-map__iframe"
           width="600"
-          height=${this.height}
+          height=${this._height}
           loading="lazy"
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"
@@ -54,24 +56,24 @@ export class CMap extends LitElement {
     `
   }
 
-  setHeight(height: number) {
-    this.height = height
+  private _setHeight(height: number) {
+    this._height = height
   }
 
-  calcHeight(iframe: HTMLIFrameElement) {
+  private  _calcHeight(iframe: HTMLIFrameElement) {
     // Altura de la ventana - altura de la cabecera
     let height = window.innerHeight - iframe.offsetTop - 40
 
     if (!this.fullheight) {
-      height -= 288 // Altura del bloque resumen
+      height -= this.gap
     }
 
-    this.setHeight(height)
+    this._setHeight(height)
   }
 
-  calcHeightOnResize(iframe: HTMLIFrameElement) {
+  private _calcHeightOnResize(iframe: HTMLIFrameElement) {
     window.addEventListener('resize', () => {
-      this.calcHeight(iframe)
+      this._calcHeight(iframe)
     })
   }
 }

@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
+import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import { map } from 'lit/directives/map.js'
@@ -15,15 +15,20 @@ import styles from './c-poi-detail.style.scss?inline'
 @customElement('c-poi-detail')
 export class CPoiDetail extends LitElement {
 
-  static styles = css`${unsafeCSS(styles)}`
+  @state() _data: Poi | PoiHotel | Reminder | Note | null = null
+  
+  @state() _height = 0
 
-  @state() data: Poi | PoiHotel | Reminder | Note | null = null
+  @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
 
   _cardList!: NodeList
+  
+  static styles = css`${unsafeCSS(styles)}`
 
   connectedCallback(): void {
     this._cardList = document.querySelectorAll('c-card-poi, c-card-transport')
 
+    this._activeCalcHeight()
     this._listenCardClick()
 
     super.connectedCallback()
@@ -32,19 +37,18 @@ export class CPoiDetail extends LitElement {
   render() {
     const classes = classMap({
       'c-poi-detail': true,
-      'c-poi-detail--active': this.data !== null
+      'c-poi-detail--active': this._data !== null
     })
 
     return html`
-      <div class=${classes}>
+      <div class=${classes} style="height: ${this._data !== null ? this._height : 0}px">
         <div class="c-poi-detail__actions">
           <button class="c-poi-detail__close" @click=${this._onClose.bind(this)}>
             <e-icon icon="close" size="l"></e-icon>
           </button>
         </div>
         <div class="c-poi-detail__content">
-          ${when(this.data, () => map(this.data?.notes, (note) => html`
-            ${console.log(note)}
+          ${when(this._data, () => map(this._data?.notes, (note) => html`
             <div class="c-poi-detail__note">
               <e-icon icon=${note.icon} size="xl"></e-icon>
               <p class="c-poi-detail__text">${note.text}</p>
@@ -67,7 +71,7 @@ export class CPoiDetail extends LitElement {
         target.active = true
 
         const customevent = ev as CustomEvent
-        this.data = customevent.detail
+        this._data = customevent.detail
       })
     })
   }
@@ -81,6 +85,30 @@ export class CPoiDetail extends LitElement {
 
   private _onClose() {
     this._resetCards()
-    this.data = null
+    this._data = null
+  }
+
+  private _activeCalcHeight() {
+    this._container.then((container: HTMLElement) => {
+      this._calcHeight(container)
+      this._calcHeightOnResize(container)
+    })
+  }
+
+  private _setHeight(height: number) {
+    this._height = height
+  }
+
+  private _calcHeight(container: HTMLElement) {
+    // Altura de la ventana - altura de la cabecera
+    const height = window.innerHeight - container.offsetTop - 40
+
+    this._setHeight(height)
+  }
+
+  private _calcHeightOnResize(container: HTMLElement) {
+    window.addEventListener('resize', () => {
+      this._calcHeight(container)
+    })
   }
 }
