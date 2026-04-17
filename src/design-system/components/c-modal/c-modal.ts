@@ -58,7 +58,7 @@ export class CModal extends LitElement {
     const fetchElement = this.querySelector('e-fetch')
 
     if (fetchElement) {
-      fetchElement.addEventListener('success', () => {
+      fetchElement.addEventListener('fetch-success', () => {
         this.closeModal()
       })
     }
