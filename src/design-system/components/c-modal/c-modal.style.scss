@@ -4,7 +4,6 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .c-modal {
-  position: relative;
   padding: space(4);
   width: 100%;
   background-color: rgba(var(--color-background--secondary), 1);

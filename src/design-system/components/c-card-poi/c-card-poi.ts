@@ -22,6 +22,12 @@ export class CCardPoi extends LitElement {
 
   @state() hasImage = false
 
+  connectedCallback(): void {
+    this._listenModalSuccessEvent()
+
+    super.connectedCallback()
+  }
+
   render() {
     const classes = classMap({
       'c-card-poi': true,
@@ -68,5 +74,19 @@ export class CCardPoi extends LitElement {
       bubbles: true,
       composed: true
     }))
+  }
+
+  private _listenModalSuccessEvent() {
+    const modal = document.querySelector('c-modal')
+    
+    if (modal) {
+      modal.addEventListener('fetch-success', (ev: Event) => {
+        const event = ev as CustomEvent
+
+        if (event.detail.data.id === this.data.id) {
+          this.remove()
+        }
+      })
+    }
   }
 }

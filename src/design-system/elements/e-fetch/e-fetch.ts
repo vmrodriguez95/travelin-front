@@ -68,7 +68,7 @@ export class EFetch extends LitElement {
 
       const data = await response.json()
 
-      this.dispatchEvent(new CustomEvent('success', {
+      this.dispatchEvent(new CustomEvent('fetch-success', {
         detail: data,
         bubbles: true,
         composed: true
@@ -77,7 +77,7 @@ export class EFetch extends LitElement {
     } catch (err: any) {
       this.error = err.message
 
-      this.dispatchEvent(new CustomEvent('error', {
+      this.dispatchEvent(new CustomEvent('fetch-error', {
         detail: err,
         bubbles: true,
         composed: true
