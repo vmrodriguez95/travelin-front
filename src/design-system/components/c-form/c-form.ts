@@ -124,7 +124,7 @@ export class CForm extends LitElement {
 
   private joinBreadcrumbsWithName(breadcrumbs: string, name: string) {
     let newName = name
-    const regex = new RegExp(`\\[${name}\\]$`)
+    const regex = new RegExp(`\\[?${name}\\]?$`)
 
     if(breadcrumbs && !regex.test(breadcrumbs)) {
       newName = `${breadcrumbs}[${name}]`
