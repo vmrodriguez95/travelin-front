@@ -367,7 +367,7 @@ export class CForm extends LitElement {
           `)}
 
           ${map(Object.keys(fields), (key: string, index: number) => {
-            return this._printSection(fields[key], `${breadcrumbs}`)
+            return this._printSection(fields[key], breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
           })}
         </div>
       `
