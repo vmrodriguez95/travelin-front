@@ -34,10 +34,19 @@
     box-sizing: border-box;
     border: 0;
     border-radius: $border-radius-s;
+    appearance: none;
 
     &:has(+ e-icon) {
-      padding-left: space(6);
+      padding-right: space(6);
     }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: space(2);
+    transform: translateY(-50%);
+    pointer-events: none;
   }
 
   &__clear {

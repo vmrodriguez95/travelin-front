@@ -14,14 +14,14 @@
   &__section {
     border: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 space(4);
   }
 
   &__subsection {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: space(4);
-    padding: 0 space(2);
+    gap: space(2);
+    margin-bottom: space(4);
   }
 
   &__repeater {
@@ -37,10 +37,19 @@
     }
     
     &__fields {
-      display: flex;
-      flex: 1 0 auto;
-      flex-wrap: wrap;
       gap: space(2);
+      padding: 0 space(2);
+
+      &--inline {
+        display: flex;
+        flex: 1 0 auto;
+        flex-wrap: wrap;
+      }
+
+      &--stacked {
+        display: block;
+        flex: 1 0 auto;
+      }
     }
 
     &__actions {
@@ -53,9 +62,10 @@
     color: rgba(var(--color-text), 1);
     grid-column: span 2;
     margin: 0;
+    text-align: left;
 
     &:not(:has(+ #{$block}__helpmsg)) {
-      margin-bottom: space(4);
+      margin-bottom: space(2);
     }
   }
 
@@ -67,6 +77,10 @@
     
     &:not(:has(+ #{$block}__helpmsg)) {
       margin-bottom: space(4);
+    }
+
+    #{$block}__subsection & {
+      margin-bottom: 0;
     }
   }
 

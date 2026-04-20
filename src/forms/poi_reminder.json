@@ -8,6 +8,7 @@
     "core": {
       "legend": "Nuevo recordatorio",
       "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
       "fields": {
         "icon": {
           "id": "poiReminderIcon",
@@ -56,33 +57,32 @@
         },
         "notes": {
           "id": "poiReminderNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiReminderNotesIcon",
-                "name": "notes[][icon]",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiReminderNotesText",
-                "name": "notes[][text]",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "required": false,
-                "readonly": false
-              }
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiReminderNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiReminderNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
@@ -96,6 +96,7 @@
   "sections": {
     "core": {
       "legend": "Editar recordatorio",
+      "removeMainKey": true,
       "fields": {
         "icon": {
           "id": "poiReminderIcon",
@@ -141,33 +142,32 @@
         },
         "notes": {
           "id": "poiReminderNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiReminderNotesIcon",
-                "name": "notes[][icon]",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiReminderNotesText",
-                "name": "notes[][text]",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "required": false,
-                "readonly": false
-              }
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiReminderNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiReminderNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }

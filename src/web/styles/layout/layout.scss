@@ -13,11 +13,14 @@
 
   &__header {
     grid-area: header;
-    min-height: space(8);
     padding: space(3);
     box-sizing: border-box;
     border-bottom: 1px solid rgba(var(--color-gray--light), 1);
     text-align: right;
+
+    a {
+      display: inline-block;
+    }
   }
   
   &__aside {
