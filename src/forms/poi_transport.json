@@ -35,19 +35,6 @@
           "required": true,
           "readonly": false
         },
-        "file": {
-          "id": "poiTransportFile",
-          "name": "file",
-          "label": "Archivo",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "type": "file",
-          "required": false,
-          "readonly": false
-        },
         "type": {
           "id": "poiTransportType",
           "name": "type",
@@ -80,6 +67,20 @@
             }
           ],
           "required": true,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiTransportFile",
+          "name": "file",
+          "label": "Archivo",
+          "fieldSize": "full",
+          "file": {
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "type": "file",
+          "required": false,
           "readonly": false
         }
       }
@@ -132,10 +133,16 @@
       }
     },
     "segments": {
-      "sectionTitle": "Información sobre los trayectos",
+      "id": "poiTransportSegments",
+      "legend": "Tramos de la ruta",
+      "helpmsg": "Puedes añadir varios tramos en caso de que haya, por ejemplo, una escala en un vuelo.",
+      "canAdd": true,
+      "addLabel": "Añadir tramo",
+      "canRemove": true,
+      "emptyMsg": "Aún no hay tramos definidos.",
       "schema": {
         "origin": {
-          "sectionTitle": "Origen",
+          "legend": "Origen",
           "fields": {
             "location": {
               "id": "poiLocation",
@@ -167,7 +174,7 @@
           }
         },
         "destiny": {
-          "sectionTitle": "Destino",
+          "legend": "Destino",
           "fields": {
             "location": {
               "id": "poiLocation",
@@ -199,27 +206,30 @@
           }
         },
         "passengers": {
+          "id": "poiTransportSegmentsPassengers",
           "sectionTitle": "Información sobre los pasajeros",
-          "schema": [
-            {
-              "name": {
-                "id": "poiTransportPassengersName",
-                "name": "name",
-                "label": "Nombre del pasajero",
-                "type": "text",
-                "required": false,
-                "readonly": false
-              },
-              "seat": {
-                "id": "poiTransportPassengersSeat",
-                "name": "seat",
-                "label": "Asiento/camarote",
-                "type": "text",
-                "required": false,
-                "readonly": false
-              }
+          "canAdd": true,
+          "addLabel": "Añadir pasajero/a",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay pasajeros/as añadidos/as.",
+          "schema": {
+            "name": {
+              "id": "poiTransportPassengersName",
+              "name": "name",
+              "label": "Nombre del pasajero",
+              "type": "text",
+              "required": false,
+              "readonly": false
+            },
+            "seat": {
+              "id": "poiTransportPassengersSeat",
+              "name": "seat",
+              "label": "Asiento/camarote",
+              "type": "text",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }

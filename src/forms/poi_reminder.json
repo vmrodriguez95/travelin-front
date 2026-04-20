@@ -56,8 +56,8 @@
         },
         "notes": {
           "id": "poiReminderNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
@@ -141,8 +141,8 @@
         },
         "notes": {
           "id": "poiReminderNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,

@@ -72,8 +72,8 @@
         },
         "notes": {
           "id": "poiNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
@@ -168,8 +168,13 @@
           "readonly": false
         },
         "notes": {
+          "id": "poiNotes",
           "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
           "schema": [
             {
               "icon": {
@@ -185,6 +190,8 @@
                 "name": "text",
                 "label": "Texto",
                 "type": "textarea",
+                "fieldSize": "full",
+                "autofocus": true,
                 "required": false,
                 "readonly": false
               }

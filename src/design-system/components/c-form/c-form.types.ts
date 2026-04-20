@@ -21,15 +21,15 @@ export interface FormSection {
 
 export interface FormArraySection {
   id: string
-  legend: string
-  helpmsg: string
+  sectionTitle: string
+  sectionHelpmsg: string
   canAdd: boolean
   addLabel: string
   canMove: boolean
   canRemove: boolean
   emptyMsg: string
   removeMainKey?: boolean
-  schema: Array<FormBlock>
+  schema: FormBlock
   fields?: Array<FormBlock>
 }
 

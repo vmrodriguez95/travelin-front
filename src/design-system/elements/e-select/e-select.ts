@@ -74,6 +74,7 @@ export class ESelect extends LitElement {
               </option>
             `)}
           </select>
+          <e-icon class="e-select__icon" icon="arrow-down" size="l"></e-icon>
         </div>
         ${when(this._internals.validationMessage, () => html`
           <p class="e-select__error">${this._internals.validationMessage}</p>

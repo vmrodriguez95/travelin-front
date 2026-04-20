@@ -108,7 +108,7 @@ export class CForm extends LitElement {
       section.fields = []
     }
 
-    const newBlock = window.structuredClone(section.schema[0])
+    const newBlock = window.structuredClone(section.schema)
 
     // @ts-ignore - Agregamos un id único a cada bloque para optimizar el renderizado con repeat
     newBlock.randomId = crypto.randomUUID()
@@ -181,7 +181,7 @@ export class CForm extends LitElement {
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
-            options=${fieldSelect.options}
+            .options=${fieldSelect.options}
             ?required=${fieldSelect.required}
             ?readonly=${fieldSelect.readonly}
             value=${fieldSelect.fillValue}
@@ -287,16 +287,19 @@ export class CForm extends LitElement {
 
   private _printSection(section: BasicFormField | FormSection | FormArraySection): TemplateResult {
     if ('schema' in section) {
+      // Schema indica que esa estructura de campos se debe pintar en un repeater
       // En caso de que la casuística sea un FormArraySection
       const arraySection = section as FormArraySection
       const fields = arraySection.fields as Array<FormBlock>
 
       return html`
         <div class="c-form__repeater">
-          <h2 class="c-form__subtitle">${section.legend}</h2>
-          ${when(section.helpmsg, () => html`
-          <p class="c-form__helpmsg">${section.helpmsg}</p>
-        `)}
+          ${when(section.sectionTitle, () => html`
+            <h2 class="c-form__subtitle">${section.sectionTitle}</h2>
+          `)}
+          ${when(section.sectionHelpmsg, () => html`
+            <p class="c-form__helpmsg">${section.sectionHelpmsg}</p>
+          `)}
           ${when('fields' in section && fields.length > 0,
             () => map(
               fields,
@@ -307,7 +310,6 @@ export class CForm extends LitElement {
                     Object.keys(fieldBlock),
                     () => fieldBlock.randomId,
                     (key: string) => {
-                      console.log(fieldBlock[key])
                       if (key !== 'randomId') {
                         if ('name' in fieldBlock[key]) {
                           fieldBlock[key].name = fieldBlock[key].name.replace('[]', `[${index}]`)

@@ -56,34 +56,32 @@
         },
         "notes": {
           "id": "poiNoteNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiNoteNotesIcon",
-                "name": "notes[][icon]",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiNoteNotesText",
-                "name": "notes[][text]",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "autofocus": true,
-                "required": false,
-                "readonly": false
-              }
+          "schema": {
+            "icon": {
+              "id": "poiNoteNotesIcon",
+              "name": "notes[][icon]",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiNoteNotesText",
+              "name": "notes[][text]",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "autofocus": true,
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
@@ -134,34 +132,32 @@
         },
         "notes": {
           "id": "poiNoteNotes",
-          "legend": "Notas",
-          "helpmsg": "Añade notas para ampliar la información.",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
           "canAdd": true,
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiNoteNotesIcon",
-                "name": "notes[][icon]",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiNoteNotesText",
-                "name": "notes[][text]",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "autofocus": true,
-                "required": false,
-                "readonly": false
-              }
+          "schema": {
+            "icon": {
+              "id": "poiNoteNotesIcon",
+              "name": "notes[][icon]",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiNoteNotesText",
+              "name": "notes[][text]",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "autofocus": true,
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
