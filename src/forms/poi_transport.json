@@ -8,6 +8,7 @@
     "core": {
       "legend": "Datos principales",
       "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiTransportOrder",
@@ -140,14 +141,15 @@
       "addLabel": "Añadir tramo",
       "canRemove": true,
       "emptyMsg": "Aún no hay tramos definidos.",
+      "grid": "stacked",
       "schema": {
         "origin": {
-          "legend": "Origen",
+          "sectionTitle": "Origen",
           "fields": {
             "location": {
               "id": "poiLocation",
               "name": "location",
-              "label": "Busca la localización desde la que sales",
+              "label": "¿Desde dónde sales?",
               "type": "search",
               "fieldSize": "full",
               "api": "",
@@ -159,6 +161,7 @@
               "name": "platform",
               "label": "Terminal/Plataforma",
               "type": "text",
+              "fieldSize": "full",
               "required": false,
               "readonly": false
             },
@@ -174,12 +177,12 @@
           }
         },
         "destiny": {
-          "legend": "Destino",
+          "sectionTitle": "Destino",
           "fields": {
             "location": {
               "id": "poiLocation",
               "name": "location",
-              "label": "Busca la localización donde llegas",
+              "label": "¿Dónde llegas?",
               "type": "search",
               "fieldSize": "full",
               "api": "",
@@ -191,6 +194,7 @@
               "name": "platform",
               "label": "Terminal/Plataforma",
               "type": "text",
+              "fieldSize": "full",
               "required": false,
               "readonly": false
             },
@@ -212,6 +216,7 @@
           "addLabel": "Añadir pasajero/a",
           "canRemove": true,
           "emptyMsg": "Aún no hay pasajeros/as añadidos/as.",
+          "grid": "stacked",
           "schema": {
             "name": {
               "id": "poiTransportPassengersName",

@@ -8,6 +8,7 @@
     "core": {
       "legend": "Datos generales",
       "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
       "fields": {
         "types": {
           "id": "poiHotelTypes",
@@ -91,27 +92,26 @@
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiHotelNotesIcon",
-                "name": "notes[][icon]",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiHotelNotesText",
-                "name": "notes[][text]",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "required": false,
-                "readonly": false
-              }
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiHotelNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiHotelNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
@@ -126,6 +126,7 @@
   "sections": {
     "core": {
       "legend": "Modificación de la estancia",
+      "removeMainKey": true,
       "fields": {
         "types": {
           "id": "poiHotelTypes",
@@ -198,28 +199,27 @@
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiHotelNotesIcon",
-                "name": "icon",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiHotelNotesText",
-                "name": "text",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "autofocus": true,
-                "required": false,
-                "readonly": false
-              }
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiHotelNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiHotelNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "autofocus": true,
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }

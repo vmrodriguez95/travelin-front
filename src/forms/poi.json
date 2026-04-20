@@ -8,6 +8,7 @@
     "core": {
       "legend": "Nuevo punto de interés",
       "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
       "fields": {
         "order": {
           "id": "poiOrder",
@@ -78,6 +79,7 @@
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
+          "grid": "inline",
           "schema": [
             {
               "icon": {
@@ -114,6 +116,7 @@
   "sections": {
     "core": {
       "legend": "Nuevo punto de interés",
+      "removeMainKey": true,
       "fields": {
         "location": {
           "id": "poiLocation",
@@ -175,6 +178,7 @@
           "addLabel": "Añadir nota",
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
+          "grid": "inline",
           "schema": [
             {
               "icon": {

@@ -122,7 +122,23 @@ export class CForm extends LitElement {
     this.requestUpdate()
   }
 
-  private _printField(field: BasicFormField): TemplateResult {
+  private joinBreadcrumbsWithName(breadcrumbs: string, name: string) {
+    let newName = name
+    const regex = new RegExp(`\\[${name}\\]$`)
+
+    if(breadcrumbs && !regex.test(breadcrumbs)) {
+      newName = `${breadcrumbs}[${name}]`
+    } else if (breadcrumbs && regex.test(breadcrumbs)) {
+      newName = breadcrumbs
+    }
+
+    return newName
+  }
+    
+
+  private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
+    const name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
+
     if ('dependsOn' in field) {
       this._dependencies.push({
         field: field.id,
@@ -134,7 +150,7 @@ export class CForm extends LitElement {
     switch(field.type) {
       case 'hidden':
         return html`
-          <input type="hidden" name=${field.name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
+          <input type="hidden" name=${name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
         `
 
       case 'text':
@@ -143,7 +159,7 @@ export class CForm extends LitElement {
           <e-input
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             type=${field.type}
             helpmsg=${field.helpmsg}
@@ -159,7 +175,7 @@ export class CForm extends LitElement {
           <e-textarea
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             ?autofocus=${field.autofocus}
@@ -177,7 +193,7 @@ export class CForm extends LitElement {
           <e-select
             class=${this._getFieldClasses(fieldSelect)}
             id=${fieldSelect.id}
-            name=${fieldSelect.name}
+            name=${name}
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
@@ -196,7 +212,7 @@ export class CForm extends LitElement {
           <e-input-file
             class=${this._getFieldClasses(fieldFile)}
             id=${fieldFile.id}
-            name=${fieldFile.name}
+            name=${name}
             label=${fieldFile.label}
             type=${fieldFile.type}
             helpmsg=${fieldFile.helpmsg}
@@ -218,7 +234,7 @@ export class CForm extends LitElement {
             class=${this._getFieldClasses(fieldSearch)}
             id=${fieldSearch.id}
             api=${fieldSearch.api}
-            name=${fieldSearch.name}
+            name=${name}
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
             ?required=${fieldSearch.required}
@@ -232,7 +248,7 @@ export class CForm extends LitElement {
           <e-input-icon
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             value=${field.fillValue || field.value}
@@ -249,7 +265,7 @@ export class CForm extends LitElement {
           <e-calendar
             class=${this._getFieldClasses(fieldCalendar)}
             id=${fieldCalendar.id}
-            name=${fieldCalendar.name}
+            name=${name}
             label=${fieldCalendar.label}
             type=${fieldCalendar.type}
             helpmsg=${fieldCalendar.helpmsg}
@@ -267,7 +283,7 @@ export class CForm extends LitElement {
           <e-input-date
             class=${this._getFieldClasses(fieldDate)}
             id=${fieldDate.id}
-            name=${fieldDate.name}
+            name=${name}
             label=${fieldDate.label}
             helpmsg=${fieldDate.helpmsg}
             type=${fieldDate.type}
@@ -285,7 +301,7 @@ export class CForm extends LitElement {
     }
   }
 
-  private _printSection(section: BasicFormField | FormSection | FormArraySection): TemplateResult {
+  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string): TemplateResult {
     if ('schema' in section) {
       // Schema indica que esa estructura de campos se debe pintar en un repeater
       // En caso de que la casuística sea un FormArraySection
@@ -305,16 +321,13 @@ export class CForm extends LitElement {
               fields,
               (fieldBlock: FormBlock, index: number) => html`
               <div class="c-form__repeater__block">
-                <div class="c-form__repeater__fields">
+                <div class="c-form__repeater__fields c-form__repeater__fields--${section.grid}">
                   ${repeat(
                     Object.keys(fieldBlock),
                     () => fieldBlock.randomId,
                     (key: string) => {
                       if (key !== 'randomId') {
-                        if ('name' in fieldBlock[key]) {
-                          fieldBlock[key].name = fieldBlock[key].name.replace('[]', `[${index}]`)
-                        }
-                        return this._printSection(fieldBlock[key])
+                        return this._printSection(fieldBlock[key], `${breadcrumbs}[${index}][${key}]`)
                       }
 
                       return ''
@@ -349,13 +362,19 @@ export class CForm extends LitElement {
 
       return html`
         <div class="c-form__subsection">
-          ${map(Object.keys(fields), (key: string) => this._printSection(fields[key]))}
+          ${when(section.sectionTitle, () => html`
+            <h3 class="c-form__subtitle">${section.sectionTitle}</h3>
+          `)}
+
+          ${map(Object.keys(fields), (key: string, index: number) => {
+            return this._printSection(fields[key], `${breadcrumbs}`)
+          })}
         </div>
       `
     }
 
     // En caso de que la casuística sea un BasicFormField
-    return this._printField(section as BasicFormField)
+    return this._printField(section as BasicFormField, breadcrumbs)
   }
 
   private _printSections(sections: FormSchema['sections']) {
@@ -369,7 +388,7 @@ export class CForm extends LitElement {
         ${when(sections[key].helpmsg, () => html`
           <p class="c-form__helpmsg">${sections[key].helpmsg}</p>
         `)}
-        ${this._printSection(sections[key])}
+        ${this._printSection(sections[key], sections[key].removeMainKey ? '' : key)}
       </fieldset>
     `)
   }
