@@ -179,28 +179,26 @@
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
           "grid": "inline",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiNotesIcon",
-                "name": "icon",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiNotesText",
-                "name": "text",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "autofocus": true,
-                "required": false,
-                "readonly": false
-              }
+          "schema": {
+            "icon": {
+              "id": "poiNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "autofocus": true,
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }

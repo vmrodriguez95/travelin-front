@@ -239,4 +239,245 @@
       }
     }
   }
+},{
+  "form": {
+    "entity": "poi_transport",
+    "method": "PATCH",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Datos principales",
+      "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
+      "fields": {
+        "order": {
+          "id": "poiTransportOrder",
+          "name": "order",
+          "label": "Orden",
+          "type": "hidden",
+          "fillValue": 0,
+          "required": false,
+          "readonly": false
+        },
+        "types": {
+          "id": "poiTransportTypes",
+          "name": "types",
+          "label": "Tipos",
+          "type": "hidden",
+          "fillValue": "transport",
+          "required": false,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiTransportName",
+          "name": "name",
+          "label": "Nombre para el transporte",
+          "type": "text",
+          "required": true,
+          "readonly": false
+        },
+        "type": {
+          "id": "poiTransportType",
+          "name": "type",
+          "label": "Tipo de transporte",
+          "type": "select",
+          "options": [
+            {
+              "value": "flight",
+              "label": "Vuelo"
+            },
+            {
+              "value": "cruise",
+              "label": "crucero"
+            },
+            {
+              "value": "ferry",
+              "label": "barco"
+            },
+            {
+              "value": "train",
+              "label": "Tren"
+            },
+            {
+              "value": "bus",
+              "label": "Autobús"
+            },
+            {
+              "value": "car",
+              "label": "coche"
+            }
+          ],
+          "required": true,
+          "readonly": false
+        },
+        "file": {
+          "id": "poiTransportFile",
+          "name": "file",
+          "label": "Archivo",
+          "fieldSize": "full",
+          "file": {
+            "extensions": ".pdf",
+            "maxSize": 521000,
+            "multiple": false
+          },
+          "type": "file",
+          "required": false,
+          "readonly": false
+        }
+      }
+    },
+    "booking": {
+      "legend": "Datos sobre la reserva",
+      "fields": {
+        "reference": {
+          "id": "poiTransporBookingReference",
+          "name": "reference",
+          "label": "Referencia de la reserva",
+          "helpmsg": "Hace referencia al PNR o localizador de la reserva",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "ticketNumber": {
+          "id": "poiTransporBookingTicketNumber",
+          "name": "ticketNumber",
+          "label": "Número del ticket",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "provider": {
+          "id": "poiTransporBookingProvider",
+          "name": "provider",
+          "label": "Plataforma/proveedor de la reserva",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "price": {
+          "id": "poiTransporBookingPrice",
+          "name": "price",
+          "label": "Coste de la reserva",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "currency": {
+          "id": "poiTransporBookingCurrency",
+          "name": "currency",
+          "label": "Tipo de moneda",
+          "type": "select",
+          "options": [],
+          "required": false,
+          "readonly": false
+        }
+      }
+    },
+    "segments": {
+      "id": "poiTransportSegments",
+      "legend": "Tramos de la ruta",
+      "helpmsg": "Puedes añadir varios tramos en caso de que haya, por ejemplo, una escala en un vuelo.",
+      "canAdd": true,
+      "addLabel": "Añadir tramo",
+      "canRemove": true,
+      "emptyMsg": "Aún no hay tramos definidos.",
+      "grid": "stacked",
+      "schema": {
+        "origin": {
+          "sectionTitle": "Origen",
+          "fields": {
+            "location": {
+              "id": "poiLocation",
+              "name": "location",
+              "label": "¿Desde dónde sales?",
+              "type": "search",
+              "fieldSize": "full",
+              "api": "",
+              "required": true,
+              "readonly": false
+            },
+            "platform": {
+              "id": "poiTransportSegmentsPlatform",
+              "name": "platform",
+              "label": "Terminal/Plataforma",
+              "type": "text",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
+            },
+            "date": {
+              "id": "poiTransportSegmentsDate",
+              "name": "date",
+              "label": "¿Cuando sales?",
+              "type": "date",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
+            }
+          }
+        },
+        "destiny": {
+          "sectionTitle": "Destino",
+          "fields": {
+            "location": {
+              "id": "poiLocation",
+              "name": "location",
+              "label": "¿Dónde llegas?",
+              "type": "search",
+              "fieldSize": "full",
+              "api": "",
+              "required": true,
+              "readonly": false
+            },
+            "platform": {
+              "id": "poiTransportSegmentsPlatform",
+              "name": "platform",
+              "label": "Terminal/Plataforma",
+              "type": "text",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
+            },
+            "date": {
+              "id": "poiTransportSegmentsDate",
+              "name": "date",
+              "label": "¿Cuando llegas?",
+              "type": "date",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
+            }
+          }
+        },
+        "passengers": {
+          "id": "poiTransportSegmentsPassengers",
+          "sectionTitle": "Información sobre los pasajeros",
+          "canAdd": true,
+          "addLabel": "Añadir pasajero/a",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay pasajeros/as añadidos/as.",
+          "grid": "stacked",
+          "schema": {
+            "name": {
+              "id": "poiTransportPassengersName",
+              "name": "name",
+              "label": "Nombre del pasajero",
+              "type": "text",
+              "required": false,
+              "readonly": false
+            },
+            "seat": {
+              "id": "poiTransportPassengersSeat",
+              "name": "seat",
+              "label": "Asiento/camarote",
+              "type": "text",
+              "required": false,
+              "readonly": false
+            }
+          }
+        }
+      }
+    }
+  }
 }]

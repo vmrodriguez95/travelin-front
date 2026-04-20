@@ -64,27 +64,25 @@
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
           "grid": "inline",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiReminderNotesIcon",
-                "name": "icon",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiReminderNotesText",
-                "name": "text",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "required": false,
-                "readonly": false
-              }
+          "schema": {
+            "icon": {
+              "id": "poiReminderNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiReminderNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
@@ -151,27 +149,25 @@
           "canRemove": true,
           "emptyMsg": "Aún no hay notas añadidas.",
           "grid": "inline",
-          "schema": [
-            {
-              "icon": {
-                "id": "poiReminderNotesIcon",
-                "name": "icon",
-                "label": "Icono",
-                "type": "icon",
-                "required": false,
-                "readonly": false
-              },
-              "text": {
-                "id": "poiReminderNotesText",
-                "name": "text",
-                "label": "Texto",
-                "type": "textarea",
-                "fieldSize": "full",
-                "required": false,
-                "readonly": false
-              }
+          "schema": {
+            "icon": {
+              "id": "poiReminderNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiReminderNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "required": false,
+              "readonly": false
             }
-          ]
+          }
         }
       }
     }
