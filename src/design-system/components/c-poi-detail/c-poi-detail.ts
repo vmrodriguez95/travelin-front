@@ -26,25 +26,33 @@ export class CPoiDetail extends LitElement {
 
   @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
 
-  _cardList!: NodeList
+  _fullCardList!: NodeList
+
+  _cardListForEvents!: NodeList
   
   static styles = css`${unsafeCSS(styles)}`
 
   connectedCallback(): void {
-    this._cardList = document.querySelectorAll('c-card-poi, c-card-transport')
-
     this._activeCalcHeight()
-    this._listenCardClick()
 
     super.connectedCallback()
   }
-
+  
   protected shouldUpdate(_changedProperties: PropertyValues) {
     if (_changedProperties.has('_data')) {
       this.slider?.reset()
     }
-
+    
     return true
+  }
+  
+
+  firstUpdated() {
+    this._fullCardList = document.querySelectorAll('c-card-poi, c-card-transport')
+    this._cardListForEvents = document.querySelectorAll('c-card-poi:not([type="poi"], [type="poi_hotel"]), c-card-transport')
+
+    this._listenResume()
+    this._listenCards()
   }
 
   render() {
@@ -68,10 +76,10 @@ export class CPoiDetail extends LitElement {
   }
 
   private _printMap() {
-      if (!this._data || !('coordenates' in this._data)) return ''
+      if (!this._data || !('coordinates' in this._data)) return ''
 
       return html`
-        <c-map longitude=${this._data?.coordenates[0]} latitude=${this._data?.coordenates[1]} fullheight="auto"></c-map>
+        <c-map longitude=${this._data?.coordinates[0]} latitude=${this._data?.coordinates[1]} fullheight="auto"></c-map>
       `
   }
 
@@ -80,32 +88,44 @@ export class CPoiDetail extends LitElement {
     
     return html`
       <c-slider>
-        ${when('coordenates' in this._data, () => html`
+        ${when('coordinates' in this._data, () => html`
           <div>${this._printMap()}</div>
         `)}
-        <div>
-          ${when(this._data.notes.length === 0, () => html`
-            <div class="c-poi-detail__empty">
-              <p class="c-poi-detail__text">Todavía no has añadido ninguna nota.</p>
-            </div>
-          `, () => html`
-            ${map(this._data?.notes, (note) => html`
-              <div class="c-poi-detail__note">
-                <e-icon icon=${note.icon} size="xl"></e-icon>
-                <p class="c-poi-detail__text">${note.text}</p>
+        ${when(this._data.notes, () => html`
+          <div>
+            ${when(this._data?.notes.length === 0, () => html`
+              <div class="c-poi-detail__empty">
+                <p class="c-poi-detail__text">Todavía no has añadido ninguna nota.</p>
               </div>
+            `, () => html`
+              ${map(this._data?.notes, (note) => html`
+                <div class="c-poi-detail__note">
+                  <e-icon icon=${note.icon} size="xl"></e-icon>
+                  <p class="c-poi-detail__text">${note.text}</p>
+                </div>
+              `)}
             `)}
-          `)}
-        </div>
+          </div>
+        `)}
       </c-slider>
     `
   }
 
-  private _listenCardClick() {
-    this._cardList.forEach((card) => {
-      card.addEventListener('showme', (ev) => {
-        const target = ev.target as CCardPoi | CCardTransport
+  private _listenResume() {
+    const resume = document.querySelector('c-poi-resume')
 
+    if (!resume) return
+
+    resume.addEventListener('showinfo', (ev) => {
+      const customevent = ev as CustomEvent
+      this._data = customevent.detail
+    })
+  }
+
+  private _listenCards() {
+    this._cardListForEvents.forEach((card) => {
+      card.addEventListener('showme', (ev) => {
+        const target = ev.target as CCardPoi
         if (target.active) return
 
         this._resetCards()
@@ -119,7 +139,7 @@ export class CPoiDetail extends LitElement {
   }
 
   private _resetCards() {
-    this._cardList.forEach((card) => {
+    this._fullCardList.forEach((card) => {
       const cardTarget = card as CCardPoi | CCardTransport
       cardTarget.active = false
     })
@@ -152,5 +172,9 @@ export class CPoiDetail extends LitElement {
     window.addEventListener('resize', () => {
       this._calcHeight(container)
     })
+  }
+
+  resetData() {
+    this._data = null
   }
 }

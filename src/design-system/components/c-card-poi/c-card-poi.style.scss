@@ -31,6 +31,11 @@
     background-color: rgba(var(--color-primary), 0.8);
   }
 
+  &--removing {
+    overflow: hidden;
+    animation: slide-collapse 500ms ease forwards;
+  }
+
   &__head {
     --eIconColor: var(--color-text);
     flex: 1 0 auto;
@@ -98,5 +103,34 @@
     display: inline-block;
     margin-right: space(1);
     text-decoration: none;
+  }
+}
+
+@keyframes slide-collapse {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+    max-height: 200px;
+    margin: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  60% {
+    transform: translateX(-100%);
+    opacity: 0;
+    max-height: 200px;
+    margin: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }

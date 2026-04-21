@@ -30,6 +30,7 @@
   }
 
   &--active {
+    --eIconColor: var(--color-text);
     background-color: rgba(var(--color-primary), 0.8);
   }
 

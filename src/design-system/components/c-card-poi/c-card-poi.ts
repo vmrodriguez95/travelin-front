@@ -20,18 +20,19 @@ export class CCardPoi extends LitElement {
 
   @property({ type: Boolean, reflect: true }) active = false
 
+  @state() removing = false
+
   @state() hasImage = false
 
-  connectedCallback(): void {
+  firstUpdated() {
     this._listenModalSuccessEvent()
-
-    super.connectedCallback()
   }
 
   render() {
     const classes = classMap({
       'c-card-poi': true,
-      'c-card-poi--active': this.active
+      'c-card-poi--active': this.active,
+      'c-card-poi--removing': this.removing
     })
 
     const headClasses = classMap({
@@ -76,6 +77,11 @@ export class CCardPoi extends LitElement {
     }))
   }
 
+  removeFromDOM() {
+    this.removing = true
+    setTimeout(() => { this.remove() }, 501)
+  }
+
   private _listenModalSuccessEvent() {
     const modal = document.querySelector('c-modal')
     
@@ -84,7 +90,7 @@ export class CCardPoi extends LitElement {
         const event = ev as CustomEvent
 
         if (event.detail.data.id === this.data.id) {
-          this.remove()
+          this.removeFromDOM()
         }
       })
     }
