@@ -17,9 +17,10 @@ interface Notes {
 // POI HOTEL
 export interface PoiHotel extends PoiBase {
   location: string
-  coordenates: [number, number]
+  coordinates: [number, number]
   dateStart: string
   dateEnd: string
+  address: string
   image: string
   file: string
   order: number
@@ -40,7 +41,7 @@ interface TransportSegmentPart {
   name: string
   city: string
   country: string
-  coordenates: [number, number]
+  coordinates: [number, number]
   platform: string
   type: string
   date: string
@@ -84,8 +85,9 @@ export interface PoiTransport extends PoiBase {
 // POI
 export interface Poi extends PoiBase {
   location: string
-  coordenates: [number, number]
+  coordinates: [number, number]
   time: string
+  address: string
   image: string
   file: string
   order: number

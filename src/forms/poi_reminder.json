@@ -19,15 +19,6 @@
           "required": false,
           "readonly": false
         },
-        "types": {
-          "id": "poiReminderType",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
-          "fillValue": "reminder",
-          "required": false,
-          "readonly": false
-        },
         "order": {
           "id": "poiReminderOrder",
           "name": "order",
@@ -104,14 +95,6 @@
           "label": "Icono",
           "type": "hidden",
           "fillValue": "reminder",
-          "required": false,
-          "readonly": false
-        },
-        "types": {
-          "id": "poiReminderType",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
           "required": false,
           "readonly": false
         },

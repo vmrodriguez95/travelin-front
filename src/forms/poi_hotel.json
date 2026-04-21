@@ -10,15 +10,6 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
-        "types": {
-          "id": "poiHotelTypes",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
-          "fillValue": "hotel",
-          "required": false,
-          "readonly": false
-        },
         "icon": {
           "id": "poiHotelIcon",
           "name": "icon",
@@ -128,14 +119,6 @@
       "legend": "Modificación de la estancia",
       "removeMainKey": true,
       "fields": {
-        "types": {
-          "id": "poiHotelTypes",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
-          "required": false,
-          "readonly": false
-        },
         "icon": {
           "id": "poiHotelIcon",
           "name": "icon",

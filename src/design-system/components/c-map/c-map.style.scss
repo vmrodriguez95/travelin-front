@@ -12,7 +12,7 @@
 
 .c-map {
   $block: &;
-  display: block;
+  display: flex;
   width: 100%;
   position: relative;
 

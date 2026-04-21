@@ -1,0 +1,81 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.c-poi-resume {
+  display: flex;
+  flex-wrap: wrap;
+  gap: space(2);
+  position: absolute;
+  bottom: space(2);
+  right: space(2);
+  left: space(2);
+  border-radius: $border-radius-m;
+  box-sizing: border-box;
+  background-color: rgba(var(--color-background--secondary), 1);
+  padding: space(1) space(2);
+
+  &__name {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+    flex: 1 0 100%;
+  }
+
+  &__head {
+    flex: 0 0 auto;
+  }
+
+  &__img {
+    border-radius: $border-radius-m;
+  }
+
+  &__details {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: space(2);
+  }
+
+  &__column {
+    &:last-child {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+  &__title {
+    @include body--m(600);
+    color: rgba(var(--color-text), 0.7);
+    margin: 0;
+  }
+
+  &__text {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__sup {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 0;
+    color: rgba(var(--color-text), 1);
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__close {
+    position: absolute;
+    top: space(1);
+    right: space(2);
+  }
+}

@@ -20,6 +20,8 @@ export class CMap extends LitElement {
 
   @property({ type: Number }) gap = 0
 
+  @property({ type: Boolean }) showSearch = false
+
   @state() _height = 0
 
   @queryAsync('iframe') _iframe!: Promise<HTMLIFrameElement>
@@ -47,7 +49,7 @@ export class CMap extends LitElement {
           referrerpolicy="no-referrer-when-downgrade"
           src="https://www.google.com/maps?q=${this.latitude},${this.longitude}&z=10&output=embed">
         </iframe>
-        ${when(this.api, () => html`
+        ${when(this.showSearch && this.api, () => html`
           <e-input-search
             class="c-map__search"
             id="map-search"

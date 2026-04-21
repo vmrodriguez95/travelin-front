@@ -6,7 +6,7 @@ const DATA = [
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "coordenates": [139.69171, 35.6895],
+    "coordinates": [139.69171, 35.6895],
     "name": "Paseo con kimono",
     "time": "12:00",
     "price": 0,

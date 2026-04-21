@@ -10,15 +10,6 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
-        "types": {
-          "id": "poiNoteTypes",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
-          "fillValue": "note",
-          "required": false,
-          "readonly": false
-        },
         "order": {
           "id": "poiNoteOrder",
           "name": "order",
@@ -99,14 +90,6 @@
       "legend": "Editar nota",
       "removeMainKey": true,
       "fields": {
-        "types": {
-          "id": "poiNoteTypes",
-          "name": "types",
-          "label": "Tipo",
-          "type": "hidden",
-          "required": false,
-          "readonly": false
-        },
         "icon": {
           "id": "poiReminderIcon",
           "name": "icon",

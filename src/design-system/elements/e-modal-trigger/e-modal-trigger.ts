@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 
 // Types
 import type { CModal } from '@ds/components/c-modal/c-modal'
@@ -11,15 +11,11 @@ export class EModalTrigger extends LitElement {
 
   @property({ type: String, reflect: true }) modal = ''
 
-  _template!: HTMLTemplateElement
+  // _template!: HTMLTemplateElement
+
+  @queryAssignedElements({ selector: 'template' }) _templates!: Array<HTMLElement>
 
   static styles = css`${unsafeCSS(styles)}`
-
-  connectedCallback(): void {
-    this._template = this.querySelector('template') as HTMLTemplateElement
-
-    super.connectedCallback()
-  }
 
   render() {
     return html`
@@ -32,6 +28,6 @@ export class EModalTrigger extends LitElement {
   private _openModal() {
     const modal = document.getElementById(this.modal) as CModal
 
-    if (modal) modal.showModal(this._template)
+    if (modal) modal.showModal(this._templates[0] as HTMLTemplateElement)
   }
 }
