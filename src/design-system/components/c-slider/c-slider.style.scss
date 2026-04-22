@@ -9,13 +9,16 @@
 
   &__content {
     display: flex;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     transition: transform .3s ease;
 
     ::slotted(*) {
       flex: 1 0 100%;
       padding: space(1) space(6);
       box-sizing: border-box;
+      max-height: 100%;
+      overflow-y: auto;
     }
   }
 
