@@ -20,11 +20,11 @@
           "readonly": false
         },
         "icon": {
-          "id": "poiReminderIcon",
+          "id": "poiNoteIcon",
           "name": "icon",
           "label": "Icono",
           "type": "icon",
-          "fillValue": "reminder",
+          "fillValue": "note",
           "required": false,
           "readonly": false
         },
@@ -91,11 +91,11 @@
       "removeMainKey": true,
       "fields": {
         "icon": {
-          "id": "poiReminderIcon",
+          "id": "poiNoteIcon",
           "name": "icon",
           "label": "Icono",
           "type": "icon",
-          "fillValue": "reminder",
+          "fillValue": "note",
           "required": false,
           "readonly": false
         },

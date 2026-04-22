@@ -1,0 +1,32 @@
+import type { Note, Poi, PoiHotel, PoiTransport, Reminder } from '@ds/types/pois'
+
+export const POI_SELECT_EVENT = 'poi-select'
+export const POI_CLEAR_EVENT = 'poi-clear'
+
+export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note
+
+export type PoiChannelView = 'resume' | 'detail'
+
+export interface PoiSelectEventDetail {
+  data: PoiChannelData
+  source?: EventTarget | null
+  view: PoiChannelView
+}
+
+export interface PoiClearEventDetail {
+  source?: EventTarget | null
+}
+
+const channels = new Map<string, EventTarget>()
+
+export function getPoiChannel(channel: string) {
+  if (!channels.has(channel)) {
+    channels.set(channel, new EventTarget())
+  }
+
+  return channels.get(channel)!
+}
+
+export function isResumeViewType(type: string | null) {
+  return type === 'poi' || type === 'poi_hotel'
+}

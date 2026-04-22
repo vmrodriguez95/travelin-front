@@ -1,11 +1,18 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import { map } from 'lit/directives/map.js'
 
 // Types
-import type { CMap } from '../c-map/c-map'
 import type { Poi, PoiHotel } from '@ds/types/pois'
-import type { CCardPoi } from '../c-card-poi/c-card-poi'
-import type { CPoiDetail } from '../c-poi-detail/c-poi-detail'
+
+// Utils
+import {
+  getPoiChannel,
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
+  type PoiClearEventDetail,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-poi-resume.style.scss?inline'
@@ -13,33 +20,31 @@ import styles from './c-poi-resume.style.scss?inline'
 @customElement('c-poi-resume')
 export class CPoiResume extends LitElement {
 
-  @property({ type: String }) mainHeading = ''
-
-  @property({ type: String }) secondaryHeading = ''
+  @property({ type: String }) channel = ''
 
   @state() _data: Poi | PoiHotel | null = null
 
-  _map!: CMap
+  _channelBus: EventTarget | null = null
 
-  _poiDetail!: CPoiDetail
-  
-  _fullCardList!: NodeList
-
-  _cardListForEvents!: NodeList
-  
   static styles = css`${unsafeCSS(styles)}`
 
-  firstUpdated() {
-    this._map = document.querySelector('c-map') as CMap
-    this._poiDetail = document.querySelector('c-poi-detail') as CPoiDetail
-    this._fullCardList = document.querySelectorAll('c-card-poi, c-card-transport')
-    this._cardListForEvents = document.querySelectorAll('c-card-poi[type="poi"], c-card-poi[type="poi_hotel"]')
+  connectedCallback() {
+    super.connectedCallback()
 
-    this._listenCardClick()
+    this._connectToChannel()
   }
 
-  updated() {
-    this._map.showSearch = this._data ? false : true
+  disconnectedCallback() {
+    this._disconnectFromChannel()
+
+    super.disconnectedCallback()
+  }
+
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('channel')) {
+      this._disconnectFromChannel()
+      this._connectToChannel()
+    }
   }
 
   render() {
@@ -47,25 +52,19 @@ export class CPoiResume extends LitElement {
 
     return html`
       <div class="c-poi-resume">
-        <p class="c-poi-resume__name">${this._data?.name}</p>
         <div class="c-poi-resume__head">
           <img class="c-poi-resume__img" src=${this._data?.image} alt="Picture about ${this._data?.name}" width="64" height="64" loading="lazy" />
         </div>
         <div class="c-poi-resume__details">
           <div class="c-poi-resume__column">
-            <p class="c-poi-resume__title">${this.mainHeading}</p>
             ${this.getAddress()}
           </div>
           <div class="c-poi-resume__column">
-            <p class="c-poi-resume__title">${this.secondaryHeading}</p>
-            <p class="c-poi-resume__text">${this._data?.coordinates[1]}<sup class="c-poi-resume__sup">∘</sup>N, ${this._data?.coordinates[0]}<sup class="c-poi-resume__sup">∘</sup>W</p>
-          </div>
-          <div class="c-poi-resume__column">
+            <e-button size="thin" @click=${this._showInfo}>
+              Info
+            </e-button>
             <button class="c-poi-resume__close" @click=${this._onClose}>
               <e-icon icon="close" size="m"></e-icon>
-            </button>
-            <button class="c-poi-resume__info" @click=${this._showInfo}>
-              <e-icon icon="info" size="m"></e-icon>
             </button>
           </div>
         </div>
@@ -78,42 +77,59 @@ export class CPoiResume extends LitElement {
 
     const address = this._data.address.split(',')
 
-    address.shift()
-
-    return html`<p class="c-poi-resume__text">${address.join(', ')}</p>`
+    return map(address, (chunk: string, index: number) => html`
+      <p class="${index === 0 ? 'c-poi-resume__text' : 'c-poi-resume__subtext'}">${chunk.trim()}</p>
+    `)
   }
 
-  private _listenCardClick() {
-    this._cardListForEvents.forEach((card) => {
-      card.addEventListener('showme', (ev) => {
-        this._poiDetail.resetData()
-        const target = ev.target as CCardPoi
-        if (target.active) return
+  private _connectToChannel() {
+    if (!this.channel) return
 
-        this._resetCards()
-
-        target.active = true
-
-        const customevent = ev as CustomEvent
-        this._data = customevent.detail
-      })
-    })
+    this._channelBus = getPoiChannel(this.channel)
+    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
   }
 
-  private _resetCards() {
-    this._fullCardList.forEach((card) => {
-      const cardTarget = card as CCardPoi
-      cardTarget.active = false
-    })
+  private _disconnectFromChannel() {
+    if (!this._channelBus) return
+
+    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+    this._channelBus = null
   }
 
   private _showInfo() {
-    this.dispatchEvent(new CustomEvent('showinfo', { detail: this._data }))
-    this._data = null
+    if (!this._data) return
+
+    this._channelBus?.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      detail: {
+        data: this._data,
+        source: this,
+        view: 'detail'
+      }
+    }))
   }
 
   private _onClose() {
-    this._resetCards()
+    this._resetData()
+    this._channelBus?.dispatchEvent(new CustomEvent<PoiClearEventDetail>(POI_CLEAR_EVENT, {
+      detail: {
+        source: this
+      }
+    }))
+  }
+
+  private _onSelectionChange = (ev: Event) => {
+    const event = ev as CustomEvent<PoiSelectEventDetail>
+
+    this._data = event.detail.view === 'resume' ? event.detail.data as Poi | PoiHotel : null
+  }
+
+  private _resetData() {
     this._data = null
+  }
+
+  private _onSelectionClear = () => {
+    this._resetData()
   }
 }

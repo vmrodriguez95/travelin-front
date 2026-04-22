@@ -34,6 +34,10 @@
     width: 100%;
   }
 
+  &--thin {
+    padding: space(0.5) space(3);
+  }
+
   &:disabled {
     background: rgba(var(--color-primary), 0.67);
     cursor: not-allowed;
