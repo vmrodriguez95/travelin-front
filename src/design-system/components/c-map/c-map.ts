@@ -1,7 +1,14 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
+
+import {
+  getPoiChannel,
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 import styles from './c-map.style.scss?inline'
 
@@ -22,14 +29,35 @@ export class CMap extends LitElement {
 
   @property({ type: Boolean }) showSearch = false
 
+  @property({ type: String }) channel = ''
+
   @state() _height = 0
 
   @queryAsync('iframe') _iframe!: Promise<HTMLIFrameElement>
 
-  connectedCallback(): void {
-    this._activateFullHeight()
+  _channelBus: EventTarget | null = null
 
+  _defaultShowSearch = false
+
+  connectedCallback(): void {
     super.connectedCallback()
+
+    this._defaultShowSearch = this.showSearch
+    this._activateFullHeight()
+    this._connectToChannel()
+  }
+
+  disconnectedCallback() {
+    this._disconnectFromChannel()
+
+    super.disconnectedCallback()
+  }
+
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('channel')) {
+      this._disconnectFromChannel()
+      this._connectToChannel()
+    }
   }
 
   render() {
@@ -85,5 +113,31 @@ export class CMap extends LitElement {
         this._calcHeightOnResize(iframe)
       })
     }
+  }
+
+  private _connectToChannel() {
+    if (!this.channel) return
+
+    this._channelBus = getPoiChannel(this.channel)
+    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
+  }
+
+  private _disconnectFromChannel() {
+    if (!this._channelBus) return
+
+    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
+    this._channelBus = null
+  }
+
+  private _onSelectionChange = (ev: Event) => {
+    const event = ev as CustomEvent<PoiSelectEventDetail>
+
+    this.showSearch = event.detail.view === 'resume' ? false : this._defaultShowSearch
+  }
+
+  private _onSelectionClear = () => {
+    this.showSearch = this._defaultShowSearch
   }
 }

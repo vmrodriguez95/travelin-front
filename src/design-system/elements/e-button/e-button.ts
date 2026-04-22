@@ -11,14 +11,14 @@ export class EButton extends LitElement {
 
   @property({ type: String, reflect: true }) type = 'button' // 'button' | 'submit'
 
-  @property({ type: String, reflect: true }) size = 'fit' // 'fit' | 'full'
+  @property({ type: String, reflect: true }) size = 'fit' // 'fit' | 'thin' | 'full'
 
   @property({ type: Boolean }) disabled = false
 
   render() {
     const classes = classMap({
       'e-button': true,
-      'e-button--full': this.size === 'full'
+      [`e-button--${this.size}`]: this.size
     })
 
     return html`

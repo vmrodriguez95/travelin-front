@@ -6,9 +6,16 @@ import { map } from 'lit/directives/map.js'
 
 // Types
 import type { CSlider } from '../c-slider/c-slider'
-import type { CCardPoi } from '../c-card-poi/c-card-poi'
 import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
-import type { CCardTransport } from '../c-card-transport/c-card-transport'
+
+// Utils
+import {
+  getPoiChannel,
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
+  type PoiClearEventDetail,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-poi-detail.style.scss?inline'
@@ -18,6 +25,8 @@ export class CPoiDetail extends LitElement {
 
   @property({ type: Number }) gap = 0
 
+  @property({ type: String }) channel = ''
+
   @state() _height = 0
 
   @state() _data: Poi | PoiHotel | Reminder | Note | null = null
@@ -25,34 +34,33 @@ export class CPoiDetail extends LitElement {
   @query('c-slider') slider!: CSlider
 
   @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
-
-  _fullCardList!: NodeList
-
-  _cardListForEvents!: NodeList
   
+  _channelBus: EventTarget | null = null
+
   static styles = css`${unsafeCSS(styles)}`
 
   connectedCallback(): void {
-    this._activeCalcHeight()
-
     super.connectedCallback()
+
+    this._activeCalcHeight()
+    this._connectToChannel()
+  }
+
+  disconnectedCallback() {
+    this._disconnectFromChannel()
+
+    super.disconnectedCallback()
   }
   
-  protected shouldUpdate(_changedProperties: PropertyValues) {
-    if (_changedProperties.has('_data')) {
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('channel')) {
+      this._disconnectFromChannel()
+      this._connectToChannel()
+    }
+
+    if (changedProperties.has('_data')) {
       this.slider?.reset()
     }
-    
-    return true
-  }
-  
-
-  firstUpdated() {
-    this._fullCardList = document.querySelectorAll('c-card-poi, c-card-transport')
-    this._cardListForEvents = document.querySelectorAll('c-card-poi:not([type="poi"], [type="poi_hotel"]), c-card-transport')
-
-    this._listenResume()
-    this._listenCards()
   }
 
   render() {
@@ -111,43 +119,13 @@ export class CPoiDetail extends LitElement {
     `
   }
 
-  private _listenResume() {
-    const resume = document.querySelector('c-poi-resume')
-
-    if (!resume) return
-
-    resume.addEventListener('showinfo', (ev) => {
-      const customevent = ev as CustomEvent
-      this._data = customevent.detail
-    })
-  }
-
-  private _listenCards() {
-    this._cardListForEvents.forEach((card) => {
-      card.addEventListener('showme', (ev) => {
-        const target = ev.target as CCardPoi
-        if (target.active) return
-
-        this._resetCards()
-
-        target.active = true
-
-        const customevent = ev as CustomEvent
-        this._data = customevent.detail
-      })
-    })
-  }
-
-  private _resetCards() {
-    this._fullCardList.forEach((card) => {
-      const cardTarget = card as CCardPoi | CCardTransport
-      cardTarget.active = false
-    })
-  }
-
   private _onClose() {
-    this._resetCards()
-    this._data = null
+    this._resetData()
+    this._channelBus?.dispatchEvent(new CustomEvent<PoiClearEventDetail>(POI_CLEAR_EVENT, {
+      detail: {
+        source: this
+      }
+    }))
   }
 
   private _activeCalcHeight() {
@@ -174,7 +152,33 @@ export class CPoiDetail extends LitElement {
     })
   }
 
-  resetData() {
+  private _resetData() {
+    this._data = null
+  }
+
+  private _connectToChannel() {
+    if (!this.channel) return
+
+    this._channelBus = getPoiChannel(this.channel)
+    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+  }
+
+  private _disconnectFromChannel() {
+    if (!this._channelBus) return
+
+    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+    this._channelBus = null
+  }
+
+  private _onSelectionChange = (ev: Event) => {
+    const event = ev as CustomEvent<PoiSelectEventDetail>
+
+    this._data = event.detail.view === 'detail' ? event.detail.data as Poi | PoiHotel | Reminder | Note : null
+  }
+
+  private _onSelectionClear = () => {
     this._data = null
   }
 }

@@ -19,6 +19,15 @@
           "required": false,
           "readonly": false
         },
+        "icon": {
+          "id": "poiIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "poi",
+          "required": false,
+          "readonly": false
+        },
         "location": {
           "id": "poiLocation",
           "name": "location",
@@ -116,6 +125,15 @@
       "legend": "Nuevo punto de interés",
       "removeMainKey": true,
       "fields": {
+        "icon": {
+          "id": "poiIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "poi",
+          "required": false,
+          "readonly": false
+        },
         "location": {
           "id": "poiLocation",
           "name": "location",

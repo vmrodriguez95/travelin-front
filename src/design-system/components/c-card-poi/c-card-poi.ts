@@ -1,10 +1,19 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
 // Types
 import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
+
+// Utils
+import {
+  getPoiChannel,
+  isResumeViewType,
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-card-poi.style.scss?inline'
@@ -18,14 +27,39 @@ export class CCardPoi extends LitElement {
 
   @property({ type: String }) icon = ''
 
+  @property({ type: String }) type = ''
+
+  @property({ type: String }) channel = ''
+
   @property({ type: Boolean, reflect: true }) active = false
 
   @state() removing = false
 
   @state() hasImage = false
 
-  firstUpdated() {
+  _channelBus: EventTarget | null = null
+
+  _isSelectedData = false
+
+  connectedCallback() {
+    super.connectedCallback()
+
     this._listenModalSuccessEvent()
+    this._connectToChannel()
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('fetch-success', this._onFetchSuccess as EventListener)
+    this._disconnectFromChannel()
+
+    super.disconnectedCallback()
+  }
+
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('channel')) {
+      this._disconnectFromChannel()
+      this._connectToChannel()
+    }
   }
 
   render() {
@@ -70,29 +104,63 @@ export class CCardPoi extends LitElement {
   }
 
   private _onClick() {
-    this.dispatchEvent(new CustomEvent('showme', {
-      detail: this.data,
-      bubbles: true,
-      composed: true
+    if (!this._channelBus) return
+
+    this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      detail: {
+        data: this.data,
+        source: this,
+        view: isResumeViewType(this.type) ? 'resume' : 'detail'
+      }
     }))
   }
 
-  removeFromDOM() {
+  private _removeFromDOM() {
     this.removing = true
     setTimeout(() => { this.remove() }, 501)
   }
 
-  private _listenModalSuccessEvent() {
-    const modal = document.querySelector('c-modal')
-    
-    if (modal) {
-      modal.addEventListener('fetch-success', (ev: Event) => {
-        const event = ev as CustomEvent
+  private _onFetchSuccess = (ev: Event) => {
+    const event = ev as CustomEvent
 
-        if (event.detail.data.id === this.data.id) {
-          this.removeFromDOM()
-        }
-      })
+    if (event.detail.data.id === this.data.id) {
+      if (this._isSelectedData) {
+        this._channelBus?.dispatchEvent(new CustomEvent(POI_CLEAR_EVENT))
+      }
+
+      this._removeFromDOM()
     }
+  }
+
+  private _listenModalSuccessEvent() {
+    document.addEventListener('fetch-success', this._onFetchSuccess as EventListener)
+  }
+
+  private _connectToChannel() {
+    if (!this.channel) return
+
+    this._channelBus = getPoiChannel(this.channel)
+    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+  }
+
+  private _disconnectFromChannel() {
+    if (!this._channelBus) return
+
+    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
+    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+    this._channelBus = null
+  }
+
+  private _onSelectionChange = (ev: Event) => {
+    const event = ev as CustomEvent<PoiSelectEventDetail>
+
+    this._isSelectedData = event.detail.data.id === this.data.id
+    this.active = this._isSelectedData
+  }
+
+  private _onSelectionClear = () => {
+    this._isSelectedData = false
+    this.active = false
   }
 }
