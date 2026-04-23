@@ -62,7 +62,7 @@ export class CCardTransport extends LitElement {
     })
 
     return html`
-      <div class=${classes} role="button" tabindex="0" @click=${this._onClick.bind(this)}>
+      <div class=${classes} role="button" tabindex="0" @click=${this._onClick} @keydown=${this._onKeydown}>
         <div class="c-card-transport__head">
           <e-icon class="c-card-transport__icon" icon=${this.icon} size="xl"></e-icon>
         </div>
@@ -80,7 +80,14 @@ export class CCardTransport extends LitElement {
     `
   }
 
-  private _onClick() {
+  private _onKeydown = (ev: KeyboardEvent) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault()
+      this._onClick()
+    }
+  }
+
+  private _onClick = () => {
     if (!this._channelBus) return
 
     this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {

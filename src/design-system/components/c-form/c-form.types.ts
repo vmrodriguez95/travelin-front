@@ -47,6 +47,7 @@ export interface BasicFormField {
   fillValue?: string | Array<string>
   dependsOn?: Array<string>
   autofocus?: boolean
+  a11y?: any
   required: boolean
   readonly: boolean
   excludeValue?: boolean

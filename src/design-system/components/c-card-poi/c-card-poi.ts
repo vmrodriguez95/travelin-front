@@ -75,7 +75,7 @@ export class CCardPoi extends LitElement {
     })
 
     return html`
-      <div class=${classes} role="button" tabindex="0" @click=${this._onClick.bind(this)}>
+      <div class=${classes} role="button" tabindex="0" @click=${this._onClick} @keydown=${this._onKeydown}>
         <div class=${headClasses}>
           <slot name="img" @slotchange=${this.handleSlotChange}></slot>
           ${when(this.icon && !this.hasImage,
@@ -103,7 +103,14 @@ export class CCardPoi extends LitElement {
     this.hasImage = slot.assignedElements().length > 0
   }
 
-  private _onClick() {
+  private _onKeydown = (ev: KeyboardEvent) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault()
+      this._onClick()
+    }
+  }
+
+  private _onClick = () => {
     if (!this._channelBus) return
 
     this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {

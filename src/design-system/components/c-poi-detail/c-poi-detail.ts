@@ -27,6 +27,8 @@ export class CPoiDetail extends LitElement {
 
   @property({ type: String }) channel = ''
 
+  @property({ type: String }) close = 'Cerrar detalle'
+
   @state() _height = 0
 
   @state() _data: Poi | PoiHotel | Reminder | Note | null = null
@@ -72,7 +74,7 @@ export class CPoiDetail extends LitElement {
     return html`
       <div class=${classes} style="height: ${this._data !== null ? this._height : 0}px">
         <div class="c-poi-detail__actions">
-          <button class="c-poi-detail__close" @click=${this._onClose.bind(this)}>
+          <button class="c-poi-detail__close" type="button" @click=${this._onClose.bind(this)} aria-label=${this.close}>
             <e-icon icon="close" size="l"></e-icon>
           </button>
         </div>

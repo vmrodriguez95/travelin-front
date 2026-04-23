@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { LitElement, html, css, unsafeCSS, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
@@ -13,6 +13,8 @@ export class EButton extends LitElement {
 
   @property({ type: String, reflect: true }) size = 'fit' // 'fit' | 'thin' | 'full'
 
+  @property({ type: String, attribute: 'aria-label' }) ariaLabel = ''
+
   @property({ type: Boolean }) disabled = false
 
   render() {
@@ -22,7 +24,7 @@ export class EButton extends LitElement {
     })
 
     return html`
-      <button class=${classes} ?disabled=${this.disabled} type=${this.type} >
+      <button class=${classes} ?disabled=${this.disabled} type=${this.type} aria-label=${this.ariaLabel || nothing}>
         <slot />
       </button>
     `

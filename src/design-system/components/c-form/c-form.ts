@@ -163,6 +163,7 @@ export class CForm extends LitElement {
             label=${field.label}
             type=${field.type}
             helpmsg=${field.helpmsg}
+            .a11y=${field.a11y}
             ?required=${field.required}
             ?readonly=${field.readonly}
             value=${field.fillValue}
@@ -222,6 +223,7 @@ export class CForm extends LitElement {
             extensions=${fieldFile.file.extensions}
             size=${fieldFile.file.maxSize}
             ?multiple=${fieldFile.file.multiple}
+            .a11y=${fieldFile.a11y}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldFile)}
           ></e-input-file>
         `
@@ -252,6 +254,7 @@ export class CForm extends LitElement {
             label=${field.label}
             helpmsg=${field.helpmsg}
             value=${field.fillValue || field.value}
+            .a11y=${field.a11y}
             ?required=${field.required}
             ?readonly=${field.readonly}
             @change=${(ev: CustomEvent) => this._onChange(ev, field)}

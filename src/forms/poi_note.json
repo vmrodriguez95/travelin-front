@@ -23,7 +23,7 @@
           "id": "poiNoteIcon",
           "name": "icon",
           "label": "Icono",
-          "type": "icon",
+          "type": "hidden",
           "fillValue": "note",
           "required": false,
           "readonly": false
@@ -61,6 +61,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },
@@ -94,7 +99,7 @@
           "id": "poiNoteIcon",
           "name": "icon",
           "label": "Icono",
-          "type": "icon",
+          "type": "hidden",
           "fillValue": "note",
           "required": false,
           "readonly": false
@@ -131,6 +136,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },
