@@ -26,6 +26,8 @@ export class EInput extends LitElement {
 
   @property({ type: String }) helpmsg = ''
 
+  @property({ type: Object }) a11y: any = {}
+
   @property({ type: Number }) minlength = 0
 
   @property({ type: Number }) maxlength = 255
@@ -81,7 +83,7 @@ export class EInput extends LitElement {
             @blur=${this._onBlur}
           />
           ${when(this.value, () => html`
-            <button class="e-input__clear" @click=${this._onClean}>
+            <button class="e-input__clear" type="button" @click=${this._onClean} aria-label=${this.a11y.clear}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
           `)}

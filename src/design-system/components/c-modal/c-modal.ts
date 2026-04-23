@@ -1,10 +1,14 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, query } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 
 import styles from './c-modal.style.scss?inline'
 
 @customElement('c-modal')
 export class CModal extends LitElement {
+
+  @property({ type: String }) id = 'modal'
+
+  @property({ type: String }) close = 'Cerrar modal'
 
   @query('dialog') _dialog!: HTMLDialogElement
 
@@ -12,9 +16,9 @@ export class CModal extends LitElement {
 
   render() {
     return html`
-      <dialog class="c-modal">
+      <dialog class="c-modal" aria-modal="true">
         <div class="c-modal__content">
-          <button class="c-modal__close" @click=${this.closeModal}>
+          <button class="c-modal__close" type="button" @click=${this.closeModal} aria-label=${this.close}>
             <e-icon icon="close" size="l"></e-icon>
           </button>
           <slot name="title"></slot>
@@ -40,6 +44,7 @@ export class CModal extends LitElement {
     this.innerHTML = ''
     this.appendChild(template.content.cloneNode(true))
 
+    this._syncA11yReferences()
     this._detectFetchElement()
 
     this._dialog.showModal()
@@ -61,6 +66,25 @@ export class CModal extends LitElement {
       fetchElement.addEventListener('fetch-success', () => {
         this.closeModal()
       })
+    }
+  }
+
+  private _syncA11yReferences() {
+    const titleElement = this.querySelector('[slot="title"]') as HTMLElement | null
+    const descriptionElement = this.querySelector('[slot="description"]') as HTMLElement | null
+
+    this._setA11yElement('title', titleElement)
+    this._setA11yElement('description', descriptionElement)
+  }
+
+  private _setA11yElement(type: string, element: HTMLElement | null) {
+    if (element) {
+      const id = `${this.id}-${type}`
+
+      element.id = id
+      this._dialog.setAttribute('aria-describedby', id)
+    } else {
+      this._dialog.removeAttribute('aria-describedby')
     }
   }
 }

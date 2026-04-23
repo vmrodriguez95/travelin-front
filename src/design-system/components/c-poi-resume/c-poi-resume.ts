@@ -22,6 +22,10 @@ export class CPoiResume extends LitElement {
 
   @property({ type: String }) channel = ''
 
+  @property({ type: String }) close = 'Cerrar resumen'
+
+  @property({ type: String }) info = 'Mostrar la información completa sobre el punto de interés'
+
   @state() _data: Poi | PoiHotel | null = null
 
   _channelBus: EventTarget | null = null
@@ -60,10 +64,8 @@ export class CPoiResume extends LitElement {
             ${this.getAddress()}
           </div>
           <div class="c-poi-resume__column">
-            <e-button size="thin" @click=${this._showInfo}>
-              Info
-            </e-button>
-            <button class="c-poi-resume__close" @click=${this._onClose}>
+            <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>Info</e-button>
+            <button class="c-poi-resume__close" type="button" @click=${this._onClose} aria-label=${this.close}>
               <e-icon icon="close" size="m"></e-icon>
             </button>
           </div>

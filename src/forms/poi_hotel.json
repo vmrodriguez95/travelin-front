@@ -90,6 +90,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono: ",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },
@@ -147,6 +152,9 @@
           "name": "name",
           "label": "Nombre del alojamiento",
           "type": "text",
+          "a11y": {
+            "clear": "Limpiar campo"
+          },
           "fieldSize": "full",
           "required": true,
           "readonly": true
@@ -189,6 +197,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono: ",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },

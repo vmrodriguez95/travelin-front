@@ -22,6 +22,8 @@ export class EInputFile extends LitElement {
 
   @property({ type: String }) extensions = ''
 
+  @property({ type: Object }) a11y: any = {}
+
   @property({ type: String }) size = 1024 * 500 // 500kb
 
   @property({ type: Boolean }) required = false
@@ -63,11 +65,11 @@ export class EInputFile extends LitElement {
             accept=${this.extensions}
             @change=${this._onChange}
           />
-          <button class="e-input-file__fake-field" @click=${this._openFileBrowser}>
+          <button class="e-input-file__fake-field" type="button" @click=${this._openFileBrowser} aria-label=${this.a11y.upload}>
             <e-icon icon="attach-file" size="m"></e-icon> ${this._filename}
           </button>
           ${when(this.value, () => html`
-            <button class="e-input-file__clear" @click=${this._onClean}>
+            <button class="e-input-file__clear" type="button" @click=${this._onClean} aria-label=${this.a11y.clear}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
           `)}

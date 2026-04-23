@@ -45,6 +45,9 @@
           "type": "text",
           "fieldSize": "full",
           "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
+          "a11y": {
+            "clear": "Limpiar campo"
+          },
           "required": false,
           "readonly": false
         },
@@ -63,6 +66,9 @@
           "label": "Precio",
           "type": "text",
           "fieldSize": "full",
+          "a11y": {
+            "clear": "Limpiar campo"
+          },
           "required": false,
           "readonly": false
         },
@@ -72,6 +78,10 @@
           "label": "Archivo asociado",
           "type": "file",
           "fieldSize": "full",
+          "a11y": {
+            "clear": "Limpiar campo",
+            "upload": "Seleccionar archivo"
+          },
           "file": {
             "extensions": ".pdf",
             "maxSize": 521000,
@@ -95,6 +105,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },
@@ -201,6 +216,11 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono",
+                "list": "Listado de iconos disponibles"
+              },
               "required": false,
               "readonly": false
             },

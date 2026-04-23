@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
@@ -9,6 +9,12 @@ import styles from './c-slider.style.scss?inline'
 @customElement('c-slider')
 export class CSlider extends LitElement {
 
+  @property({ type: String }) prevText = 'Ir a la diapositiva anterior'
+
+  @property({ type: String }) nextText = 'Ir a la diapositiva siguiente'
+
+  @property({ type: String }) itemText = 'Ir a la diapositiva'
+
   @state() _slideCounter: number = 0
 
   @state() _actualSlide: number = 0
@@ -17,19 +23,37 @@ export class CSlider extends LitElement {
 
   render() {
     return html`
-      <div class="c-slider">
+      <div class="c-slider" aria-live="polite">
         <div class="c-slider__content">
           <slot @slotchange=${this._updateSlideCounter}></slot>
         </div>
         ${when(this._slideCounter > 1, () => html`
           <div class="c-slider__actions">
-            <button class=${this._getArrowLeftClasses(this._actualSlide - 1)} @click=${this._arrowLeftAction}>
+            <button
+              class=${this._getArrowLeftClasses(this._actualSlide - 1)}
+              type="button"
+              ?disabled=${this._actualSlide === 0}
+              @click=${this._arrowLeftAction}
+              aria-label=${this.prevText}
+            >
               <e-icon icon="arrow-left" size="l"></e-icon>
             </button>
             ${Array.from({ length: this._slideCounter }, (_, i) => html`
-              <button class=${this._getSlideButtonClasses(i)} @click=${() => this._goToSlide(i)}></button>
+              <button
+                class=${this._getSlideButtonClasses(i)}
+                type="button"
+                @click=${() => this._goToSlide(i)}
+                aria-label="${this.itemText} ${i + 1}"
+                aria-current=${i === this._actualSlide ? 'true' : 'false'}
+              ></button>
             `)}
-            <button class=${this._getArrowRightClasses(this._actualSlide + 1)} @click=${this._arrowRightAction}>
+            <button
+              class=${this._getArrowRightClasses(this._actualSlide + 1)}
+              type="button"
+              ?disabled=${this._actualSlide === this._slideCounter - 1}
+              @click=${this._arrowRightAction}
+              aria-label=${this.nextText}
+            >
               <e-icon icon="arrow-right" size="l"></e-icon>
             </button>
           </div>

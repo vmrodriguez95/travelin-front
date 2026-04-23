@@ -25,6 +25,8 @@ export class EInputIcon extends LitElement {
 
   @property({ type: String }) helpmsg = ''
 
+  @property({ type: Object }) a11y: any = {}
+
   @property({ type: Boolean }) required = false
 
   @property({ type: Boolean }) readonly = false
@@ -43,10 +45,17 @@ export class EInputIcon extends LitElement {
   connectedCallback(): void {
     super.connectedCallback()
 
-    window.addEventListener('keyup', this._onEscape.bind(this))
+    window.addEventListener('keyup', this._onEscape)
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('keyup', this._onEscape)
+
+    super.disconnectedCallback()
   }
 
   render() {
+    const popupId = this._getPopupId()
     const popupClasses = classMap({
       'e-input-icon__popup': true,
       'e-input-icon__popup--open': this._open
@@ -63,17 +72,31 @@ export class EInputIcon extends LitElement {
             type="hidden"
             .value=${live(this.value)}
           />
-          <button class="e-input-icon__choose" @click=${this._openPopup}>
-            <e-icon .icon=${this.value || 'smile-add'} size="l"></e-icon>
+          <button
+            class="e-input-icon__choose"
+            type="button"
+            @click=${this._openPopup}
+            aria-label=${this.a11y.choose}
+            aria-expanded=${this._open ? 'true' : 'false'}
+            aria-controls=${popupId}
+          >
+            <e-icon icon=${this.value || 'smile-add'} size="l"></e-icon>
           </button>
-          <div class=${popupClasses}>
-            <div class="e-input-icon__popup__list">
+          <div class=${popupClasses} aria-hidden=${this._open ? 'false' : 'true'}>
+            <ul id=${popupId} class="e-input-icon__popup__list" aria-label=${this.a11y.list}>
               ${map(Object.keys(EICON_LIST), (iconKey) => html`
-                <button class=${this._getIconClasses(iconKey)} @click=${() => this._onChange(iconKey)}>
-                  <e-icon icon=${iconKey} size="m"></e-icon>
-                </button>
+                <li>
+                  <button
+                    class=${this._getIconClasses(iconKey)}
+                    type="button"
+                    @click=${() => this._onChange(iconKey)}
+                    aria-label="${this.a11y.icon} ${iconKey}"
+                  >
+                    <e-icon icon=${iconKey} size="m"></e-icon>
+                  </button>
+                </li>
               `)}
-            </div>
+            </ul>
           </div>
         </div>
         ${when(this._internals.validationMessage, () => html`
@@ -86,7 +109,7 @@ export class EInputIcon extends LitElement {
     `
   }
 
-  private _openPopup() {
+  private _openPopup = () => {
     this._open = !this._open
   }
 
@@ -94,7 +117,11 @@ export class EInputIcon extends LitElement {
     this._open = false
   }
 
-  private _onEscape(ev: KeyboardEvent) {
+  private _getPopupId() {
+    return `${this.id || 'icon-picker'}-popup`
+  }
+
+  private _onEscape = (ev: KeyboardEvent) => {
     if (ev.key === 'Escape') {
       this._closePopup()
     }
