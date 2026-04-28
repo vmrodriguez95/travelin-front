@@ -6,7 +6,7 @@ import { map } from 'lit/directives/map.js'
 
 // Types
 import type { CSlider } from '../c-slider/c-slider'
-import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
+import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois'
 
 // Utils
 import {
@@ -31,7 +31,7 @@ export class CPoiDetail extends LitElement {
 
   @state() _height = 0
 
-  @state() _data: Poi | PoiHotel | Reminder | Note | null = null
+  @state() _data: Poi | PoiHotel | PoiTransport | Reminder | Note | null = null
 
   @query('c-slider') slider!: CSlider
 
@@ -85,40 +85,39 @@ export class CPoiDetail extends LitElement {
     `
   }
 
-  private _printMap() {
-      if (!this._data || !('coordinates' in this._data)) return ''
-
-      return html`
-        <c-map longitude=${this._data?.coordinates[0]} latitude=${this._data?.coordinates[1]} fullheight="auto"></c-map>
-      `
-  }
-
   private _printData() {
     if (!this._data) return ''
     
     return html`
       <c-slider>
-        ${when('coordinates' in this._data, () => html`
-          <div>${this._printMap()}</div>
-        `)}
-        ${when(this._data.notes, () => html`
+        ${this._isAFlight() ? this._printFlightTicket(): ''}
+
+        ${'notes' in this._data ? html`
           <div>
-            ${when(this._data?.notes.length === 0, () => html`
+            ${this._data.notes.length === 0 ? html`
               <div class="c-poi-detail__empty">
                 <p class="c-poi-detail__text">Todavía no has añadido ninguna nota.</p>
               </div>
-            `, () => html`
+            ` : html`
               ${map(this._data?.notes, (note) => html`
                 <div class="c-poi-detail__note">
                   <e-icon icon=${note.icon} size="xl"></e-icon>
                   <p class="c-poi-detail__text">${note.text}</p>
                 </div>
               `)}
-            `)}
+            `}
           </div>
-        `)}
+        ` : ''}
       </c-slider>
     `
+  }
+
+  private _isAFlight() {
+    return this._data && this._data.type === 'poi_transport' && 'typeTransport' in this._data && this._data.typeTransport === 'flight'
+  }
+
+  private _printFlightTicket() {
+
   }
 
   private _onClose() {

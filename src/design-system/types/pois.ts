@@ -5,6 +5,7 @@ interface PoiBase {
   idUser: string
   idTrip: string
   idItinerary: string
+  type: string
   name: string
   types: string[]
 }
