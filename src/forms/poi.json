@@ -10,15 +10,6 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
-        "order": {
-          "id": "poiOrder",
-          "name": "order",
-          "label": "Orden",
-          "type": "hidden",
-          "fillValue": 1,
-          "required": false,
-          "readonly": false
-        },
         "icon": {
           "id": "poiIcon",
           "name": "icon",
