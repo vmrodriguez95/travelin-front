@@ -10,15 +10,6 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
-        "order": {
-          "id": "poiTransportOrder",
-          "name": "order",
-          "label": "Orden",
-          "type": "hidden",
-          "fillValue": 0,
-          "required": false,
-          "readonly": false
-        },
         "name": {
           "id": "poiTransportName",
           "name": "name",
@@ -39,11 +30,11 @@
             },
             {
               "value": "cruise",
-              "label": "crucero"
+              "label": "Crucero"
             },
             {
               "value": "ferry",
-              "label": "barco"
+              "label": "Barco"
             },
             {
               "value": "train",
@@ -55,7 +46,7 @@
             },
             {
               "value": "car",
-              "label": "coche"
+              "label": "Coche"
             }
           ],
           "required": true,
@@ -242,15 +233,6 @@
       "helpmsg": "Los campos con * son obligatorios.",
       "removeMainKey": true,
       "fields": {
-        "order": {
-          "id": "poiTransportOrder",
-          "name": "order",
-          "label": "Orden",
-          "type": "hidden",
-          "fillValue": 0,
-          "required": false,
-          "readonly": false
-        },
         "name": {
           "id": "poiTransportName",
           "name": "name",
@@ -271,11 +253,11 @@
             },
             {
               "value": "cruise",
-              "label": "crucero"
+              "label": "Crucero"
             },
             {
               "value": "ferry",
-              "label": "barco"
+              "label": "Barco"
             },
             {
               "value": "train",
@@ -287,7 +269,7 @@
             },
             {
               "value": "car",
-              "label": "coche"
+              "label": "Coche"
             }
           ],
           "required": true,
