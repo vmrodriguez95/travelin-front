@@ -1,0 +1,126 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.e-ticket {
+  border-radius: $border-radius-xl;
+  color: rgba(var(--color-text--light), 1);
+  background-color: rgba(var(--color-background--light), 1);
+  overflow: hidden;
+  
+  &__head {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    position: relative;
+    padding: space(3) space(3) space(1);
+    border-bottom: 2px dashed rgba(var(--color-gray), 1);
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      display: block;
+      width: space(6);
+      height: space(6);
+      border-radius: 100%;
+      background-color: rgba(var(--color-background--secondary), 1);
+    }
+
+    &::after {
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    &::before {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__column {
+    grid-column: span 1;
+    padding: 0 space(6) 0 0;
+
+    &--right {
+      padding: 0 0 0 space(6);
+      text-align: right;
+    }
+    
+    &:last-child {
+      @include body--l;
+      display: flex;
+      justify-content: space-between;
+      margin-top: space(1);
+      padding: 0;
+      grid-column: span 2;
+    }
+  }
+
+  &__code,
+  &__name {
+    @include body--l;
+    line-height: 1;
+    margin: 0;
+  }
+  
+  &__city {
+    @include body--m;
+    line-height: 1;
+    margin: 0 0 space(0.5);
+    color: rgba(var(--color-gray), 1);
+  }
+  
+  &__small {
+    @include body--m(600);
+    margin: 0;
+  }
+
+  &__date {
+    @include body--l;
+    margin: 0;
+  }
+
+  &__duration {
+    text-align: center;
+    flex: 1 0 auto;
+    position: relative;
+    bottom: space(1.5);
+    margin: 0 space(1);
+    padding: 0 space(1);
+    border-bottom: 1px dashed rgba(var(--color-background), 1);
+    box-sizing: border-box;
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      display: block;
+      width: space(1);
+      height: space(1);
+      border-radius: 100%;
+      background-color: rgba(var(--color-background--secondary), 1);
+      transform: translateY(50%);
+    }
+
+    &::after {
+      right: 0;
+    }
+
+    &::before {
+      left: 0;
+    }
+  }
+
+  &__footer {
+    text-align: right;
+    padding: space(2) space(3);
+    min-height: space(3);
+  }
+
+  &__text {
+    @include body--m;
+    margin: 0;
+  }
+}

@@ -174,7 +174,7 @@
               "id": "poiTransportSegmentsDate",
               "name": "date",
               "label": "¿Cuando sales?",
-              "type": "date",
+              "type": "datetime-local",
               "fieldSize": "full",
               "required": true,
               "readonly": false
@@ -208,7 +208,7 @@
               "id": "poiTransportSegmentsDate",
               "name": "date",
               "label": "¿Cuando llegas?",
-              "type": "date",
+              "type": "datetime-local",
               "fieldSize": "full",
               "required": true,
               "readonly": false
@@ -423,7 +423,7 @@
               "id": "poiTransportSegmentsDate",
               "name": "date",
               "label": "¿Cuando sales?",
-              "type": "date",
+              "type": "datetime-local",
               "fieldSize": "full",
               "required": true,
               "readonly": false
@@ -457,7 +457,7 @@
               "id": "poiTransportSegmentsDate",
               "name": "date",
               "label": "¿Cuando llegas?",
-              "type": "date",
+              "type": "datetime-local",
               "fieldSize": "full",
               "required": true,
               "readonly": false

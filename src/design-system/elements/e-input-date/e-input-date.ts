@@ -16,13 +16,15 @@ export class EInputDate extends LitElement {
 
   @property({ type: String }) label = ''
 
+  @property({ type: String }) type = 'date'
+
   @property({ type: String }) value = ''
 
   @property({ type: String }) helpmsg = ''
 
-  @property({ type: String }) min = '00:00'
+  @property({ type: String }) min = ''
 
-  @property({ type: String }) max = '23:59'
+  @property({ type: String }) max = ''
 
   @property({ type: Boolean }) required = false
 
@@ -52,7 +54,7 @@ export class EInputDate extends LitElement {
             id=${this.id}
             name=${this.name}
             class="e-input-date__field"
-            type="time"
+            type=${this.type}
             min=${this.min}
             max=${this.max}
             ?readonly=${this.readonly}
