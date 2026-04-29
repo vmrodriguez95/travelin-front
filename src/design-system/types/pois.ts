@@ -53,25 +53,17 @@ interface TransportSegmentOperator {
   code: string
 }
 
-interface TransportSegmentVehicle {
-  type: string
-  model: string
-}
-
-interface TransportPerson {
+export interface TransportPerson {
   name: string
   seat: string
 }
 
 export interface TransportSegment {
-  origin: TransportSegmentPart
   duration: string
-  destination: TransportSegmentPart
-  departureDate: string
-  arrivalDate: string
-  operator: TransportSegmentOperator
   transportNumber: string
-  vehicle: TransportSegmentVehicle
+  origin: TransportSegmentPart
+  destiny: TransportSegmentPart
+  operator: TransportSegmentOperator
   passengers: Array<TransportPerson>
 }
 
@@ -80,6 +72,7 @@ export interface PoiTransport extends PoiBase {
   file: string
   order: number
   booking: TransportBooking
+  passengers: Array<string>
   segments: Array<TransportSegment>
 }
 

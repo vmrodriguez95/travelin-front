@@ -25,6 +25,7 @@
           "helpmsg": "El campo necesita de al menos 3 caracteres para empezar la búsqueda.",
           "type": "search",
           "api": "",
+          "queryAsValue": false,
           "required": true,
           "readonly": false
         },

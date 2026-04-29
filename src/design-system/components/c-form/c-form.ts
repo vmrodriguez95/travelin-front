@@ -17,6 +17,7 @@ import type {
   DateFormField,
   SelectFormField
 } from './c-form.types'
+import type { SelectOption } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
 import { repeat } from 'lit/directives/repeat.js'
@@ -67,6 +68,16 @@ export class CForm extends LitElement {
     })
   }
 
+  private _getFieldValue(field: BasicFormField) {
+    return field.value ?? field.fillValue ?? ''
+  }
+
+  private _isRenderableSectionEntry(
+    value: FormBlock[string]
+  ): value is BasicFormField | FormSection | FormArraySection {
+    return typeof value === 'object' && value !== null
+  }
+
   private _isValid() {
     let isValid = true
     
@@ -101,6 +112,8 @@ export class CForm extends LitElement {
       default:
         field.value = target.value
     }
+
+    this.requestUpdate()
   }
 
   private _addNewBlock(section: FormArraySection) {
@@ -134,6 +147,88 @@ export class CForm extends LitElement {
 
     return newName
   }
+
+  private _normalizeSelectOption(value: string): SelectOption {
+    return {
+      value,
+      label: value
+    }
+  }
+
+  private _dedupeSelectOptions(options: Array<SelectOption>) {
+    const seen = new Set<string>()
+
+    return options.filter((option) => {
+      const key = `${String(option.value)}::${option.label}`
+
+      if (!String(option.value) || seen.has(key)) {
+        return false
+      }
+
+      seen.add(key)
+      return true
+    })
+  }
+
+  private _collectValuesFromDependency(node: any, pathParts: Array<string>): string[] {
+    if (!node) return []
+
+    if (pathParts.length === 0) {
+      if (typeof node === 'string') {
+        return node ? [node] : []
+      }
+
+      if (typeof node === 'object' && 'value' in node) {
+        const field = node as BasicFormField
+        const value = this._getFieldValue(field)
+
+        return typeof value === 'string' && value ? [value] : []
+      }
+
+      return []
+    }
+
+    const [currentPart, ...rest] = pathParts
+
+    if (Array.isArray(node)) {
+      return node.flatMap((item) => this._collectValuesFromDependency(item, pathParts))
+    }
+
+    if (typeof node !== 'object') {
+      return []
+    }
+
+    if (currentPart in node) {
+      return this._collectValuesFromDependency(node[currentPart], rest)
+    }
+
+    if ('fields' in node) {
+      return this._collectValuesFromDependency(node.fields, pathParts)
+    }
+
+    return []
+  }
+
+  private _getDependencyOptions(field: BasicFormField) {
+    const dependsOn = field.dependsOn || []
+
+    if (!dependsOn.length) return []
+
+    const dependencyValues = dependsOn.flatMap((dependencyPath) => {
+      return this._collectValuesFromDependency(this.data.sections, dependencyPath.split('.'))
+    })
+
+    return this._dedupeSelectOptions(
+      dependencyValues.map((value) => this._normalizeSelectOption(value))
+    )
+  }
+
+  private _getSelectFieldOptions(field: SelectFormField) {
+    const declaredOptions = field.options || []
+    const dependencyOptions = this._getDependencyOptions(field)
+
+    return this._dedupeSelectOptions([...declaredOptions, ...dependencyOptions])
+  }
     
 
   private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
@@ -166,7 +261,7 @@ export class CForm extends LitElement {
             .a11y=${field.a11y}
             ?required=${field.required}
             ?readonly=${field.readonly}
-            value=${field.fillValue}
+            .value=${this._getFieldValue(field)}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-input>
         `
@@ -182,13 +277,14 @@ export class CForm extends LitElement {
             ?autofocus=${field.autofocus}
             ?required=${field.required}
             ?readonly=${field.readonly}
-            value=${field.fillValue || field.value}
+            .value=${this._getFieldValue(field)}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-textarea>
         `
 
       case 'select':
         const fieldSelect = field as SelectFormField
+        const selectOptions = this._getSelectFieldOptions(fieldSelect)
 
         return html`
           <e-select
@@ -198,12 +294,12 @@ export class CForm extends LitElement {
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
-            .options=${fieldSelect.options}
+            .options=${selectOptions}
             ?required=${fieldSelect.required}
             ?readonly=${fieldSelect.readonly}
-            value=${fieldSelect.fillValue}
+            .value=${this._getFieldValue(fieldSelect)}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldSelect)}
-          ></e-input>
+          ></e-select>
         `
 
       case 'file':
@@ -239,8 +335,10 @@ export class CForm extends LitElement {
             name=${name}
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
+            ?queryAsValue=${fieldSearch.queryAsValue}
             ?required=${fieldSearch.required}
             ?readonly=${fieldSearch.readonly}
+            .value=${this._getFieldValue(fieldSearch)}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch)}
           ></e-input-search>
         `
@@ -253,12 +351,12 @@ export class CForm extends LitElement {
             name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
-            value=${field.fillValue || field.value}
+            .value=${this._getFieldValue(field)}
             .a11y=${field.a11y}
             ?required=${field.required}
             ?readonly=${field.readonly}
             @change=${(ev: CustomEvent) => this._onChange(ev, field)}
-          ></e-input-search>
+          ></e-input-icon>
         `
 
       case 'calendar':
@@ -292,7 +390,7 @@ export class CForm extends LitElement {
             type=${fieldDate.type}
             min=${fieldDate.min}
             max=${fieldDate.max}
-            value=${fieldDate.fillValue || fieldDate.value}
+            .value=${this._getFieldValue(fieldDate)}
             ?required=${fieldDate.required}
             ?readonly=${fieldDate.readonly}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldDate)}
@@ -320,22 +418,21 @@ export class CForm extends LitElement {
             <p class="c-form__helpmsg">${section.sectionHelpmsg}</p>
           `)}
           ${when('fields' in section && fields.length > 0,
-            () => map(
+            () => repeat(
               fields,
+              (fieldBlock: FormBlock, index: number) => fieldBlock.randomId || `${breadcrumbs}-${index}`,
               (fieldBlock: FormBlock, index: number) => html`
               <div class="c-form__repeater__block">
                 <div class="c-form__repeater__fields c-form__repeater__fields--${section.grid}">
-                  ${repeat(
-                    Object.keys(fieldBlock),
-                    () => fieldBlock.randomId,
-                    (key: string) => {
-                      if (key !== 'randomId') {
-                        return this._printSection(fieldBlock[key], `${breadcrumbs}[${index}][${key}]`)
-                      }
+                  ${map(Object.keys(fieldBlock), (key: string) => {
+                    const entry = fieldBlock[key]
 
-                      return ''
+                    if (key !== 'randomId' && this._isRenderableSectionEntry(entry)) {
+                      return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`)
                     }
-                  )}
+
+                    return ''
+                  })}
                 </div>
                 <div class="c-form__repeater__actions">
                   ${when(arraySection.canRemove, () => html`
@@ -370,7 +467,13 @@ export class CForm extends LitElement {
           `)}
 
           ${map(Object.keys(fields), (key: string, index: number) => {
-            return this._printSection(fields[key], breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
+            const entry = fields[key]
+
+            if (this._isRenderableSectionEntry(entry)) {
+              return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
+            }
+
+            return ''
           })}
         </div>
       `

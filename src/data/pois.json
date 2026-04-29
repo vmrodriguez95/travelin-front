@@ -64,8 +64,19 @@
       "currency": "EUR"
     },
 
+    "passengers": [
+      {
+        "name": "Victor"
+      },
+      {
+        "name": "Estefanía"
+      }
+    ],
+
     "segments": [
       {
+        "duration": "6h 45m",
+        "transportNumber": "MU 710",
         "origin": {
           "code": "MAD",
           "name": "Adolfo Suárez Madrid-Barajas",
@@ -75,8 +86,7 @@
           "platform": "T1",
           "date": "2025-10-28T10:30:00.000"
         },
-        "duration": "6h 45m",
-        "destination": {
+        "destiny": {
           "code": "PVG",
           "name": "Shanghai Pudong International Airport",
           "city": "Shanghai",
@@ -85,19 +95,10 @@
           "platform": "T1",
           "date": "2025-10-29T06:20:00.000"
         },
-
         "operator": {
           "name": "China Eastern Airlines",
           "code": "MU"
         },
-
-        "transportNumber": "MU 710",
-
-        "vehicle": {
-          "type": "aircraft",
-          "model": "Airbus A330"
-        },
-
         "passengers": [
           {
             "name": "Victor",
@@ -110,6 +111,8 @@
         ]
       },
       {
+        "duration": "6h 55m",
+        "transportNumber": "MU 539",
         "origin": {
           "code": "PVG",
           "name": "Shanghai Pudong International Airport",
@@ -120,8 +123,7 @@
           "type": "airport",
           "date": "2025-10-29T14:55:00.000"
         },
-        "duration": "6h 55m",
-        "destination": {
+        "destiny": {
           "code": "HND",
           "name": "Haneda Airport",
           "city": "Tokio",
@@ -131,19 +133,10 @@
           "type": "airport",
           "date": "2025-10-29T18:30:00.000"
         },
-
         "operator": {
           "name": "China Eastern Airlines",
           "code": "MU"
         },
-
-        "transportNumber": "MU 539",
-
-        "vehicle": {
-          "type": "aircraft",
-          "model": "Airbus A330"
-        },
-
         "passengers": [
           {
             "name": "Victor",
