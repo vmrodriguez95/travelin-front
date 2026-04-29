@@ -9,7 +9,9 @@ export interface FormSchema {
   sections: Record<string, FormSection>
 }
 
-export interface FormBlock extends Record<string, BasicFormField | FormSection | FormArraySection> {}
+export interface FormBlock extends Record<string, BasicFormField | FormSection | FormArraySection | string | undefined> {
+  randomId?: string
+}
 
 export interface FormSection {
   id: string
@@ -73,6 +75,7 @@ export interface CalendarFormField extends BasicFormField {
 }
 export interface SearchFormField extends BasicFormField {
   api: string
+  queryAsValue: boolean
 }
 
 interface FileFieldInfo {

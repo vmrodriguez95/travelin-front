@@ -26,6 +26,7 @@
           "type": "search",
           "fieldSize": "full",
           "api": "",
+          "queryAsValue": false,
           "required": true,
           "readonly": false
         },
@@ -147,6 +148,7 @@
           "type": "search",
           "fieldSize": "full",
           "api": "",
+          "queryAsValue": false,
           "required": true,
           "readonly": false
         },

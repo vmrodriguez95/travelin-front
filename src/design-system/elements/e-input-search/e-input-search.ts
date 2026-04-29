@@ -33,6 +33,8 @@ export class EInputSearch extends LitElement {
 
   @property({ type: String, reflect: true }) displayValue: string = ''
 
+  @property({ type: Boolean }) queryAsValue = false
+
   @property({ type: Boolean }) required = false
 
   @property({ type: Boolean }) readonly = false
@@ -135,10 +137,20 @@ export class EInputSearch extends LitElement {
 
   private async _onSearch() {
     if (this.readonly) return
+
     const query = this._input.value
 
     this.value = ''
     this.displayValue = query
+
+    if (this.queryAsValue) {
+      this.value = query
+
+      this._validate()
+      this._internals.setFormValue(this.value)
+
+      this.dispatchEvent(new Event('change'))
+    }
 
     if (!this.api || query.length < 2) {
       this._searchResults = []
@@ -218,7 +230,6 @@ export class EInputSearch extends LitElement {
   }
 
   private _calculateValidity() {
-    // required
     if (this.required && !this.value) {
       return this._getRequiredValidy()
     }

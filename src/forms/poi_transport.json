@@ -115,9 +115,31 @@
         }
       }
     },
+    "passengers": {
+      "id": "poiTransportPassengers",
+      "legend": "Añade pasajeros al trayecto",
+      "canAdd": true,
+      "addLabel": "Añadir pasajero/a",
+      "canRemove": true,
+      "emptyMsg": "Aún no hay pasajeros/as añadidos/as.",
+      "grid": "stacked",
+      "schema": {
+        "name": {
+          "id": "poiTransportPassengersName",
+          "name": "name",
+          "label": "Nombre del pasajero",
+          "type": "search",
+          "fieldSize": "full",
+          "api": "",
+          "queryAsValue": true,
+          "required": false,
+          "readonly": false
+        }
+      }
+    },
     "segments": {
       "id": "poiTransportSegments",
-      "legend": "Tramos de la ruta",
+      "legend": "Tramos del trayecto",
       "helpmsg": "Puedes añadir varios tramos en caso de que haya, por ejemplo, una escala en un vuelo.",
       "canAdd": true,
       "addLabel": "Añadir tramo",
@@ -135,6 +157,7 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
+              "queryAsValue": false,
               "required": true,
               "readonly": false
             },
@@ -153,7 +176,7 @@
               "label": "¿Cuando sales?",
               "type": "date",
               "fieldSize": "full",
-              "required": false,
+              "required": true,
               "readonly": false
             }
           }
@@ -168,6 +191,7 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
+              "queryAsValue": false,
               "required": true,
               "readonly": false
             },
@@ -186,7 +210,7 @@
               "label": "¿Cuando llegas?",
               "type": "date",
               "fieldSize": "full",
-              "required": false,
+              "required": true,
               "readonly": false
             }
           }
@@ -204,7 +228,9 @@
               "id": "poiTransportPassengersName",
               "name": "name",
               "label": "Nombre del pasajero",
-              "type": "text",
+              "type": "select",
+              "options": [],
+              "dependsOn": ["passengers.name"],
               "required": false,
               "readonly": false
             },
@@ -338,6 +364,28 @@
         }
       }
     },
+    "passengers": {
+      "id": "poiTransportPassengers",
+      "legend": "Añade pasajeros al trayecto",
+      "canAdd": true,
+      "addLabel": "Añadir pasajero/a",
+      "canRemove": true,
+      "emptyMsg": "Aún no hay pasajeros/as añadidos/as.",
+      "grid": "stacked",
+      "schema": {
+        "name": {
+          "id": "poiTransportPassengersName",
+          "name": "name",
+          "label": "Nombre del pasajero",
+          "type": "search",
+          "fieldSize": "full",
+          "api": "",
+          "queryAsValue": true,
+          "required": false,
+          "readonly": false
+        }
+      }
+    },
     "segments": {
       "id": "poiTransportSegments",
       "legend": "Tramos de la ruta",
@@ -358,6 +406,7 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
+              "queryAsValue": false,
               "required": true,
               "readonly": false
             },
@@ -376,7 +425,7 @@
               "label": "¿Cuando sales?",
               "type": "date",
               "fieldSize": "full",
-              "required": false,
+              "required": true,
               "readonly": false
             }
           }
@@ -391,6 +440,7 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
+              "queryAsValue": false,
               "required": true,
               "readonly": false
             },
@@ -409,7 +459,7 @@
               "label": "¿Cuando llegas?",
               "type": "date",
               "fieldSize": "full",
-              "required": false,
+              "required": true,
               "readonly": false
             }
           }
@@ -424,15 +474,17 @@
           "grid": "stacked",
           "schema": {
             "name": {
-              "id": "poiTransportPassengersName",
+              "id": "poiTransportSegmentsPassengersName",
               "name": "name",
               "label": "Nombre del pasajero",
-              "type": "text",
+              "type": "select",
+              "options": [],
+              "dependsOn": ["passengers.name"],
               "required": false,
               "readonly": false
             },
             "seat": {
-              "id": "poiTransportPassengersSeat",
+              "id": "poiTransportSegmentsPassengersSeat",
               "name": "seat",
               "label": "Asiento/camarote",
               "type": "text",
