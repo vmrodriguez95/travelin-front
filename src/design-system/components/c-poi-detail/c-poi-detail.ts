@@ -6,7 +6,15 @@ import { map } from 'lit/directives/map.js'
 
 // Types
 import type { CSlider } from '../c-slider/c-slider'
-import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois'
+import type {
+  Poi,
+  PoiHotel,
+  PoiTransport,
+  Reminder,
+  Note,
+  TransportSegment,
+  TransportPerson
+} from '@ds/types/pois'
 
 // Utils
 import {
@@ -90,7 +98,7 @@ export class CPoiDetail extends LitElement {
     
     return html`
       <c-slider>
-        ${this._isAFlight() ? this._printFlightTicket(): ''}
+        ${when(this._isTypeOf('flight'), () => this.printFlightSegments(this._data as PoiTransport))}
 
         ${'notes' in this._data ? html`
           <div>
@@ -112,13 +120,39 @@ export class CPoiDetail extends LitElement {
     `
   }
 
-  private _isAFlight() {
-    return this._data && this._data.type === 'poi_transport' && 'typeTransport' in this._data && this._data.typeTransport === 'flight'
+  private _isTypeOf(type: string) {
+    return this._data && this._data.type === 'poi_transport' && 'typeTransport' in this._data && this._data.typeTransport === type
   }
 
-  private _printFlightTicket() {
-
+  private _getPassengerByName(passengers: TransportPerson[], name: string) {
+    return passengers.find((passenger) => passenger.name === name)
   }
+
+  private printFlightSegments(data: PoiTransport) {
+    return map(data.passengers,
+      (passenger: TransportPerson) => html`
+        <div>
+          ${map(data.segments, (segment: TransportSegment, index: number) => html`
+            ${when(index !== 0, () => html`
+              <div class="c-poi-detail__separator">Escala 2h 20m</div>
+            `)}
+            ${console.log(this._getPassengerByName(segment.passengers, passenger.name))}
+            <e-ticket .data=${segment} .passenger=${this._getPassengerByName(segment.passengers, passenger.name)} type="flight"></e-ticket>
+          `)}
+        </div>
+      `)
+  }
+
+  // private printFlightSegments(data: PoiTransport) {
+  //   return map(data.segments,
+  //     (segment: TransportSegment, index: number) => map(segment.passengers,
+  //       (passenger: TransportPerson) => html`
+  //         ${when(index !== 0, () => html`
+  //           <div class="c-poi-detail__separator">Escala 2h 20m</div>
+  //         `)}
+  //         <e-ticket .data=${segment} .passenger=${passenger} type="flight"></e-ticket>
+  //   `))
+  // }
 
   private _onClose() {
     this._resetData()

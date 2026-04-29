@@ -69,7 +69,7 @@ export class CCardTransport extends LitElement {
         <div class="c-card-transport__content">
           ${map(this.data.segments, (item: TransportSegment) => html`
             <p class="c-card-transport__segment">
-              <span>${item.origin.code} ${getTimeFrom(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${item.destination.code} ${getTimeFrom(item.destination.date)}</span>
+              <span>${item.origin.code} ${getTimeFrom(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${item.destiny.code} ${getTimeFrom(item.destiny.date)}</span>
             </p>
           `)}
         </div>

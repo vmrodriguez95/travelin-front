@@ -72,7 +72,7 @@ export interface PoiTransport extends PoiBase {
   file: string
   order: number
   booking: TransportBooking
-  passengers: Array<string>
+  passengers: Array<TransportPerson>
   segments: Array<TransportSegment>
 }
 

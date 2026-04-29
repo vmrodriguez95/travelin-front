@@ -378,6 +378,7 @@ export class CForm extends LitElement {
         `
       case 'date':
       case 'time':
+      case 'datetime-local':
         const fieldDate = field as DateFormField
 
         return html`
