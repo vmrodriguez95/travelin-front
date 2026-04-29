@@ -370,6 +370,8 @@ export class CForm extends LitElement {
             label=${fieldCalendar.label}
             type=${fieldCalendar.type}
             helpmsg=${fieldCalendar.helpmsg}
+            min=${fieldCalendar.min || ''}
+            max=${fieldCalendar.max || ''}
             ?required=${fieldCalendar.required}
             ?readonly=${fieldCalendar.readonly}
             .returnedValues=${fieldCalendar.returnedValues}

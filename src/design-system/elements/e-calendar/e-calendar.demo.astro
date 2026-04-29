@@ -1,7 +1,17 @@
 ---
-const { id, name, label, start, end, helpmsg } = Astro.props
+const { id, name, label, start, end, min, max, helpmsg } = Astro.props
 ---
 
 <section class="u-bg--dark">
-  <e-calendar data-component id={id} name={name} label={label} start={start} end={end} helpmsg={helpmsg} />
+  <e-calendar
+    data-component
+    id={id}
+    name={name}
+    label={label}
+    start={start}
+    end={end}
+    min={min}
+    max={max}
+    helpmsg={helpmsg}
+  />
 </section>
