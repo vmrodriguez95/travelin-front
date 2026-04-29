@@ -72,6 +72,8 @@ export interface DateFormField extends BasicFormField {
 
 export interface CalendarFormField extends BasicFormField {
   returnedValues: Array<string>
+  min?: string
+  max?: string
 }
 export interface SearchFormField extends BasicFormField {
   api: string

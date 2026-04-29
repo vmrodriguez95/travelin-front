@@ -30,6 +30,18 @@ export const config = {
       type: 'text',
       default: ''
     },
+    min: {
+      name: 'min',
+      label: 'Fecha minima',
+      type: 'text',
+      default: ''
+    },
+    max: {
+      name: 'max',
+      label: 'Fecha maxima',
+      type: 'text',
+      default: ''
+    },
     readonly: {
       name: 'readonly',
       label: 'Solo lectura',

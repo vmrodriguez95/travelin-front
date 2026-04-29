@@ -68,7 +68,7 @@ export function isToday(date: Temporal.PlainDate | string) {
   return compareDates(date, now) === 0
 }
 
-export function getDateFrom(date: string | Temporal.PlainDate) {
+export function getDateFrom(date: string | Temporal.PlainDate | { day: number; month: number; year: number }) {
   return Temporal.PlainDate.from(date)
 }
 

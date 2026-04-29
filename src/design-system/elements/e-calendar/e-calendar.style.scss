@@ -81,6 +81,15 @@
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-radius 0.2s ease-in-out, margin 0.2s ease-in-out;
     
+    &:disabled {
+      background-color: rgba(var(--color-gray), 0.7);
+      cursor: not-allowed;
+
+      &:hover {
+        transform: scale(1);
+      }
+    }
+
     &:hover {
       transform: scale(1.1);
     }

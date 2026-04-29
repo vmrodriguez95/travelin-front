@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
@@ -9,8 +9,6 @@ import {
   getWeekdayInitials,
   getMonthDays,
   getMonths,
-  getMonth,
-  getYear,
   isToday,
   getDateFrom,
   compareDates
@@ -39,6 +37,10 @@ export class ECalendar extends LitElement {
   @property({ type: String }) start = ''
 
   @property({ type: String }) end = ''
+
+  @property({ type: String }) min = ''
+
+  @property({ type: String }) max = ''
 
   @property({ type: Array }) returnedValues = []
 
@@ -78,6 +80,16 @@ export class ECalendar extends LitElement {
     super.connectedCallback()
   }
 
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (
+      changedProperties.has('start')
+      || changedProperties.has('min')
+      || changedProperties.has('max')
+    ) {
+      this._syncCalendarView()
+    }
+  }
+
   render() {
     const inputClasses = classMap({
       'e-calendar': true,
@@ -97,22 +109,28 @@ export class ECalendar extends LitElement {
             <span class="e-calendar__counter">${this._getDaysCounter()}</span>
             <div class="e-calendar__actions">
               ${when(!this.readonly && !this._isFirstDate(), () => html`
-                <button class="e-calendar__action" ?disabled=${this.readonly} @click=${this._onPreviousDate}>
+                <button class="e-calendar__action" type="button" ?disabled=${this.readonly} @click=${this._onPreviousDate}>
                   <e-icon icon="arrow-left" size="l"></e-icon>
                 </button>
               `)}
               <select id="month" class="e-calendar__choise" ?disabled=${this.readonly} @change=${this._onMonthChange}>
                 ${map(this._months, (month, index) => html`
-                  <option value=${index + 1} ?selected=${index + 1 === this._actualMonth}>${month}</option>
+                  <option
+                    value=${index + 1}
+                    ?selected=${index + 1 === this._actualMonth}
+                    ?disabled=${this._isMonthDisabled(index + 1, this._actualYear)}
+                  >
+                    ${month}
+                  </option>
                 `)}
               </select>
               <select id="year" class="e-calendar__choise" ?disabled=${this.readonly} @change=${this._onYearChange}>
                 ${map(this._years, (year) => html`
-                  <option value=${year} ?selected=${year === this._actualYear}>${year}</option>
+                  <option value=${year} ?selected=${year === this._actualYear} ?disabled=${this._isYearDisabled(year)}>${year}</option>
                 `)}
               </select>
               ${when(!this.readonly && !this._isLastDate(), () => html`
-                <button class="e-calendar__action" ?disabled=${this.readonly} @click=${this._onNextDate}>
+                <button class="e-calendar__action" type="button" ?disabled=${this.readonly} @click=${this._onNextDate}>
                   <e-icon icon="arrow-right" size="l"></e-icon>
                 </button>
               `)}
@@ -123,7 +141,12 @@ export class ECalendar extends LitElement {
               <p class="e-calendar__initial">${day}</p>
             `)}
             ${map(this._monthDays, (day) => when(day, () => html`
-              <button class=${this._getDayClasses(day!)} ?disabled=${this.readonly} @click=${() => this._onChange(day!)}>
+              <button
+                class=${this._getDayClasses(day!)}
+                type="button"
+                ?disabled=${this.readonly || this._isDayDisabled(day!)}
+                @click=${() => this._onChange(day!)}
+              >
                 ${day}
               </button>
             `, () => html`
@@ -143,16 +166,123 @@ export class ECalendar extends LitElement {
 
   // General
   private _initialize() {
-    this._actualMonth = getMonth(this.start)
-    this._actualYear = getYear(this.start)
+    const initialDate = this._getInitialViewDate()
+
+    this._actualMonth = initialDate.month
+    this._actualYear = initialDate.year
+  }
+
+  private _syncCalendarView() {
+    this._years = this._getYears()
+
+    const initialDate = this._getInitialViewDate()
+    this._goToMonth(initialDate.month, initialDate.year)
+  }
+
+  private _getMinDate() {
+    return this.min ? getDateFrom(this.min) : null
+  }
+
+  private _getMaxDate() {
+    return this.max ? getDateFrom(this.max) : null
+  }
+
+  private _getInitialViewDate() {
+    const referenceDate = this.start || this.min || Temporal.Now.plainDateISO().toString()
+    const minDate = this._getMinDate()
+    const maxDate = this._getMaxDate()
+    let initialDate = getDateFrom(referenceDate)
+
+    if (minDate && compareDates(initialDate, minDate) === -1) {
+      initialDate = minDate
+    }
+
+    if (maxDate && compareDates(initialDate, maxDate) === 1) {
+      initialDate = maxDate
+    }
+
+    return initialDate
+  }
+
+  private _goToMonth(month: number, year: number) {
+    this._monthDays = getMonthDays(month, year)
+    this._actualMonth = month
+    this._actualYear = year
+  }
+
+  private _getMonthStart(month: number, year: number) {
+    return getDateFrom({ day: 1, month, year })
+  }
+
+  private _getMonthEnd(month: number, year: number) {
+    return getDateFrom({ day: 1, month, year }).with({ day: getDateFrom({ day: 1, month, year }).daysInMonth })
+  }
+
+  private _isMonthDisabled(month: number, year: number) {
+    const minDate = this._getMinDate()
+    const maxDate = this._getMaxDate()
+    const monthStart = this._getMonthStart(month, year)
+    const monthEnd = this._getMonthEnd(month, year)
+
+    if (minDate && compareDates(monthEnd, minDate) === -1) {
+      return true
+    }
+
+    if (maxDate && compareDates(monthStart, maxDate) === 1) {
+      return true
+    }
+
+    return false
+  }
+
+  private _isYearDisabled(year: number) {
+    return Array.from({ length: 12 }, (_, index) => index + 1).every((month) => {
+      return this._isMonthDisabled(month, year)
+    })
+  }
+
+  private _getNearestAvailableMonth(year: number, preferredMonth: number) {
+    const availableMonths = Array.from({ length: 12 }, (_, index) => index + 1).filter((month) => {
+      return !this._isMonthDisabled(month, year)
+    })
+
+    if (!availableMonths.length) return preferredMonth
+
+    return availableMonths.reduce((bestMonth, month) => {
+      const currentDistance = Math.abs(month - preferredMonth)
+      const bestDistance = Math.abs(bestMonth - preferredMonth)
+
+      return currentDistance < bestDistance ? month : bestMonth
+    }, availableMonths[0])
+  }
+
+  private _isDayDisabled(day: number) {
+    const actualDate = getDateFrom({ day, month: this._actualMonth, year: this._actualYear })
+    const minDate = this._getMinDate()
+    const maxDate = this._getMaxDate()
+
+    if (minDate && compareDates(actualDate, minDate) === -1) {
+      return true
+    }
+
+    if (maxDate && compareDates(actualDate, maxDate) === 1) {
+      return true
+    }
+
+    return false
   }
 
   private _isFirstDate() {
-    return this._actualMonth === 1 && this._actualYear === this._years[0]
+    return this._actualMonth === this._getNearestAvailableMonth(this._actualYear, 1)
+      && this._actualYear === this._years.find((year) => !this._isYearDisabled(year))
   }
 
   private _isLastDate() {
-    return this._actualMonth === 12 && this._actualYear === this._years[this._years.length - 1]
+    const availableYears = this._years.filter((year) => !this._isYearDisabled(year))
+    const lastAvailableYear = availableYears[availableYears.length - 1]
+
+    return this._actualMonth === this._getNearestAvailableMonth(this._actualYear, 12)
+      && this._actualYear === lastAvailableYear
   }
 
   private _isSingle(day: number) {
@@ -190,10 +320,28 @@ export class ECalendar extends LitElement {
 
   private _getYears() {
     const date = Temporal.Now.plainDateISO()
-    const limitOfYears = 10
-    const startYear = date.year - 3
+    const defaultStartYear = date.year - 3
+    const defaultEndYear = defaultStartYear + 9
+    const minDate = this._getMinDate()
+    const maxDate = this._getMaxDate()
+    const initialDate = this._getInitialViewDate()
+    let startYear = Math.min(defaultStartYear, initialDate.year)
+    let endYear = Math.max(defaultEndYear, initialDate.year)
 
-    return Array.from({ length: limitOfYears }, (_, i) => {
+    if (minDate && maxDate) {
+      startYear = minDate.year
+      endYear = maxDate.year
+    } else if (minDate) {
+      startYear = minDate.year
+      endYear = Math.max(defaultEndYear, startYear + 9, initialDate.year)
+    } else if (maxDate) {
+      endYear = maxDate.year
+      startYear = Math.min(defaultStartYear, endYear - 9, initialDate.year)
+    }
+
+    const length = Math.max(endYear - startYear + 1, 1)
+
+    return Array.from({ length }, (_, i) => {
       return startYear + i
     })
   }
@@ -224,9 +372,9 @@ export class ECalendar extends LitElement {
       newMonth--
     }
 
-    this._monthDays = getMonthDays(newMonth, newYear)
-    this._actualMonth = newMonth
-    this._actualYear = newYear
+    if (this._isMonthDisabled(newMonth, newYear)) return
+
+    this._goToMonth(newMonth, newYear)
   }
 
   private _onNextDate() {
@@ -240,30 +388,35 @@ export class ECalendar extends LitElement {
       newMonth++
     }
 
-    this._monthDays = getMonthDays(newMonth, newYear)
-    this._actualMonth = newMonth
-    this._actualYear = newYear
+    if (this._isMonthDisabled(newMonth, newYear)) return
+
+    this._goToMonth(newMonth, newYear)
   }
 
   private _onMonthChange(e: Event) {
     const target = e.currentTarget as HTMLSelectElement
     const newMonth = parseInt(target.value)
 
-    this._monthDays = getMonthDays(newMonth, this._actualYear)
-    this._actualMonth = newMonth
+    if (this._isMonthDisabled(newMonth, this._actualYear)) return
+
+    this._goToMonth(newMonth, this._actualYear)
   }
 
   private _onYearChange(e: Event) {
     const target = e.currentTarget as HTMLSelectElement
     const newYear = parseInt(target.value)
+    const newMonth = this._getNearestAvailableMonth(newYear, this._actualMonth)
 
-    this._monthDays = getMonthDays(this._actualMonth, newYear)
-    this._actualYear = newYear
+    if (this._isYearDisabled(newYear) || this._isMonthDisabled(newMonth, newYear)) return
+
+    this._goToMonth(newMonth, newYear)
   }
 
   private _onChange(day: number) {
     const formData = new FormData()
     const newDate = getDateFrom({ day, month: this._actualMonth, year: this._actualYear }).toString()
+
+    if (this._isDayDisabled(day)) return
 
     if (!this.start && !this.end) {
       this.start = newDate
