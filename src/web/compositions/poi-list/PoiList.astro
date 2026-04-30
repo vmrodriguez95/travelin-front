@@ -81,8 +81,8 @@ function formatDate(dateStart: string, dateEnd: string) {
   </div>
   <div class="u-grid-main--main">
     <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/thailand" animated></c-header>
-    <section class="u-grid u-padding--top--xl">
-      <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal">
+    <section class="u-grid u-padding--top--xl ti-poi-list">
+      <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal ti-poi-list__dates">
         {Array.from({ length: 15 }, (_, i) => (
           <a href="#" title={`Ir al día ${i + 1}`} class="u-date">
             <p class="u-date__date">{12 + i} May</p>
@@ -90,8 +90,8 @@ function formatDate(dateStart: string, dateEnd: string) {
           </a>
         ))}
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-flex u-scroll--horizontal u-margin--bottom--l u-padding--vertical--s">
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__panel">
+        <div class="u-flex u-scroll--horizontal u-padding--vertical--s ti-poi-list__toolbar">
           {buttons.map((button) => (
             <a href="#" class="u-link-icon">
               <e-icon icon={button.icon} size="m"></e-icon>
@@ -99,7 +99,7 @@ function formatDate(dateStart: string, dateEnd: string) {
             </a>
           ))}
         </div>
-        <div class="u-scroll--vertical">
+        <div class="u-scroll--vertical ti-poi-list__cards">
           {pois.map((poi: any) => (
             poi.type == 'poi_transport' ? (
               <c-card-transport class="u-margin--bottom--m" icon={poi.typeTransport} data={JSON.stringify(poi)} channel={channel}>
@@ -141,9 +141,9 @@ function formatDate(dateStart: string, dateEnd: string) {
           ))}
         </div>
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-pos--relative">
-          <c-map latitude="40.7127837" longitude="-74.0059413" api="/api/places.json" showSearch channel={channel}></c-map>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__map-column">
+        <div class="u-pos--relative ti-poi-list__map">
+          <c-map latitude="40.7127837" longitude="-74.0059413" api="/api/places.json" showSearch fullheight="auto" channel={channel}></c-map>
           <c-poi-detail channel={channel} close="Cerrar" />
           <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
         </div>

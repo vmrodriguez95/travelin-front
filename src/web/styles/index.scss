@@ -9,6 +9,9 @@
 @use '../components/toast/toast.style.scss';
 @use '../components/config/config.style.scss';
 
+// Compositions styles
+@use '../compositions/poi-list/poi-list.style.scss';
+
 // Utils styles
 @use './utils/border.scss';
 @use './utils/icon.scss';
