@@ -52,7 +52,6 @@ export class CPoiDetail extends LitElement {
   connectedCallback(): void {
     super.connectedCallback()
 
-    this._activeCalcHeight()
     this._connectToChannel()
   }
 
@@ -80,7 +79,7 @@ export class CPoiDetail extends LitElement {
     })
 
     return html`
-      <div class=${classes} style="height: ${this._data !== null ? this._height : 0}px">
+      <div class=${classes}>
         <div class="c-poi-detail__actions">
           <button class="c-poi-detail__close" type="button" @click=${this._onClose.bind(this)} aria-label=${this.close}>
             <e-icon icon="close" size="l"></e-icon>
@@ -136,23 +135,11 @@ export class CPoiDetail extends LitElement {
             ${when(index !== 0, () => html`
               <div class="c-poi-detail__separator">Escala 2h 20m</div>
             `)}
-            ${console.log(this._getPassengerByName(segment.passengers, passenger.name))}
             <e-ticket .data=${segment} .passenger=${this._getPassengerByName(segment.passengers, passenger.name)} type="flight"></e-ticket>
           `)}
         </div>
       `)
   }
-
-  // private printFlightSegments(data: PoiTransport) {
-  //   return map(data.segments,
-  //     (segment: TransportSegment, index: number) => map(segment.passengers,
-  //       (passenger: TransportPerson) => html`
-  //         ${when(index !== 0, () => html`
-  //           <div class="c-poi-detail__separator">Escala 2h 20m</div>
-  //         `)}
-  //         <e-ticket .data=${segment} .passenger=${passenger} type="flight"></e-ticket>
-  //   `))
-  // }
 
   private _onClose() {
     this._resetData()
@@ -161,30 +148,6 @@ export class CPoiDetail extends LitElement {
         source: this
       }
     }))
-  }
-
-  private _activeCalcHeight() {
-    this._container.then((container: HTMLElement) => {
-      this._calcHeight(container)
-      this._calcHeightOnResize(container)
-    })
-  }
-
-  private _setHeight(height: number) {
-    this._height = height
-  }
-
-  private _calcHeight(container: HTMLElement) {
-    // Altura de la ventana - altura de la cabecera
-    const height = window.innerHeight - container.offsetTop - 40 - this.gap
-
-    this._setHeight(height)
-  }
-
-  private _calcHeightOnResize(container: HTMLElement) {
-    window.addEventListener('resize', () => {
-      this._calcHeight(container)
-    })
   }
 
   private _resetData() {

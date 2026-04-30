@@ -14,6 +14,7 @@ import {
   POI_SELECT_EVENT,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
+import { scrollToPageEnd } from '@ds/utils/action.utils'
 
 // Styles
 import styles from './c-card-poi.style.scss?inline'
@@ -120,6 +121,8 @@ export class CCardPoi extends LitElement {
         view: isResumeViewType(this.type) ? 'resume' : 'detail'
       }
     }))
+
+    scrollToPageEnd()
   }
 
   private _removeFromDOM() {

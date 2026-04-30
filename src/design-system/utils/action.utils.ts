@@ -8,3 +8,12 @@ export function debounce<T extends (...args: any[]) => void>(callback: T, wait =
     }, wait)
   }
 }
+
+export function scrollToPageEnd() {
+  requestAnimationFrame(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    })
+  })
+}

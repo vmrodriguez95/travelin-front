@@ -17,10 +17,10 @@
   
   &--main {
     grid-area: main;
-    padding-bottom: space(12);
+    padding-bottom: space(1);
     
     @media (min-width: $breakpoint-lg) {
-      padding-bottom: space(4);
+      padding-bottom: space(2);
     }
   }
 

@@ -1,0 +1,39 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+
+.ti-poi-list {
+  &__panel,
+  &__map-column,
+  &__map,
+  &__cards {
+    min-height: 0;
+  }
+
+  &__toolbar {
+    flex: 0 0 auto;
+  }
+
+  &__cards {
+    padding-right: space(1);
+    box-sizing: border-box;
+  }
+
+  &__map {
+    height: 100%;
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    &__panel,
+    &__map-column {
+      position: sticky;
+      top: space(2);
+      height: calc(100dvh - #{space(4)});
+    }
+
+    &__panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: space(2);
+    }
+  }
+}

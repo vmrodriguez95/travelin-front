@@ -8,6 +8,7 @@ import type { PoiTransport, TransportSegment } from '@ds/types/pois'
 
 // Utils
 import { getTimeFrom } from '@ds/utils/date.utils'
+import { scrollToPageEnd } from '@ds/utils/action.utils'
 import {
   getPoiChannel,
   POI_CLEAR_EVENT,
@@ -97,6 +98,8 @@ export class CCardTransport extends LitElement {
         view: 'detail'
       }
     }))
+
+    scrollToPageEnd()
   }
 
   private _removeFromDOM() {
