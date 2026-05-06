@@ -31,6 +31,52 @@ const buttons = [
 const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
 const pois = (Object.values(poisGlob)[0] as any)?.default
 const channel = 'poi-list'
+const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
+
+const markers = pois.flatMap((poi: any) => {
+  if (Array.isArray(poi.coordinates)) {
+    return [{
+      id: poi.id,
+      poiId: poi.id,
+      label: poi.name,
+      type: poi.type,
+      coordinates: poi.coordinates,
+      icon: poi.icon || 'location'
+    }]
+  }
+
+  if (poi.type === 'poi_transport' && Array.isArray(poi.segments)) {
+    return poi.segments.flatMap((segment: any, index: number) => {
+      const segmentMarkers = []
+
+      if (Array.isArray(segment.origin?.coordinates)) {
+        segmentMarkers.push({
+          id: `${poi.id}-origin-${index}`,
+          poiId: poi.id,
+          label: `${poi.name} - ${segment.origin.code}`,
+          type: poi.type,
+          coordinates: segment.origin.coordinates,
+          icon: poi.typeTransport || 'transport'
+        })
+      }
+
+      if (Array.isArray(segment.destiny?.coordinates)) {
+        segmentMarkers.push({
+          id: `${poi.id}-destiny-${index}`,
+          poiId: poi.id,
+          label: `${poi.name} - ${segment.destiny.code}`,
+          type: poi.type,
+          coordinates: segment.destiny.coordinates,
+          icon: poi.typeTransport || 'transport'
+        })
+      }
+
+      return segmentMarkers
+    })
+  }
+
+  return []
+})
 
 function formatDate(dateStart: string, dateEnd: string) {
   const start = new Date(dateStart)
@@ -91,7 +137,7 @@ function formatDate(dateStart: string, dateEnd: string) {
         ))}
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__panel">
-        <div class="u-flex u-scroll--horizontal u-padding--vertical--s ti-poi-list__toolbar">
+        <div class="u-flex u-scroll--horizontal ti-poi-list__toolbar">
           {buttons.map((button) => (
             <a href="#" class="u-link-icon">
               <e-icon icon={button.icon} size="m"></e-icon>
@@ -143,7 +189,7 @@ function formatDate(dateStart: string, dateEnd: string) {
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__map-column">
         <div class="u-pos--relative ti-poi-list__map">
-          <c-map latitude="40.7127837" longitude="-74.0059413" api="/api/places.json" showSearch fullheight="auto" channel={channel}></c-map>
+          <c-map apiKey={googleMapsApiKey} latitude={markers[1].coordinates[1]} longitude={markers[1].coordinates[0]} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
           <c-poi-detail channel={channel} close="Cerrar" />
           <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
         </div>

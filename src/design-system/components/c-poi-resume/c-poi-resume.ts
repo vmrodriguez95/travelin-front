@@ -56,20 +56,22 @@ export class CPoiResume extends LitElement {
 
     return html`
       <div class="c-poi-resume">
-        <div class="c-poi-resume__head">
-          <img class="c-poi-resume__img" src=${this._data?.image} alt="Picture about ${this._data?.name}" width="64" height="64" loading="lazy" />
-        </div>
-        <div class="c-poi-resume__details">
-          <div class="c-poi-resume__column">
-            ${this.getAddress()}
+        <div class="c-poi-resume__wrapper">
+          <div class="c-poi-resume__head">
+            <img class="c-poi-resume__img" src=${this._data?.image} alt="Picture about ${this._data?.name}" width="64" height="64" loading="lazy" />
           </div>
-          <div class="c-poi-resume__column">
-            <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>Info</e-button>
-            <button class="c-poi-resume__close" type="button" @click=${this._onClose} aria-label=${this.close}>
-              <e-icon icon="close" size="m"></e-icon>
-            </button>
+          <div class="c-poi-resume__details">
+            <div class="c-poi-resume__column">
+              ${this.getAddress()}
+            </div>
+            <div class="c-poi-resume__column">
+              <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>Info</e-button>
+            </div>
           </div>
         </div>
+        <button class="c-poi-resume__close" type="button" @click=${this._onClose} aria-label=${this.close}>
+          <e-icon icon="close" size="m"></e-icon>
+        </button>
       </div>
     `
   }

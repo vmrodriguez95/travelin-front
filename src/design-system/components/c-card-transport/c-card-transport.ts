@@ -12,7 +12,10 @@ import { scrollToPageEnd } from '@ds/utils/action.utils'
 import {
   getPoiChannel,
   POI_CLEAR_EVENT,
+  POI_HOVER_CLEAR_EVENT,
+  POI_HOVER_EVENT,
   POI_SELECT_EVENT,
+  type PoiHoverEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
@@ -63,7 +66,17 @@ export class CCardTransport extends LitElement {
     })
 
     return html`
-      <div class=${classes} role="button" tabindex="0" @click=${this._onClick} @keydown=${this._onKeydown}>
+      <div
+        class=${classes}
+        role="button"
+        tabindex="0"
+        @click=${this._onClick}
+        @keydown=${this._onKeydown}
+        @mouseenter=${this._onHoverStart}
+        @mouseleave=${this._onHoverEnd}
+        @focus=${this._onHoverStart}
+        @blur=${this._onHoverEnd}
+      >
         <div class="c-card-transport__head">
           <e-icon class="c-card-transport__icon" icon=${this.icon} size="xl"></e-icon>
         </div>
@@ -100,6 +113,27 @@ export class CCardTransport extends LitElement {
     }))
 
     scrollToPageEnd()
+  }
+
+  private _onHoverStart = () => {
+    if (!this._channelBus) return
+
+    this._channelBus.dispatchEvent(new CustomEvent<PoiHoverEventDetail>(POI_HOVER_EVENT, {
+      detail: {
+        data: this.data,
+        source: this
+      }
+    }))
+  }
+
+  private _onHoverEnd = () => {
+    if (!this._channelBus) return
+
+    this._channelBus.dispatchEvent(new CustomEvent(POI_HOVER_CLEAR_EVENT, {
+      detail: {
+        source: this
+      }
+    }))
   }
 
   private _removeFromDOM() {

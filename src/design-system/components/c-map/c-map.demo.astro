@@ -1,5 +1,6 @@
 ---
-const { id, latitude, longitude } = Astro.props
+const { id, latitude, longitude, markers, apiKey } = Astro.props
+const googleMapsApiKey = apiKey || import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 ---
 
-<c-map data-component id={id} latitude={latitude} longitude={longitude}></c-map>
+<c-map data-component id={id} apiKey={googleMapsApiKey} latitude={latitude} longitude={longitude} markers={markers}></c-map>

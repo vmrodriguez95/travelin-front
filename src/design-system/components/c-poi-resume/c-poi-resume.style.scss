@@ -5,15 +5,34 @@
 .c-poi-resume {
   display: flex;
   flex-wrap: wrap;
-  gap: space(2);
+  align-items: center;
   position: absolute;
   bottom: space(2);
   right: space(2);
   left: space(2);
-  border-radius: $border-radius-m;
-  box-sizing: border-box;
-  background-color: rgba(var(--color-background--secondary), 1);
-  padding: space(2);
+  gap: space(2);
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 0 auto;
+    gap: space(2);
+    border-radius: $border-radius-m;
+    box-sizing: border-box;
+    background-color: rgba(var(--color-background--secondary), 1);
+    padding: space(2);
+    box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  }
+
+  &__close {
+    height: space(5);
+    width: space(5);
+    background-color: rgba(var(--color-background--secondary), 1);
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+    box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  }
 
   &__head {
     flex: 0 0 auto;
@@ -56,11 +75,5 @@
     line-height: 1;
     color: rgba(var(--color-text), 0.7);
     margin: 0;
-  }
-
-  &__close {
-    background: none;
-    border: none;
-    cursor: pointer;
   }
 }
