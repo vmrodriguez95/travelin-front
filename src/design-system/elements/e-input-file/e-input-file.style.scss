@@ -37,10 +37,11 @@
     width: 100%;
     font-family: inherit;
     text-align: left;
-    background-color: rgba(var(--color-gray--light), 1);
     padding: space(1) space(5) space(1) space(2);
     box-sizing: border-box;
-    border: 0;
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background), 1);
+    border: 1px solid rgba(var(--color-gray--light), 1);
     border-radius: $border-radius-s;
     cursor: pointer;
   }
