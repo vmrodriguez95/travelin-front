@@ -1,7 +1,6 @@
 import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
-import { when } from 'lit/directives/when.js'
 
 // Types
 import type { MapMarker } from '@ds/types/pois'
@@ -23,25 +22,6 @@ import styles from './c-map.style.scss?inline'
 
 const DEFAULT_ZOOM = 12
 const SELECTED_ZOOM = 15
-const DEFAULT_MAP_ID = 'DEMO_MAP_ID'
-const DEFAULT_MARKER_STYLE = {
-  background: '#323232',
-  borderColor: '#323232',
-  iconColor: '#FFFFFF',
-  scale: 1
-}
-const HOVER_MARKER_STYLE = {
-  background: '#FC6D20',
-  borderColor: '#FC6D20',
-  iconColor: '#FFFFFF',
-  scale: 1.15
-}
-const SELECTED_MARKER_STYLE = {
-  background: '#FC6D20',
-  borderColor: '#FC6D20',
-  iconColor: '#FFFFFF',
-  scale: 1.2
-}
 
 @customElement('c-map')
 export class CMap extends LitElement {
@@ -60,7 +40,7 @@ export class CMap extends LitElement {
 
   @property({ type: String }) apiKey = ''
 
-  @property({ type: String }) mapId = DEFAULT_MAP_ID
+  @property({ type: String }) mapId = 'DEMO_MAP_ID'
 
   @property({ type: Array }) markers: Array<MapMarker> = []
 
@@ -84,9 +64,30 @@ export class CMap extends LitElement {
 
   _resizeHandler: (() => void) | null = null
 
-  _selectedPoiId = ''
+  _selectedIdPoi = ''
 
-  _hoveredPoiId = ''
+  _hoveredIdPoi = ''
+
+  _markerStyles = {
+    default: {
+      background: '#323232',
+      borderColor: '#323232',
+      iconColor: '#FFFFFF',
+      scale: 1
+    },
+    hovered: {
+      background: '#FC6D20',
+      borderColor: '#FC6D20',
+      iconColor: '#FFFFFF',
+      scale: 1.15
+    },
+    selected: {
+      background: '#FC6D20',
+      borderColor: '#FC6D20',
+      iconColor: '#FFFFFF',
+      scale: 1.2
+    }
+  }
 
   connectedCallback(): void {
     super.connectedCallback()
@@ -214,7 +215,7 @@ export class CMap extends LitElement {
     this._map = new Map(container, {
       center: this._getMapCenter(),
       zoom: DEFAULT_ZOOM,
-      mapId: this.mapId || DEFAULT_MAP_ID,
+      mapId: this.mapId,
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: false
@@ -258,8 +259,8 @@ export class CMap extends LitElement {
 
     this._map.fitBounds(bounds)
 
-    if (this._selectedPoiId) {
-      this._focusPoiMarkers(this._selectedPoiId)
+    if (this._selectedIdPoi) {
+      this._focusPoiMarkers(this._selectedIdPoi)
     }
   }
 
@@ -268,15 +269,15 @@ export class CMap extends LitElement {
   }
 
   private _getMarkerStyle(marker: MapMarker) {
-    if (this._selectedPoiId && marker.poiId === this._selectedPoiId) {
-      return SELECTED_MARKER_STYLE
+    if (this._selectedIdPoi && marker.idPoi === this._selectedIdPoi) {
+      return this._markerStyles.selected
     }
 
-    if (this._hoveredPoiId && marker.poiId === this._hoveredPoiId) {
-      return HOVER_MARKER_STYLE
+    if (this._hoveredIdPoi && marker.idPoi === this._hoveredIdPoi) {
+      return this._markerStyles.hovered
     }
 
-    return DEFAULT_MARKER_STYLE
+    return this._markerStyles.default
   }
 
   private _refreshMarkerStyles() {
@@ -308,7 +309,7 @@ export class CMap extends LitElement {
     wrapper.style.border = `2px solid ${markerStyle.borderColor}`
     wrapper.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.22)'
     wrapper.style.transition = 'transform 0.2s ease'
-    wrapper.style.transform = this._selectedPoiId && marker.poiId === this._selectedPoiId ? 'translateY(-2px)' : 'translateY(0)'
+    wrapper.style.transform = this._selectedIdPoi && marker.idPoi === this._selectedIdPoi ? 'translateY(-2px)' : 'translateY(0)'
 
     icon.style.width = `${size}px`
     icon.style.height = `${size}px`
@@ -347,16 +348,18 @@ export class CMap extends LitElement {
     this._syncMarkers()
   }
 
-  private _focusPoiMarkers(poiId: string) {
+  private _focusPoiMarkers(idPoi: string) {
     if (!this._map || !this.markers.length) return
 
-    const selectedMarkers = this.markers.filter((marker) => marker.poiId === poiId || marker.id === poiId)
+    const selectedMarkers = this.markers.filter((marker) => marker.idPoi === idPoi || marker.id === idPoi)
 
     if (!selectedMarkers.length) return
 
     if (selectedMarkers.length === 1) {
       this._map.panTo(this._getMarkerPosition(selectedMarkers[0]))
-      this._map.setZoom(SELECTED_ZOOM)
+      this._google.maps.event.addListenerOnce(this._map, 'idle', () => {
+        this._map.setZoom(SELECTED_ZOOM)
+      })
       return
     }
 
@@ -392,16 +395,16 @@ export class CMap extends LitElement {
   private _onSelectionChange = (ev: Event) => {
     const event = ev as CustomEvent<PoiSelectEventDetail>
 
-    this._selectedPoiId = event.detail.data.id
+    this._selectedIdPoi = event.detail.data.id
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
-      this._focusPoiMarkers(this._selectedPoiId)
+      this._focusPoiMarkers(this._selectedIdPoi)
     }
   }
 
   private _onSelectionClear = () => {
-    this._selectedPoiId = ''
+    this._selectedIdPoi = ''
 
     if (this._hasInteractiveMarkers()) {
       this._syncMarkers()
@@ -411,7 +414,7 @@ export class CMap extends LitElement {
   private _onHoverChange = (ev: Event) => {
     const event = ev as CustomEvent<PoiHoverEventDetail>
 
-    this._hoveredPoiId = event.detail.data.id
+    this._hoveredIdPoi = event.detail.data.id
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
@@ -419,7 +422,7 @@ export class CMap extends LitElement {
   }
 
   private _onHoverClear = () => {
-    this._hoveredPoiId = ''
+    this._hoveredIdPoi = ''
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()

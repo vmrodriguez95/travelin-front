@@ -19,7 +19,7 @@ export type Coordinates = [number, number]
 
 export interface MapMarker {
   id: string
-  poiId: string
+  idPoi: string
   label: string
   type: string
   coordinates: Coordinates

@@ -24,3 +24,6 @@
 @use './utils/scroll.scss' as *;
 @use './utils/spinner.scss' as *;
 @use './utils/text.scss' as *;
+
+// Views
+@use '../../web/compositions/poi-list/poi-list.style.scss';
