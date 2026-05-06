@@ -15,10 +15,21 @@ interface Notes {
   text: string
 }
 
+export type Coordinates = [number, number]
+
+export interface MapMarker {
+  id: string
+  poiId: string
+  label: string
+  type: string
+  coordinates: Coordinates
+  icon?: string
+}
+
 // POI HOTEL
 export interface PoiHotel extends PoiBase {
   location: string
-  coordinates: [number, number]
+  coordinates: Coordinates
   dateStart: string
   dateEnd: string
   address: string
@@ -42,7 +53,7 @@ interface TransportSegmentPart {
   name: string
   city: string
   country: string
-  coordinates: [number, number]
+  coordinates: Coordinates
   platform: string
   type: string
   date: string
@@ -79,7 +90,7 @@ export interface PoiTransport extends PoiBase {
 // POI
 export interface Poi extends PoiBase {
   location: string
-  coordinates: [number, number]
+  coordinates: Coordinates
   time: string
   address: string
   image: string

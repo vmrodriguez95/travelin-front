@@ -1,50 +1,5 @@
 [
   {
-    "id": "177278946269aa9ed6b396a",
-    "idUser": "177263595469a847322fb6d",
-    "idTrip": "177272350469a99d30551f1",
-    "idItinerary": "177272350569a99d317d3fe",
-    "coordinates": [-74.0059413, 40.7127837],
-    "name": "Hotel Plaza",
-    "type": "poi_hotel",
-    "icon": "hotel",
-    "types": ["hotel"],
-    "address": "Hotel Plaza, New York, Estados Unidos",
-    "dateStart": "2025-05-13T00:00:00.000",
-    "dateEnd": "2025-05-17T00:00:00.000",
-    "image": "https://loremflickr.com/72/72/thailand",
-    "file": "",
-    "notes": [
-      {
-        "icon": "restaurant",
-        "text": "Solo desayuno"
-      },
-      {
-        "icon": "star",
-        "text": "4 estrellas"
-      },
-      {
-        "icon": "bed",
-        "text": "Cama doble"
-      },
-      {
-        "icon": "wifi",
-        "text": "Wifi gratis"
-      },
-      {
-        "icon": "check-in-out",
-        "text": "Checkin a partir de las 15:00. Checkout antes de las 11:00"
-      }
-    ],
-    "order": 0,
-    "createdAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    },
-    "updatedAt": {
-      "$date": "2026-03-06T09:31:02.739"
-    }
-  },
-  {
     "id": "177278946269aa9ed6b396b",
     "idTrip": "177278946269aa9ed6b396c",
     "idUser": "177278946269aa9ed6b396c",
@@ -156,17 +111,62 @@
     "updatedAt": "2026-03-06T09:31:02.739Z"
   },
   {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "coordinates": [139.7853965, 35.7120532],
+    "name": "Ele Hotel Higashi Ueno",
+    "type": "poi_hotel",
+    "icon": "hotel",
+    "types": ["hotel"],
+    "address": "6 Chome-7-10 Higashiueno, Taito City, Tokyo 110-0015, Japón",
+    "dateStart": "2025-05-13T00:00:00.000",
+    "dateEnd": "2025-05-17T00:00:00.000",
+    "image": "https://pix8.agoda.net/property/69930119/0/f333537039ff35a5703bec37e7f3ef8f.jpeg?ce=2",
+    "file": "",
+    "notes": [
+      {
+        "icon": "restaurant",
+        "text": "Solo desayuno"
+      },
+      {
+        "icon": "star",
+        "text": "4 estrellas"
+      },
+      {
+        "icon": "bed",
+        "text": "Cama doble"
+      },
+      {
+        "icon": "wifi",
+        "text": "Wifi gratis"
+      },
+      {
+        "icon": "check-in-out",
+        "text": "Checkin a partir de las 15:00. Checkout antes de las 11:00"
+      }
+    ],
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
     "id": "177278946269aa9ed6b396c",
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "coordinates": [139.69171, 35.6895],
-    "name": "Ritual del té",
-    "icon": "poi",
-    "address": "Ritual del té, Tokio, Japón",
-    "time": "12:00",
+    "coordinates": [139.7889957, 35.7146405],
+    "name": "Templo Senso-ji",
+    "icon": "temple-buddhist",
+    "address": "2 Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "08:00",
     "price": 0,
-    "image": "https://loremflickr.com/72/72/thailand",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQweqNwGvKXb79DfhnnTscJqZSpl4v6hA_jDQ&s=3",
     "notes": [
       {
         "icon": "cup",
@@ -189,13 +189,13 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "coordinates": [139.69171, 35.6895],
-    "name": "Paseo con kimono",
-    "address": "Paseo con kimono, Tokio, Japón",
-    "time": "12:00",
+    "coordinates": [139.7966712, 35.711539],
+    "name": "Ir a comprar maletas a Ginza Karen",
+    "address": "1 Chome-33-1 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "10:00",
     "price": 0,
-    "icon": "poi",
-    "image": "https://loremflickr.com/72/72/thailand",
+    "icon": "storefront",
+    "image": "https://rimage.gnst.jp/livejapan.com/public/img/spot/lj/00/05/lj0005850/lj0005850_6998661f0ecf5_main.jpg?20260224092540&q=80&rw=616",
     "notes": [],
     "type": "poi",
     "types": ["poi"],
@@ -213,11 +213,17 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "name": "Sacar entradas para ver la estatua de Hachiko",
-    "time": "12:00",
+    "coordinates": [139.7950474, 35.7112363],
+    "name": "Tienda de porcelana",
+    "address": "1 Chome-4-5 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "10:30",
+    "price": 0,
+    "icon": "storefront",
+    "image": "https://asakusayamakichi.co.jp/cdn/shop/t/2/assets/yamakichi_footer_slide_img04.jpg?v=96709946685070448781643253869",
     "notes": [],
-    "icon": "reminder",
-    "type": "reminder",
+    "type": "poi",
+    "types": ["poi"],
+    "file": "",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -231,17 +237,11 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "coordinates": [139.69171, 35.6895],
-    "name": "Estatua de Hachiko",
-    "address": "Estatua de Hachiko, Tokio, Japón",
-    "time": "12:00",
-    "image": "https://loremflickr.com/72/72/thailand",
-    "price": 0,
+    "name": "Paradita técnico táctica para dejar lo comprado en el hotel",
+    "time": "11:00",
+    "icon": "hotel",
     "notes": [],
-    "icon": "poi",
-    "type": "poi",
-    "types": ["poi"],
-    "file": "",
+    "type": "note",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -255,16 +255,16 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
-    "coordinates": [139.69171, 35.6895],
-    "name": "Visita al templo Sensoji",
-    "address": "Templo Sensoji, Tokio, Japón",
+    "coordinates": [139.7707135, 35.7009932],
+    "name": "Llegada a Akihabara",
+    "address": "Akihabara, Tokio, Japón",
     "time": "12:00",
-    "image": "https://loremflickr.com/72/72/thailand",
-    "notes": [],
-    "icon": "poi",
-    "type": "poi",
-    "types": ["poi", "temple"],
     "price": 0,
+    "icon": "poi",
+    "image": "https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/akihabara-iStock-484915982-562x421.jpg",
+    "notes": [],
+    "type": "poi",
+    "types": ["poi"],
     "file": "",
     "order": 0,
     "createdAt": {
@@ -279,9 +279,69 @@
     "idUser": "177263595469a847322fb6d",
     "idTrip": "177272350469a99d30551f1",
     "idItinerary": "177272350569a99d317d3fe",
+    "name": "Paradita técnico táctica para comer",
+    "time": "12:00",
+    "icon": "restaurant",
+    "notes": [],
+    "type": "note",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396i",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "coordinates": [139.7707135, 35.7009932],
+    "name": "Visita al santuario de Kanda",
+    "address": "2 Chome-16-2 Sotokanda, Chiyoda City, Tokyo 101-0021, Japón",
+    "time": "13:30",
+    "price": 0,
+    "icon": "temple-buddhist",
+    "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+    "notes": [],
+    "type": "poi",
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396j",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Sacar entradas para ver la estatua de Hachiko",
+    "time": "14:00",
+    "notes": [],
+    "icon": "reminder",
+    "type": "reminder",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396k",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
     "name": "Tiempo libre de dos horas",
     "time": "16:00",
-    "icon": "note",
+    "icon": "cafe",
     "notes": [],
     "type": "note",
     "order": 0,

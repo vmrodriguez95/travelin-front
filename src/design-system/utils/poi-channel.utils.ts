@@ -2,6 +2,8 @@ import type { Note, Poi, PoiHotel, PoiTransport, Reminder } from '@ds/types/pois
 
 export const POI_SELECT_EVENT = 'poi-select'
 export const POI_CLEAR_EVENT = 'poi-clear'
+export const POI_HOVER_EVENT = 'poi-hover'
+export const POI_HOVER_CLEAR_EVENT = 'poi-hover-clear'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note
 
@@ -14,6 +16,11 @@ export interface PoiSelectEventDetail {
 }
 
 export interface PoiClearEventDetail {
+  source?: EventTarget | null
+}
+
+export interface PoiHoverEventDetail {
+  data: PoiChannelData
   source?: EventTarget | null
 }
 

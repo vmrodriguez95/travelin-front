@@ -9,8 +9,13 @@
     min-height: 0;
   }
 
+  &__cards {
+    padding: 0 space(2);
+  }
+  
   &__toolbar {
     flex: 0 0 auto;
+    padding: space(2);
   }
 
   &__cards {
