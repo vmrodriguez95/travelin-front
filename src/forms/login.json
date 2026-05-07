@@ -10,18 +10,25 @@
       "legendPosition": "center",
       "removeMainKey": true,
       "fields": {
-        "username": {
+        "csrfToken": {
+          "id": "loginCsrfToken",
+          "name": "_csrf_token",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "_username": {
           "id": "loginUsername",
-          "name": "username",
+          "name": "_username",
           "label": "Email",
           "type": "email",
           "fieldSize": "full",
           "required": true,
           "readonly": false
         },
-        "password": {
+        "_password": {
           "id": "loginPassword",
-          "name": "password",
+          "name": "_password",
           "label": "Contraseña",
           "type": "password",
           "fieldSize": "full",
@@ -36,11 +43,12 @@
   "form": {
     "entity": "login",
     "method": "POST",
-    "action": "update"
+    "action": "create"
   },
   "sections": {
     "core": {
-      "legend": "Login",
+      "legend": "Registro",
+      "legendPosition": "center",
       "removeMainKey": true,
       "fields": {
         "username": {
@@ -48,6 +56,7 @@
           "name": "username",
           "label": "Email",
           "type": "email",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -56,6 +65,7 @@
           "name": "password",
           "label": "Contraseña",
           "type": "password",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -64,6 +74,7 @@
           "name": "repeatPassword",
           "label": "Repetir Contraseña",
           "type": "password",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         }
