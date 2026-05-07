@@ -141,17 +141,6 @@
           "required": false,
           "readonly": false
         },
-        "location": {
-          "id": "poiLocation",
-          "name": "location",
-          "label": "Busca el punto de interés",
-          "type": "search",
-          "fieldSize": "full",
-          "api": "",
-          "queryAsValue": false,
-          "required": true,
-          "readonly": false
-        },
         "name": {
           "id": "poiName",
           "name": "name",
@@ -209,11 +198,6 @@
               "name": "icon",
               "label": "Icono",
               "type": "icon",
-              "a11y": {
-                "choose": "Abrir selector de iconos",
-                "icon": "Elegir icono",
-                "list": "Listado de iconos disponibles"
-              },
               "required": false,
               "readonly": false
             },

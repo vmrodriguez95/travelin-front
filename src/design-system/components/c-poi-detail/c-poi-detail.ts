@@ -75,7 +75,8 @@ export class CPoiDetail extends LitElement {
   render() {
     const classes = classMap({
       'c-poi-detail': true,
-      'c-poi-detail--active': this._data !== null
+      'c-poi-detail--active': this._data !== null,
+      'c-poi-detail--transport': this._isTransport()
     })
 
     return html`
@@ -97,7 +98,7 @@ export class CPoiDetail extends LitElement {
     
     return html`
       <c-slider>
-        ${when(this._isTypeOf('flight'), () => this.printFlightSegments(this._data as PoiTransport))}
+        ${this._isTransport() ? this.printFlightSegments(this._data as PoiTransport) : ''}
 
         ${'notes' in this._data ? html`
           <div>
@@ -119,8 +120,8 @@ export class CPoiDetail extends LitElement {
     `
   }
 
-  private _isTypeOf(type: string) {
-    return this._data && this._data.type === 'poi_transport' && 'typeTransport' in this._data && this._data.typeTransport === type
+  private _isTransport() {
+    return this._data?.type === 'poi_transport'
   }
 
   private _getPassengerByName(passengers: TransportPerson[], name: string) {
@@ -128,17 +129,16 @@ export class CPoiDetail extends LitElement {
   }
 
   private printFlightSegments(data: PoiTransport) {
-    return map(data.passengers,
-      (passenger: TransportPerson) => html`
-        <div>
-          ${map(data.segments, (segment: TransportSegment, index: number) => html`
-            ${when(index !== 0, () => html`
-              <div class="c-poi-detail__separator">Escala 2h 20m</div>
-            `)}
-            <e-ticket .data=${segment} .passenger=${this._getPassengerByName(segment.passengers, passenger.name)} type="flight"></e-ticket>
-          `)}
-        </div>
-      `)
+    return map(
+      data.passengers,
+      (passenger: TransportPerson) => map(
+        data.segments,
+        (segment: TransportSegment) => html`
+          <div>  
+            <e-ticket .data=${segment} .passenger=${this._getPassengerByName(segment.passengers, passenger.name)} type=${data.typeTransport}></e-ticket>
+          </div>
+        `)
+      )
   }
 
   private _onClose() {

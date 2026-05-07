@@ -55,7 +55,7 @@ interface TransportSegmentPart {
   country: string
   coordinates: Coordinates
   platform: string
-  type: string
+  gate: string
   date: string
 }
 
@@ -72,6 +72,8 @@ export interface TransportPerson {
 export interface TransportSegment {
   duration: string
   transportNumber: string
+  class: string
+  qr: string
   origin: TransportSegmentPart
   destiny: TransportSegmentPart
   operator: TransportSegmentOperator
@@ -79,7 +81,8 @@ export interface TransportSegment {
 }
 
 export interface PoiTransport extends PoiBase {
-  type: string // flight, cruise, ferry, train, bus, car
+  type: string
+  typeTransport: string // flight, cruise, ferry, train, bus, car
   file: string
   order: number
   booking: TransportBooking
