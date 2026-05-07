@@ -3,124 +3,134 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .e-ticket {
+  background-color: rgba(var(--color-background--secondary), 1);
   border-radius: $border-radius-xl;
-  color: rgba(var(--color-text--light), 1);
-  background-color: rgba(var(--color-background--light), 1);
-  overflow: hidden;
-  
+  box-sizing: border-box;
+  padding: space(3) 0;
+
   &__head {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    position: relative;
-    padding: space(3) space(3) space(1);
-    border-bottom: 2px dashed rgba(var(--color-gray), 1);
-
-    &::after,
-    &::before {
-      content: '';
-      position: absolute;
-      top: 100%;
-      display: block;
-      width: space(6);
-      height: space(6);
-      border-radius: 100%;
-      background-color: rgba(var(--color-background--secondary), 1);
-    }
-
-    &::after {
-      right: 0;
-      transform: translate(50%, -50%);
-    }
-
-    &::before {
-      left: 0;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  &__column {
-    grid-column: span 1;
-    padding: 0 space(6) 0 0;
-
-    &--right {
-      padding: 0 0 0 space(6);
-      text-align: right;
-    }
-    
-    &:last-child {
-      @include body--l;
-      display: flex;
-      justify-content: space-between;
-      margin-top: space(1);
-      padding: 0;
-      grid-column: span 2;
-    }
-  }
-
-  &__code,
-  &__name {
-    @include body--l;
-    line-height: 1;
-    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: space(2);
+    padding: 0 space(4);
   }
   
-  &__city {
+  &__code {
+    @include body--l;
+    color: rgba(var(--color-primary), 1);
+    margin: 0;
+  }
+
+  &__class {
     @include body--m;
-    line-height: 1;
-    margin: 0 0 space(0.5);
-    color: rgba(var(--color-gray), 1);
-  }
-  
-  &__small {
-    @include body--m(600);
+    color: rgba(var(--color-primary), 1);
+    background-color: rgba(var(--color-primary), 0.3);
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: $border-radius-xl;
     margin: 0;
-  }
-
-  &__date {
-    @include body--l;
-    margin: 0;
-  }
-
-  &__duration {
-    text-align: center;
-    flex: 1 0 auto;
-    position: relative;
-    bottom: space(1.5);
-    margin: 0 space(1);
-    padding: 0 space(1);
-    border-bottom: 1px dashed rgba(var(--color-background), 1);
+    padding: space(1) space(2);
     box-sizing: border-box;
-
-    &::after,
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      display: block;
-      width: space(1);
-      height: space(1);
-      border-radius: 100%;
-      background-color: rgba(var(--color-background--secondary), 1);
-      transform: translateY(50%);
-    }
-
-    &::after {
-      right: 0;
-    }
-
-    &::before {
-      left: 0;
-    }
   }
 
-  &__footer {
-    text-align: right;
-    padding: space(2) space(3);
-    min-height: space(3);
+  &__passenger {
+    margin-bottom: space(4);
+    padding: 0 space(4);
+  }
+
+  &__small {
+    @include body--s;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
   }
 
   &__text {
     @include body--m;
+    color: rgba(var(--color-text), 0.7);
+    margin: 0 0 space(1);
+  }
+
+  &__big {
+    @include body--xl(600);
+    color: rgba(var(--color-text), 1);
     margin: 0;
+  }
+
+  &__name {
+    @include body--xl;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: space(4);
+    padding: 0 space(4);
+  }
+
+  &__column {
+    &--center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  &__box {
+    background-color: rgba(var(--color-background--light), 0.1);
+    border-radius: $border-radius-l;
+    box-sizing: border-box;
+    padding: space(2);
+    text-align: center;
+  }
+
+  &__qr {
+    text-align: center;
+    margin: space(2) 0;
+    padding: 0 space(4);
+  }
+
+  &__separator {
+    $height: 2px;
+    position: relative;
+    height: $height;
+    background-image: linear-gradient(to right, rgba(var(--color-background--secondary), 1) 50%, rgba(var(--color-gray), 1) 0%);
+    background-position: center;
+    background-size: space(2) $height; /* 20px es la longitud del trazo + espacio */
+    background-repeat: repeat-x;
+    margin: space(4) 0;
+
+    &::after,
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: space(6);
+      width: space(6);
+      background-color: rgba(var(--color-background), 1);
+      border-radius: 50%;
+    }
+    
+    &::after {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+    
+    &::before {
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+  }
+
+  &__actions {
+    padding: 0 space(4);
+    text-align: center;
   }
 }

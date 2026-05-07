@@ -13,6 +13,8 @@ export class EButton extends LitElement {
 
   @property({ type: String, reflect: true }) size = 'fit' // 'fit' | 'thin' | 'full'
 
+  @property({ type: String, reflect: true }) color = 'primary' // 'primary' | 'secondary'
+
   @property({ type: String, attribute: 'aria-label' }) ariaLabel = ''
 
   @property({ type: Boolean }) disabled = false
@@ -20,7 +22,8 @@ export class EButton extends LitElement {
   render() {
     const classes = classMap({
       'e-button': true,
-      [`e-button--${this.size}`]: this.size
+      [`e-button--${this.size}`]: this.size,
+      [`e-button--${this.color}`]: this.color
     })
 
     return html`
