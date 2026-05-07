@@ -16,6 +16,7 @@ export interface FormBlock extends Record<string, BasicFormField | FormSection |
 export interface FormSection {
   id: string
   legend?: string
+  legendPosition?: string
   sectionTitle?: string
   removeMainKey?: boolean
   helpmsg: string

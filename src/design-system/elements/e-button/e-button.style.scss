@@ -29,6 +29,12 @@
     color: rgba(var(--color-text--light), 1);
   }
 
+  &--dark {
+    --eIconColor: var(--color-text);
+    background-color: rgba(var(--color-background--secondary), 1);
+    color: rgba(var(--color-text), 1);
+  }
+
   &:active {
     box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 0.3);
   }
@@ -56,5 +62,10 @@
     &:hover {
       transform: scale(1);
     }
+  }
+
+  ::slotted(img) {
+    vertical-align: middle;
+    margin-right: space(1);
   }
 }
