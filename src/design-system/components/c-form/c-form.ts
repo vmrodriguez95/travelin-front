@@ -249,6 +249,8 @@ export class CForm extends LitElement {
         `
 
       case 'text':
+      case 'email':
+      case 'password':
       case 'number':
         return html`
           <e-input
@@ -492,7 +494,7 @@ export class CForm extends LitElement {
     return map(keys, (key: string) => html`
       <fieldset class="c-form__section">
         ${when(sections[key].legend, () => html`
-          <legend class="c-form__title">${sections[key].legend}</legend>
+          <legend class="c-form__title ${sections[key].legendPosition ? `c-form__title--${sections[key].legendPosition}` : ''}">${sections[key].legend}</legend>
         `)}
         ${when(sections[key].helpmsg, () => html`
           <p class="c-form__helpmsg">${sections[key].helpmsg}</p>

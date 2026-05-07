@@ -67,6 +67,10 @@
     &:not(:has(+ #{$block}__helpmsg)) {
       margin-bottom: space(2);
     }
+
+    &--center {
+      text-align: center;
+    }
   }
 
   &__subtitle {
