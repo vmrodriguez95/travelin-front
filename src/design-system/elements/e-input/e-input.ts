@@ -10,8 +10,6 @@ import style from './e-input.style.scss?inline'
 @customElement('e-input')
 export class EInput extends LitElement {
 
-  private _internals: ElementInternals
-
   @property({ type: String }) id = ''
 
   @property({ type: String }) name = ''
@@ -40,6 +38,10 @@ export class EInput extends LitElement {
 
   @query('input') _input!: HTMLInputElement
 
+  _isPasswordField = false
+
+  private _internals: ElementInternals
+
   static styles = css`${unsafeCSS(style)}`
 
   static formAssociated = true
@@ -47,6 +49,12 @@ export class EInput extends LitElement {
   constructor() {
     super()
     this._internals = this.attachInternals()
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback()
+
+    this._isPasswordField = this.type === 'password'
   }
 
   protected updated(changed: Map<string, unknown>) {
@@ -95,9 +103,14 @@ export class EInput extends LitElement {
             @input=${this._onInput}
             @blur=${this._onBlur}
           />
+          ${when(this._isPasswordField, () => html`
+            <button class="e-input__show-password" type="button" @click=${this._onShowPassword} aria-label=${this.a11y.showPassword}>
+              <e-icon icon="${this.type === 'password' ? 'eye' : 'eye-off'}" size="m"></e-icon>
+            </button>
+          `)}
           ${when(this.value, () => html`
             <button class="e-input__clear" type="button" @click=${this._onClean} aria-label=${this.a11y.clear}>
-              <e-icon icon="close" size="s"></e-icon>
+              <e-icon icon="close" size="m"></e-icon>
             </button>
           `)}
         </div>
@@ -130,6 +143,10 @@ export class EInput extends LitElement {
     this._internals.setFormValue(this._getCurrentValue())
 
     this.dispatchEvent(new Event('input'))
+  }
+
+  private _onShowPassword() {
+    this.type = this.type === 'password' ? 'text' : 'password'
   }
 
   private _getCurrentValue() {
@@ -240,11 +257,11 @@ export class EInput extends LitElement {
       return this._getEmailValidity()
     }
 
-    if (this.type === 'password' && currentValue && !this._isSecurePassword(currentValue)) {
+    if (this._isPasswordField && currentValue && !this._isSecurePassword(currentValue)) {
       return this._getPasswordStrengthValidity()
     }
 
-    if (this.type === 'password' && this.compareValue && currentValue !== this.compareValue) {
+    if (this._isPasswordField && this.compareValue && currentValue !== this.compareValue) {
       return this._getPasswordMismatchValidity()
     }
 

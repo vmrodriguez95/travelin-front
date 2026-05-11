@@ -3,6 +3,7 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .e-input {
+  $root: &;
   display: block;
   position: relative;
 
@@ -39,16 +40,37 @@
     &:has(+ e-icon) {
       padding-left: space(6);
     }
+
+    &:has(+ button) {
+      padding-right: space(8);
+    }
   }
 
-  &__clear {
+  &__clear,
+  &__show-password {
     position: absolute;
     top: 50%;
-    right: space(2);
     transform: translateY(-50%);
     cursor: pointer;
     background: none;
     border: 0;
+    transition: transform .2s ease;
+
+    &:hover {
+      transform: scale(1.1) translateY(-50%);
+    }
+  }
+
+  &__show-password {
+    right: space(2);
+
+    &:has(+ #{$root}__clear) {
+      right: space(6);
+    }
+  }
+
+  &__clear {
+    right: space(2);
   }
 
   &__helpmsg {
