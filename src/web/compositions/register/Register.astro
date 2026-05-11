@@ -2,6 +2,21 @@
 const { id, data } = Astro.props
 
 let finalData = data
+finalData.sections.core.fields.name.a11y = {
+  clear: "Eliminar valor del campo"
+}
+
+finalData.sections.core.fields.username.a11y = {
+  clear: "Eliminar valor del campo"
+}
+
+finalData.sections.core.fields.password.a11y = {
+  clear: "Eliminar valor del campo"
+}
+
+finalData.sections.core.fields.repeatPassword.a11y = {
+  clear: "Eliminar valor del campo"
+}
 
 finalData = JSON.stringify(finalData)
 ---

@@ -24,6 +24,8 @@ export class EInput extends LitElement {
 
   @property({ type: String, reflect: true }) value!: string | number
 
+  @property({ type: String }) compareValue = ''
+
   @property({ type: String }) helpmsg = ''
 
   @property({ type: Object }) a11y: any = {}
@@ -48,9 +50,20 @@ export class EInput extends LitElement {
   }
 
   protected updated(changed: Map<string, unknown>) {
+    const currentValue = this._getCurrentValue()
+
     if (changed.has('value') || changed.has('required')) {
-      this._internals.setFormValue(this.value.toString() || null)
+      this._internals.setFormValue(currentValue || null)
       this._validate()
+      return
+    }
+
+    if (changed.has('compareValue')) {
+      this._internals.setFormValue(currentValue || null)
+
+      if (currentValue) {
+        this._validate()
+      }
     }
   }
 
@@ -103,7 +116,7 @@ export class EInput extends LitElement {
     this.value = target.value
 
     this._validate()
-    this._internals.setFormValue(this.value)
+    this._internals.setFormValue(this._getCurrentValue())
   }
 
   private _onBlur() {
@@ -114,9 +127,17 @@ export class EInput extends LitElement {
     this.value = ''
 
     this._validate()
-    this._internals.setFormValue(this.value)
+    this._internals.setFormValue(this._getCurrentValue())
 
     this.dispatchEvent(new Event('input'))
+  }
+
+  private _getCurrentValue() {
+    if (this._input) {
+      return this._input.value || ''
+    }
+
+    return this.value?.toString() || ''
   }
 
   private _validate() {
@@ -162,18 +183,69 @@ export class EInput extends LitElement {
     }
   }
 
+  private _getPasswordMismatchValidity() {
+    return {
+      valid: false,
+      message: 'Las contraseñas no coinciden',
+      state: { customError: true }
+    }
+  }
+
+  private _getPasswordStrengthValidity() {
+    return {
+      valid: false,
+      message: 'Debe incluir mayúscula, minúscula, número y uno de estos símbolos: .@$€/#-_?¿!¡&',
+      state: { customError: true }
+    }
+  }
+
+  private _getEmailValidity() {
+    return {
+      valid: false,
+      message: 'Debe introducir un email válido',
+      state: { typeMismatch: true }
+    }
+  }
+
+  private _isValidEmail(value: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  }
+
+  private _isSecurePassword(value: string) {
+    const hasUppercase = /[A-Z]/.test(value)
+    const hasLowercase = /[a-z]/.test(value)
+    const hasNumber = /\d/.test(value)
+    const hasSymbol = /[.@$€/#\-_?¿!¡&]/.test(value)
+
+    return hasUppercase && hasLowercase && hasNumber && hasSymbol
+  }
+
   private _calculateValidity() {
+    const currentValue = this._getCurrentValue()
+
     // required
-    if (this.required && !this.value) {
+    if (this.required && !currentValue) {
       return this._getRequiredValidy()
     }
     
-    if (this.minlength && Number.isInteger(this.value) && (this.value as number) < this.minlength) {
+    if (this.minlength && currentValue.length < this.minlength) {
       return this._getMinLengthValidy()
     }
     
-    if (this.maxlength && Number.isInteger(this.value) && (this.value as number) > this.maxlength) {
+    if (this.maxlength && currentValue.length > this.maxlength) {
       return this._getMaxLengthValidy()
+    }
+
+    if (this.type === 'email' && currentValue && !this._isValidEmail(currentValue)) {
+      return this._getEmailValidity()
+    }
+
+    if (this.type === 'password' && currentValue && !this._isSecurePassword(currentValue)) {
+      return this._getPasswordStrengthValidity()
+    }
+
+    if (this.type === 'password' && this.compareValue && currentValue !== this.compareValue) {
+      return this._getPasswordMismatchValidity()
     }
 
     return this._getDefaultValidy() 

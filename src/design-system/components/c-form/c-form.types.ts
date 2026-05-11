@@ -48,6 +48,8 @@ export interface BasicFormField {
   fieldSize?: string
   value: string
   fillValue?: string | Array<string>
+  minLength?: number
+  maxLength?: number
   dependsOn?: Array<string>
   autofocus?: boolean
   a11y?: any

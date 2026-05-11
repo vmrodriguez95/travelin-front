@@ -229,6 +229,16 @@ export class CForm extends LitElement {
 
     return this._dedupeSelectOptions([...declaredOptions, ...dependencyOptions])
   }
+
+  private _getDependencyValues(field: BasicFormField) {
+    const dependsOn = field.dependsOn || []
+
+    if (!dependsOn.length) return []
+
+    return dependsOn.flatMap((dependencyPath) => {
+      return this._collectValuesFromDependency(this.data.sections, dependencyPath.split('.'))
+    })
+  }
     
 
   private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
@@ -252,6 +262,9 @@ export class CForm extends LitElement {
       case 'email':
       case 'password':
       case 'number':
+        const dependencyValues = this._getDependencyValues(field)
+        const compareValue = field.type === 'password' ? dependencyValues[0] || '' : ''
+
         return html`
           <e-input
             class=${this._getFieldClasses(field)}
@@ -261,9 +274,12 @@ export class CForm extends LitElement {
             type=${field.type}
             helpmsg=${field.helpmsg}
             .a11y=${field.a11y}
+            .minlength=${field.minLength || 0}
+            .maxlength=${field.maxLength || 255}
             ?required=${field.required}
             ?readonly=${field.readonly}
             .value=${this._getFieldValue(field)}
+            compareValue=${compareValue}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-input>
         `
