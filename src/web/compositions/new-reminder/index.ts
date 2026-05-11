@@ -3,7 +3,7 @@ export const meta = {
   icon: 'form',
   tag: 'new-reminder',
   description: 'Vista de creación de un nuevo recordatorio.',
-  order: 0
+  order: 1
 }
 
 export { config } from './new-reminder.config'

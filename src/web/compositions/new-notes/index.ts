@@ -3,7 +3,7 @@ export const meta = {
   icon: 'form',
   tag: 'new-notes',
   description: 'Vista de creación de una nueva nota.',
-  order: 0
+  order: 1
 }
 
 export { config } from './new-notes.config'

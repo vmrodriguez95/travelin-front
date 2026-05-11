@@ -3,7 +3,7 @@ export const meta = {
   icon: 'image',
   tag: 'trip-list',
   description: 'Vista del listado de viajes.',
-  order: 1
+  order: 2
 }
 
 export { config } from './trip-list.config'
