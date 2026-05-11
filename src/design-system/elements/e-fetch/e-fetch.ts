@@ -6,6 +6,8 @@ import styles from './e-fetch.style.scss?inline'
 @customElement('e-fetch')
 export class EFetch extends LitElement {
 
+  @property({ type: String }) color = ''
+
   @property({ type: String }) action = ''
 
   @property({ type: String }) method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET'
@@ -24,8 +26,8 @@ export class EFetch extends LitElement {
 
   render() {
     return html`
-      <e-button @click=${this._handleClick} ?disabled=${this.loading}>
-        ${this.loading ? 'Cargando...' : this.text}
+      <e-button @click=${this._handleClick} ?disabled=${this.loading} color=${this.color}>
+        ${this.loading ? 'Cargando...' : html`<slot></slot>`}
       </e-button>
 
       ${this.error

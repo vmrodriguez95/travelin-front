@@ -157,7 +157,9 @@ function formatDate(dateStart: string, dateEnd: string) {
                   <template>
                     <h2 slot="title">Eliminar {poi.name}</h2>
                     <p slot="description">Estas a punto de eliminar este transporte del listado. ¿Estás seguro de que quieres quitarlo?</p>
-                    <e-fetch action="/api/poi.json" method="DELETE" text="Eliminar"></e-fetch>
+                    <e-fetch action="/api/poi.json" method="DELETE">
+                      <span>Eliminar</span>
+                    </e-fetch>
                   </template>
                 </e-modal-trigger>
               </c-card-transport>
@@ -179,7 +181,9 @@ function formatDate(dateStart: string, dateEnd: string) {
                   <template>
                     <h2 slot="title">Eliminar {poi.name}</h2>
                     <p slot="description">Estas a punto de eliminar este elemento del listado. Si lo tienes en tus guardados, no te preocupes, no se eliminará de ahí. ¿Quieres quitarlo de este itinerario?</p>
-                    <e-fetch action="/api/poi.json" method="DELETE" text="Eliminar"></e-fetch>
+                    <e-fetch action="/api/poi.json" method="DELETE">
+                      <span>Eliminar</span>
+                    </e-fetch>
                   </template>
                 </e-modal-trigger>
               </c-card-poi>
