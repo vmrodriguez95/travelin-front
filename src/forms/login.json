@@ -1,84 +1,43 @@
-[{
-  "form": {
-    "entity": "login",
-    "method": "POST",
-    "action": "update"
-  },
-  "sections": {
-    "core": {
-      "legend": "Sign in",
-      "legendPosition": "center",
-      "removeMainKey": true,
-      "fields": {
-        "csrfToken": {
-          "id": "loginCsrfToken",
-          "name": "_csrf_token",
-          "type": "hidden",
-          "required": false,
-          "readonly": false
-        },
-        "_username": {
-          "id": "loginUsername",
-          "name": "_username",
-          "label": "Email",
-          "type": "email",
-          "fieldSize": "full",
-          "required": true,
-          "readonly": false
-        },
-        "_password": {
-          "id": "loginPassword",
-          "name": "_password",
-          "label": "Contraseña",
-          "type": "password",
-          "fieldSize": "full",
-          "required": true,
-          "readonly": false
+[
+  {
+    "form": {
+      "entity": "login",
+      "method": "POST",
+      "action": "update"
+    },
+    "sections": {
+      "core": {
+        "legend": "Sign in",
+        "legendPosition": "center",
+        "removeMainKey": true,
+        "fields": {
+          "_csrf_token": {
+            "id": "loginCsrfToken",
+            "name": "_csrf_token",
+            "type": "hidden",
+            "required": false,
+            "readonly": false
+          },
+          "_username": {
+            "id": "loginUsername",
+            "name": "_username",
+            "label": "Email",
+            "type": "email",
+            "fieldSize": "full",
+            "required": true,
+            "readonly": false
+          },
+          "_password": {
+            "id": "loginPassword",
+            "name": "_password",
+            "label": "Contraseña",
+            "type": "password",
+            "fieldSize": "full",
+            "required": true,
+            "readonly": false
+          }
         }
       }
     }
   }
-},
-{
-  "form": {
-    "entity": "login",
-    "method": "POST",
-    "action": "create"
-  },
-  "sections": {
-    "core": {
-      "legend": "Registro",
-      "legendPosition": "center",
-      "removeMainKey": true,
-      "fields": {
-        "username": {
-          "id": "loginUsername",
-          "name": "username",
-          "label": "Email",
-          "type": "email",
-          "fieldSize": "full",
-          "required": true,
-          "readonly": false
-        },
-        "password": {
-          "id": "loginPassword",
-          "name": "password",
-          "label": "Contraseña",
-          "type": "password",
-          "fieldSize": "full",
-          "required": true,
-          "readonly": false
-        },
-        "repeatPassword": {
-          "id": "loginRepeatPassword",
-          "name": "repeatPassword",
-          "label": "Repetir Contraseña",
-          "type": "password",
-          "fieldSize": "full",
-          "required": true,
-          "readonly": false
-        }
-      }
-    }
-  }
-}]
+]

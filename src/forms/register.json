@@ -1,0 +1,69 @@
+[
+  {
+    "form": {
+      "entity": "register",
+      "method": "POST",
+      "action": "create"
+    },
+    "sections": {
+      "core": {
+        "legend": "Registro",
+        "legendPosition": "center",
+        "removeMainKey": true,
+        "fields": {
+          "_csrf_token": {
+            "id": "registerCsrfToken",
+            "name": "_csrf_token",
+            "type": "hidden",
+            "required": false,
+            "readonly": false
+          },
+          "name": {
+            "id": "registerName",
+            "name": "name",
+            "label": "Nombre y apellidos",
+            "type": "text",
+            "fieldSize": "full",
+            "maxLength": 100,
+            "required": true,
+            "readonly": false
+          },
+          "username": {
+            "id": "registerUsername",
+            "name": "username",
+            "label": "Email",
+            "type": "email",
+            "fieldSize": "full",
+            "maxLength": 100,
+            "required": true,
+            "readonly": false
+          },
+          "password": {
+            "id": "registerPassword",
+            "name": "password",
+            "label": "Contraseña",
+            "type": "password",
+            "fieldSize": "full",
+            "minLength": 8,
+            "maxLength": 50,
+            "helpmsg": "La contraseña debe tener mínimo 8 caracteres y contener, al menos, un número, una letra (mayúsculas y minúsculas) y un símbolo (.@$€/#-_?¿!¡&).",
+            "required": true,
+            "readonly": false
+          },
+          "repeatPassword": {
+            "id": "registerRepeatPassword",
+            "name": "repeatPassword",
+            "label": "Repetir Contraseña",
+            "type": "password",
+            "dependsOn": ["core.password"],
+            "fieldSize": "full",
+            "minLength": 8,
+            "maxLength": 30,
+            "required": true,
+            "readonly": false
+          }
+        }
+      }
+    }
+  }
+]
