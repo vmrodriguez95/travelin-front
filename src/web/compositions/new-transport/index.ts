@@ -3,7 +3,7 @@ export const meta = {
   icon: 'form',
   tag: 'new-transport',
   description: 'Vista de creación de un nuevo transporte.',
-  order: 0
+  order: 1
 }
 
 export { config } from './new-transport.config'

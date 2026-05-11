@@ -3,7 +3,7 @@ export const meta = {
   icon: 'form',
   tag: 'new-trip',
   description: 'Vista de creación de un nuevo viaje.',
-  order: 0
+  order: 1
 }
 
 export { config } from './new-trip.config'

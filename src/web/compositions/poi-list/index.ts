@@ -3,7 +3,7 @@ export const meta = {
   icon: 'image',
   tag: 'poi-list',
   description: 'Vista del listado de pois.',
-  order: 3
+  order: 2
 }
 
 export { config } from './poi-list.config'
