@@ -14,12 +14,12 @@ finalData = JSON.stringify(finalData)
       <c-form action="/" method="POST" data={finalData} submitLabel="Login"></c-form>
       <div class="u-text--center">
         <p class="u-separator"><span class="u-separator__text">o</span></p>
-        <e-button class="u-margin--bottom--m" color="dark">
+        <e-fetch class="u-margin--bottom--m" action="#" method="POST" color="dark">
           <img src="/images/logo-google.png" alt="Logo de Google" width="24" height="24" loading="lazy"/> Inicia sesión con Google
-        </e-button>
-        <e-button class="u-margin--bottom--m" color="dark">
+        </e-fetch>
+        <e-fetch action="#" method="POST" color="dark">
           <img src="/images/logo-apple.png" alt="Logo de Apple" width="24" height="24" loading="lazy"/> Inicia sesión con tu ID de Apple
-        </e-button>
+        </e-fetch>
         <p class="u-text--l u-color--text-light">¿No tienes cuenta? <a class="u-color--primary" href="/simulator/register">Regístrate</a></p>
       </div>
     </div>
