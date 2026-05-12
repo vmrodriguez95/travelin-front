@@ -7,12 +7,30 @@
 }
 
 .e-fetch {
-  button {
-    cursor: pointer;
+  &__countdown {
+    @include body--m;
+    margin: 0;
   }
 
-  button[disabled] {
+  &__link {
+    @include body--m;
+    font-family: inherit;
+    color: rgba(var(--color-primary), 1);
+    cursor: pointer;
+    border: none;
+    background: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__link[disabled] {
     opacity: .6;
     cursor: not-allowed;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

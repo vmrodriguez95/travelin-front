@@ -23,6 +23,7 @@ finalData = JSON.stringify(finalData)
     <div class="u-col-4 u-col-md-8 u-col-lg-6 u-col-xl-4">
       <c-form action="/" method="POST" data={finalData} submitLabel="Login"></c-form>
       <div class="u-text--center">
+        <p class="u-text--m u-color--text-light">¿Has olvidado la contraseña? <a class="u-color--primary" href="/simulator/forget">Clica aquí</a></p>
         <p class="u-separator"><span class="u-separator__text">o</span></p>
         <e-fetch class="u-margin--bottom--m" action="#" method="POST" color="dark">
           <img src="/images/logo-google.png" alt="Logo de Google" width="24" height="24" loading="lazy"/> Inicia sesión con Google
