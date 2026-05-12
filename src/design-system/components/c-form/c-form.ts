@@ -37,6 +37,8 @@ export class CForm extends LitElement {
 
   @query('form') _form!: HTMLFormElement
 
+  @query('.c-form__submit') _submitButton!: HTMLButtonElement
+
   @queryAll('.c-form__field') fields!: NodeListOf<HTMLInputElement>
 
   private _internals: ElementInternals
@@ -100,6 +102,7 @@ export class CForm extends LitElement {
     this._internals.setFormValue(formData)
 
     this._form.requestSubmit()
+    this._submitButton.disabled = true
   }
 
   private _onChange(ev: CustomEvent, field: BasicFormField) {

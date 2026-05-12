@@ -104,7 +104,7 @@ export class EInput extends LitElement {
             @blur=${this._onBlur}
           />
           ${when(this._isPasswordField, () => html`
-            <button class="e-input__show-password" type="button" @click=${this._onShowPassword} aria-label=${this.a11y.showPassword}>
+            <button class="e-input__show-password" type="button" @click=${this._onShowPassword} aria-label=${this.type === 'password' ? this.a11y.showPassword : this.a11y.hidePassword}>
               <e-icon icon="${this.type === 'password' ? 'eye' : 'eye-off'}" size="m"></e-icon>
             </button>
           `)}

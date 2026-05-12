@@ -39,5 +39,99 @@
         }
       }
     }
+  },
+  {
+    "form": {
+      "entity": "login",
+      "method": "POST",
+      "action": "reset-password"
+    },
+    "sections": {
+      "core": {
+        "legend": "Olvidé mi contraseña",
+        "legendPosition": "center",
+        "removeMainKey": true,
+        "fields": {
+          "_username": {
+            "id": "loginUsername",
+            "name": "_username",
+            "label": "Email",
+            "type": "email",
+            "fieldSize": "full",
+            "helpmsg": "Introduce tu correo asociado a la cuenta y te enviaremos un email con un enlace para crear una nueva contraseña.",
+            "required": true,
+            "readonly": false
+          }
+        }
+      }
+    }
+  },
+  {
+    "form": {
+      "entity": "login",
+      "method": "POST",
+      "action": "new-password"
+    },
+    "sections": {
+      "core": {
+        "legend": "Recuperar contraseña",
+        "legendPosition": "center",
+        "removeMainKey": true,
+        "fields": {
+          "_csrf_token": {
+            "id": "loginCsrfToken",
+            "name": "_csrf_token",
+            "type": "hidden",
+            "required": false,
+            "readonly": false
+          },
+          "password": {
+            "id": "LoginPassword",
+            "name": "password",
+            "label": "Contraseña",
+            "type": "password",
+            "fieldSize": "full",
+            "minLength": 8,
+            "maxLength": 50,
+            "helpmsg": "La contraseña debe tener mínimo 8 caracteres y contener, al menos, un número, una letra (mayúsculas y minúsculas) y un símbolo (.@$€/#-_?¿!¡&).",
+            "required": true,
+            "readonly": false
+          },
+          "repeatPassword": {
+            "id": "LoginRepeatPassword",
+            "name": "repeatPassword",
+            "label": "Repetir Contraseña",
+            "type": "password",
+            "dependsOn": ["core.password"],
+            "fieldSize": "full",
+            "minLength": 8,
+            "maxLength": 30,
+            "required": true,
+            "readonly": false
+          }
+        }
+      }
+    }
+  },
+  {
+    "form": {
+      "entity": "login",
+      "method": "POST",
+      "action": "delete"
+    },
+    "sections": {
+      "core": {
+        "removeMainKey": true,
+        "fields": {
+          "_csrf_token": {
+            "id": "loginCsrfToken",
+            "name": "_csrf_token",
+            "type": "hidden",
+            "required": false,
+            "readonly": false
+          }
+        }
+      }
+    }
   }
 ]
