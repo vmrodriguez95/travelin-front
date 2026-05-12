@@ -1,12 +1,15 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, queryAll } from 'lit/decorators.js'
+import { map } from 'lit/directives/map.js'
+import { when } from 'lit/directives/when.js'
 
 // Styles
 import styles from './c-verify.style.scss?inline'
-import { map } from 'lit/directives/map.js'
 
 @customElement('c-verify')
 export class CVerify extends LitElement {
+
+  @property({ type: String }) email = ''
 
   @property({ type: String }) action = ''
 
@@ -17,6 +20,8 @@ export class CVerify extends LitElement {
   @query('form') form!: HTMLFormElement
 
   @query('input[name="code"]') _codeField!: HTMLInputElement
+
+  @query('input[name="email"]') _emailField!: HTMLInputElement
 
   @queryAll('input:not([type="hidden"])') inputs!: NodeListOf<HTMLInputElement>
 
@@ -58,6 +63,9 @@ export class CVerify extends LitElement {
           <fieldset class="c-verify__fieldset">
             <legend class="c-verify__legend">Código de verificación</legend>
             <input type="hidden" name="code" />
+            ${when(this.email, () => html`
+              <input type="hidden" name="email" value=${this.email} />
+            `)}
             <e-button
               class="c-verify__button"
               type="submit"
@@ -88,23 +96,47 @@ export class CVerify extends LitElement {
     this.form.dispatchEvent(new Event('submit'))
   }
 
-  private _createObserver(input: HTMLInputElement) {
+  private _isValueAttr(mutation: MutationRecord) {
+    return mutation.type === 'attributes' && mutation.attributeName === 'value'
+  }
+
+  private _isMaxLengthAttr(mutation: MutationRecord) {
+    return mutation.type === 'attributes' && mutation.attributeName === 'value'
+  }
+
+  private _observerEmailRule = (mutation: MutationRecord, input: HTMLInputElement) => {
+    if (this._isValueAttr(mutation) && input.value !== this.email) {
+      input.value = this.email
+      input.setAttribute('value', this.email)
+    }
+  }
+
+  private _observerCodeRule = (mutation: MutationRecord, input: HTMLInputElement) => {
+    if (this._isValueAttr(mutation) && input.value && !this._isCodeValid(input.value)) {
+      input.value = ''
+      input.setAttribute('value', '')
+    }
+  }
+
+  private _observerInputRule = (mutation: MutationRecord, input: HTMLInputElement) => {
+    if (this._isValueAttr(mutation) && input.value) {
+      input.value = ''
+      input.setAttribute('value', '')
+    } else if (this._isMaxLengthAttr(mutation) && input.maxLength !== 1) {
+      input.setAttribute('maxLength', '1')
+    }
+  }
+
+  private _createObserverForInput(input: HTMLInputElement, rules: Function) {
     return new MutationObserver((mutationsList: MutationRecord[]) => {
       for(let mutation of mutationsList) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'value' && input.value) {
-          if (input.type === 'hidden' && this._isCodeValid(input.value)) return
-          input.value = ''
-          input.setAttribute('value', '')
-        }
-        else if (mutation.type === 'attributes' && mutation.attributeName === 'maxLength' && input.maxLength !== 1) {
-          input.setAttribute('maxLength', '1')
-        }
+        rules(mutation, input)
       }
     })
   }
 
-  private _addObserverToInput(input: HTMLInputElement) {
-    const observer = this._createObserver(input)
+  private _addObserverToInput(input: HTMLInputElement, rules: Function) {
+    const observer = this._createObserverForInput(input, rules)
     const config = { attributes: true, attributeFilter: ['value', 'maxLength'] }
 
     observer.observe(input, config)
@@ -112,8 +144,10 @@ export class CVerify extends LitElement {
 
   private _activateObservers() {
     this.inputs.forEach((input) => {
-      this._addObserverToInput(input)
+      this._addObserverToInput(input, this._observerInputRule)
     })
+    this._addObserverToInput(this._codeField, this._observerCodeRule)
+    this._addObserverToInput(this._emailField, this._observerEmailRule)
   }
 
   private _submitHandler = (ev: SubmitEvent) => {
