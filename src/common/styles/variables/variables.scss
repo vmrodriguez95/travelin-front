@@ -18,8 +18,9 @@ body {
   --color-background--secondary--light: 245, 245, 245;
 
   // Semantic Colors
-  --color-success: 76, 175, 80; // Green
-  --color-error: 244, 67, 54; // Red
+  --color-success: 63, 139, 91; // Green
+  --color-warning: 139, 119, 63; // Yellow
+  --color-error: 139, 63, 63; // Red
 
   // Breakpoints
   --breakpoint-sm: #{$breakpoint-sm};

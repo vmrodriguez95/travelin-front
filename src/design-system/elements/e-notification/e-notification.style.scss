@@ -1,0 +1,59 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.e-notification {
+  position: fixed;
+  top: space(4);
+  right: space(4);
+  transform: translateX(100%);
+  opacity: 0;
+  padding: space(3);
+  background-color: rgba(var(--color-background--secondary), 1);
+  color: rgba(var(--color-text), 1);
+  border: 1px solid rgba(var(--color-primary), 1);
+  border-radius: $border-radius-m 0 $border-radius-m $border-radius-m;
+  z-index: 1000;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+
+  &--show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &--closing {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  &--warning {
+    --eIconColor: var(--color-text);
+    background-color: rgba(var(--color-warning), 0.7);
+    border-color: rgba(var(--color-warning), 1);
+  }
+
+  &--error {
+    --eIconColor: var(--color-text);
+    background-color: rgba(var(--color-error), 0.7);
+    border-color: rgba(var(--color-error), 1);
+  }
+
+  &--success {
+    --eIconColor: var(--color-text);
+    background-color: rgba(var(--color-success), 0.7);
+    border-color: rgba(var(--color-success), 1);
+  }
+
+  &__close {
+    position: absolute;
+    top: space(1);
+    right: space(1);
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  ::slotted(*) {
+    @include body--m;
+  }
+}
