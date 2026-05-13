@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
 
 .e-input-search {
   $block: &;
@@ -95,12 +96,6 @@
     display: block;
     color: rgba(var(--color-text--light), 1);
     transition: font-weight .2s;
-  }
-
-  &__helpmsg {
-    @include body--xs;
-    margin: space(1) 0 0;
-    color: rgba(var(--color-text--light), 1);
   }
 
   &__error {

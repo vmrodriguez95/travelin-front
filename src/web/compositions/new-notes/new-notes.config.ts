@@ -6,7 +6,7 @@ export const config = {
       name: 'data',
       label: 'Datos del formulario',
       type: 'text',
-      default: getFormBy('poi_notes', 'create')
+      default: getFormBy('poi_note', 'create')
     },
   }
 }

@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
 
 .e-input {
   $root: &;
@@ -15,11 +16,11 @@
 
   &__label {
     @include body--m;
-    color: rgba(var(--color-text), 1);
     display: flex;
     align-items: center;
     width: 100%;
     margin: 0 0 space(0.5);
+    color: rgba(var(--color-text), 1);
   }
 
   &__wrapper {
@@ -71,12 +72,6 @@
 
   &__clear {
     right: space(2);
-  }
-
-  &__helpmsg {
-    @include body--xs;
-    margin: space(1) 0 0;
-    color: rgba(var(--color-text), 1);
   }
 
   &__error {
