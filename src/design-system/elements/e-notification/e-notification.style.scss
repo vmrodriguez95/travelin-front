@@ -56,4 +56,25 @@
   ::slotted(*) {
     @include body--m;
   }
+
+  &__timeout {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    height: 2px;
+    background-color: rgba(var(--color-primary), 1);
+    animation-name: dynamic-width;
+    animation-duration: var(--eNotificationTimeout);
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes dynamic-width {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: calc(100% - 20px);
+  }
 }

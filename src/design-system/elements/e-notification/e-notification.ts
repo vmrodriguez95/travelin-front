@@ -1,6 +1,8 @@
 import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
+import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
+import { styleMap } from 'lit/directives/style-map.js'
 
 import styles from './e-notification.style.scss?inline'
 
@@ -8,6 +10,8 @@ import styles from './e-notification.style.scss?inline'
 export class ENotification extends LitElement {
 
   @property({ type: String }) type = 'info' // 'success' | 'warning' | 'error' | info
+
+  @property({ type: Number }) timeout = 0
 
   @state() _loaded = false
 
@@ -29,12 +33,25 @@ export class ENotification extends LitElement {
       [`e-notification--${this.type}`]: this.type
     })
 
+    const styles = {}
+    if (this.timeout > 0) {
+      Object.defineProperty(styles, '--eNotificationTimeout', {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: `${this.timeout}s`
+      })
+
+      setTimeout(() => this._close(), this.timeout * 1000)
+    }
+
     return html`
       <div class=${classes}>
         <button class="e-notification__close" type="button" @click=${this._close}>
           <e-icon icon="close" size="s"></e-icon>
         </button>
         <e-icon icon=${this._getIcon()} size="l"></e-icon> <slot></slot>
+        ${when(this.timeout && !this._closing, () => html`<span class="e-notification__timeout" style=${styleMap(styles)}></span>`) }
       </div>
     `
   }
