@@ -28,20 +28,17 @@
 
   &--warning {
     --eIconColor: var(--color-text);
-    background-color: rgba(var(--color-warning), 0.7);
-    border-color: rgba(var(--color-warning), 1);
+    background-color: rgba(var(--color-warning), 1);
   }
 
   &--error {
     --eIconColor: var(--color-text);
-    background-color: rgba(var(--color-error), 0.7);
-    border-color: rgba(var(--color-error), 1);
+    background-color: rgba(var(--color-error), 1);
   }
 
   &--success {
     --eIconColor: var(--color-text);
-    background-color: rgba(var(--color-success), 0.7);
-    border-color: rgba(var(--color-success), 1);
+    background-color: rgba(var(--color-success), 1);
   }
 
   &__close {
