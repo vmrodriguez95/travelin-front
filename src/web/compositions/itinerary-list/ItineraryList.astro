@@ -71,44 +71,46 @@ const { id, data } = Astro.props
         </template>
       </e-modal-trigger>
     </c-header>
-    <section class="u-grid u-padding--top--xl">
-      <div class="u-col-4 u-col-md-5">
-        {Array.from({ length: 15 }, (_, i) => (
-          <a href="#" title="Ir al itinerario del día 03-03-2026">
-            <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
-              <p slot="index">Día {i + 1}</p>
-              <p slot="day">{3 + i}</p>
-              <p slot="month">Marzo</p>
-              <ul>
-                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
-                  <span class="u-pin-icon u-pin-icon--s">
-                    <e-icon icon="fly" size="s"></e-icon>
-                  </span>
-                  <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
-                </li>
-                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
-                  <span class="u-pin-icon u-pin-icon--s">
-                    <e-icon icon="hotel" size="s"></e-icon>
-                  </span>
-                  <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
-                </li>
-                <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
-                  <span class="u-pin-icon u-pin-icon--s">
-                    <e-icon icon="monument" size="s"></e-icon>
-                  </span>
-                  <p class="u-margin--vertical--none">Khao Sand Road</p>
-                </li>
-              </ul>
-            </c-card-date>
-          </a>
-        ))}
+    <section class="u-grid u-padding--top--xl ti-itinerary-list">
+      <div class="u-col-4 u-col-md-5 u-scroll--vertical ti-itinerary-list__dates-column">
+        <div class=" ti-itinerary-list__dates-list">
+          {Array.from({ length: 15 }, (_, i) => (
+            <a href="#" title="Ir al itinerario del día 03-03-2026">
+              <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
+                <p slot="index">Día {i + 1}</p>
+                <p slot="day">{3 + i}</p>
+                <p slot="month">Marzo</p>
+                <ul>
+                  <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                    <span class="u-pin-icon u-pin-icon--s">
+                      <e-icon icon="fly" size="s"></e-icon>
+                    </span>
+                    <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
+                  </li>
+                  <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                    <span class="u-pin-icon u-pin-icon--s">
+                      <e-icon icon="hotel" size="s"></e-icon>
+                    </span>
+                    <p class="u-margin--vertical--none">9:00 AM - Aterrizaje en Bangkok</p>
+                  </li>
+                  <li class="u-flex u-flex--center-vertical u-margin--bottom--s">
+                    <span class="u-pin-icon u-pin-icon--s">
+                      <e-icon icon="monument" size="s"></e-icon>
+                    </span>
+                    <p class="u-margin--vertical--none">Khao Sand Road</p>
+                  </li>
+                </ul>
+              </c-card-date>
+            </a>
+          ))}
+        </div>
       </div>
-      <div class="u-col-4 u-col-md-7">
-        <div class="u-grid u-padding--horizontal--none">
-          <div class="u-col-4 u-col-md-12">
-            <c-map latitude="40.7127837" longitude="-74.0059413" gap=288></c-map>
-          </div>
-          <div class="u-col-4 u-col-md-6 u-bg--light u-padding--m u-border--radius--xl">
+      <div class="u-col-4 u-col-md-7 u-grid u-padding--horizontal--none ti-itinerary-list__content">
+        <div class="u-col-4 u-col-md-12 ti-itinerary-list__map">
+          <c-map latitude="40.7127837" longitude="-74.0059413" fullheight="auto"></c-map>
+        </div>
+        <div class="u-col-4 u-col-md-6 ti-itinerary-list__summary">
+          <div class="u-bg--light u-padding--m u-border--radius--xl">
             <p class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--s">Resumen del viaje</p>
             <e-progress-bar class="u-margin--bottom--s" label="Días planificados" value="4" total="16"></e-progress-bar>
             <div class="u-flex">
@@ -122,7 +124,9 @@ const { id, data } = Astro.props
               </div>
             </div>
           </div>
-          <div class="u-col-4 u-col-md-6 u-bg--light u-padding--m u-border--radius--xl">
+        </div>
+        <div class="u-col-4 u-col-md-6 ti-itinerary-list__summary">
+          <div class="u-bg--light u-padding--m u-border--radius--xl">
             <div class="u-bg--dark u-padding--s u-border--radius--s u-margin--bottom--s">
               <p class="u-text--l u-color--text-light u-margin--none">Pronóstico del tiempo</p>
             </div>
