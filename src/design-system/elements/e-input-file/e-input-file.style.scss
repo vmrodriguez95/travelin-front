@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
 
 .e-input-file {
   display: block;
@@ -54,12 +55,6 @@
     cursor: pointer;
     background: none;
     border: 0;
-  }
-
-  &__helpmsg {
-    @include body--xs;
-    margin: space(1) 0 0;
-    color: rgba(var(--color-text), 1);
   }
 
   &__error {

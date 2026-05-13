@@ -109,6 +109,12 @@ export class ECalendar extends LitElement {
         ${when(this.label, () => html`
           <label class="e-calendar__label" for=${this.id}>
             ${this.label} ${when(this.required, () => html`*`)}
+            ${when(this.helpmsg, () => html`
+              <button class="u-input-info__button" type="button" aria-label=${this.helpmsg}>
+                <e-icon icon="info" size="m"></e-icon>
+                <p class="u-input-info__helpmsg">${this.helpmsg}</p>
+              </button>
+            `)}
           </label>
         `)}
         <div class="e-calendar__wrapper">
@@ -163,9 +169,6 @@ export class ECalendar extends LitElement {
         </div>
         ${when(this._internals.validationMessage, () => html`
           <p class="e-calendar__error">${this._internals.validationMessage}</p>
-        `)}
-        ${when(this.helpmsg, () => html`
-          <p class="e-calendar__helpmsg">${this.helpmsg}</p>
         `)}
       </div>
     `

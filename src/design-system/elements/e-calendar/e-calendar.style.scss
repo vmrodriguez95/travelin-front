@@ -1,9 +1,10 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
 
 .e-calendar {
-  $block: &;
+  $root: &;
   display: block;
   position: relative;
 
@@ -82,8 +83,7 @@
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-radius 0.2s ease-in-out, margin 0.2s ease-in-out;
     
     &:disabled {
-      opacity: 0.6;
-      background-color: rgba(var(--color-gray), 0.7);
+      background: none;
       cursor: not-allowed;
 
       &:hover {
@@ -143,11 +143,5 @@
         transform: scale(1);
       }
     }
-  }
-
-  &__helpmsg {
-    @include body--xs;
-    margin: space(1) 0 0;
-    color: rgba(var(--color-text), 1);
   }
 }

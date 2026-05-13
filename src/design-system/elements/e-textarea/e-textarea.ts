@@ -42,6 +42,12 @@ export class ETextarea extends LitElement {
         ${when(this.label, () => html`
           <label class="e-textarea__label" for=${this.id}>
             ${this.label} ${when(this.required, () => html`*`)}
+            ${when(this.helpmsg, () => html`
+              <button class="u-input-info__button" type="button" aria-label=${this.helpmsg}>
+                <e-icon icon="info" size="m"></e-icon>
+                <p class="u-input-info__helpmsg">${this.helpmsg}</p>
+              </button>
+            `)}
           </label>
         `)}
         <div class="e-textarea__wrapper">
