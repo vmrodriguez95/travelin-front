@@ -44,7 +44,7 @@ export class ESelect extends LitElement {
 
   protected updated(changed: Map<string, unknown>) {
     if (changed.has('value') || changed.has('required')) {
-      this._internals.setFormValue(this.value.toString() || null)
+      this._internals.setFormValue(this.value || null)
       this._validate()
     }
   }

@@ -23,6 +23,7 @@
           "name": "typeTransport",
           "label": "Tipo de transporte",
           "type": "select",
+          "default": "Selecciona una opción",
           "options": [
             {
               "value": "flight",
@@ -109,6 +110,7 @@
           "name": "currency",
           "label": "Tipo de moneda",
           "type": "select",
+          "default": "Selecciona una opción",
           "options": [],
           "required": false,
           "readonly": false
@@ -118,6 +120,7 @@
     "passengers": {
       "id": "poiTransportPassengers",
       "legend": "Añade pasajeros al trayecto",
+      "helpmsg": "Busca en tus amigos. O no, también puedes poner un nombre y listo :)",
       "canAdd": true,
       "addLabel": "Añadir pasajero/a",
       "canRemove": true,
@@ -147,6 +150,39 @@
       "emptyMsg": "Aún no hay tramos definidos.",
       "grid": "stacked",
       "schema": {
+        "duration": {
+          "id": "poiTransportSegmentsDuration",
+          "name": "duration",
+          "label": "Duración del trayecto",
+          "placeholder": "Por ejemplo: 6h 45m",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "operator": {
+          "id": "poiTransportSegmentsOperator",
+          "name": "operator",
+          "label": "Empresa con la que viajas",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "transportNumber": {
+          "id": "poiTransportSegmentsTransportNumber",
+          "name": "transportNumber",
+          "label": "Número del vuelo/crucero",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "class": {
+          "id": "poiTransportSegmentsClass",
+          "name": "class",
+          "label": "Clase en la que viajas",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
         "origin": {
           "sectionTitle": "Origen",
           "fields": {
@@ -272,6 +308,7 @@
           "name": "typeTransport",
           "label": "Tipo de transporte",
           "type": "select",
+          "default": "Selecciona una opción",
           "options": [
             {
               "value": "flight",
@@ -358,6 +395,7 @@
           "name": "currency",
           "label": "Tipo de moneda",
           "type": "select",
+          "default": "Selecciona una opción",
           "options": [],
           "required": false,
           "readonly": false
@@ -367,6 +405,7 @@
     "passengers": {
       "id": "poiTransportPassengers",
       "legend": "Añade pasajeros al trayecto",
+      "helpmsg": "Busca en tus amigos. O no, también puedes poner un nombre y listo :)",
       "canAdd": true,
       "addLabel": "Añadir pasajero/a",
       "canRemove": true,
@@ -396,6 +435,39 @@
       "emptyMsg": "Aún no hay tramos definidos.",
       "grid": "stacked",
       "schema": {
+        "duration": {
+          "id": "poiTransportSegmentsDuration",
+          "name": "duration",
+          "label": "Duración del trayecto",
+          "placeholder": "Por ejemplo: 6h 45m",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "operator": {
+          "id": "poiTransportSegmentsOperator",
+          "name": "operator",
+          "label": "Empresa con la que viajas",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "transportNumber": {
+          "id": "poiTransportSegmentsTransportNumber",
+          "name": "transportNumber",
+          "label": "Número del vuelo/crucero",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
+        "class": {
+          "id": "poiTransportSegmentsClass",
+          "name": "class",
+          "label": "Clase en la que viajas",
+          "type": "text",
+          "required": false,
+          "readonly": false
+        },
         "origin": {
           "sectionTitle": "Origen",
           "fields": {

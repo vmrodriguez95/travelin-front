@@ -18,6 +18,8 @@ export class EInput extends LitElement {
 
   @property({ type: String }) type = ''
 
+  @property({ type: String }) placeholder = ''
+
   @property({ type: String }) autocomplete = 'off'
 
   @property({ type: String, reflect: true }) value!: string | number
@@ -101,6 +103,7 @@ export class EInput extends LitElement {
             class="e-input__field"
             type=${this.type}
             autocomplete=${this.autocomplete}
+            placeholder=${this.placeholder}
             ?readonly=${this.readonly}
             ?required=${this.required}
             .minlength=${this.minlength}

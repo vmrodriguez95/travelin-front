@@ -47,6 +47,7 @@ export interface BasicFormField {
   helpmsg?: string
   fieldSize?: string
   value: string
+  placeholder?: string
   fillValue?: string | Array<string>
   minLength?: number
   maxLength?: number

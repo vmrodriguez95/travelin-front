@@ -2,6 +2,7 @@ import { LitElement, html, css, unsafeCSS, type TemplateResult } from 'lit'
 import { customElement, property, query, queryAll } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
+import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
@@ -20,7 +21,6 @@ import type {
 import type { SelectOption } from './c-form.types'
 
 import styles from './c-form.style.scss?inline'
-import { repeat } from 'lit/directives/repeat.js'
 
 @customElement('c-form')
 export class CForm extends LitElement {
@@ -283,6 +283,7 @@ export class CForm extends LitElement {
             ?readonly=${field.readonly}
             .value=${this._getFieldValue(field)}
             compareValue=${compareValue}
+            placeholder=${field.placeholder}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-input>
         `
@@ -315,6 +316,7 @@ export class CForm extends LitElement {
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
+            default=${fieldSelect.default}
             .options=${selectOptions}
             ?required=${fieldSelect.required}
             ?readonly=${fieldSelect.readonly}
@@ -426,12 +428,56 @@ export class CForm extends LitElement {
     }
   }
 
+  private _printArraySection(fieldBlock: FormBlock, section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string, index: number): TemplateResult {
+    return html`
+      <div class="c-form__repeater__block">
+        <div class="c-form__repeater__actions">
+          ${when(section.canRemove, () => html`
+            <button class="c-form__remove" type="button" @click=${() => this._removeBlock(fields, index)}>
+              <e-icon icon="remove" size="m"></e-icon>
+            </button>
+          `)}
+        </div>
+        <div class="c-form__repeater__fields c-form__repeater__fields--${section.grid}">
+          ${map(Object.keys(fieldBlock), (key: string) => {
+            const entry = fieldBlock[key]
+
+            if (key !== 'randomId' && this._isRenderableSectionEntry(entry)) {
+              return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`)
+            }
+
+            return ''
+          })}
+        </div>
+      </div>
+    `
+  }
+
+  private _printSubSection(section: FormSection, fields: FormBlock, breadcrumbs: string): TemplateResult {
+    return html`
+      <div class="c-form__subsection">
+        ${when(section.sectionTitle, () => html`
+          <h3 class="c-form__subtitle">${section.sectionTitle}</h3>
+        `)}
+
+        ${map(Object.keys(fields), (key: string) => {
+          const entry = fields[key]
+
+          if (this._isRenderableSectionEntry(entry)) {
+            return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
+          }
+
+          return ''
+        })}
+      </div>
+    `
+  }
+
   private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string): TemplateResult {
     if ('schema' in section) {
       // Schema indica que esa estructura de campos se debe pintar en un repeater
       // En caso de que la casuística sea un FormArraySection
-      const arraySection = section as FormArraySection
-      const fields = arraySection.fields as Array<FormBlock>
+      const fields = section.fields as Array<FormBlock>
 
       return html`
         <div class="c-form__repeater">
@@ -445,28 +491,8 @@ export class CForm extends LitElement {
             () => repeat(
               fields,
               (fieldBlock: FormBlock, index: number) => fieldBlock.randomId || `${breadcrumbs}-${index}`,
-              (fieldBlock: FormBlock, index: number) => html`
-              <div class="c-form__repeater__block">
-                <div class="c-form__repeater__fields c-form__repeater__fields--${section.grid}">
-                  ${map(Object.keys(fieldBlock), (key: string) => {
-                    const entry = fieldBlock[key]
-
-                    if (key !== 'randomId' && this._isRenderableSectionEntry(entry)) {
-                      return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`)
-                    }
-
-                    return ''
-                  })}
-                </div>
-                <div class="c-form__repeater__actions">
-                  ${when(arraySection.canRemove, () => html`
-                    <button class="c-form__remove" type="button" @click=${() => this._removeBlock(fields, index)}>
-                      <e-icon icon="remove" size="m"></e-icon>
-                    </button>
-                  `)}
-                </div>
-              </div>
-            `),
+              (fieldBlock: FormBlock, index: number) => this._printArraySection(fieldBlock, section, fields, breadcrumbs, index)
+            ),
             () => html`
               <p class="c-form__empty">${section.emptyMsg}</p>
             `
@@ -484,23 +510,7 @@ export class CForm extends LitElement {
       // En caso de que la casuística sea un FormSection
       const fields = section.fields as FormBlock
 
-      return html`
-        <div class="c-form__subsection">
-          ${when(section.sectionTitle, () => html`
-            <h3 class="c-form__subtitle">${section.sectionTitle}</h3>
-          `)}
-
-          ${map(Object.keys(fields), (key: string, index: number) => {
-            const entry = fields[key]
-
-            if (this._isRenderableSectionEntry(entry)) {
-              return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
-            }
-
-            return ''
-          })}
-        </div>
-      `
+      return this._printSubSection(section, fields, breadcrumbs)
     }
 
     // En caso de que la casuística sea un BasicFormField
