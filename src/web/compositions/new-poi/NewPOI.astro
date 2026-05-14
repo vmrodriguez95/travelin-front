@@ -1,7 +1,8 @@
 ---
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 const { id, data } = Astro.props
 
-let finalData = data
+let finalData = withFormA11yDefaults(data)
 
 finalData.sections.core.fields.location.api = '/api/places.json'
 

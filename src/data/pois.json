@@ -37,8 +37,7 @@
         "origin": {
           "code": "MAD",
           "name": "Adolfo Suárez Madrid-Barajas",
-          "city": "Madrid",
-          "country": "España",
+          "address": "Madrid, España",
           "coordinates": [-3.560, 40.472],
           "platform": "T1",
           "date": "2025-10-28T10:30:00.000"
@@ -46,8 +45,7 @@
         "destiny": {
           "code": "PVG",
           "name": "Shanghai Pudong International Airport",
-          "city": "Shanghai",
-          "country": "China",
+          "address": "Shanghai, China",
           "coordinates": [139.779, 35.549],
           "platform": "T1",
           "date": "2025-10-29T06:20:00.000"
@@ -70,8 +68,7 @@
         "origin": {
           "code": "PVG",
           "name": "Shanghai Pudong International Airport",
-          "city": "Shanghai",
-          "country": "China",
+          "address": "Shanghai, China",
           "coordinates": [139.779, 35.549],
           "platform": "T1",
           "gate": "13",
@@ -80,8 +77,7 @@
         "destiny": {
           "code": "HND",
           "name": "Haneda Airport",
-          "city": "Tokio",
-          "country": "Japón",
+          "address": "Tokio, Japón",
           "coordinates": [139.779, 35.549],
           "platform": "T3",
           "gate": "10",

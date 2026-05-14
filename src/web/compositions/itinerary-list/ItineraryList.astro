@@ -1,5 +1,8 @@
 ---
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 const { id, data } = Astro.props
+
+const finalData = withFormA11yDefaults(data)
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -67,7 +70,7 @@ const { id, data } = Astro.props
         <template>
           <h2 slot="title">Eliminar viaje</h2>
           <p slot="description">Estas a punto de eliminar este viaje. Si lo eliminas, perderás todos los archivos e información adjunta al viaje y no habrá vuelta atrás. ¿Realmente estás seguro de que quieres eliminarlo?</p>
-          <c-form action="/" method={data.form.method} type={data.form.action} data={JSON.stringify(data)} submitLabel="Eliminar viaje"></c-form>
+          <c-form action="/" method={finalData.form.method} type={finalData.form.action} data={JSON.stringify(finalData)} submitLabel="Eliminar viaje"></c-form>
         </template>
       </e-modal-trigger>
     </c-header>

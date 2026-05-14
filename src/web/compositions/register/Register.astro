@@ -1,10 +1,12 @@
 ---
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 const { id, data } = Astro.props
 
-let finalData = data
-finalData.sections.core.fields.name.a11y = {
-  clear: "Eliminar valor del campo"
-}
+let finalData = withFormA11yDefaults(data, {
+  text: {
+    clear: "Eliminar valor del campo"
+  }
+})
 
 finalData.sections.core.fields.username.a11y = {
   clear: "Eliminar valor del campo"

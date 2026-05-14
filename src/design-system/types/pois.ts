@@ -51,8 +51,7 @@ interface TransportBooking {
 interface TransportSegmentPart {
   code: string
   name: string
-  city: string
-  country: string
+  address: string
   coordinates: Coordinates
   platform: string
   gate: string
