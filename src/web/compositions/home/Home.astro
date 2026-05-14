@@ -1,5 +1,8 @@
 ---
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 const { id, data } = Astro.props
+
+const finalData = withFormA11yDefaults(data)
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -46,7 +49,7 @@ const { id, data } = Astro.props
       <template>
         <h2 slot="title">Cerrar sesión</h2>
         <p slot="description">¿Estás seguro de que seas cerrar sesión?</p>
-        <c-form action="/" method={data.form.method} type={data.form.action} data={JSON.stringify(data)} submitLabel="Cerrar sesión"></c-form>
+        <c-form action="/" method={finalData.form.method} type={finalData.form.action} data={JSON.stringify(finalData)} submitLabel="Cerrar sesión"></c-form>
       </template>
     </e-modal-trigger>
   </div>

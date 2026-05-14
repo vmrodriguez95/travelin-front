@@ -83,7 +83,7 @@ export class CCardTransport extends LitElement {
         <div class="c-card-transport__content">
           ${map(this.data.segments, (item: TransportSegment) => html`
             <p class="c-card-transport__segment">
-              <span>${item.origin.code} ${getTimeFrom(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${item.destiny.code} ${getTimeFrom(item.destiny.date)}</span>
+              <span>${this._getCity(item.origin.address)} ${getTimeFrom(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${this._getCity(item.destiny.address)} ${getTimeFrom(item.destiny.date)}</span>
             </p>
           `)}
         </div>
@@ -134,6 +134,10 @@ export class CCardTransport extends LitElement {
         source: this
       }
     }))
+  }
+
+  private _getCity(address: string) {
+    return address.split(', ')[0]
   }
 
   private _removeFromDOM() {
