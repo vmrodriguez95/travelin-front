@@ -20,6 +20,7 @@
     align-items: center;
     width: 100%;
     margin: 0 0 space(0.5);
+    cursor: pointer;
   }
 
   &__wrapper {
@@ -37,6 +38,7 @@
     box-sizing: border-box;
     border-radius: $border-radius-s;
     appearance: none;
+    cursor: pointer;
 
     &:has(+ e-icon) {
       padding-right: space(6);

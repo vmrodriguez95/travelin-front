@@ -22,6 +22,10 @@
     grid-template-columns: repeat(2, 1fr);
     gap: space(2);
     margin-bottom: space(4);
+
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
   }
 
   &__repeater {
@@ -29,16 +33,25 @@
     text-align: right;
 
     &__block {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: space(2);
+      position: relative;
       margin-bottom: space(2);
+      padding: space(1) space(4) space(2);
+      border: 1px solid rgba(var(--color-text), 1);
+      border-radius: $border-radius-m;
+    }
+
+    &__actions {
+      position: absolute;
+      top: space(1);
+      right: space(4);
+      display: flex;
+      justify-content: flex-end;
+      gap: space(2);
+      z-index: 1;
     }
     
     &__fields {
       gap: space(2);
-      padding: 0 space(2);
 
       &--inline {
         display: flex;
@@ -50,10 +63,6 @@
         display: block;
         flex: 1 0 auto;
       }
-    }
-
-    &__actions {
-      display: flex;
     }
   }
 

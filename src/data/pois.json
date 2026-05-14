@@ -31,6 +31,7 @@
     "segments": [
       {
         "duration": "6h 45m",
+        "operator": "China Eastern Airlines",
         "transportNumber": "MU 710",
         "class": "Tourist",
         "origin": {
@@ -50,10 +51,6 @@
           "coordinates": [139.779, 35.549],
           "platform": "T1",
           "date": "2025-10-29T06:20:00.000"
-        },
-        "operator": {
-          "name": "China Eastern Airlines",
-          "code": "MU"
         },
         "passengers": [
           {
