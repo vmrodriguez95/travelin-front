@@ -15,9 +15,14 @@ interface FileFieldA11y {
   clear: string
 }
 
+interface IconFieldA11y {
+  choose: string
+}
+
 interface FormA11yConfig {
   text?: Partial<TextFieldA11y>
   file?: Partial<FileFieldA11y>
+  icon?: Partial<IconFieldA11y>
 }
 
 const DEFAULT_FORM_A11Y: Required<FormA11yConfig> = {
@@ -27,6 +32,9 @@ const DEFAULT_FORM_A11Y: Required<FormA11yConfig> = {
   file: {
     upload: 'Seleccionar archivo',
     clear: 'Eliminar archivo seleccionado'
+  },
+  icon: {
+    choose: 'Selecciona este icono'
   }
 }
 
@@ -65,6 +73,13 @@ function addA11yToField(field: BasicFormField, config: Required<FormA11yConfig>)
       ...(field.a11y || {})
     }
   }
+
+  if (field.type === 'icon') {
+    field.a11y = {
+      ...config.icon,
+      ...(field.a11y || {})
+    }
+  }
 }
 
 function walkFormBlock(block: FormBlock | null | undefined, config: Required<FormA11yConfig>) {
@@ -100,6 +115,10 @@ export function withFormA11yDefaults<T extends FormSchema>(formSchema: T, overri
     file: {
       ...DEFAULT_FORM_A11Y.file,
       ...(overrides.file || {})
+    },
+    icon: {
+      ...DEFAULT_FORM_A11Y.icon,
+      ...(overrides.icon || {})
     }
   }
 
