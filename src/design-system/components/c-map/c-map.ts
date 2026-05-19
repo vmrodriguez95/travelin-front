@@ -13,8 +13,10 @@ import {
   POI_CLEAR_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_HOVER_EVENT,
+  POI_REMOVE_EVENT,
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
+  type PoiRemoveEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
@@ -235,6 +237,29 @@ export class CMap extends LitElement {
     this._markerInstances.clear()
   }
 
+  private _removePoiMarkers(idPoi: string) {
+    this.markers.forEach((marker) => {
+      if (marker.idPoi !== idPoi && marker.id !== idPoi) return
+
+      const markerInstance = this._markerInstances.get(marker.id)
+
+      if (markerInstance) {
+        markerInstance.map = null
+        this._markerInstances.delete(marker.id)
+      }
+    })
+
+    this.markers = this.markers.filter((marker) => marker.idPoi !== idPoi && marker.id !== idPoi)
+
+    if (this._selectedIdPoi === idPoi) {
+      this._selectedIdPoi = ''
+    }
+
+    if (this._hoveredIdPoi === idPoi) {
+      this._hoveredIdPoi = ''
+    }
+  }
+
   private _syncMarkers() {
     if (!this._map || !this.markers.length) return
 
@@ -441,6 +466,7 @@ export class CMap extends LitElement {
     this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
     this._channelBus.addEventListener(POI_HOVER_EVENT, this._onHoverChange as EventListener)
     this._channelBus.addEventListener(POI_HOVER_CLEAR_EVENT, this._onHoverClear)
+    this._channelBus.addEventListener(POI_REMOVE_EVENT, this._onPoiRemove as EventListener)
   }
 
   private _disconnectFromChannel() {
@@ -450,6 +476,7 @@ export class CMap extends LitElement {
     this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
     this._channelBus.removeEventListener(POI_HOVER_EVENT, this._onHoverChange as EventListener)
     this._channelBus.removeEventListener(POI_HOVER_CLEAR_EVENT, this._onHoverClear)
+    this._channelBus.removeEventListener(POI_REMOVE_EVENT, this._onPoiRemove as EventListener)
     this._channelBus = null
   }
 
@@ -490,5 +517,11 @@ export class CMap extends LitElement {
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
     }
+  }
+
+  private _onPoiRemove = (ev: Event) => {
+    const event = ev as CustomEvent<PoiRemoveEventDetail>
+
+    this._removePoiMarkers(event.detail.data.id)
   }
 }

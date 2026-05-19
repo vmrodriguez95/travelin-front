@@ -4,6 +4,7 @@ export const POI_SELECT_EVENT = 'poi-select'
 export const POI_CLEAR_EVENT = 'poi-clear'
 export const POI_HOVER_EVENT = 'poi-hover'
 export const POI_HOVER_CLEAR_EVENT = 'poi-hover-clear'
+export const POI_REMOVE_EVENT = 'poi-remove'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note
 
@@ -20,6 +21,11 @@ export interface PoiClearEventDetail {
 }
 
 export interface PoiHoverEventDetail {
+  data: PoiChannelData
+  source?: EventTarget | null
+}
+
+export interface PoiRemoveEventDetail {
   data: PoiChannelData
   source?: EventTarget | null
 }
