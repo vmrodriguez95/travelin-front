@@ -17,3 +17,38 @@ export function scrollToPageEnd() {
     })
   })
 }
+
+function getNearestVerticalScrollContainer(element: HTMLElement) {
+  let parent = element.parentElement
+
+  while (parent) {
+    const overflowY = window.getComputedStyle(parent).overflowY
+    const hasVerticalScroll = parent.scrollHeight > parent.clientHeight
+
+    if (hasVerticalScroll && ['auto', 'scroll', 'overlay'].includes(overflowY)) {
+      return parent
+    }
+
+    parent = parent.parentElement
+  }
+
+  return null
+}
+
+export function scrollIntoNearestVerticalContainer(element: HTMLElement) {
+  const container = getNearestVerticalScrollContainer(element)
+
+  if (!container) return
+
+  const containerRect = container.getBoundingClientRect()
+  const elementRect = element.getBoundingClientRect()
+  const top = container.scrollTop
+    + elementRect.top
+    - containerRect.top
+    - ((container.clientHeight - elementRect.height) / 2)
+
+  container.scrollTo({
+    top: Math.max(0, top),
+    behavior: 'smooth'
+  })
+}
