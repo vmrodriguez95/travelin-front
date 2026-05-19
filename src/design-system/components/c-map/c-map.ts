@@ -64,6 +64,11 @@ export class CMap extends LitElement {
 
   _resizeHandler: (() => void) | null = null
 
+  _lastMarkerClick = {
+    id: '',
+    time: 0
+  }
+
   _selectedIdPoi = ''
 
   _hoveredIdPoi = ''
@@ -244,8 +249,11 @@ export class CMap extends LitElement {
         position,
         map: this._map,
         title: marker.label,
-        content: this._createMarkerContent(marker)
+        content: this._createMarkerContent(marker),
+        gmpClickable: true
       })
+
+      markerInstance.addListener('click', () => this._onMarkerClick(marker))
 
       bounds.extend(position)
       this._markerInstances.set(marker.id, markerInstance)
@@ -298,6 +306,7 @@ export class CMap extends LitElement {
     const icon = document.createElement('div')
     const scale = markerStyle.scale
     const size = 24 * scale
+    let pointerStart: { x: number, y: number } | null = null
 
     wrapper.style.width = `${40 * scale}px`
     wrapper.style.height = `${40 * scale}px`
@@ -308,6 +317,9 @@ export class CMap extends LitElement {
     wrapper.style.backgroundColor = markerStyle.background
     wrapper.style.border = `2px solid ${markerStyle.borderColor}`
     wrapper.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.22)'
+    wrapper.style.cursor = 'pointer'
+    wrapper.style.touchAction = 'manipulation'
+    wrapper.style.userSelect = 'none'
     wrapper.style.transition = 'transform 0.2s ease'
     wrapper.style.transform = this._selectedIdPoi && marker.idPoi === this._selectedIdPoi ? 'translateY(-2px)' : 'translateY(0)'
 
@@ -320,6 +332,21 @@ export class CMap extends LitElement {
     icon.innerHTML = this._normalizeMarkerSvg(this._getMarkerIcon(marker))
 
     wrapper.appendChild(icon)
+    wrapper.addEventListener('pointerdown', (ev) => {
+      pointerStart = { x: ev.clientX, y: ev.clientY }
+    })
+    wrapper.addEventListener('pointerup', (ev) => {
+      if (!pointerStart) return
+
+      const movement = Math.hypot(ev.clientX - pointerStart.x, ev.clientY - pointerStart.y)
+      pointerStart = null
+
+      if (movement > 6) return
+
+      ev.preventDefault()
+      ev.stopPropagation()
+      this._onMarkerClick(marker)
+    })
 
     return wrapper
   }
@@ -330,6 +357,43 @@ export class CMap extends LitElement {
     if (!svg) return ''
 
     return svg.replace('<svg', '<svg style="width:100%;height:100%;display:block;fill:currentColor;"')
+  }
+
+  private _focusMarker(marker: MapMarker) {
+    if (!this._map) return
+
+    this._map.panTo(this._getMarkerPosition(marker))
+    this._map.setZoom(SELECTED_ZOOM)
+  }
+
+  private _isDuplicateMarkerClick(marker: MapMarker) {
+    const now = Date.now()
+    const isDuplicate = this._lastMarkerClick.id === marker.id && now - this._lastMarkerClick.time < 300
+
+    this._lastMarkerClick = {
+      id: marker.id,
+      time: now
+    }
+
+    return isDuplicate
+  }
+
+  private _onMarkerClick(marker: MapMarker) {
+    if (this._isDuplicateMarkerClick(marker)) return
+
+    this._selectedIdPoi = marker.idPoi || marker.id
+    this._refreshMarkerStyles()
+    this._focusMarker(marker)
+
+    if (!this._channelBus || !marker.data) return
+
+    this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      detail: {
+        data: marker.data,
+        source: this,
+        view: marker.view || 'detail'
+      }
+    }))
   }
 
   private async _setupMap() {
@@ -356,10 +420,7 @@ export class CMap extends LitElement {
     if (!selectedMarkers.length) return
 
     if (selectedMarkers.length === 1) {
-      this._map.panTo(this._getMarkerPosition(selectedMarkers[0]))
-      this._google.maps.event.addListenerOnce(this._map, 'idle', () => {
-        this._map.setZoom(SELECTED_ZOOM)
-      })
+      this._focusMarker(selectedMarkers[0])
       return
     }
 
@@ -396,6 +457,8 @@ export class CMap extends LitElement {
     const event = ev as CustomEvent<PoiSelectEventDetail>
 
     this._selectedIdPoi = event.detail.data.id
+
+    if (event.detail.source === this) return
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()

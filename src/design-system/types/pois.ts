@@ -24,6 +24,8 @@ export interface MapMarker {
   type: string
   coordinates: Coordinates
   icon?: string
+  data?: Poi | PoiHotel | PoiTransport | Reminder | Note
+  view?: 'resume' | 'detail'
 }
 
 // POI HOTEL

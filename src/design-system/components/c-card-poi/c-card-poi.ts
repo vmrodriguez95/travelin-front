@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
@@ -17,7 +17,7 @@ import {
   type PoiHoverEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
-import { scrollToPageEnd } from '@ds/utils/action.utils'
+import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 
 // Styles
 import styles from './c-card-poi.style.scss?inline'
@@ -36,6 +36,8 @@ export class CCardPoi extends LitElement {
   @property({ type: String }) channel = ''
 
   @property({ type: Boolean, reflect: true }) active = false
+
+  @query('.c-card-poi') _card!: HTMLElement
 
   @state() removing = false
 
@@ -196,11 +198,22 @@ export class CCardPoi extends LitElement {
     this._channelBus = null
   }
 
+  private async _focusSelectedCard() {
+    await this.updateComplete
+
+    scrollIntoNearestVerticalContainer(this)
+    this._card?.focus({ preventScroll: true })
+  }
+
   private _onSelectionChange = (ev: Event) => {
     const event = ev as CustomEvent<PoiSelectEventDetail>
 
     this._isSelectedData = event.detail.data.id === this.data.id
     this.active = this._isSelectedData
+
+    if (this._isSelectedData && event.detail.source !== this) {
+      this._focusSelectedCard()
+    }
   }
 
   private _onSelectionClear = () => {

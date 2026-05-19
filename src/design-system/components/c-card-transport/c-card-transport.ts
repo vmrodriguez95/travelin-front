@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { map } from 'lit/directives/map.js'
 
@@ -8,7 +8,7 @@ import type { PoiTransport, TransportSegment } from '@ds/types/pois'
 
 // Utils
 import { getTimeFrom } from '@ds/utils/date.utils'
-import { scrollToPageEnd } from '@ds/utils/action.utils'
+import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 import {
   getPoiChannel,
   POI_CLEAR_EVENT,
@@ -34,6 +34,8 @@ export class CCardTransport extends LitElement {
   @property({ type: String }) channel = ''
 
   @property({ type: Boolean, reflect: true }) active = false
+
+  @query('.c-card-transport') _card!: HTMLElement
 
   _channelBus: EventTarget | null = null
   _isSelectedData = false
@@ -176,11 +178,22 @@ export class CCardTransport extends LitElement {
     this._channelBus = null
   }
 
+  private async _focusSelectedCard() {
+    await this.updateComplete
+
+    scrollIntoNearestVerticalContainer(this)
+    this._card?.focus({ preventScroll: true })
+  }
+
   private _onSelectionChange = (ev: Event) => {
     const event = ev as CustomEvent<PoiSelectEventDetail>
 
     this._isSelectedData = event.detail.data.id === this.data.id
     this.active = this._isSelectedData
+
+    if (this._isSelectedData && event.detail.source !== this) {
+      this._focusSelectedCard()
+    }
   }
 
   private _onSelectionClear = () => {

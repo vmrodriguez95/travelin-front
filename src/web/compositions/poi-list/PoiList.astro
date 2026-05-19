@@ -33,6 +33,10 @@ const pois = (Object.values(poisGlob)[0] as any)?.default
 const channel = 'poi-list'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
+function getMarkerView(type: string) {
+  return type === 'poi' || type === 'poi_hotel' ? 'resume' : 'detail'
+}
+
 const markers = pois.flatMap((poi: any) => {
   if (Array.isArray(poi.coordinates)) {
     return [{
@@ -41,7 +45,9 @@ const markers = pois.flatMap((poi: any) => {
       label: poi.name,
       type: poi.type,
       coordinates: poi.coordinates,
-      icon: poi.icon || 'location'
+      icon: poi.icon || 'location',
+      data: poi,
+      view: getMarkerView(poi.type)
     }]
   }
 
@@ -56,7 +62,9 @@ const markers = pois.flatMap((poi: any) => {
           label: `${poi.name} - ${segment.origin.code}`,
           type: poi.type,
           coordinates: segment.origin.coordinates,
-          icon: poi.typeTransport || 'transport'
+          icon: poi.typeTransport || 'transport',
+          data: poi,
+          view: getMarkerView(poi.type)
         })
       }
 
@@ -67,7 +75,9 @@ const markers = pois.flatMap((poi: any) => {
           label: `${poi.name} - ${segment.destiny.code}`,
           type: poi.type,
           coordinates: segment.destiny.coordinates,
-          icon: poi.typeTransport || 'transport'
+          icon: poi.typeTransport || 'transport',
+          data: poi,
+          view: getMarkerView(poi.type)
         })
       }
 
