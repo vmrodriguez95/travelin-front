@@ -14,8 +14,10 @@ import {
   POI_CLEAR_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_HOVER_EVENT,
+  POI_REMOVE_EVENT,
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
+  type PoiRemoveEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
@@ -150,6 +152,13 @@ export class CCardTransport extends LitElement {
     const event = ev as CustomEvent
 
     if (event.detail.data.id === this.data.id) {
+      this._channelBus?.dispatchEvent(new CustomEvent<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
+        detail: {
+          data: this.data,
+          source: this
+        }
+      }))
+
       if (this._isSelectedData) {
         this._channelBus?.dispatchEvent(new CustomEvent(POI_CLEAR_EVENT))
       }
