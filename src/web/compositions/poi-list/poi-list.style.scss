@@ -11,16 +11,12 @@
 
   &__cards {
     padding: 0 space(2);
+    box-sizing: border-box;
   }
   
   &__toolbar {
     flex: 0 0 auto;
     padding: space(2);
-  }
-
-  &__cards {
-    padding-right: space(1);
-    box-sizing: border-box;
   }
 
   &__map {
