@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/tools/scrollbar.scss' as *;
 
 .e-input-icon {
   display: block;
@@ -58,6 +59,8 @@
     }
 
     &__list {
+      @include apple-scrollbar;
+
       display: flex;
       flex-flow: wrap;
       align-items: center;
