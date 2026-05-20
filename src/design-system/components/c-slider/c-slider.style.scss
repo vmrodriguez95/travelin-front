@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/tools/scrollbar.scss' as *;
 
 .c-slider {
   display: flex;
@@ -14,6 +15,8 @@
     transition: transform .3s ease;
 
     ::slotted(*) {
+      @include apple-scrollbar;
+
       flex: 1 0 100%;
       padding: space(1) space(6);
       box-sizing: border-box;

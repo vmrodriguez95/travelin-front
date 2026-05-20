@@ -1,6 +1,7 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/tools/scrollbar.scss' as *;
 
 .ti-code {
   display: block;
@@ -14,6 +15,8 @@
   }
   
   &__block {
+    @include apple-scrollbar;
+
     display: block;
     margin: 0;
     padding: space(2) space(4);

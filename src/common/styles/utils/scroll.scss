@@ -1,14 +1,26 @@
+@use '@common/styles/tools/scrollbar.scss' as *;
+
+* {
+  @include apple-scrollbar;
+}
+
 .u-scroll {
+  @include apple-scrollbar;
+
   overflow: auto;
   scroll-behavior: smooth;
 
   &--vertical {
+    @include apple-scrollbar;
+
     overflow-x: hidden;
     overflow-y: auto;
     scroll-behavior: smooth;
   }
 
   &--horizontal {
+    @include apple-scrollbar;
+
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
