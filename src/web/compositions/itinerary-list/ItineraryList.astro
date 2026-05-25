@@ -5,7 +5,7 @@ const { id, data } = Astro.props
 const finalData = withFormA11yDefaults(data)
 ---
 
-<section id={id} class="u-grid-main u-bg--dark" data-component>
+<main id={id} class="u-grid-main u-bg--dark" data-component>
   <div class="u-grid-main--sidebar">
     <c-menu>
       <a slot="logo" href="#">
@@ -144,5 +144,5 @@ const finalData = withFormA11yDefaults(data)
       </div>
     </section>
   </div>
-</section>
+</main>
 <c-modal id="modal" close="Cerrar"></c-modal>

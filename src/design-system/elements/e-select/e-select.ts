@@ -21,7 +21,7 @@ export class ESelect extends LitElement {
 
   @property({ type: String }) default = ''
 
-  @property({ type: String }) value: string = ''
+  @property({ type: String, reflect: true }) value: string = ''
 
   @property({ type: String }) helpmsg = ''
 
@@ -95,6 +95,7 @@ export class ESelect extends LitElement {
 
     this._validate()
     this._internals.setFormValue(this.value)
+    this.dispatchEvent(new Event('change'))
   }
 
   private _validate() {

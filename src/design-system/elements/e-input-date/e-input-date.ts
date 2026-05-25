@@ -82,6 +82,7 @@ export class EInputDate extends LitElement {
 
     this._validate()
     this._internals.setFormValue(this.value)
+    this.dispatchEvent(new Event('change'))
   }
 
   private _validate() {

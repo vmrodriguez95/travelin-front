@@ -134,6 +134,7 @@
           "type": "search",
           "fieldSize": "full",
           "api": "",
+          "showInResume": true,
           "queryAsValue": true,
           "required": false,
           "readonly": false
@@ -150,20 +151,22 @@
       "emptyMsg": "Aún no hay tramos definidos.",
       "grid": "stacked",
       "schema": {
+        "operator": {
+          "id": "poiTransportSegmentsOperator",
+          "name": "operator",
+          "label": "Empresa con la que viajas",
+          "type": "text",
+          "showInResume": true,
+          "required": false,
+          "readonly": false
+        },
         "duration": {
           "id": "poiTransportSegmentsDuration",
           "name": "duration",
           "label": "Duración del trayecto",
           "placeholder": "Por ejemplo: 6h 45m",
           "type": "text",
-          "required": false,
-          "readonly": false
-        },
-        "operator": {
-          "id": "poiTransportSegmentsOperator",
-          "name": "operator",
-          "label": "Empresa con la que viajas",
-          "type": "text",
+          "showInResume": true,
           "required": false,
           "readonly": false
         },
@@ -212,6 +215,7 @@
               "label": "¿Cuando sales?",
               "type": "datetime-local",
               "fieldSize": "full",
+              "showInResume": true,
               "required": true,
               "readonly": false
             }
@@ -246,6 +250,7 @@
               "label": "¿Cuando llegas?",
               "type": "datetime-local",
               "fieldSize": "full",
+              "showInResume": true,
               "required": true,
               "readonly": false
             }
@@ -254,6 +259,7 @@
         "passengers": {
           "id": "poiTransportSegmentsPassengers",
           "sectionTitle": "Información sobre los pasajeros",
+          "resumeLabel": "Pasajero/s",
           "canAdd": true,
           "addLabel": "Añadir pasajero/a",
           "canRemove": true,
@@ -265,6 +271,7 @@
               "name": "name",
               "label": "Nombre del pasajero",
               "type": "select",
+              "showInResume": true,
               "options": [],
               "dependsOn": ["passengers.name"],
               "required": false,
@@ -275,6 +282,7 @@
               "name": "seat",
               "label": "Asiento/camarote",
               "type": "text",
+              "showInResume": true,
               "required": false,
               "readonly": false
             }
@@ -419,6 +427,7 @@
           "type": "search",
           "fieldSize": "full",
           "api": "",
+          "showInResume": true,
           "queryAsValue": true,
           "required": false,
           "readonly": false
@@ -497,6 +506,7 @@
               "label": "¿Cuando sales?",
               "type": "datetime-local",
               "fieldSize": "full",
+              "showInResume": true,
               "required": true,
               "readonly": false
             }
@@ -531,6 +541,7 @@
               "label": "¿Cuando llegas?",
               "type": "datetime-local",
               "fieldSize": "full",
+              "showInResume": true,
               "required": true,
               "readonly": false
             }
@@ -552,6 +563,7 @@
               "type": "select",
               "options": [],
               "dependsOn": ["passengers.name"],
+              "showInResume": true,
               "required": false,
               "readonly": false
             },
@@ -560,6 +572,7 @@
               "name": "seat",
               "label": "Asiento/camarote",
               "type": "text",
+              "showInResume": true,
               "required": false,
               "readonly": false
             }

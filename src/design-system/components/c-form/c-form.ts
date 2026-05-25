@@ -19,6 +19,7 @@ import type {
   SelectFormField
 } from './c-form.types'
 import type { SelectOption } from './c-form.types'
+import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
 import styles from './c-form.style.scss?inline'
 
@@ -106,14 +107,20 @@ export class CForm extends LitElement {
   }
 
   private _onChange(ev: CustomEvent, field: BasicFormField) {
-    const target = ev.currentTarget as HTMLInputElement
-
     switch (field.type) {
       case 'calendar':
         field.value = ev.detail
         break
+      case 'search':
+        const searchInput = ev.currentTarget as EInputSearch
+
+        (field as SearchFormField).displayValue = searchInput.displayValue
+        field.value = searchInput.value
+        break
       default:
-        field.value = target.value
+        const defaultTarget = ev.currentTarget as HTMLInputElement
+
+        field.value = defaultTarget.value
     }
 
     this.requestUpdate()
@@ -126,10 +133,67 @@ export class CForm extends LitElement {
 
     const newBlock = window.structuredClone(section.schema)
 
-    // @ts-ignore - Agregamos un id único a cada bloque para optimizar el renderizado con repeat
     newBlock.randomId = crypto.randomUUID()
 
     section.fields.push(newBlock)
+    section.editingElementIdx = section.fields.length - 1
+    this.requestUpdate()
+  }
+
+  private _hasArrayFields(field: FormArraySection) {
+    return Array.isArray(field.fields) && field.fields.length > 0
+  }
+
+  private _hasFieldsWithValues(section: FormSection) {
+    if ('fields' in section && !Array.isArray(section.fields)) {
+      const fields = section.fields as FormBlock
+
+      for (const [_, field] of Object.entries(fields)) {
+        const basicField = field as BasicFormField
+
+        if (basicField.value !== '' && basicField.value !== undefined) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
+  private _hasAnyValue(section: FormArraySection | FormSection): boolean {
+    const fields = section.fields as Array<FormBlock>
+
+    for (const fieldList of fields) {
+      for (const [key, field] of Object.entries(fieldList)) {
+        if (key !== 'randomId') {
+          const basicField = field as BasicFormField
+
+          if (
+            (basicField.value !== '' && basicField.value !== undefined) ||
+            this._hasArrayFields(field as FormArraySection) ||
+            this._hasFieldsWithValues(field as FormSection)
+          ) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
+  }
+
+  private _confirmBlock(section: FormArraySection) {
+    if (!this._hasAnyValue(section)) {
+      section.fields?.splice(section.editingElementIdx as number, 1)
+    }
+
+    delete section.editingElementIdx
+
+    this.requestUpdate()
+  }
+
+  private _editBlock(section: FormArraySection, index: number) {
+    section.editingElementIdx = index
     this.requestUpdate()
   }
 
@@ -242,10 +306,17 @@ export class CForm extends LitElement {
       return this._collectValuesFromDependency(this.data.sections, dependencyPath.split('.'))
     })
   }
+
+  private _setFieldBreadcrumbs(field: BasicFormField, breadcrumbs: string) {
+    if (!field.breadcrumbs) {
+      field.breadcrumbs = breadcrumbs
+      field.name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
+    }
+  }
     
 
   private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
-    const name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
+    this._setFieldBreadcrumbs(field, breadcrumbs)
 
     if ('dependsOn' in field) {
       this._dependencies.push({
@@ -258,7 +329,7 @@ export class CForm extends LitElement {
     switch(field.type) {
       case 'hidden':
         return html`
-          <input type="hidden" name=${name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
+          <input type="hidden" name=${field.name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
         `
 
       case 'text':
@@ -272,7 +343,7 @@ export class CForm extends LitElement {
           <e-input
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${name}
+            name=${field.name}
             label=${field.label}
             type=${field.type}
             helpmsg=${field.helpmsg}
@@ -293,7 +364,7 @@ export class CForm extends LitElement {
           <e-textarea
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${name}
+            name=${field.name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             ?autofocus=${field.autofocus}
@@ -306,22 +377,22 @@ export class CForm extends LitElement {
 
       case 'select':
         const fieldSelect = field as SelectFormField
-        const selectOptions = this._getSelectFieldOptions(fieldSelect)
+        fieldSelect.options = this._getSelectFieldOptions(fieldSelect)
 
         return html`
           <e-select
             class=${this._getFieldClasses(fieldSelect)}
             id=${fieldSelect.id}
-            name=${name}
+            name=${fieldSelect.name}
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
             default=${fieldSelect.default}
-            .options=${selectOptions}
+            .options=${fieldSelect.options}
             ?required=${fieldSelect.required}
             ?readonly=${fieldSelect.readonly}
             .value=${this._getFieldValue(fieldSelect)}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSelect)}
+            @change=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-select>
         `
 
@@ -332,7 +403,7 @@ export class CForm extends LitElement {
           <e-input-file
             class=${this._getFieldClasses(fieldFile)}
             id=${fieldFile.id}
-            name=${name}
+            name=${fieldFile.name}
             label=${fieldFile.label}
             type=${fieldFile.type}
             helpmsg=${fieldFile.helpmsg}
@@ -355,13 +426,14 @@ export class CForm extends LitElement {
             class=${this._getFieldClasses(fieldSearch)}
             id=${fieldSearch.id}
             api=${fieldSearch.api}
-            name=${name}
+            name=${fieldSearch.name}
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
             ?queryAsValue=${fieldSearch.queryAsValue}
             ?required=${fieldSearch.required}
             ?readonly=${fieldSearch.readonly}
             .value=${this._getFieldValue(fieldSearch)}
+            displayValue=${fieldSearch.displayValue}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch)}
           ></e-input-search>
         `
@@ -371,7 +443,7 @@ export class CForm extends LitElement {
           <e-input-icon
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${name}
+            name=${field.name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             .value=${this._getFieldValue(field)}
@@ -389,7 +461,7 @@ export class CForm extends LitElement {
           <e-calendar
             class=${this._getFieldClasses(fieldCalendar)}
             id=${fieldCalendar.id}
-            name=${name}
+            name=${fieldCalendar.name}
             label=${fieldCalendar.label}
             type=${fieldCalendar.type}
             helpmsg=${fieldCalendar.helpmsg}
@@ -410,7 +482,7 @@ export class CForm extends LitElement {
           <e-input-date
             class=${this._getFieldClasses(fieldDate)}
             id=${fieldDate.id}
-            name=${name}
+            name=${fieldDate.name}
             label=${fieldDate.label}
             helpmsg=${fieldDate.helpmsg}
             type=${fieldDate.type}
@@ -432,11 +504,12 @@ export class CForm extends LitElement {
     return html`
       <div class="c-form__repeater__block">
         <div class="c-form__repeater__actions">
-          ${when(section.canRemove, () => html`
-            <button class="c-form__remove" type="button" @click=${() => this._removeBlock(fields, index)}>
-              <e-icon icon="remove" size="m"></e-icon>
-            </button>
-          `)}
+          <button class="c-form__repeater__action" type="button" @click=${() => this._confirmBlock(section)} aria-label="Confirmar cambios">
+            <e-icon icon="check" size="s"></e-icon>
+          </button>
+          <button class="c-form__repeater__action" type="button" @click=${() => this._removeBlock(fields, index)} aria-label="Cancelar cambios">
+            <e-icon icon="remove" size="m"></e-icon>
+          </button>
         </div>
         <div class="c-form__repeater__fields c-form__repeater__fields--${section.grid}">
           ${map(Object.keys(fieldBlock), (key: string) => {
@@ -473,13 +546,73 @@ export class CForm extends LitElement {
     `
   }
 
-  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string): TemplateResult {
-    if ('schema' in section) {
-      // Schema indica que esa estructura de campos se debe pintar en un repeater
-      // En caso de que la casuística sea un FormArraySection
-      const fields = section.fields as Array<FormBlock>
+  private _printResumeValue(field: BasicFormField): TemplateResult {
+    // console.log(field)
+    return html`
+      ${when(field.showInResume, () => html`
+        <p class="c-form__text">${field.value}</p>
+      `)}
+      <input type="hidden" name=${field.name} value=${field.value}>
+    `
+  }
 
-      return html`
+  private _printResume(fieldBlock: FormBlock, section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string, index: number): TemplateResult {
+    return html`
+      <div class="c-form__resume">
+        ${map(Object.keys(fieldBlock), (key: string) => {
+          const entry = fieldBlock[key] as BasicFormField | FormSection | FormArraySection
+
+          if (key !== 'randomId' && 'readonly' in entry) {
+            // Si es un campo
+            return this._printResumeValue(entry)
+          } else if (key !== 'randomId' && 'fields' in entry && !Array.isArray(entry.fields)) {
+            // Si es un FormSection
+            const fields = entry.fields as FormBlock
+
+            return html`${map(Object.keys(fields), (key: string) => {
+              return this._printResumeValue(fields[key] as BasicFormField)
+            })}`
+          } else if (key !== 'randomId' && 'fields' in entry && Array.isArray(entry.fields)) {
+            // Si es un FormArraySection
+            const fields = entry.fields as Array<FormBlock>
+
+            return html`
+              ${'resumeLabel' in entry ? html`
+                <p class="c-form__text">${fields.length} ${entry.resumeLabel?.toLowerCase()}</p>
+              ` : ''}
+
+              ${map(fields, (fieldBlock: FormBlock) => 
+                map(Object.keys(fieldBlock), (key: string) => 
+                  when(key !== 'randomId', () => {
+                    const field = fieldBlock[key] as BasicFormField
+                    // const name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
+
+                    return html`<input type="hidden" name=${field.name} value=${field.value}>`
+                  })
+                )
+              )}
+            `
+          }
+
+          // Para todo lo demás, Mastercard
+          return ''
+        })}
+        <div class="c-form__resume__actions">
+          <button class="c-form__resume__action" type="button" @click=${() => this._editBlock(section, index)} aria-label="Editar elemento">
+            <e-icon icon="edit" size="m"></e-icon>
+          </button>
+          ${when(section.canRemove, () => html`
+            <button class="c-form__resume__action" type="button" @click=${() => this._removeBlock(fields, section.editingElementIdx as number)} aria-label="Eliminar elemento">
+              <e-icon icon="delete" size="m"></e-icon>
+            </button>
+          `)}
+        </div>
+      </div>
+    `
+  }
+
+  private _printRepeater(section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string): TemplateResult {
+    return html`
         <div class="c-form__repeater">
           ${when(section.sectionTitle, () => html`
             <h2 class="c-form__subtitle">${section.sectionTitle}</h2>
@@ -491,7 +624,14 @@ export class CForm extends LitElement {
             () => repeat(
               fields,
               (fieldBlock: FormBlock, index: number) => fieldBlock.randomId || `${breadcrumbs}-${index}`,
-              (fieldBlock: FormBlock, index: number) => this._printArraySection(fieldBlock, section, fields, breadcrumbs, index)
+              (fieldBlock: FormBlock, index: number) => {
+
+                if ('editingElementIdx' in section && section.editingElementIdx === index) {
+                  return this._printArraySection(fieldBlock, section, fields, breadcrumbs, index)
+                }
+
+                return this._printResume(fieldBlock, section, fields, breadcrumbs, index)
+              }
             ),
             () => html`
               <p class="c-form__empty">${section.emptyMsg}</p>
@@ -504,6 +644,15 @@ export class CForm extends LitElement {
           `)}
         </div>
       `
+  }
+
+  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string): TemplateResult {
+    if ('schema' in section) {
+      // Schema indica que esa estructura de campos se debe pintar en un repeater
+      // En caso de que la casuística sea un FormArraySection
+      const fields = section.fields as Array<FormBlock>
+
+      return this._printRepeater(section as FormArraySection, fields, breadcrumbs)
     }
 
     if ('fields' in section && !Array.isArray(section.fields)) {

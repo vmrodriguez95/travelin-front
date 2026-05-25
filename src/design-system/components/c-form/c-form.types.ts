@@ -27,12 +27,14 @@ export interface FormArraySection {
   id: string
   sectionTitle: string
   sectionHelpmsg: string
+  resumeLabel?: string
   canAdd: boolean
   addLabel: string
   canMove: boolean
   canRemove: boolean
   emptyMsg: string
   removeMainKey?: boolean
+  editingElementIdx?: number
   grid: string // "inline" o "stacked"
   schema: FormBlock
   fields?: Array<FormBlock>
@@ -44,6 +46,7 @@ export interface BasicFormField {
   name: string
   label: string
   type: string
+  breadcrumbs: string
   helpmsg?: string
   fieldSize?: string
   value: string
@@ -53,10 +56,11 @@ export interface BasicFormField {
   maxLength?: number
   dependsOn?: Array<string>
   autofocus?: boolean
-  a11y?: any
   required: boolean
   readonly: boolean
   excludeValue?: boolean
+  showInResume?: boolean
+  a11y?: any
 }
 
 export interface SelectOption {
@@ -81,6 +85,7 @@ export interface CalendarFormField extends BasicFormField {
 }
 export interface SearchFormField extends BasicFormField {
   api: string
+  displayValue: string
   queryAsValue: boolean
 }
 
