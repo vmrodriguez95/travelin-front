@@ -87,7 +87,7 @@ export class EInputSearch extends LitElement {
             ?required=${this.required}
             aria-autocomplete="list"
             aria-expanded=${this._open ? 'true' : 'false'}
-            .value=${live(this.displayValue)}
+            .value=${live(this.displayValue || this.value)}
             @input=${this._debounceSearch}
             @blur=${this._onBlur}
             @keyup=${this._detectEscape}

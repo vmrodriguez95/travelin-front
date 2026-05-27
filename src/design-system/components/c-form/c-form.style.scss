@@ -23,7 +23,7 @@
     gap: space(2);
     margin-bottom: space(4);
 
-    &:not(:first-child) {
+    &:not(:first-of-type:first-child) {
       margin-top: 2rem;
     }
   }
@@ -49,6 +49,25 @@
       gap: space(2);
       z-index: 1;
     }
+
+    &__action {
+      --eIconColor: var(--color-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: space(3);
+      height: space(3);
+      background-color: rgba(var(--color-primary), 1);
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      cursor: pointer;
+      transition: transform .2s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
     
     &__fields {
       gap: space(2);
@@ -62,6 +81,36 @@
       &--stacked {
         display: block;
         flex: 1 0 auto;
+      }
+    }
+  }
+
+  &__resume {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: space(1);
+    margin-bottom: space(1);
+    padding: space(1) space(2);
+    border: 1px solid rgba(var(--color-text), 1);
+    border-radius: $border-radius-m;
+    box-sizing: border-box;
+
+    &__actions {
+      margin-left: auto;
+      display: flex;
+      gap: space(1);
+    }
+
+    &__action {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: transform .2s ease;
+
+      &:hover {
+        transform: scale(1.2);
       }
     }
   }
@@ -95,6 +144,13 @@
     #{$block}__subsection & {
       margin-bottom: 0;
     }
+  }
+
+  &__text {
+    @include body--m;
+    text-align: left;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
   }
 
   &__helpmsg {
@@ -145,21 +201,6 @@
     }
 
     &:hover e-icon {
-      transform: scale(1.2);
-    }
-  }
-
-  &__remove {
-    --eIconColor: var(--color-text);
-    display: inline-flex;
-    background-color: rgba(var(--color-primary), 1);
-    border: 0;
-    border-radius: 50%;
-    padding: 0;
-    cursor: pointer;
-    transition: transform .2s ease;
-
-    &:hover {
       transform: scale(1.2);
     }
   }
