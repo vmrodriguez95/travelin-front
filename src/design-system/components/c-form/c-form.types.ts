@@ -80,6 +80,8 @@ export interface DateFormField extends BasicFormField {
 
 export interface CalendarFormField extends BasicFormField {
   returnedValues: Array<string>
+  start?: string
+  end?: string
   min?: string
   max?: string
 }

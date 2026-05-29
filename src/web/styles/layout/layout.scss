@@ -25,14 +25,18 @@
   
   &__aside {
     grid-area: aside;
-    border-right: 1px solid rgba(var(--color-gray--light), 1);
     padding: space(3);
+    height: 100dvh;
+    overflow-y: auto;
+    border-right: 1px solid rgba(var(--color-gray--light), 1);
     box-sizing: border-box;
   }
 
   &__main {
     grid-area: main;
     padding: space(3);
+    height: calc(100dvh - 80px);
+    overflow-y: auto;
     box-sizing: border-box;
   }
 

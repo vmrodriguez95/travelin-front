@@ -85,6 +85,14 @@ export function getDateFrom(date: DateLike) {
   return Temporal.PlainDate.from(date)
 }
 
+export function getTimeFrom(date: string) {
+  return Temporal.PlainDateTime.from(date)
+}
+
+export function getDateTimeFrom(date: string) {
+  return Temporal.PlainDateTime.from(date)
+}
+
 export function getOptionalDate(date?: string | Temporal.PlainDate | null) {
   return date ? getDateFrom(date) : null
 }
@@ -192,8 +200,12 @@ export function getCalendarYears(initialDate: Temporal.PlainDate, {
   return Array.from({ length }, (_, index) => startYear + index)
 }
 
-export function getTimeFrom(date: string) {
-  return Temporal.PlainTime.from(date).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' })
+export function printTime(date: string) {
+  return getTimeFrom(date).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' })
+}
+
+export function printDateTime(date: string) {
+  return getDateTimeFrom(date).toLocaleString(navigator.language, { day: '2-digit', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
 export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal.PlainDate | string) {

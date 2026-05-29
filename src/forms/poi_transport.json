@@ -294,7 +294,7 @@
 },{
   "form": {
     "entity": "poi_transport",
-    "method": "PATCH",
+    "method": "POST",
     "action": "edit"
   },
   "sections": {

@@ -8,7 +8,7 @@
 }
 
 .c-form {
-  $block: &;
+  $root: &;
   display: block;
 
   &__section {
@@ -21,11 +21,8 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: space(2);
+    margin-top: space(4);
     margin-bottom: space(4);
-
-    &:not(:first-of-type:first-child) {
-      margin-top: 2rem;
-    }
   }
 
   &__repeater {
@@ -122,12 +119,16 @@
     margin: 0;
     text-align: left;
 
-    &:not(:has(+ #{$block}__helpmsg)) {
+    &:not(:has(+ #{$root}__helpmsg)) {
       margin-bottom: space(2);
     }
 
     &--center {
       text-align: center;
+    }
+
+    & + #{$root}__subsection {
+      margin-top: 0;
     }
   }
 
@@ -137,11 +138,11 @@
     color: rgba(var(--color-text), 1);
     margin: 0;
     
-    &:not(:has(+ #{$block}__helpmsg)) {
+    &:not(:has(+ #{$root}__helpmsg)) {
       margin-bottom: space(4);
     }
 
-    #{$block}__subsection & {
+    #{$root}__subsection & {
       margin-bottom: 0;
     }
   }

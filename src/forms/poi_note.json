@@ -61,6 +61,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "autofocus": true,
               "required": false,
               "readonly": false
@@ -73,7 +74,7 @@
 },{
   "form": {
     "entity": "poi_note",
-    "method": "PATCH",
+    "method": "POST",
     "action": "edit"
   },
   "sections": {
@@ -95,6 +96,7 @@
           "name": "name",
           "label": "Nombre para la nota",
           "type": "text",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -131,6 +133,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "autofocus": true,
               "required": false,
               "readonly": false
