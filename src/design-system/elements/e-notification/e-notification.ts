@@ -4,6 +4,19 @@ import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
+// Utils
+import {
+  getPoiChannel,
+  POI_CLEAR_EVENT,
+  POI_HOVER_CLEAR_EVENT,
+  POI_HOVER_EVENT,
+  POI_REMOVE_EVENT,
+  POI_SELECT_EVENT,
+  type PoiHoverEventDetail,
+  type PoiRemoveEventDetail,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
+
 import styles from './e-notification.style.scss?inline'
 
 @customElement('e-notification')
@@ -13,16 +26,28 @@ export class ENotification extends LitElement {
 
   @property({ type: Number }) timeout = 0
 
+  @property({ type: String }) channel = ''
+
   @state() _loaded = false
 
   @state() _closing = false
 
+  _channelBus: EventTarget | null = null
+
   static styles = css`${unsafeCSS(styles)}`
 
+  connectedCallback(): void {
+    super.connectedCallback()
+
+    this._connectToChannel()
+  }
+
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    setTimeout(() => {
-      this._loaded = true
-    }, 100)
+    if (!this.channel) {
+      setTimeout(() => {
+        this._loaded = true
+      }, 100)
+    }
   }
 
   render() {
@@ -42,7 +67,9 @@ export class ENotification extends LitElement {
         value: `${this.timeout}s`
       })
 
-      setTimeout(() => this._close(), this.timeout * 1000)
+      if (!this.channel) {
+        setTimeout(() => this._close(), this.timeout * 1000)
+      }
     }
 
     return html`
@@ -51,7 +78,7 @@ export class ENotification extends LitElement {
           <e-icon icon="close" size="s"></e-icon>
         </button>
         <e-icon icon=${this._getIcon()} size="l"></e-icon> <slot></slot>
-        ${when(this.timeout && !this._closing, () => html`<span class="e-notification__timeout" style=${styleMap(styles)}></span>`) }
+        ${when(this.timeout && this._loaded && !this._closing, () => html`<span class="e-notification__timeout" style=${styleMap(styles)}></span>`) }
       </div>
     `
   }
@@ -72,5 +99,19 @@ export class ENotification extends LitElement {
   private _close() {
     this._closing = true
     setTimeout(() => this.remove(), 400)
+  }
+
+  private _onPoiRemoved = () => {
+    this.type = 'success'
+    this._loaded = true
+
+    setTimeout(() => this._close(), this.timeout * 1000)
+  }
+
+  private _connectToChannel() {
+    if (!this.channel) return
+
+    this._channelBus = getPoiChannel(this.channel)
+    this._channelBus.addEventListener(POI_REMOVE_EVENT, this._onPoiRemoved as EventListener)
   }
 }

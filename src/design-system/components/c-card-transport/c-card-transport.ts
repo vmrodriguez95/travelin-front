@@ -7,7 +7,7 @@ import { map } from 'lit/directives/map.js'
 import type { PoiTransport, TransportSegment } from '@ds/types/pois'
 
 // Utils
-import { getTimeFrom } from '@ds/utils/date.utils'
+import { printTime } from '@ds/utils/date.utils'
 import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 import {
   getPoiChannel,
@@ -40,6 +40,7 @@ export class CCardTransport extends LitElement {
   @query('.c-card-transport') _card!: HTMLElement
 
   _channelBus: EventTarget | null = null
+
   _isSelectedData = false
 
   connectedCallback() {
@@ -85,11 +86,13 @@ export class CCardTransport extends LitElement {
           <e-icon class="c-card-transport__icon" icon=${this.icon} size="xl"></e-icon>
         </div>
         <div class="c-card-transport__content">
-          ${map(this.data.segments, (item: TransportSegment) => html`
-            <p class="c-card-transport__segment">
-              <span>${this._getCity(item.origin.address)} ${getTimeFrom(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${this._getCity(item.destiny.address)} ${getTimeFrom(item.destiny.date)}</span>
-            </p>
-          `)}
+          <div class="c-card-transport__segments">
+            ${map(this.data.segments, (item: TransportSegment) => html`
+              <p class="c-card-transport__segment">
+                <span>${this._getCity(item.origin.address)} ${printTime(item.origin.date)}</span> <span class="c-card-transport__duration">${item.duration}</span> <span>${this._getCity(item.destiny.address)} ${printTime(item.destiny.date)}</span>
+              </p>
+            `)}
+          </div>
         </div>
         <div class="c-card-transport__end">
           <slot name="action"></slot>

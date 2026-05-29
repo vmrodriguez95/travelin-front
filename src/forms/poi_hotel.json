@@ -97,6 +97,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "required": false,
               "readonly": false
             }
@@ -109,7 +110,7 @@
 {
   "form": {
     "entity": "poi_hotel",
-    "method": "PATCH",
+    "method": "POST",
     "action": "edit"
   },
   "sections": {
@@ -196,6 +197,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "autofocus": true,
               "required": false,
               "readonly": false

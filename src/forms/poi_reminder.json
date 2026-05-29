@@ -66,6 +66,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "required": false,
               "readonly": false
             }
@@ -77,7 +78,7 @@
 },{
   "form": {
     "entity": "poi_reminder",
-    "method": "PATCH",
+    "method": "POST",
     "action": "edit"
   },
   "sections": {
@@ -99,6 +100,7 @@
           "name": "name",
           "label": "Nombre para el recordatorio",
           "type": "text",
+          "fieldSize": "full",
           "required": true,
           "readonly": false
         },
@@ -135,6 +137,7 @@
               "label": "Texto",
               "type": "textarea",
               "fieldSize": "full",
+              "showInResume": true,
               "required": false,
               "readonly": false
             }

@@ -5,6 +5,9 @@ import { when } from 'lit/directives/when.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 
+// Utils
+import { printDateTime } from '@ds/utils/date.utils'
+
 // Types
 import type {
   FormSchema,
@@ -202,7 +205,7 @@ export class CForm extends LitElement {
     this.requestUpdate()
   }
 
-  private joinBreadcrumbsWithName(breadcrumbs: string, name: string) {
+  private joinBreadcrumbsWithName(name: string, breadcrumbs: string) {
     let newName = name
     const regex = new RegExp(`\\[?${name}\\]?$`)
 
@@ -307,16 +310,15 @@ export class CForm extends LitElement {
     })
   }
 
-  private _setFieldBreadcrumbs(field: BasicFormField, breadcrumbs: string) {
-    if (!field.breadcrumbs) {
-      field.breadcrumbs = breadcrumbs
-      field.name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
-    }
+  private _getDateTimeFormat(date: string = '') {
+    if (!date) return ''
+
+    return printDateTime(date)
   }
     
 
   private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
-    this._setFieldBreadcrumbs(field, breadcrumbs)
+    const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
 
     if ('dependsOn' in field) {
       this._dependencies.push({
@@ -329,7 +331,7 @@ export class CForm extends LitElement {
     switch(field.type) {
       case 'hidden':
         return html`
-          <input type="hidden" name=${field.name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
+          <input type="hidden" name=${name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
         `
 
       case 'text':
@@ -343,7 +345,7 @@ export class CForm extends LitElement {
           <e-input
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             type=${field.type}
             helpmsg=${field.helpmsg}
@@ -364,7 +366,7 @@ export class CForm extends LitElement {
           <e-textarea
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             ?autofocus=${field.autofocus}
@@ -383,7 +385,7 @@ export class CForm extends LitElement {
           <e-select
             class=${this._getFieldClasses(fieldSelect)}
             id=${fieldSelect.id}
-            name=${fieldSelect.name}
+            name=${name}
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
@@ -403,7 +405,7 @@ export class CForm extends LitElement {
           <e-input-file
             class=${this._getFieldClasses(fieldFile)}
             id=${fieldFile.id}
-            name=${fieldFile.name}
+            name=${name}
             label=${fieldFile.label}
             type=${fieldFile.type}
             helpmsg=${fieldFile.helpmsg}
@@ -426,7 +428,7 @@ export class CForm extends LitElement {
             class=${this._getFieldClasses(fieldSearch)}
             id=${fieldSearch.id}
             api=${fieldSearch.api}
-            name=${fieldSearch.name}
+            name=${name}
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
             ?queryAsValue=${fieldSearch.queryAsValue}
@@ -443,7 +445,7 @@ export class CForm extends LitElement {
           <e-input-icon
             class=${this._getFieldClasses(field)}
             id=${field.id}
-            name=${field.name}
+            name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
             .value=${this._getFieldValue(field)}
@@ -461,10 +463,12 @@ export class CForm extends LitElement {
           <e-calendar
             class=${this._getFieldClasses(fieldCalendar)}
             id=${fieldCalendar.id}
-            name=${fieldCalendar.name}
+            name=${name}
             label=${fieldCalendar.label}
             type=${fieldCalendar.type}
             helpmsg=${fieldCalendar.helpmsg}
+            start=${fieldCalendar.start}
+            end=${fieldCalendar.end}
             min=${fieldCalendar.min || ''}
             max=${fieldCalendar.max || ''}
             ?required=${fieldCalendar.required}
@@ -482,7 +486,7 @@ export class CForm extends LitElement {
           <e-input-date
             class=${this._getFieldClasses(fieldDate)}
             id=${fieldDate.id}
-            name=${fieldDate.name}
+            name=${name}
             label=${fieldDate.label}
             helpmsg=${fieldDate.helpmsg}
             type=${fieldDate.type}
@@ -546,31 +550,45 @@ export class CForm extends LitElement {
     `
   }
 
-  private _printResumeValue(field: BasicFormField): TemplateResult {
-    // console.log(field)
-    return html`
-      ${when(field.showInResume, () => html`
-        <p class="c-form__text">${field.value}</p>
-      `)}
-      <input type="hidden" name=${field.name} value=${field.value}>
-    `
+  private _printResumeValue(field: BasicFormField, breadcrumbs: string): TemplateResult {
+    const value = field.value || field.fillValue
+    const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
+
+    if (field.showInResume) {
+
+      switch(field.type) {
+        case 'datetime-local':
+          return html`
+            <p class="c-form__text">${this._getDateTimeFormat(value as string)}</p>
+            <input type="hidden" name=${name} value=${value} />
+          `
+        default:
+          return html`
+            <p class="c-form__text">${value}</p>
+            <input type="hidden" name=${name} value=${value} />
+          `
+      }
+    }
+
+    return html`<input type="hidden" name=${name} value=${value} />`
   }
 
   private _printResume(fieldBlock: FormBlock, section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string, index: number): TemplateResult {
+
     return html`
       <div class="c-form__resume">
         ${map(Object.keys(fieldBlock), (key: string) => {
           const entry = fieldBlock[key] as BasicFormField | FormSection | FormArraySection
 
-          if (key !== 'randomId' && 'readonly' in entry) {
+          if (key !== 'randomId' && !('fields' in entry) && !('schema' in entry)) {
             // Si es un campo
-            return this._printResumeValue(entry)
+            return this._printResumeValue(entry, `${breadcrumbs}[${index}]`)
           } else if (key !== 'randomId' && 'fields' in entry && !Array.isArray(entry.fields)) {
             // Si es un FormSection
             const fields = entry.fields as FormBlock
 
-            return html`${map(Object.keys(fields), (key: string) => {
-              return this._printResumeValue(fields[key] as BasicFormField)
+            return html`${map(Object.keys(fields), (subkey: string) => {
+              return this._printResumeValue(fields[subkey] as BasicFormField, `${breadcrumbs}[${index}][${key}]`)
             })}`
           } else if (key !== 'randomId' && 'fields' in entry && Array.isArray(entry.fields)) {
             // Si es un FormArraySection
@@ -581,13 +599,13 @@ export class CForm extends LitElement {
                 <p class="c-form__text">${fields.length} ${entry.resumeLabel?.toLowerCase()}</p>
               ` : ''}
 
-              ${map(fields, (fieldBlock: FormBlock) => 
-                map(Object.keys(fieldBlock), (key: string) => 
-                  when(key !== 'randomId', () => {
-                    const field = fieldBlock[key] as BasicFormField
-                    // const name = this.joinBreadcrumbsWithName(breadcrumbs, field.name)
+              ${map(fields, (fieldBlock: FormBlock, subindex: number) =>
+                map(Object.keys(fieldBlock), (subkey: string) =>
+                  when(subkey !== 'randomId', () => {
+                    const field = fieldBlock[subkey] as BasicFormField
+                    const name = this.joinBreadcrumbsWithName(field.name, `${breadcrumbs}[${index}][${key}][${subindex}]`)
 
-                    return html`<input type="hidden" name=${field.name} value=${field.value}>`
+                    return html`<input type="hidden" name=${name} value=${field.value}>`
                   })
                 )
               )}

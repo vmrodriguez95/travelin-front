@@ -22,7 +22,6 @@ import {
 
 import styles from './c-map.style.scss?inline'
 
-const DEFAULT_ZOOM = 12
 const SELECTED_ZOOM = 15
 
 @customElement('c-map')
@@ -36,13 +35,16 @@ export class CMap extends LitElement {
 
   @property({ type: String }) fullheight = 'full'
 
-  @property({ type: Number }) gap = 0
-
   @property({ type: String }) channel = ''
 
   @property({ type: String }) apiKey = ''
 
   @property({ type: String }) mapId = 'DEMO_MAP_ID'
+
+  @property({ type: Number }) gap = 0
+
+  @property({ type: Number }) zoom = 12
+
 
   @property({ type: Array }) markers: Array<MapMarker> = []
 
@@ -160,10 +162,10 @@ export class CMap extends LitElement {
 
   private _getEmbedSrc() {
     if (this.apiKey && this.latitude && this.longitude) {
-      return `https://www.google.com/maps/embed/v1/view?key=${this.apiKey}&center=${this.latitude},${this.longitude}&zoom=${DEFAULT_ZOOM}`
+      return `https://www.google.com/maps/embed/v1/view?key=${this.apiKey}&center=${this.latitude},${this.longitude}&zoom=${this.zoom}`
     }
 
-    return `https://www.google.com/maps?q=${this.latitude},${this.longitude}&z=${DEFAULT_ZOOM}&output=embed`
+    return `https://www.google.com/maps?q=${this.latitude},${this.longitude}&z=${this.zoom}&output=embed`
   }
 
   private _setHeight(height: number) {
@@ -221,7 +223,7 @@ export class CMap extends LitElement {
 
     this._map = new Map(container, {
       center: this._getMapCenter(),
-      zoom: DEFAULT_ZOOM,
+      zoom: this.zoom,
       mapId: this.mapId,
       mapTypeControl: false,
       streetViewControl: false,
@@ -278,7 +280,7 @@ export class CMap extends LitElement {
         gmpClickable: true
       })
 
-      markerInstance.addListener('click', () => this._onMarkerClick(marker))
+      markerInstance.addListener('gmp-click', () => this._onMarkerClick(marker))
 
       bounds.extend(position)
       this._markerInstances.set(marker.id, markerInstance)
