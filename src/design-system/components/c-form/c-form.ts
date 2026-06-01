@@ -39,6 +39,8 @@ export class CForm extends LitElement {
 
   @property({ type: Object }) data!: FormSchema
 
+  @property({ type: Boolean }) empty = false
+
   @query('form') _form!: HTMLFormElement
 
   @query('.c-form__submit') _submitButton!: HTMLButtonElement
@@ -58,9 +60,15 @@ export class CForm extends LitElement {
     this._internals = this.attachInternals()
   }
 
+
   render() {
+    const classes = classMap({
+      'c-form': true,
+      'c-form--empty': this.empty,
+    })
+
     return html`
-      <form class="c-form" action=${this.action} method=${this.method} enctype=${this.enctype} @submit=${this._onSubmit}>
+      <form class=${classes} action=${this.action} method=${this.method} enctype=${this.enctype} @submit=${this._onSubmit}>
         ${this._printSections(this.data.sections)}
         <e-button class="c-form__submit" type="submit" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
       </form>
