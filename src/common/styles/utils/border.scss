@@ -5,6 +5,10 @@
     border-bottom: 1px solid rgba(var(--color-gray), 1);
   }
 
+  &--primary {
+    border: 1px solid rgba(var(--color-primary), 1);
+  }
+
   &--radius {
     &--s {
       border-radius: $border-radius-s;
@@ -20,6 +24,10 @@
 
     &--xl {
       border-radius: $border-radius-xl;
+    }
+
+    &--rounded {
+      border-radius: 50%;
     }
   }
 }

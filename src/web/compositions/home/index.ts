@@ -1,6 +1,6 @@
 export const meta = {
   name: 'Home',
-  icon: 'house',
+  icon: 'home',
   tag: 'home',
   description: 'Vista de Home.',
   order: 0

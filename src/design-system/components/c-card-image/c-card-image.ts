@@ -1,5 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { when } from 'lit/directives/when.js'
 
 import styles from './c-card-image.style.scss?inline'
 
@@ -22,7 +23,9 @@ export class CCardImage extends LitElement {
         <img class="c-card-image__background" src=${this.image} alt="Picture about ${this.name}" loading="lazy" />
         <div class="c-card-image__content">
           <p class="c-card-image__title">${this.name}</p>
-          <p class="c-card-image__date">${this.start} - ${this.end}</p>
+          ${when(this.start && this.end, () => html`
+            <p class="c-card-image__date">${this.start} - ${this.end}</p>
+          `)}
         </div>
       </div>
     `

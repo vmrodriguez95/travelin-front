@@ -42,16 +42,112 @@ const finalData = withFormA11yDefaults(data)
     </c-menu>
   </div>
   <div class="u-grid-main--main">
-    <e-modal-trigger modal="modal">
-      <span class="u-pin-icon u-pin-icon--hover">
-        <e-icon icon="logout" size="m"></e-icon>
-      </span>
-      <template>
-        <h2 slot="title">Cerrar sesión</h2>
-        <p slot="description">¿Estás seguro de que seas cerrar sesión?</p>
-        <c-form action="/" method={finalData.form.method} type={finalData.form.action} data={JSON.stringify(finalData)} submitLabel="Cerrar sesión"></c-form>
-      </template>
-    </e-modal-trigger>
+    <div class="u-grid u-padding--vertical--m">
+      <div class="u-flex u-flex--align--center u-col-4 u-col-md-6">
+        <img src="https://testingbot.com/free-online-tools/random-avatar/80" alt="Avatar" width="80" height="80" class="u-border--radius--rounded u-border--primary">
+        <div>
+          <p class="u-text--l u-color--text-light u-margin--none">Hi, Dani!</p>
+          <p class="u-text--m u-color--text-light u-margin--none">Ready for your next adventure?</p>
+        </div>
+      </div>
+      <div class="u-flex u-flex--align--end u-flex--justify--end u-col-4 u-col-md-6">
+        <e-button class="u-margin--right--m" color="dark" size="fit">
+          <e-icon icon="bell" size="m"></e-icon>
+        </e-button>
+        <e-button class="u-margin--right--m" color="dark">Guardar POI</e-button>
+        <e-button>Añadir viaje</e-button>
+      </div>
+      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
+        <div>
+          <p class="u-text--l u-color--text-light u-margin--vertical--none">Países visitados</p>
+          <p class="u-text--xxl u-color--text-light u-margin--none">12</p>
+        </div>
+        <e-icon icon="globe" size="xxxl"></e-icon>
+      </div>
+      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
+        <div>
+          <p class="u-text--l u-color--text-light u-margin--vertical--none">Total de viajes</p>
+          <p class="u-text--xxl u-color--text-light u-margin--none">23</p>
+        </div>
+        <e-icon icon="flight" size="xxxl"></e-icon>
+      </div>
+      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
+        <div>
+          <p class="u-text--l u-color--text-light u-margin--vertical--none">Kilómetros recorridos</p>
+          <p class="u-text--xxl u-color--text-light u-margin--none">23.983 <span class="u-text--m">KM</span></p>
+        </div>
+        <e-icon icon="steps" size="xxxl"></e-icon>
+      </div>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6">
+        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--s">
+          <h2 class="u-text--l u-color--text-light">Viajes recientes</h2>
+          <a class="u-link" href="#">Ver todos</a>
+        </div>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress class="u-margin--bottom--s" progress="65">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Activo</p>
+          </c-card-transport>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://1000sitiosquever.com/public/images/supima-402-petra.X91.jpg" alt="Imagen sobre Jordania" width="80" height="80" />
+            <p slot="title">Jordania</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 8 Jul - 15 Jul</p>
+            <p slot="status">Completado</p>
+          </c-card-transport>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
+            <p slot="title">West Coast</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+            <p slot="status">Completado</p>
+          </c-card-transport>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+            <p slot="title">Perú</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+            <p slot="status">Completado</p>
+          </c-card-transport>
+        </a>
+        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--s">
+          <h2 class="u-text--l u-color--text-light">Logros</h2>
+          <a class="u-link" href="#">Ver todos</a>
+        </div>
+        <div class="u-flex u-flex--justify--evenly u-flex--gap--l u-bg--light u-border--radius--xl u-padding--vertical--l u-padding--horizontal--xxl u-text--center">
+          <e-achievement icon="diamond" actual="1" total="1" color="white">
+            <p slot="title">Pionero</p>
+            <p slot="text">Completado</p>
+          </e-achievement>
+          <e-achievement icon="landscape" actual="12" total="15" color="brown">
+            <p slot="title">Rey de la montaña</p>
+            <p slot="text">Picos</p>
+          </e-achievement>
+          <e-achievement icon="flight-takeoff" actual="9" total="15" color="yellow">
+            <p slot="title">Viajero frecuente</p>
+            <p slot="text">Vuelos</p>
+          </e-achievement>
+          <e-achievement icon="bubbles" actual="2" total="15" color="blue">
+            <p slot="title">Buceador marino</p>
+            <p slot="text">Inmersiones</p>
+          </e-achievement>
+        </div>
+      </div>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6">
+        <h2 class="u-text--l u-color--text-light u-margin--bottom--s">¿Próximo destino?</h2>
+        <c-card-image image="https://loremflickr.com/800/600/japan" name="Japón"></c-card-image>
+        <h2 class="u-text--l u-color--text-light u-margin--top--m u-margin--bottom--s">Pasaporte</h2>
+        <a href="#">
+          <div class="u-bg--light u-border--radius--xl u-padding--l u-text--center">
+            <img class="u-image--responsive" src="/images/world.png" alt="Imagen del mapa del mundo" width="850" height="550" />
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
-<c-modal id="modal" close="Cerrar"></c-modal>

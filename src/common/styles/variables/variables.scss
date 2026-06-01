@@ -22,6 +22,14 @@ body {
   --color-warning: 139, 119, 63; // Yellow
   --color-error: 139, 63, 63; // Red
 
+  // General Colors
+  --color-white: 255, 255, 255;
+  --color-black: 0, 0, 0;
+  --color-brown: 111, 78, 55;
+  --color-yellow: 240, 168, 96;
+  --color-blue: 84, 197, 228;
+
+
   // Breakpoints
   --breakpoint-sm: #{$breakpoint-sm};
   --breakpoint-md: #{$breakpoint-md};

@@ -8,11 +8,49 @@
     flex: 1 0 50%;
   }
 
-  &--center-vertical {
-    align-items: center;
+  &--align {
+    &--center {
+      align-items: center;
+    }
+
+    &--end {
+      align-items: flex-end;
+    }
   }
 
-  &--justify-between {
-    justify-content: space-between;
+  &--justify {
+    &--center {
+      justify-content: center;
+    }
+
+    &--between {
+      justify-content: space-between;
+    }
+
+    &--evenly {
+      justify-content: space-evenly;
+    }
+
+    &--end {
+      justify-content: flex-end;
+    }
+  }
+
+  &--gap {
+    &--s {
+      gap: space(1);
+    }
+
+    &--m {
+      gap: space(2);
+    }
+
+    &--l {
+      gap: space(3);
+    }
+
+    &--xl {
+      gap: space(4);
+    }
   }
 }
