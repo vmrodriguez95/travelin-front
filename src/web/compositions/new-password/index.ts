@@ -1,6 +1,6 @@
 export const meta = {
   name: 'Crear nueva contraseña',
-  icon: 'eye',
+  icon: 'password',
   tag: 'new-password',
   description: 'Vista para recuperar la contraseña',
   order: 0

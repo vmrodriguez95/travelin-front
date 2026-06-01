@@ -1,0 +1,8 @@
+---
+const { id, icon, actual, total, title, text } = Astro.props
+---
+
+<e-achievement data-component id={id} icon={icon} actual={actual} total={total}>
+  <p slot="title">{title}</p>
+  <p slot="text">{text}</p>
+</e-achievement>

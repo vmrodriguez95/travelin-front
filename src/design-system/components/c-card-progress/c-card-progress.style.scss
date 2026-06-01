@@ -1,0 +1,93 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+:host {
+  display: block;
+}
+
+.c-card-progress {
+  $root: &;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  position: relative;
+  padding: space(1) space(2) space(1) space(1);
+  box-sizing: border-box;
+  border-radius: $border-radius-l;
+  background-color: rgba(var(--color-background--secondary), 1);
+  box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  ::slotted([slot="image"]) {
+    margin-right: space(2);
+    border-radius: $border-radius-l;
+  }
+
+  ::slotted([slot="title"]) {
+    @include body--xl();
+    color: rgba(var(--color-text), 1);
+    margin: 0 0 space(1);
+  }
+  
+  &__text,
+  ::slotted([slot="text"]) {
+    @include body--s();
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+  }
+
+  ::slotted([slot="status"]) {
+    @include body--s();
+    position: absolute;
+    top: space(1);
+    right: space(2);
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+    width: space(12);
+    padding: 0 space(1);
+    box-sizing: border-box;
+    border-radius: $border-radius-m;
+    text-align: center;
+    background-color: rgba(var(--color-primary), 1);
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: space(2);
+  }
+
+  &__bar {
+    display: block;
+    width: 100%;
+    height: space(1);
+    border-radius: $border-radius-m;
+    margin-top: space(1);
+    background-color: rgba(var(--color-background), 1);
+  }
+
+  &__progress {
+    display: block;
+    height: space(1);
+    border-radius: $border-radius-m;
+    background-color: rgba(var(--color-primary), 1);
+  }
+
+  &--completed {
+    ::slotted([slot="title"]),
+    ::slotted([slot="text"]),
+    #{$root}__text {
+      color: rgba(var(--color-gray), 1);
+    }
+
+    ::slotted([slot="status"]) {
+      background-color: rgba(var(--color-gray), 1);
+    }
+  }
+}

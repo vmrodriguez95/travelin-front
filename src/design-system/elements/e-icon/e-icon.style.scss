@@ -13,6 +13,11 @@
   width: var(--eIconWidth, space(3));
   height: var(--eIconHeight, space(3));
 
+  &--xxxl {
+    width: space(8);
+    height: space(8);
+  }
+
   &--xxl {
     width: space(7);
     height: space(7);

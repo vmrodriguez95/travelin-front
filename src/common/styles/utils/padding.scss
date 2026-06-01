@@ -90,5 +90,10 @@
       padding-left: 0;
       padding-right: 0;
     }
+
+    &--xxl {
+      padding-right: space(6);
+      padding-left: space(6);
+    }
   }
 }

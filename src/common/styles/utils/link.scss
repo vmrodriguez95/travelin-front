@@ -1,0 +1,17 @@
+@use '@common/styles/tools/typography.scss' as *;
+
+.u-link {
+  @include body--s();
+  color: rgba(var(--color-primary), 1);
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+  
+  &:hover {
+    border-color: rgba(var(--color-primary), 1);
+  }
+
+  &--no-underline {
+    text-decoration: none;
+  }
+}

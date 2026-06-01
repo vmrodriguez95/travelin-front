@@ -1,6 +1,10 @@
 @use '@common/styles/tools/typography.scss' as *;
 
 .u-text {
+  &--xxl {
+    @include body--xxl(600);
+  }
+
   &--xl {
     @include body--xl(600);
   }

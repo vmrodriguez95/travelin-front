@@ -1,6 +1,6 @@
 export const meta = {
   name: 'Olvidé mi contraseña',
-  icon: 'eye',
+  icon: 'password',
   tag: 'reset-password',
   description: 'Vista para recuperar la contraseña',
   order: 0
