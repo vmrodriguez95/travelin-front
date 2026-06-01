@@ -1,11 +1,4 @@
----
-import { withFormA11yDefaults } from '@web/utils/form.server.ts'
-const { id, data } = Astro.props
-
-const finalData = withFormA11yDefaults(data)
----
-
-<section id={id} class="u-grid-main u-bg--dark" data-component>
+<section class="u-grid-main u-bg--dark" data-component>
   <div class="u-grid-main--sidebar">
     <c-menu>
       <a slot="logo" href="#">
@@ -79,44 +72,46 @@ const finalData = withFormA11yDefaults(data)
         <e-icon icon="steps" size="xxxl"></e-icon>
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--s">
-          <h2 class="u-text--l u-color--text-light">Viajes recientes</h2>
-          <a class="u-link" href="#">Ver todos</a>
+        <div class="u-margin--bottom--xl">
+          <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--m">
+            <h2 class="u-text--l u-color--text-light u-margin--none">Viajes recientes</h2>
+            <a class="u-link" href="#">Ver todos</a>
+          </div>
+          <a href="#" class="u-link--no-underline">
+            <c-card-progress class="u-margin--bottom--s" progress="65">
+              <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+              <p slot="title">Tailandia</p>
+              <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+              <p slot="status">Activo</p>
+            </c-card-transport>
+          </a>
+          <a href="#" class="u-link--no-underline">
+            <c-card-progress class="u-margin--bottom--s" progress="100">
+              <img slot="image" src="https://1000sitiosquever.com/public/images/supima-402-petra.X91.jpg" alt="Imagen sobre Jordania" width="80" height="80" />
+              <p slot="title">Jordania</p>
+              <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 8 Jul - 15 Jul</p>
+              <p slot="status">Completado</p>
+            </c-card-transport>
+          </a>
+          <a href="#" class="u-link--no-underline">
+            <c-card-progress class="u-margin--bottom--s" progress="100">
+              <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
+              <p slot="title">West Coast</p>
+              <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+              <p slot="status">Completado</p>
+            </c-card-transport>
+          </a>
+          <a href="#" class="u-link--no-underline">
+            <c-card-progress class="u-margin--bottom--s" progress="100">
+              <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+              <p slot="title">Perú</p>
+              <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+              <p slot="status">Completado</p>
+            </c-card-transport>
+          </a>
         </div>
-        <a href="#" class="u-link--no-underline">
-          <c-card-progress class="u-margin--bottom--s" progress="65">
-            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
-            <p slot="title">Tailandia</p>
-            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
-            <p slot="status">Activo</p>
-          </c-card-transport>
-        </a>
-        <a href="#" class="u-link--no-underline">
-          <c-card-progress class="u-margin--bottom--s" progress="100">
-            <img slot="image" src="https://1000sitiosquever.com/public/images/supima-402-petra.X91.jpg" alt="Imagen sobre Jordania" width="80" height="80" />
-            <p slot="title">Jordania</p>
-            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 8 Jul - 15 Jul</p>
-            <p slot="status">Completado</p>
-          </c-card-transport>
-        </a>
-        <a href="#" class="u-link--no-underline">
-          <c-card-progress class="u-margin--bottom--s" progress="100">
-            <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
-            <p slot="title">West Coast</p>
-            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
-            <p slot="status">Completado</p>
-          </c-card-transport>
-        </a>
-        <a href="#" class="u-link--no-underline">
-          <c-card-progress class="u-margin--bottom--s" progress="100">
-            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
-            <p slot="title">Perú</p>
-            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
-            <p slot="status">Completado</p>
-          </c-card-transport>
-        </a>
-        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--s">
-          <h2 class="u-text--l u-color--text-light">Logros</h2>
+        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--m">
+          <h2 class="u-text--l u-color--text-light u-margin--none">Logros</h2>
           <a class="u-link" href="#">Ver todos</a>
         </div>
         <div class="u-flex u-flex--justify--evenly u-flex--gap--l u-bg--light u-border--radius--xl u-padding--vertical--l u-padding--horizontal--xxl u-text--center">
@@ -139,9 +134,11 @@ const finalData = withFormA11yDefaults(data)
         </div>
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <h2 class="u-text--l u-color--text-light u-margin--bottom--s">¿Próximo destino?</h2>
-        <c-card-image image="https://loremflickr.com/800/600/japan" name="Japón"></c-card-image>
-        <h2 class="u-text--l u-color--text-light u-margin--top--m u-margin--bottom--s">Pasaporte</h2>
+        <div class="u-margin--bottom--xl">
+          <h2 class="u-text--l u-color--text-light u-margin--bottom--m u-margin--top--none">Próximo destino</h2>
+          <c-card-image image="https://loremflickr.com/800/600/japan" name="Japón"></c-card-image>
+        </div>
+        <h2 class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--m">Pasaporte</h2>
         <a href="#">
           <div class="u-bg--light u-border--radius--xl u-padding--l u-text--center">
             <img class="u-image--responsive" src="/images/world.png" alt="Imagen del mapa del mundo" width="850" height="550" />
