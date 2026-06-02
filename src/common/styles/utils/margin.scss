@@ -11,6 +11,16 @@
     }
   }
 
+  &--right {
+    &--s {
+      margin-right: space(1);
+    }
+
+    &--m {
+      margin-right: space(2);
+    }
+  }
+
   &--bottom {
     &--s {
       margin-bottom: space(1);
