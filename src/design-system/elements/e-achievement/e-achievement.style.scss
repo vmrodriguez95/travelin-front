@@ -30,6 +30,10 @@
     color: rgba(var(--color-text), 1);
   }
 
+  &__text {
+    white-space: nowrap;
+  }
+
   &__end {
     display: flex;
     align-items: center;

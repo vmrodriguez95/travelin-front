@@ -1,0 +1,11 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.u-list {
+  &--reset {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+}
