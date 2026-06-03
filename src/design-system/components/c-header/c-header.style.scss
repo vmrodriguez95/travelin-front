@@ -88,16 +88,18 @@
     background-color: rgba(var(--color-background--secondary), 1);
     transition: box-shadow 0.1s ease, transform 0.2s ease-in-out;
 
-    @media (min-width: $breakpoint-md) {
-      left: space(1);
-    }
-    
-    @media (min-width: $breakpoint-lg) {
-      left: space(2);
-    }
-    
-    @media (min-width: $breakpoint-xl) {
-      left: space(4);
+    &--bg & {
+      @media (min-width: $breakpoint-md) {
+        left: space(1);
+      }
+      
+      @media (min-width: $breakpoint-lg) {
+        left: space(2);
+      }
+      
+      @media (min-width: $breakpoint-xl) {
+        left: space(4);
+      }
     }
 
     &:active {

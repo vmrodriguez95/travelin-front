@@ -11,12 +11,15 @@ export class CCardProgress extends LitElement {
 
   @property({ type: Number }) progress = 0
 
+  @property({ type: Boolean }) animated = false
+
   static styles = css`${unsafeCSS(styles)}`
 
   render() {
     const classes = classMap({
       'c-card-progress': true,
-      'c-card-progress--completed': this.progress === 100
+      'c-card-progress--completed': this.progress === 100,
+      'c-card-progress--animated': this.animated
     })
 
     return html`

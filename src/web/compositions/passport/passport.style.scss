@@ -1,0 +1,30 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.ti-passport {
+  height: 100dvh;
+  overflow: hidden;
+
+  &__main,
+  &__grid,
+  &__trips,
+  &__summary {
+    min-height: 0;
+  }
+
+  &__main {
+    overflow: hidden;
+  }
+
+  &__grid {
+    height: 100%;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  &__trips {
+    height: 100%;
+  }
+
+  &__summary {
+    overflow: hidden;
+  }
+}

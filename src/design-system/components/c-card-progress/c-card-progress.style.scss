@@ -18,9 +18,12 @@
   box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
   transition: transform 0.2s ease;
 
-  &:hover {
-    transform: scale(1.05);
+  &--animated {
+    &:hover {
+      transform: scale(1.03);
+    }
   }
+
 
   ::slotted([slot="image"]) {
     margin-right: space(2);
