@@ -62,17 +62,19 @@
   }
 
   &__close {
-  position: absolute;
-  top: space(1);
-  right: space(1);
-  background: none;
-  border: none;
-  padding: space(1);
-  cursor: pointer;
-  opacity: .7;
+    position: absolute;
+    top: space(1);
+    right: space(1);
+    background: none;
+    border: none;
+    padding: space(1);
+    cursor: pointer;
+    opacity: .7;
 
-  &:hover {
-    opacity: 1;
+    @media (hover: hover) {
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
-}
 }

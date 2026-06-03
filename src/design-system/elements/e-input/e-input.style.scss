@@ -58,8 +58,10 @@
     border: 0;
     transition: transform .2s ease;
 
-    &:hover {
-      transform: scale(1.1) translateY(-50%);
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.1) translateY(-50%);
+      }
     }
   }
 

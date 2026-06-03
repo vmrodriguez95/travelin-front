@@ -54,8 +54,10 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  ::slotted(a:hover) {
-    transform: scale(1.2);
+  @media (hover: hover) {
+    ::slotted(a:hover) {
+      transform: scale(1.2);
+    }
   }
 
   ::slotted([slot="links"]) {
@@ -69,8 +71,10 @@
     transition: background-color 0.3s ease-in-out;
   }
 
-  ::slotted([slot="links"]:hover) {
-    background-color: rgba(var(--color-text), 0.2);
+  @media (hover: hover) {
+    ::slotted([slot="links"]:hover) {
+      background-color: rgba(var(--color-text), 0.2);
+    }
   }
 
   ::slotted([slot="links"].active) {

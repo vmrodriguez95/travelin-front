@@ -77,10 +77,12 @@
     border-bottom: 1px solid rgba(var(--color-gray), 1);
     box-sizing: border-box;
 
-    &:hover {
-      > #{$block}__text,
-      > #{$block}__helptext {
-        font-weight: 600;
+    @media (hover: hover) {
+      &:hover {
+        > #{$block}__text,
+        > #{$block}__helptext {
+          font-weight: 600;
+        }
       }
     }
   }

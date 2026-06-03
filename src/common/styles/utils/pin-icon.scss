@@ -16,8 +16,10 @@
   }
 
   &--hover {
-    &:hover {
-      transform: scale(1.2);
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 }
