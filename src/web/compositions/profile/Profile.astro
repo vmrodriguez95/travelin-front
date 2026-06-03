@@ -50,7 +50,7 @@ const finalData = JSON.stringify(data)
         </div>
       </div>
       <div class="u-flex u-flex--align--center u-flex--justify--end u-col-4 u-col-md-3">
-        <e-modal-trigger modal="modal">
+        <e-modal-trigger class="u-margin--right--s" modal="modal">
           <e-button color="dark" title="Cerrar sesión">
             <e-icon icon="logout" size="m"></e-icon>
           </e-button>
@@ -60,7 +60,7 @@ const finalData = JSON.stringify(data)
             <c-form action="" method="post" data={ finalData } submitLabel="Cerrar sesión" empty></c-form>
           </template>
         </e-modal-trigger>
-        <e-button class="u-margin--right--m" color="dark">Compartir perfil</e-button>
+        <e-button color="dark">Compartir perfil</e-button>
       </div>
       <div class="u-col-4 u-col-md-12 u-col-xl-6">
         <div class="u-grid u-padding--horizontal--none u-margin--bottom--xl">
@@ -124,7 +124,7 @@ const finalData = JSON.stringify(data)
             <a class="u-link" href="#">Ver todos</a>
           </div>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress class="u-margin--bottom--s" progress="65">
+            <c-card-progress animated class="u-margin--bottom--s" progress="65">
               <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
               <p slot="title">Tailandia</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
@@ -132,7 +132,7 @@ const finalData = JSON.stringify(data)
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress class="u-margin--bottom--s" progress="100">
+            <c-card-progress animated class="u-margin--bottom--s" progress="100">
               <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
               <p slot="title">West Coast</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
@@ -140,7 +140,7 @@ const finalData = JSON.stringify(data)
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress class="u-margin--bottom--s" progress="100">
+            <c-card-progress animated class="u-margin--bottom--s" progress="100">
               <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
               <p slot="title">Perú</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>

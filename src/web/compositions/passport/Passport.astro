@@ -1,0 +1,159 @@
+---
+const countriesGlob = import.meta.glob('../../../data/globe.json', { eager: true })
+const data = (Object.values(countriesGlob)[0] as any)?.default
+const countries = JSON.stringify(data.features)
+
+const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
+---
+
+<section class="u-grid-main u-bg--dark ti-passport" data-component>
+  <div class="u-grid-main--sidebar">
+    <c-menu>
+      <a slot="logo" href="#">
+        <img src="/images/logo.png" alt="Logo" width="42" height="48">
+      </a>
+      <li slot="links" class="active">
+        <a href="#" title="Ir a home">
+          <e-icon icon="home" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes">
+          <e-icon icon="map" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a configuración">
+          <e-icon icon="settings" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a usuarios">
+          <e-icon icon="person" size="l"></e-icon>
+        </a>
+      </li>
+      <li slot="links">
+        <a href="#" title="Ir a viajes destacados">
+          <e-icon icon="bookmark" size="l"></e-icon>
+        </a>
+      </li>
+      <a slot="profile" href="#">
+        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
+      </a>
+    </c-menu>
+  </div>
+  <div class="u-grid-main--main u-padding--none">
+    <div class="u-grid ti-passport__grid">
+      <div class="u-col-4 u-col-md-12">
+        <c-header heading="Pasaporte" url="#"></c-header>
+      </div>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 u-padding--horizontal--m u-padding--vertical--m u-scroll--vertical ti-passport__trips">
+        <h2 class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--m">2026</h2>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="65">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Activo</p>
+          </c-card-progress>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
+            <p slot="title">West Coast</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+            <p slot="title">Perú</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <h2 class="u-text--l u-color--text-light u-margin--vertical--m">2025</h2>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <h2 class="u-text--l u-color--text-light u-margin--vertical--m">2024</h2>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <h2 class="u-text--l u-color--text-light u-margin--vertical--m">2023</h2>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <h2 class="u-text--l u-color--text-light u-margin--vertical--m">2022</h2>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+        <a href="#" class="u-link--no-underline">
+          <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
+            <p slot="title">Tailandia</p>
+            <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
+            <p slot="status">Completado</p>
+          </c-card-progress>
+        </a>
+      </div>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-passport__summary">
+        <c-globe data={countries} countries={countryNames}></c-globe>
+        <div class="u-grid u-padding--vertical--m u-padding--horizontal--xxl u-bg--light u-border--radius--xl">
+          <div class="u-col-4 u-col-md-4">
+            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Países</p>
+            <p class="u-text--m u-color--text-light u-margin--none">5</p>
+          </div>
+          <div class="u-col-4 u-col-md-4 u-text--center">
+            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Viajes</p>
+            <p class="u-text--m u-color--text-light u-margin--none">10</p>
+          </div>
+          <div class="u-col-4 u-col-md-4 u-text--right">
+            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Pois</p>
+            <p class="u-text--m u-color--text-light u-margin--none">54</p>
+          </div>
+          <div class="u-col-4 u-col-md-12">
+            <e-button size="full">Compartir</e-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

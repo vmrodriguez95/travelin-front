@@ -18,6 +18,7 @@
   &--main {
     grid-area: main;
     padding-bottom: space(1);
+    min-height: 0;
     
     @media (min-width: $breakpoint-lg) {
       padding-bottom: space(2);

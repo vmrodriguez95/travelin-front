@@ -18,7 +18,7 @@
   }
 
   ::slotted([slot="title"]) {
-    @include body--xl;
+    @include body--l;
     margin: 0;
     color: rgba(var(--color-text), 1);
   }
