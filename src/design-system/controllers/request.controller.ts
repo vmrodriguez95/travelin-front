@@ -25,9 +25,15 @@ export class SimpleRequestController implements ReactiveController {
     this.abort()
   }
 
-  private abort() {
+  abort() {
     this.abortController?.abort()
     this.abortController = undefined
+    this.requestId++
+
+    if (this.loading) {
+      this.loading = false
+      this.host.requestUpdate()
+    }
   }
 
   async get<T>(path: string, query: string): Promise<T> {
