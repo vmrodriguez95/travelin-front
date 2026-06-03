@@ -51,7 +51,11 @@ export class EInputSearch extends LitElement {
 
   private _request = new SimpleRequestController(this, this._client)
 
-  private _debounceSearch = debounce(() => { this._onSearch() }, 300)
+  private _searchId = 0
+
+  private _debounceSearch = debounce((query: string, searchId: number) => {
+    this._onSearch(query, searchId)
+  }, 300)
 
   static styles = css`${unsafeCSS(style)}`
 
@@ -88,7 +92,7 @@ export class EInputSearch extends LitElement {
             aria-autocomplete="list"
             aria-expanded=${this._open ? 'true' : 'false'}
             .value=${live(this.displayValue || this.value)}
-            @input=${this._debounceSearch}
+            @input=${this._onInput}
             @blur=${this._onBlur}
             @keyup=${this._detectEscape}
           />
@@ -100,7 +104,7 @@ export class EInputSearch extends LitElement {
           `)}
 
           ${when(this.displayValue, () => html`
-            <button class="e-input-search__clear" @click=${this._onClean}>
+            <button class="e-input-search__clear" type="button" @click=${this._onClean}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
           `)}
@@ -138,13 +142,16 @@ export class EInputSearch extends LitElement {
     if (key === 'Escape') this._onClean()
   }
 
-  private async _onSearch() {
+  private _onInput(ev: Event) {
     if (this.readonly) return
 
-    const query = this._input.value
+    const query = (ev.target as HTMLInputElement).value
+    const hadValue = Boolean(this.value)
+    const searchId = ++this._searchId
 
     this.value = ''
     this.displayValue = query
+    this._request.abort()
 
     if (this.queryAsValue) {
       this.value = query
@@ -153,6 +160,13 @@ export class EInputSearch extends LitElement {
       this._internals.setFormValue(this.value)
 
       this.dispatchEvent(new Event('change'))
+    } else {
+      this._internals.setFormValue('')
+
+      if (hadValue) {
+        this._validate()
+        this.dispatchEvent(new Event('change'))
+      }
     }
 
     if (!this.api || query.length < 2) {
@@ -161,8 +175,17 @@ export class EInputSearch extends LitElement {
       return
     }
 
+    this._debounceSearch(query, searchId)
+  }
+
+  private async _onSearch(query: string, searchId: number) {
+    if (this.readonly) return
+    if (searchId !== this._searchId || query !== this.displayValue) return
+
     try {
       const data = await this._request.get<SearchApiResponse>(this.api, query)
+
+      if (searchId !== this._searchId || query !== this.displayValue) return
 
       this._searchResults = Array.isArray(data?.data) ? data.data : []
       this._open = this._searchResults.length > 0
@@ -177,6 +200,8 @@ export class EInputSearch extends LitElement {
   }
 
   private _onChange(result: SearchResult) {
+    this._searchId++
+    this._request.abort()
     this.value = result.value
     this.displayValue = result.label
     this._searchResults = []
@@ -194,6 +219,8 @@ export class EInputSearch extends LitElement {
   }
 
   private _onClean() {
+    this._searchId++
+    this._request.abort()
     this.value = ''
     this.displayValue = ''
     this._searchResults = []
