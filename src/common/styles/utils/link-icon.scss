@@ -15,8 +15,10 @@
   background-color: rgba(var(--color-background--secondary), 1);
   transition: transform .2s ease;
 
-  &:hover {
-    transform: scale(1.1);
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   &__text {

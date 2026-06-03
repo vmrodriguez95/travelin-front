@@ -13,10 +13,12 @@
   border-top-right-radius: $border-radius-l;
   transition: background-color .2s ease;
 
-  &:hover {
-    background-color: rgba(var(--color-background--secondary), 1);
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(var(--color-background--secondary), 1);
+    }
   }
-  
+
   &--today {
     position: relative;
     background-color: rgba(var(--color-background--secondary), 1);

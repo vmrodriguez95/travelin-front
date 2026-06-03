@@ -21,11 +21,13 @@
     background-clip: content-box;
   }
 
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--color-gray, 170, 170, 170), 0.7);
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(var(--color-gray, 170, 170, 170), 0.85);
+  @media (hover: hover) {
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--color-gray, 170, 170, 170), 0.7);
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(var(--color-gray, 170, 170, 170), 0.85);
+    }
   }
 }

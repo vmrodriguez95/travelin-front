@@ -32,8 +32,10 @@
     background: linear-gradient(rgba(var(--color-background), 0.1) 50%, rgba(var(--color-background), 0.8));
     transition: background 0.3s ease-in-out;
 
-    &:hover {
-      background-color: rgba(var(--color-background), 0.4);
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(var(--color-background), 0.4);
+      }
     }
   }
   

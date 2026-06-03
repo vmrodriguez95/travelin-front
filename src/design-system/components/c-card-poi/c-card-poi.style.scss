@@ -22,8 +22,10 @@
   cursor: pointer;
   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 
-  &:hover {
-    transform: scale(1.03);
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.03);
+    }
   }
 
   &--active {

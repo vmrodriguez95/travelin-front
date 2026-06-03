@@ -106,8 +106,10 @@
       box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 1);
     }
 
-    &:hover {
-      transform: scale(1.2);
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 

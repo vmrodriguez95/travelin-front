@@ -22,8 +22,10 @@
       transition: transform .2s ease;
     }
 
-    &:hover e-icon {
-      transform: scale(1.2);
+    @media (hover: hover) {
+      &:hover e-icon {
+        transform: scale(1.2);
+      }
     }
   }
 
@@ -82,8 +84,10 @@
     transform: scale(1);
     transition: transform .2s ease;
 
-    &:hover {
-      transform: scale(1.2);
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.2);
+      }
     }
 
     &--active {
