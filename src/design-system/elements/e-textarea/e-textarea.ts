@@ -36,6 +36,16 @@ export class ETextarea extends LitElement {
     this._internals = this.attachInternals()
   }
 
+  protected updated(changed: Map<string, unknown>) {
+    const currentValue = this._getCurrentValue()
+
+    if (changed.has('value') || changed.has('required')) {
+      this._internals.setFormValue(currentValue || null)
+      this._validate()
+      return
+    }
+  }
+
   render() {
     return html`
       <div class="e-textarea">
@@ -82,6 +92,14 @@ export class ETextarea extends LitElement {
 
   private _onBlur() {
     this._validate()
+  }
+
+  private _getCurrentValue() {
+    if (this._input) {
+      return this._input.value || ''
+    }
+
+    return this.value?.toString() || ''
   }
 
   private _validate() {

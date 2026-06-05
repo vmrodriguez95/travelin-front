@@ -121,17 +121,20 @@ export class CForm extends LitElement {
     switch (field.type) {
       case 'calendar':
         field.value = ev.detail
+        field.fillValue = ev.detail
         break
       case 'search':
         const searchInput = ev.currentTarget as EInputSearch
 
         (field as SearchFormField).displayValue = searchInput.displayValue
         field.value = searchInput.value
+        field.fillValue = searchInput.value
         break
       default:
         const defaultTarget = ev.currentTarget as HTMLInputElement
 
         field.value = defaultTarget.value
+        field.fillValue = defaultTarget.value
     }
 
     this.requestUpdate()
@@ -162,7 +165,7 @@ export class CForm extends LitElement {
       for (const [_, field] of Object.entries(fields)) {
         const basicField = field as BasicFormField
 
-        if (basicField.value !== '' && basicField.value !== undefined) {
+        if ('value' in basicField && basicField.value !== '' || basicField.fillValue) {
           return true
         }
       }
@@ -180,7 +183,7 @@ export class CForm extends LitElement {
           const basicField = field as BasicFormField
 
           if (
-            (basicField.value !== '' && basicField.value !== undefined) ||
+            ('value' in basicField && basicField.value !== '' || basicField.fillValue) ||
             this._hasArrayFields(field as FormArraySection) ||
             this._hasFieldsWithValues(field as FormSection)
           ) {
@@ -380,7 +383,7 @@ export class CForm extends LitElement {
             ?autofocus=${field.autofocus}
             ?required=${field.required}
             ?readonly=${field.readonly}
-            .value=${this._getFieldValue(field)}
+            value=${this._getFieldValue(field)}
             @input=${(ev: CustomEvent) => this._onChange(ev, field)}
           ></e-textarea>
         `

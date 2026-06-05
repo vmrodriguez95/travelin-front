@@ -54,6 +54,14 @@ export class EInputIcon extends LitElement {
     super.disconnectedCallback()
   }
 
+  protected updated(changed: Map<string, unknown>) {
+    if (changed.has('value') || changed.has('required')) {
+      this._internals.setFormValue(this.value || null)
+      this._validate()
+      return
+    }
+  }
+
   render() {
     const popupId = this._getPopupId()
     const popupClasses = classMap({
