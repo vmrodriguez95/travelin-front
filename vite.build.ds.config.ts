@@ -30,7 +30,13 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         external: [], // aquí puedes excluir dependencias externas
         output: {
-          assetFileNames: 'app[extname]'
+          assetFileNames: 'app[extname]',
+          chunkFileNames: 'lib/[name].js',
+          manualChunks(id) {
+            if (id.includes('/node_modules/globe.gl/')) {
+              return 'globe.gl'
+            }
+          }
         }
       },
       outDir: 'dist/design-system'

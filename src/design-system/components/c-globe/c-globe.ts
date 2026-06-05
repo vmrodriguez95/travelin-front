@@ -1,9 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, queryAsync } from 'lit/decorators.js'
 
-// Globe Library
-import Globe from 'globe.gl'
-
 import styles from './c-globe.style.scss?inline'
 
 @customElement('c-globe')
@@ -17,19 +14,18 @@ export class CGlobe extends LitElement {
 
   static styles = css`${unsafeCSS(styles)}`
 
-  connectedCallback(): void {
-    this.globe.then((container) => {
-      this._renderGlobe(container)
-    })
+  async firstUpdated(): Promise<void> {
+    const container = await this.globe
+    const { default: Globe } = await import('globe.gl')
 
-    super.connectedCallback()
+    this._renderGlobe(container, Globe)
   }
 
   render() {
     return html`<div class="c-globe"></div>`
   }
 
-  private _renderGlobe(container: HTMLElement) {
+  private _renderGlobe(container: HTMLElement, Globe: typeof import('globe.gl').default) {
     return new Globe(container)
       .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg')
       .backgroundColor('rgba(34, 34, 34, 1)')
