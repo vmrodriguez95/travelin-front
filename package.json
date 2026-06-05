@@ -9,7 +9,7 @@
     "astro": "astro",
     "build:web": "astro build",
     "build:ds": "vite build --config vite.build.ds.config.ts",
-    "build": "pnpm run build:ds && pnpm run build:web"
+    "build": "pnpm run build:web && pnpm run build:ds"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
