@@ -30,8 +30,13 @@ export class CHeader extends LitElement {
     super.connectedCallback()
 
     if (this.animated) {
-      window.addEventListener('scroll', this._onScroll.bind(this))
+      window.addEventListener('scroll', this._onScroll)
     }
+  }
+
+  disconnectedCallback(): void {
+    window.removeEventListener('scroll', this._onScroll)
+    super.disconnectedCallback()
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -72,7 +77,7 @@ export class CHeader extends LitElement {
     `
   }
 
-  _onScroll() {
+  private _onScroll = () => {
     const header = this._header
     const scrollY = window.scrollY
 

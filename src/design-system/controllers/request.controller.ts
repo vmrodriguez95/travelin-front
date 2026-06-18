@@ -70,8 +70,8 @@ export class SimpleRequestController implements ReactiveController {
       this.cache.set(cacheKey, data)
 
       if (this.cache.size > this.maxCacheSize) {
-        const firstKey = this.cache.keys().next().value
-        this.cache.delete(firstKey || '')
+        const first = this.cache.keys().next()
+        if (!first.done) this.cache.delete(first.value)
       }
 
       return data
