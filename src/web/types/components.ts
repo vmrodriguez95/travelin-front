@@ -3,6 +3,7 @@ export interface ComponentMeta {
   tag: string
   icon: string
   description: string
+  order?: number
 }
 
 export interface ComponentRegistryItem {

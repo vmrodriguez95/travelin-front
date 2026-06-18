@@ -1,9 +1,6 @@
 import type { ComponentRegistryItem } from '../types/components'
+import { createRegistry } from './utils'
 
 const modules = import.meta.glob('../foundations/**/index.ts', { eager: true })
 
-export const foundations: ComponentRegistryItem[] = Object.values(modules).map((mod: any) => ({
-  meta: mod.meta,
-  Demo: mod.Demo,
-  config: mod.config
-})).sort((a, b) => a.meta.order - b.meta.order)
+export const foundations: ComponentRegistryItem[] = createRegistry(modules, 'order')
