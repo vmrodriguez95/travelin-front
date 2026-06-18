@@ -223,16 +223,18 @@ export class CForm extends LitElement {
   }
 
   private joinBreadcrumbsWithName(name: string, breadcrumbs: string) {
-    let newName = name
-    const regex = new RegExp(`\\[?${name}\\]?$`)
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const regex = new RegExp(`\\[?${escaped}\\]?$`)
 
-    if(breadcrumbs && !regex.test(breadcrumbs)) {
-      newName = `${breadcrumbs}[${name}]`
-    } else if (breadcrumbs && regex.test(breadcrumbs)) {
-      newName = breadcrumbs
+    if (breadcrumbs && !regex.test(breadcrumbs)) {
+      return `${breadcrumbs}[${name}]`
     }
 
-    return newName
+    if (breadcrumbs && regex.test(breadcrumbs)) {
+      return breadcrumbs
+    }
+
+    return name
   }
 
   private _normalizeSelectOption(value: string): SelectOption {

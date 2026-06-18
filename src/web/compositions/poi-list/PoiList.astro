@@ -1,4 +1,8 @@
 ---
+import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois'
+
+type AnyPoi = Poi | PoiHotel | PoiTransport | Reminder | Note
+
 const { id } = Astro.props
 
 const buttons = [
@@ -29,7 +33,7 @@ const buttons = [
 ]
 
 const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
-const pois = (Object.values(poisGlob)[0] as any)?.default
+const pois: AnyPoi[] = (Object.values(poisGlob)[0] as { default: AnyPoi[] })?.default ?? []
 const channel = 'poi-list'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 

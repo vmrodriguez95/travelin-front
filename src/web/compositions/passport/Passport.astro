@@ -1,6 +1,20 @@
 ---
+interface GlobeFeature {
+  type: 'Feature'
+  properties: Record<string, unknown>
+  geometry: {
+    type: string
+    coordinates: unknown
+  }
+}
+
+interface GlobeFeatureCollection {
+  type: 'FeatureCollection'
+  features: GlobeFeature[]
+}
+
 const countriesGlob = import.meta.glob('../../../data/globe.json', { eager: true })
-const data = (Object.values(countriesGlob)[0] as any)?.default
+const data = (Object.values(countriesGlob)[0] as { default: GlobeFeatureCollection })?.default
 const countries = JSON.stringify(data.features)
 
 const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
