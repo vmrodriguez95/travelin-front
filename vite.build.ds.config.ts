@@ -13,11 +13,10 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths({ root: '.' }),
       // lit() // solo si usas Lit
     ],
+    // vite-tsconfig-paths only resolves JS/TS imports; Sass @use needs resolve.alias
     resolve: {
       alias: [
-        { find: '@web', replacement: '/src/web' },
         { find: '@common', replacement: '/src/common' },
-        { find: '@ds', replacement: '/src/design-system' }
       ]
     },
     build: {
