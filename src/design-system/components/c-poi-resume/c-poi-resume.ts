@@ -1,13 +1,15 @@
-import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 
 // Types
 import type { Poi, PoiHotel } from '@ds/types/pois'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
 // Utils
 import {
-  getPoiChannel,
   POI_CLEAR_EVENT,
   POI_SELECT_EVENT,
   type PoiClearEventDetail,
@@ -28,28 +30,16 @@ export class CPoiResume extends LitElement {
 
   @state() _data: Poi | PoiHotel | null = null
 
-  _channelBus: EventTarget | null = null
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {
+      onSelect: (detail) => this._onSelectionChange(detail),
+      onClear: () => this._onSelectionClear(),
+    }
+  )
 
   static styles = css`${unsafeCSS(styles)}`
-
-  connectedCallback() {
-    super.connectedCallback()
-
-    this._connectToChannel()
-  }
-
-  disconnectedCallback() {
-    this._disconnectFromChannel()
-
-    super.disconnectedCallback()
-  }
-
-  protected updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('channel')) {
-      this._disconnectFromChannel()
-      this._connectToChannel()
-    }
-  }
 
   render() {
     if (!this._data) return ''
@@ -86,54 +76,30 @@ export class CPoiResume extends LitElement {
     `)
   }
 
-  private _connectToChannel() {
-    if (!this.channel) return
-
-    this._channelBus = getPoiChannel(this.channel)
-    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
-  }
-
-  private _disconnectFromChannel() {
-    if (!this._channelBus) return
-
-    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
-    this._channelBus = null
-  }
-
   private _showInfo() {
     if (!this._data) return
 
-    this._channelBus?.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
-      detail: {
-        data: this._data,
-        source: this,
-        view: 'detail'
-      }
-    }))
+    this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      data: this._data,
+      source: this,
+      view: 'detail'
+    })
   }
 
   private _onClose() {
     this._resetData()
-    this._channelBus?.dispatchEvent(new CustomEvent<PoiClearEventDetail>(POI_CLEAR_EVENT, {
-      detail: {
-        source: this
-      }
-    }))
+    this._channel.dispatch<PoiClearEventDetail>(POI_CLEAR_EVENT, { source: this })
   }
 
-  private _onSelectionChange = (ev: Event) => {
-    const event = ev as CustomEvent<PoiSelectEventDetail>
-
-    this._data = event.detail.view === 'resume' ? event.detail.data as Poi | PoiHotel : null
+  private _onSelectionChange(detail: PoiSelectEventDetail) {
+    this._data = detail.view === 'resume' ? detail.data as Poi | PoiHotel : null
   }
 
   private _resetData() {
     this._data = null
   }
 
-  private _onSelectionClear = () => {
+  private _onSelectionClear() {
     this._resetData()
   }
 }

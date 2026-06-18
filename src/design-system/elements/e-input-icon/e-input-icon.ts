@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
@@ -7,40 +7,21 @@ import { classMap } from 'lit/directives/class-map.js'
 
 import { EICON_LIST } from '@ds/elements/e-icon/e-icon.list'
 
-// Styles
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 import style from './e-input-icon.style.scss?inline'
 
 @customElement('e-input-icon')
-export class EInputIcon extends LitElement {
-
-  private _internals: ElementInternals
-
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
-
-  @property({ type: String, reflect: true }) value = ''
-
-  @property({ type: String }) helpmsg = ''
-
-  @property({ type: Object }) a11y: any = {}
-
-  @property({ type: Boolean }) required = false
-
-  @property({ type: Boolean }) readonly = false
-
-  @state() _open = false
+export class EInputIcon extends FormElement {
 
   static styles = css`${unsafeCSS(style)}`
 
-  static formAssociated = true
+  @property({ type: String, reflect: true }) value = ''
 
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
-  }
+  @property({ type: Object }) a11y: Record<string, string> = {}
+
+  @state() _open = false
 
   connectedCallback(): void {
     super.connectedCallback()
@@ -48,7 +29,7 @@ export class EInputIcon extends LitElement {
     window.addEventListener('keyup', this._onEscape)
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     window.removeEventListener('keyup', this._onEscape)
 
     super.disconnectedCallback()
@@ -58,7 +39,6 @@ export class EInputIcon extends LitElement {
     if (changed.has('value') || changed.has('required')) {
       this._internals.setFormValue(this.value || null)
       this._validate()
-      return
     }
   }
 
@@ -151,48 +131,11 @@ export class EInputIcon extends LitElement {
     this.dispatchEvent(new Event('change'))
   }
 
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
-    }
-
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
-    return {
-      valid: false,
-      message: "Este campo es obligatorio",
-      state: { valueMissing: true }
-    }
-  }
-
-  private _calculateValidity() {
+  protected _calculateValidity(): ValidityResult {
     if (this.required && !this.value) {
-      return this._getRequiredValidy()
+      return this._getRequiredValidity()
     }
-    
-    return this._getDefaultValidy() 
-  }
 
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
+    return this._getDefaultValidity()
   }
 }

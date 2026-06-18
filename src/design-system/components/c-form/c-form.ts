@@ -24,6 +24,12 @@ import type {
 import type { SelectOption } from './c-form.types'
 import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
+interface FieldDependency {
+  field: string
+  dependsOn: Array<string> | undefined
+  isRegistered: boolean
+}
+
 import styles from './c-form.style.scss?inline'
 
 @customElement('c-form')
@@ -49,7 +55,7 @@ export class CForm extends LitElement {
 
   private _internals: ElementInternals
 
-  private _dependencies: Array<any> = []
+  private _dependencies: Array<FieldDependency> = []
 
   static formAssociated = true
 
@@ -251,7 +257,7 @@ export class CForm extends LitElement {
     })
   }
 
-  private _collectValuesFromDependency(node: any, pathParts: Array<string>): string[] {
+  private _collectValuesFromDependency(node: unknown, pathParts: Array<string>): string[] {
     if (!node) return []
 
     if (pathParts.length === 0) {
@@ -279,12 +285,14 @@ export class CForm extends LitElement {
       return []
     }
 
-    if (currentPart in node) {
-      return this._collectValuesFromDependency(node[currentPart], rest)
+    const record = node as Record<string, unknown>
+
+    if (currentPart in record) {
+      return this._collectValuesFromDependency(record[currentPart], rest)
     }
 
-    if ('fields' in node) {
-      return this._collectValuesFromDependency(node.fields, pathParts)
+    if ('fields' in record) {
+      return this._collectValuesFromDependency(record.fields, pathParts)
     }
 
     return []

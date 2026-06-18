@@ -32,7 +32,7 @@ export interface PoiRemoveEventDetail {
 
 const channels = new Map<string, EventTarget>()
 
-export function getPoiChannel(channel: string) {
+export function getPoiChannel(channel: string): EventTarget {
   if (!channels.has(channel)) {
     channels.set(channel, new EventTarget())
   }

@@ -1,33 +1,26 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
-// Types
 import type { SearchResult, SearchApiResponse } from './e-input-search.types.ts'
 
-// Controllers
 import { SimpleGetClient } from '@ds/requests/index.ts'
 import { SimpleRequestController } from '@ds/controllers/request.controller.ts'
 
-// Utils
 import { debounce } from '../../utils/action.utils.ts'
 
-// Styles
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 import style from './e-input-search.style.scss?inline'
 
 @customElement('e-input-search')
-export class EInputSearch extends LitElement {
+export class EInputSearch extends FormElement {
 
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
+  static styles = css`${unsafeCSS(style)}`
 
   @property({ type: String }) api = ''
-
-  @property({ type: String }) helpmsg = ''
 
   @property({ type: String, reflect: true }) value: string = ''
 
@@ -35,17 +28,11 @@ export class EInputSearch extends LitElement {
 
   @property({ type: Boolean }) queryAsValue = false
 
-  @property({ type: Boolean }) required = false
-
-  @property({ type: Boolean }) readonly = false
-
   @state() _searchResults: Array<SearchResult> = []
 
   @state() _open = false
 
   @query('input') _input!: HTMLInputElement
-
-  private _internals: ElementInternals
 
   private _client = new SimpleGetClient({ baseUrl: '', timeoutMs: 8000 })
 
@@ -57,13 +44,8 @@ export class EInputSearch extends LitElement {
     this._onSearch(query, searchId)
   }, 300)
 
-  static styles = css`${unsafeCSS(style)}`
-
-  static formAssociated = true
-
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
+  protected override _getAnchorElement(): HTMLElement {
+    return this._input ?? this
   }
 
   render() {
@@ -189,9 +171,9 @@ export class EInputSearch extends LitElement {
 
       this._searchResults = Array.isArray(data?.data) ? data.data : []
       this._open = this._searchResults.length > 0
-    } catch (e: any) {
-      if (e?.name === 'AbortError') return
-      if (e?.message === 'Stale response ignored') return
+    } catch (e: unknown) {
+      if ((e as Error)?.name === 'AbortError') return
+      if ((e as Error)?.message === 'Stale response ignored') return
 
       console.error(e)
       this._searchResults = []
@@ -232,48 +214,11 @@ export class EInputSearch extends LitElement {
     this.dispatchEvent(new Event('change'))
   }
 
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
-    }
-
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this._input
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
-    return {
-      valid: false,
-      message: "Este campo es obligatorio",
-      state: { valueMissing: true }
-    }
-  }
-
-  private _calculateValidity() {
+  protected _calculateValidity(): ValidityResult {
     if (this.required && !this.value) {
-      return this._getRequiredValidy()
+      return this._getRequiredValidity()
     }
-    
-    return this._getDefaultValidy() 
-  }
 
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
+    return this._getDefaultValidity()
   }
 }

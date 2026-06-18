@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
@@ -23,23 +23,16 @@ import {
 
 import { Temporal } from '@js-temporal/polyfill'
 
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 // Styles
 import style from './e-calendar.style.scss?inline'
 
 @customElement('e-calendar')
-export class ECalendar extends LitElement {
-
-  private _internals: ElementInternals
-
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
+export class ECalendar extends FormElement {
 
   @property({ type: String }) value = ''
-
-  @property({ type: String }) helpmsg = ''
 
   @property({ type: String }) start = ''
 
@@ -51,10 +44,6 @@ export class ECalendar extends LitElement {
 
   @property({ type: Array }) returnedValues = []
 
-  @property({ type: Boolean }) required = false
-
-  @property({ type: Boolean }) readonly = false
-  
   @state() _actualMonth: number = 0
 
   @state() _actualYear: number = 0
@@ -69,22 +58,15 @@ export class ECalendar extends LitElement {
 
   static styles = css`${unsafeCSS(style)}`
 
-  static formAssociated = true
-
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
-  }
-
   connectedCallback(): void {
+    super.connectedCallback()
+
     this._initialize()
 
     this._months = getMonths()
     this._years = this._getYears()
     this._monthDays = getMonthDays(this._actualMonth, this._actualYear)
     this._weekdaysInititals = getWeekdayInitials()
-
-    super.connectedCallback()
   }
 
   protected updated(changedProperties: PropertyValues<this>) {
@@ -376,48 +358,20 @@ export class ECalendar extends LitElement {
   }
 
   // Validation
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
-    }
 
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
+  protected override _getRequiredValidity(): ValidityResult {
     return {
       valid: false,
-      message: "Ninguna fecha seleccionada",
+      message: 'Ninguna fecha seleccionada',
       state: { valueMissing: true }
     }
   }
 
-  private _calculateValidity() {
+  protected _calculateValidity(): ValidityResult {
     if (this.required && !this.value) {
-      return this._getRequiredValidy()
+      return this._getRequiredValidity()
     }
-    
-    return this._getDefaultValidy()
-  }
 
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
+    return this._getDefaultValidity()
   }
 }

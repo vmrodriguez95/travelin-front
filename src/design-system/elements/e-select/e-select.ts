@@ -1,45 +1,29 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
-// Types
 import type { SelectOption } from '@ds/components/c-form/c-form.types'
 
-// Styles
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 import style from './e-select.style.scss?inline'
 
 @customElement('e-select')
-export class ESelect extends LitElement {
+export class ESelect extends FormElement {
 
-  private _internals: ElementInternals
-
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
+  static styles = css`${unsafeCSS(style)}`
 
   @property({ type: String }) default = ''
 
   @property({ type: String, reflect: true }) value: string = ''
 
-  @property({ type: String }) helpmsg = ''
-
   @property({ type: Array }) options: SelectOption[] = []
-
-  @property({ type: Boolean, reflect: true }) required = false
-
-  @property({ type: Boolean }) readonly = false
 
   @query('select') _select!: HTMLSelectElement
 
-  static styles = css`${unsafeCSS(style)}`
-
-  static formAssociated = true
-
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
+  protected override _getAnchorElement(): HTMLElement {
+    return this._select ?? this
   }
 
   protected updated(changed: Map<string, unknown>) {
@@ -98,49 +82,11 @@ export class ESelect extends LitElement {
     this.dispatchEvent(new Event('change'))
   }
 
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
-    }
-
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this._select
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
-    return {
-      valid: false,
-      message: "Este campo es obligatorio",
-      state: { valueMissing: true }
-    }
-  }
-
-  private _calculateValidity() {
-    // required
+  protected _calculateValidity(): ValidityResult {
     if (this.required && !this.value) {
-      return this._getRequiredValidy()
+      return this._getRequiredValidity()
     }
-    
-    return this._getDefaultValidy() 
-  }
 
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
+    return this._getDefaultValidity()
   }
 }

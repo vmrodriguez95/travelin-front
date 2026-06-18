@@ -60,7 +60,7 @@ export interface BasicFormField {
   readonly: boolean
   excludeValue?: boolean
   showInResume?: boolean
-  a11y?: any
+  a11y?: Record<string, string>
 }
 
 export interface SelectOption {

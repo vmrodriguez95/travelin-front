@@ -1,20 +1,18 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-// Styles
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 import style from './e-input.style.scss?inline'
 
 @customElement('e-input')
-export class EInput extends LitElement {
+export class EInput extends FormElement {
 
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
+  static styles = css`${unsafeCSS(style)}`
 
   @property({ type: String }) type = ''
 
@@ -26,37 +24,24 @@ export class EInput extends LitElement {
 
   @property({ type: String }) compareValue = ''
 
-  @property({ type: String }) helpmsg = ''
-
-  @property({ type: Object }) a11y: any = {}
+  @property({ type: Object }) a11y: Record<string, string> = {}
 
   @property({ type: Number }) minlength = 0
 
   @property({ type: Number }) maxlength = 255
 
-  @property({ type: Boolean, reflect: true }) required = false
-
-  @property({ type: Boolean }) readonly = false
-
   @query('input') _input!: HTMLInputElement
 
   _isPasswordField = false
-
-  private _internals: ElementInternals
-
-  static styles = css`${unsafeCSS(style)}`
-
-  static formAssociated = true
-
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
-  }
 
   connectedCallback(): void {
     super.connectedCallback()
 
     this._isPasswordField = this.type === 'password'
+  }
+
+  protected override _getAnchorElement(): HTMLElement {
+    return this._input ?? this
   }
 
   protected updated(changed: Map<string, unknown>) {
@@ -163,34 +148,37 @@ export class EInput extends LitElement {
     return this.value?.toString() || ''
   }
 
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
+  protected _calculateValidity(): ValidityResult {
+    const currentValue = this._getCurrentValue()
+
+    if (this.required && !currentValue) {
+      return this._getRequiredValidity()
     }
 
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this._input
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
-    return {
-      valid: false,
-      message: "Este campo es obligatorio",
-      state: { valueMissing: true }
+    if (this.minlength && currentValue.length < this.minlength) {
+      return this._getMinLengthValidity()
     }
+
+    if (this.maxlength && currentValue.length > this.maxlength) {
+      return this._getMaxLengthValidity()
+    }
+
+    if (this.type === 'email' && currentValue && !this._isValidEmail(currentValue)) {
+      return this._getEmailValidity()
+    }
+
+    if (this._isPasswordField && currentValue && !this._isSecurePassword(currentValue)) {
+      return this._getPasswordStrengthValidity()
+    }
+
+    if (this._isPasswordField && this.compareValue && currentValue !== this.compareValue) {
+      return this._getPasswordMismatchValidity()
+    }
+
+    return this._getDefaultValidity()
   }
 
-  private _getMinLengthValidy() {
+  private _getMinLengthValidity(): ValidityResult {
     return {
       valid: false,
       message: `Debe tener mínimo ${this.minlength} caracteres`,
@@ -198,7 +186,7 @@ export class EInput extends LitElement {
     }
   }
 
-  private _getMaxLengthValidy() {
+  private _getMaxLengthValidity(): ValidityResult {
     return {
       valid: false,
       message: `No puede tener más de ${this.maxlength} caracteres`,
@@ -206,7 +194,7 @@ export class EInput extends LitElement {
     }
   }
 
-  private _getPasswordMismatchValidity() {
+  private _getPasswordMismatchValidity(): ValidityResult {
     return {
       valid: false,
       message: 'Las contraseñas no coinciden',
@@ -214,7 +202,7 @@ export class EInput extends LitElement {
     }
   }
 
-  private _getPasswordStrengthValidity() {
+  private _getPasswordStrengthValidity(): ValidityResult {
     return {
       valid: false,
       message: 'Debe incluir mayúscula, minúscula, número y uno de estos símbolos: .@$€/#-_?¿!¡&',
@@ -222,7 +210,7 @@ export class EInput extends LitElement {
     }
   }
 
-  private _getEmailValidity() {
+  private _getEmailValidity(): ValidityResult {
     return {
       valid: false,
       message: 'Debe introducir un email válido',
@@ -241,46 +229,5 @@ export class EInput extends LitElement {
     const hasSymbol = /[.@$€/#\-_?¿!¡&]/.test(value)
 
     return hasUppercase && hasLowercase && hasNumber && hasSymbol
-  }
-
-  private _calculateValidity() {
-    const currentValue = this._getCurrentValue()
-
-    // required
-    if (this.required && !currentValue) {
-      return this._getRequiredValidy()
-    }
-    
-    if (this.minlength && currentValue.length < this.minlength) {
-      return this._getMinLengthValidy()
-    }
-    
-    if (this.maxlength && currentValue.length > this.maxlength) {
-      return this._getMaxLengthValidy()
-    }
-
-    if (this.type === 'email' && currentValue && !this._isValidEmail(currentValue)) {
-      return this._getEmailValidity()
-    }
-
-    if (this._isPasswordField && currentValue && !this._isSecurePassword(currentValue)) {
-      return this._getPasswordStrengthValidity()
-    }
-
-    if (this._isPasswordField && this.compareValue && currentValue !== this.compareValue) {
-      return this._getPasswordMismatchValidity()
-    }
-
-    return this._getDefaultValidy() 
-  }
-
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
   }
 }

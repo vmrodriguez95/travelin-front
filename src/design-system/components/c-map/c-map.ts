@@ -5,11 +5,13 @@ import { classMap } from 'lit/directives/class-map.js'
 // Types
 import type { MapMarker } from '@ds/types/pois'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
 // Utils
 import { loadGoogleMapsApi } from '@ds/utils/google-maps.utils'
 import { getIconSvg } from '@ds/utils/icon.utils'
 import {
-  getPoiChannel,
   POI_CLEAR_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_HOVER_EVENT,
@@ -51,8 +53,6 @@ export class CMap extends LitElement {
   @state() _height = 0
 
   @queryAsync('.c-map__viewport') _viewport!: Promise<HTMLElement>
-
-  _channelBus: EventTarget | null = null
 
   _defaultShowSearch = false
 
@@ -98,15 +98,25 @@ export class CMap extends LitElement {
     }
   }
 
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {
+      onSelect: (detail) => this._onSelectionChange(detail),
+      onClear: () => this._onSelectionClear(),
+      onHover: (detail) => this._onHoverChange(detail),
+      onHoverClear: () => this._onHoverClear(),
+      onRemove: (detail) => this._onPoiRemove(detail),
+    }
+  )
+
   connectedCallback(): void {
     super.connectedCallback()
 
     this._activateFullHeight()
-    this._connectToChannel()
   }
 
   disconnectedCallback() {
-    this._disconnectFromChannel()
     this._removeResizeHandler()
 
     super.disconnectedCallback()
@@ -117,11 +127,6 @@ export class CMap extends LitElement {
   }
 
   protected updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('channel')) {
-      this._disconnectFromChannel()
-      this._connectToChannel()
-    }
-
     if (changedProperties.has('markers') || changedProperties.has('latitude') || changedProperties.has('longitude')) {
       this._setupMap()
     }
@@ -412,15 +417,13 @@ export class CMap extends LitElement {
     this._refreshMarkerStyles()
     this._focusMarker(marker)
 
-    if (!this._channelBus || !marker.data) return
+    if (!marker.data) return
 
-    this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
-      detail: {
-        data: marker.data,
-        source: this,
-        view: marker.view || 'detail'
-      }
-    }))
+    this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      data: marker.data,
+      source: this,
+      view: marker.view || 'detail'
+    })
   }
 
   private async _setupMap() {
@@ -460,34 +463,10 @@ export class CMap extends LitElement {
     this._map.fitBounds(bounds)
   }
 
-  private _connectToChannel() {
-    if (!this.channel) return
+  private _onSelectionChange(detail: PoiSelectEventDetail) {
+    this._selectedIdPoi = detail.data.id
 
-    this._channelBus = getPoiChannel(this.channel)
-    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
-    this._channelBus.addEventListener(POI_HOVER_EVENT, this._onHoverChange as EventListener)
-    this._channelBus.addEventListener(POI_HOVER_CLEAR_EVENT, this._onHoverClear)
-    this._channelBus.addEventListener(POI_REMOVE_EVENT, this._onPoiRemove as EventListener)
-  }
-
-  private _disconnectFromChannel() {
-    if (!this._channelBus) return
-
-    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear)
-    this._channelBus.removeEventListener(POI_HOVER_EVENT, this._onHoverChange as EventListener)
-    this._channelBus.removeEventListener(POI_HOVER_CLEAR_EVENT, this._onHoverClear)
-    this._channelBus.removeEventListener(POI_REMOVE_EVENT, this._onPoiRemove as EventListener)
-    this._channelBus = null
-  }
-
-  private _onSelectionChange = (ev: Event) => {
-    const event = ev as CustomEvent<PoiSelectEventDetail>
-
-    this._selectedIdPoi = event.detail.data.id
-
-    if (event.detail.source === this) return
+    if (detail.source === this) return
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
@@ -495,7 +474,7 @@ export class CMap extends LitElement {
     }
   }
 
-  private _onSelectionClear = () => {
+  private _onSelectionClear() {
     this._selectedIdPoi = ''
 
     if (this._hasInteractiveMarkers()) {
@@ -503,17 +482,15 @@ export class CMap extends LitElement {
     }
   }
 
-  private _onHoverChange = (ev: Event) => {
-    const event = ev as CustomEvent<PoiHoverEventDetail>
-
-    this._hoveredIdPoi = event.detail.data.id
+  private _onHoverChange(detail: PoiHoverEventDetail) {
+    this._hoveredIdPoi = detail.data.id
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
     }
   }
 
-  private _onHoverClear = () => {
+  private _onHoverClear() {
     this._hoveredIdPoi = ''
 
     if (this._hasInteractiveMarkers()) {
@@ -521,9 +498,7 @@ export class CMap extends LitElement {
     }
   }
 
-  private _onPoiRemove = (ev: Event) => {
-    const event = ev as CustomEvent<PoiRemoveEventDetail>
-
-    this._removePoiMarkers(event.detail.data.id)
+  private _onPoiRemove(detail: PoiRemoveEventDetail) {
+    this._removePoiMarkers(detail.data.id)
   }
 }
