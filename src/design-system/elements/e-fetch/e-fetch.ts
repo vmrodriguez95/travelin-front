@@ -19,7 +19,7 @@ export class EFetch extends LitElement {
 
   @property({ type: Number }) wait = 0
 
-  @property({ type: Object }) body: any = null
+  @property({ type: Object }) body: Record<string, unknown> | null = null
 
   @property({ type: Object }) headers: Record<string, string> = {}
 
@@ -100,8 +100,8 @@ export class EFetch extends LitElement {
         composed: true
       }))
 
-    } catch (err: any) {
-      this.error = err.message
+    } catch (err: unknown) {
+      this.error = (err as Error).message
 
       this.dispatchEvent(new CustomEvent('fetch-error', {
         detail: err,

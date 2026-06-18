@@ -16,11 +16,12 @@ import type {
   TransportPerson
 } from '@ds/types/pois'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
 // Utils
 import {
-  getPoiChannel,
   POI_CLEAR_EVENT,
-  POI_SELECT_EVENT,
   type PoiClearEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
@@ -44,29 +45,19 @@ export class CPoiDetail extends LitElement {
   @query('c-slider') slider!: CSlider
 
   @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
-  
-  _channelBus: EventTarget | null = null
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {
+      onSelect: (detail) => this._onSelectionChange(detail),
+      onClear: () => this._onSelectionClear(),
+    }
+  )
 
   static styles = css`${unsafeCSS(styles)}`
 
-  connectedCallback(): void {
-    super.connectedCallback()
-
-    this._connectToChannel()
-  }
-
-  disconnectedCallback() {
-    this._disconnectFromChannel()
-
-    super.disconnectedCallback()
-  }
-  
   protected updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('channel')) {
-      this._disconnectFromChannel()
-      this._connectToChannel()
-    }
-
     if (changedProperties.has('_data')) {
       this.slider?.reset()
     }
@@ -143,40 +134,18 @@ export class CPoiDetail extends LitElement {
 
   private _onClose() {
     this._resetData()
-    this._channelBus?.dispatchEvent(new CustomEvent<PoiClearEventDetail>(POI_CLEAR_EVENT, {
-      detail: {
-        source: this
-      }
-    }))
+    this._channel.dispatch<PoiClearEventDetail>(POI_CLEAR_EVENT, { source: this })
   }
 
   private _resetData() {
     this._data = null
   }
 
-  private _connectToChannel() {
-    if (!this.channel) return
-
-    this._channelBus = getPoiChannel(this.channel)
-    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
+  private _onSelectionChange(detail: PoiSelectEventDetail) {
+    this._data = detail.view === 'detail' ? detail.data as Poi | PoiHotel | Reminder | Note : null
   }
 
-  private _disconnectFromChannel() {
-    if (!this._channelBus) return
-
-    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
-    this._channelBus = null
-  }
-
-  private _onSelectionChange = (ev: Event) => {
-    const event = ev as CustomEvent<PoiSelectEventDetail>
-
-    this._data = event.detail.view === 'detail' ? event.detail.data as Poi | PoiHotel | Reminder | Note : null
-  }
-
-  private _onSelectionClear = () => {
+  private _onSelectionClear() {
     this._data = null
   }
 }

@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { map } from 'lit/directives/map.js'
@@ -6,11 +6,13 @@ import { map } from 'lit/directives/map.js'
 // Types
 import type { PoiTransport, TransportSegment } from '@ds/types/pois'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
 // Utils
 import { printTime } from '@ds/utils/date.utils'
 import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 import {
-  getPoiChannel,
   POI_CLEAR_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_HOVER_EVENT,
@@ -39,29 +41,27 @@ export class CCardTransport extends LitElement {
 
   @query('.c-card-transport') _card!: HTMLElement
 
-  _channelBus: EventTarget | null = null
-
   _isSelectedData = false
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {
+      onSelect: (detail) => this._onSelectionChange(detail),
+      onClear: () => this._onSelectionClear(),
+    }
+  )
 
   connectedCallback() {
     super.connectedCallback()
 
     this._listenModalSuccessEvent()
-    this._connectToChannel()
   }
 
   disconnectedCallback() {
     document.removeEventListener('fetch-success', this._onFetchSuccess as EventListener)
-    this._disconnectFromChannel()
 
     super.disconnectedCallback()
-  }
-
-  protected updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('channel')) {
-      this._disconnectFromChannel()
-      this._connectToChannel()
-    }
   }
 
   render() {
@@ -109,38 +109,24 @@ export class CCardTransport extends LitElement {
   }
 
   private _onClick = () => {
-    if (!this._channelBus) return
-
-    this._channelBus.dispatchEvent(new CustomEvent<PoiSelectEventDetail>(POI_SELECT_EVENT, {
-      detail: {
-        data: this.data,
-        source: this,
-        view: 'detail'
-      }
-    }))
+    this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      data: this.data,
+      source: this,
+      view: 'detail'
+    })
 
     scrollToPageEnd()
   }
 
   private _onHoverStart = () => {
-    if (!this._channelBus) return
-
-    this._channelBus.dispatchEvent(new CustomEvent<PoiHoverEventDetail>(POI_HOVER_EVENT, {
-      detail: {
-        data: this.data,
-        source: this
-      }
-    }))
+    this._channel.dispatch<PoiHoverEventDetail>(POI_HOVER_EVENT, {
+      data: this.data,
+      source: this
+    })
   }
 
   private _onHoverEnd = () => {
-    if (!this._channelBus) return
-
-    this._channelBus.dispatchEvent(new CustomEvent(POI_HOVER_CLEAR_EVENT, {
-      detail: {
-        source: this
-      }
-    }))
+    this._channel.dispatch(POI_HOVER_CLEAR_EVENT, { source: this })
   }
 
   private _getCity(address: string) {
@@ -155,15 +141,13 @@ export class CCardTransport extends LitElement {
     const event = ev as CustomEvent
 
     if (event.detail.data.id === this.data.id) {
-      this._channelBus?.dispatchEvent(new CustomEvent<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
-        detail: {
-          data: this.data,
-          source: this
-        }
-      }))
+      this._channel.dispatch<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
+        data: this.data,
+        source: this
+      })
 
       if (this._isSelectedData) {
-        this._channelBus?.dispatchEvent(new CustomEvent(POI_CLEAR_EVENT))
+        this._channel.dispatch(POI_CLEAR_EVENT)
       }
 
       this._removeFromDOM()
@@ -174,22 +158,6 @@ export class CCardTransport extends LitElement {
     document.addEventListener('fetch-success', this._onFetchSuccess as EventListener)
   }
 
-  private _connectToChannel() {
-    if (!this.channel) return
-
-    this._channelBus = getPoiChannel(this.channel)
-    this._channelBus.addEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.addEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
-  }
-
-  private _disconnectFromChannel() {
-    if (!this._channelBus) return
-
-    this._channelBus.removeEventListener(POI_SELECT_EVENT, this._onSelectionChange as EventListener)
-    this._channelBus.removeEventListener(POI_CLEAR_EVENT, this._onSelectionClear as EventListener)
-    this._channelBus = null
-  }
-
   private async _focusSelectedCard() {
     await this.updateComplete
 
@@ -197,18 +165,16 @@ export class CCardTransport extends LitElement {
     this._card?.focus({ preventScroll: true })
   }
 
-  private _onSelectionChange = (ev: Event) => {
-    const event = ev as CustomEvent<PoiSelectEventDetail>
-
-    this._isSelectedData = event.detail.data.id === this.data.id
+  private _onSelectionChange(detail: PoiSelectEventDetail) {
+    this._isSelectedData = detail.data.id === this.data.id
     this.active = this._isSelectedData
 
-    if (this._isSelectedData && event.detail.source !== this) {
+    if (this._isSelectedData && detail.source !== this) {
       this._focusSelectedCard()
     }
   }
 
-  private _onSelectionClear = () => {
+  private _onSelectionClear() {
     this._isSelectedData = false
     this.active = false
   }

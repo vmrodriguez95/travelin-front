@@ -3,10 +3,20 @@ import { customElement, property, queryAsync } from 'lit/decorators.js'
 
 import styles from './c-globe.style.scss?inline'
 
+interface GlobeGeoFeature {
+  type: string
+  properties: {
+    ADMIN: string
+    ISO_A2: string
+    [key: string]: unknown
+  }
+  geometry: object
+}
+
 @customElement('c-globe')
 export class CGlobe extends LitElement {
 
-  @property({ type: Array }) data: any = []
+  @property({ type: Array }) data: GlobeGeoFeature[] = []
 
   @property({ type: Array }) countries: String[] = []
 
@@ -35,8 +45,9 @@ export class CGlobe extends LitElement {
       .polygonAltitude(0.01)
       .height(window.innerHeight - 88 - 180 - 32 - 16)
       .width(container.getBoundingClientRect().width)
-      .polygonCapColor((d: any) => {
-        if(this.countries.includes(d.properties.ISO_A2)) {
+      .polygonCapColor((d: object) => {
+        const feature = d as GlobeGeoFeature
+        if(this.countries.includes(feature.properties.ISO_A2)) {
           return 'rgba(252, 110, 32, 1)'
         }
 
@@ -44,7 +55,10 @@ export class CGlobe extends LitElement {
       })
       .polygonSideColor(() => 'black')
       .polygonStrokeColor(() => 'rgba(50, 50, 50, 1)')
-      .polygonLabel((d: any) => `<b>${d.properties.ADMIN} (${d.properties.ISO_A2})</b>`)
+      .polygonLabel((d: object) => {
+        const feature = d as GlobeGeoFeature
+        return `<b>${feature.properties.ADMIN} (${feature.properties.ISO_A2})</b>`
+      })
       .polygonsTransitionDuration(300)
   }
 }

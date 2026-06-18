@@ -1,39 +1,24 @@
-import { LitElement, html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
-// Styles
+import { FormElement } from '../form-element.base'
+import type { ValidityResult } from '../form-element.base'
+
 import style from './e-textarea.style.scss?inline'
 
 @customElement('e-textarea')
-export class ETextarea extends LitElement {
-
-  private _internals: ElementInternals
-
-  @property({ type: String }) id = ''
-
-  @property({ type: String }) name = ''
-
-  @property({ type: String }) label = ''
-
-  @property({ type: String, reflect: true }) value = ''
-
-  @property({ type: String }) helpmsg = ''
-
-  @property({ type: Boolean }) required = false
-
-  @property({ type: Boolean }) readonly = false
-
-  @query('textarea') _input!: HTMLInputElement
+export class ETextarea extends FormElement {
 
   static styles = css`${unsafeCSS(style)}`
 
-  static formAssociated = true
+  @property({ type: String, reflect: true }) value = ''
 
-  constructor() {
-    super()
-    this._internals = this.attachInternals()
+  @query('textarea') _input!: HTMLInputElement
+
+  protected override _getAnchorElement(): HTMLElement {
+    return this._input ?? this
   }
 
   protected updated(changed: Map<string, unknown>) {
@@ -42,7 +27,6 @@ export class ETextarea extends LitElement {
     if (changed.has('value') || changed.has('required')) {
       this._internals.setFormValue(currentValue || null)
       this._validate()
-      return
     }
   }
 
@@ -102,48 +86,11 @@ export class ETextarea extends LitElement {
     return this.value?.toString() || ''
   }
 
-  private _validate() {
-    const validity = this._calculateValidity()
-    
-    if (validity.valid) {
-      this._internals.setValidity({})
-      return
-    }
-
-    this._internals.setValidity(
-      validity.state,
-      validity.message,
-      this._input
-    )
-  }
-
-  private _getDefaultValidy() {
-    return { valid: true, message: "", state: {} as any }
-  }
-
-  private _getRequiredValidy() {
-    return {
-      valid: false,
-      message: "Este campo es obligatorio",
-      state: { valueMissing: true }
-    }
-  }
-
-  private _calculateValidity() {
+  protected _calculateValidity(): ValidityResult {
     if (this.required && !this.value) {
-      return this._getRequiredValidy()
+      return this._getRequiredValidity()
     }
-    
-    return this._getDefaultValidy() 
-  }
 
-  reportValidity() {
-    this._validate()
-    return this._internals.reportValidity()
-  }
-
-  checkValidity() {
-    this._validate()
-    return this._internals.checkValidity()
+    return this._getDefaultValidity()
   }
 }
