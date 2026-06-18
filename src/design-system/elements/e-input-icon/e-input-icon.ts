@@ -7,8 +7,8 @@ import { classMap } from 'lit/directives/class-map.js'
 
 import { EICON_LIST } from '@ds/elements/e-icon/e-icon.list'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 import style from './e-input-icon.style.scss?inline'
 

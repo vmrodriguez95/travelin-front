@@ -4,8 +4,8 @@ import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 import style from './e-input.style.scss?inline'
 
@@ -181,7 +181,7 @@ export class EInput extends FormElement {
   private _getMinLengthValidity(): ValidityResult {
     return {
       valid: false,
-      message: `Debe tener mínimo ${this.minlength} caracteres`,
+      message: this.messages.minLength ?? `Debe tener mínimo ${this.minlength} caracteres`,
       state: { tooShort: true }
     }
   }
@@ -189,7 +189,7 @@ export class EInput extends FormElement {
   private _getMaxLengthValidity(): ValidityResult {
     return {
       valid: false,
-      message: `No puede tener más de ${this.maxlength} caracteres`,
+      message: this.messages.maxLength ?? `No puede tener más de ${this.maxlength} caracteres`,
       state: { tooLong: true }
     }
   }
@@ -197,7 +197,7 @@ export class EInput extends FormElement {
   private _getPasswordMismatchValidity(): ValidityResult {
     return {
       valid: false,
-      message: 'Las contraseñas no coinciden',
+      message: this.messages.mismatch ?? 'Las contraseñas no coinciden',
       state: { customError: true }
     }
   }
@@ -205,7 +205,7 @@ export class EInput extends FormElement {
   private _getPasswordStrengthValidity(): ValidityResult {
     return {
       valid: false,
-      message: 'Debe incluir mayúscula, minúscula, número y uno de estos símbolos: .@$€/#-_?¿!¡&',
+      message: this.messages.passwordStrength ?? 'Debe incluir mayúscula, minúscula, número y uno de estos símbolos: .@$€/#-_?¿!¡&',
       state: { customError: true }
     }
   }
@@ -213,7 +213,7 @@ export class EInput extends FormElement {
   private _getEmailValidity(): ValidityResult {
     return {
       valid: false,
-      message: 'Debe introducir un email válido',
+      message: this.messages.email ?? 'Debe introducir un email válido',
       state: { typeMismatch: true }
     }
   }

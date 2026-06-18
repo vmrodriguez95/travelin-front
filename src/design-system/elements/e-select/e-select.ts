@@ -4,8 +4,8 @@ import { when } from 'lit/directives/when.js'
 
 import type { SelectOption } from '@ds/components/c-form/c-form.types'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 import style from './e-select.style.scss?inline'
 

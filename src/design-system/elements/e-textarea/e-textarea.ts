@@ -3,8 +3,8 @@ import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 import style from './e-textarea.style.scss?inline'
 
