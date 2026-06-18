@@ -371,6 +371,7 @@ export class CForm extends LitElement {
             type=${field.type}
             helpmsg=${field.helpmsg}
             .a11y=${field.a11y}
+            .messages=${field.messages ?? {}}
             .minlength=${field.minLength || 0}
             .maxlength=${field.maxLength || 255}
             ?required=${field.required}
@@ -390,6 +391,7 @@ export class CForm extends LitElement {
             name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
+            .messages=${field.messages ?? {}}
             ?autofocus=${field.autofocus}
             ?required=${field.required}
             ?readonly=${field.readonly}
@@ -410,6 +412,7 @@ export class CForm extends LitElement {
             label=${fieldSelect.label}
             type=${fieldSelect.type}
             helpmsg=${fieldSelect.helpmsg}
+            .messages=${field.messages ?? {}}
             default=${fieldSelect.default}
             .options=${fieldSelect.options}
             ?required=${fieldSelect.required}
@@ -430,6 +433,7 @@ export class CForm extends LitElement {
             label=${fieldFile.label}
             type=${fieldFile.type}
             helpmsg=${fieldFile.helpmsg}
+            .messages=${field.messages ?? {}}
             ?required=${fieldFile.required}
             ?readonly=${fieldFile.readonly}
             value=${fieldFile.fillValue}
@@ -452,6 +456,7 @@ export class CForm extends LitElement {
             name=${name}
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
+            .messages=${field.messages ?? {}}
             ?queryAsValue=${fieldSearch.queryAsValue}
             ?required=${fieldSearch.required}
             ?readonly=${fieldSearch.readonly}
@@ -469,6 +474,7 @@ export class CForm extends LitElement {
             name=${name}
             label=${field.label}
             helpmsg=${field.helpmsg}
+            .messages=${field.messages ?? {}}
             .value=${this._getFieldValue(field)}
             .a11y=${field.a11y}
             ?required=${field.required}
@@ -488,6 +494,7 @@ export class CForm extends LitElement {
             label=${fieldCalendar.label}
             type=${fieldCalendar.type}
             helpmsg=${fieldCalendar.helpmsg}
+            .messages=${field.messages ?? {}}
             start=${fieldCalendar.start}
             end=${fieldCalendar.end}
             min=${fieldCalendar.min || ''}
@@ -510,6 +517,7 @@ export class CForm extends LitElement {
             name=${name}
             label=${fieldDate.label}
             helpmsg=${fieldDate.helpmsg}
+            .messages=${field.messages ?? {}}
             type=${fieldDate.type}
             min=${fieldDate.min}
             max=${fieldDate.max}
@@ -529,10 +537,10 @@ export class CForm extends LitElement {
     return html`
       <div class="c-form__repeater__block">
         <div class="c-form__repeater__actions">
-          <button class="c-form__repeater__action" type="button" @click=${() => this._confirmBlock(section)} aria-label="Confirmar cambios">
+          <button class="c-form__repeater__action" type="button" @click=${() => this._confirmBlock(section)} aria-label=${section.confirmLabel ?? 'Confirmar cambios'}>
             <e-icon icon="check" size="s"></e-icon>
           </button>
-          <button class="c-form__repeater__action" type="button" @click=${() => this._removeBlock(fields, index)} aria-label="Cancelar cambios">
+          <button class="c-form__repeater__action" type="button" @click=${() => this._removeBlock(fields, index)} aria-label=${section.cancelLabel ?? 'Cancelar cambios'}>
             <e-icon icon="remove" size="m"></e-icon>
           </button>
         </div>
@@ -637,11 +645,11 @@ export class CForm extends LitElement {
           return ''
         })}
         <div class="c-form__resume__actions">
-          <button class="c-form__resume__action" type="button" @click=${() => this._editBlock(section, index)} aria-label="Editar elemento">
+          <button class="c-form__resume__action" type="button" @click=${() => this._editBlock(section, index)} aria-label=${section.editLabel ?? 'Editar elemento'}>
             <e-icon icon="edit" size="m"></e-icon>
           </button>
           ${when(section.canRemove, () => html`
-            <button class="c-form__resume__action" type="button" @click=${() => this._removeBlock(fields, section.editingElementIdx as number)} aria-label="Eliminar elemento">
+            <button class="c-form__resume__action" type="button" @click=${() => this._removeBlock(fields, section.editingElementIdx as number)} aria-label=${section.removeLabel ?? 'Eliminar elemento'}>
               <e-icon icon="delete" size="m"></e-icon>
             </button>
           `)}

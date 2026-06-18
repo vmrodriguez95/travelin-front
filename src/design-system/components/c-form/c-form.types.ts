@@ -38,6 +38,19 @@ export interface FormArraySection {
   grid: string // "inline" o "stacked"
   schema: FormBlock
   fields?: Array<FormBlock>
+  confirmLabel?: string
+  cancelLabel?: string
+  editLabel?: string
+  removeLabel?: string
+}
+
+export interface FieldMessages {
+  required?: string
+  minLength?: string
+  maxLength?: string
+  mismatch?: string
+  email?: string
+  passwordStrength?: string
 }
 
 // Fields
@@ -61,6 +74,7 @@ export interface BasicFormField {
   excludeValue?: boolean
   showInResume?: boolean
   a11y?: Record<string, string>
+  messages?: FieldMessages
 }
 
 export interface SelectOption {

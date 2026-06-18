@@ -10,8 +10,8 @@ import { SimpleRequestController } from '@ds/controllers/request.controller.ts'
 
 import { debounce } from '../../utils/action.utils.ts'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base.ts'
+import type { ValidityResult } from '../../abstracts/form-element.base.ts'
 
 import style from './e-input-search.style.scss?inline'
 

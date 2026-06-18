@@ -2,8 +2,8 @@ import { html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 import style from './e-input-file.style.scss?inline'
 

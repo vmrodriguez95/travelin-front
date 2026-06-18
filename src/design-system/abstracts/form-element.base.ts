@@ -1,5 +1,6 @@
 import { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
+import type { FieldMessages } from '@ds/components/c-form/c-form.types'
 
 export interface ValidityResult {
   valid: boolean
@@ -11,11 +12,18 @@ export abstract class FormElement extends LitElement {
   protected _internals: ElementInternals
 
   @property({ type: String }) id = ''
+
   @property({ type: String }) name = ''
+
   @property({ type: String }) label = ''
+
   @property({ type: String }) helpmsg = ''
+
   @property({ type: Boolean, reflect: true }) required = false
+
   @property({ type: Boolean }) readonly = false
+
+  @property({ type: Object }) messages: FieldMessages = {}
 
   static formAssociated = true
 
@@ -37,7 +45,7 @@ export abstract class FormElement extends LitElement {
   protected _getRequiredValidity(): ValidityResult {
     return {
       valid: false,
-      message: 'Este campo es obligatorio',
+      message: this.messages.required ?? 'Este campo es obligatorio',
       state: { valueMissing: true }
     }
   }

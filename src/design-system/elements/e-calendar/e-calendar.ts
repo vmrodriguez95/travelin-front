@@ -23,8 +23,8 @@ import {
 
 import { Temporal } from '@js-temporal/polyfill'
 
-import { FormElement } from '../form-element.base'
-import type { ValidityResult } from '../form-element.base'
+import { FormElement } from '../../abstracts/form-element.base'
+import type { ValidityResult } from '../../abstracts/form-element.base'
 
 // Styles
 import style from './e-calendar.style.scss?inline'
