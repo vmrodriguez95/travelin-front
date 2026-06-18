@@ -108,10 +108,21 @@ export class ENotification extends LitElement {
     setTimeout(() => this._close(), this.timeout * 1000)
   }
 
+  disconnectedCallback(): void {
+    this._disconnectFromChannel()
+    super.disconnectedCallback()
+  }
+
   private _connectToChannel() {
     if (!this.channel) return
 
     this._channelBus = getPoiChannel(this.channel)
     this._channelBus.addEventListener(POI_REMOVE_EVENT, this._onPoiRemoved as EventListener)
+  }
+
+  private _disconnectFromChannel() {
+    if (!this._channelBus) return
+    this._channelBus.removeEventListener(POI_REMOVE_EVENT, this._onPoiRemoved as EventListener)
+    this._channelBus = null
   }
 }

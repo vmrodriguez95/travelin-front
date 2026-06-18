@@ -25,9 +25,13 @@ export class SimpleGetClient {
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs)
 
+    const onAbort = () => controller.abort()
     if (signal) {
-      if (signal.aborted) controller.abort()
-      signal.addEventListener('abort', () => controller.abort(), { once: true })
+      if (signal.aborted) {
+        controller.abort()
+      } else {
+        signal.addEventListener('abort', onAbort, { once: true })
+      }
     }
 
     try {
@@ -47,6 +51,7 @@ export class SimpleGetClient {
 
     } finally {
       clearTimeout(timeout)
+      signal?.removeEventListener('abort', onAbort)
     }
   }
 }
