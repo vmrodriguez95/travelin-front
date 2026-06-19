@@ -42,4 +42,8 @@ body {
   // Grid
   --grid-columns-min: 4;
   --grid-columns-max: 12;
+
+  // Layout heights — shared between SCSS and JS consumers
+  --ui-menu-height: 88px;
+  --ui-c-header-height: 240px;
 }

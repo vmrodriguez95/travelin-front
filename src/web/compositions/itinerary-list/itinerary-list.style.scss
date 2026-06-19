@@ -2,7 +2,7 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 
 .ti-itinerary-list {
-  height: calc(100dvh - 240px - 32px);
+  height: calc(100dvh - var(--ui-c-header-height) - #{space(4)});
 
   @media (min-width: $breakpoint-md) {
     &__dates-column,

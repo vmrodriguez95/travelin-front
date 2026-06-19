@@ -2,6 +2,12 @@
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
+:host {
+  display: block;
+  flex: 1;
+  min-height: 0;
+}
+
 .c-globe {
   .float-tooltip-kap {
     position: absolute;
