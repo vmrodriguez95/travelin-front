@@ -13,7 +13,7 @@
   }
 
   &__grid {
-    height: calc(100dvh - 88px);
+    height: calc(100dvh - var(--ui-menu-height));
     grid-template-rows: auto minmax(0, 1fr);
   }
 
@@ -23,5 +23,7 @@
 
   &__summary {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 }

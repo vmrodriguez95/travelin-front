@@ -43,7 +43,7 @@ export class CGlobe extends LitElement {
       .lineHoverPrecision(0)
       .polygonsData(this.data)
       .polygonAltitude(0.01)
-      .height(window.innerHeight - 88 - 180 - 32 - 16)
+      .height(this.clientHeight || container.getBoundingClientRect().height)
       .width(container.getBoundingClientRect().width)
       .polygonCapColor((d: object) => {
         const feature = d as GlobeGeoFeature

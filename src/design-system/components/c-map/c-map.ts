@@ -45,6 +45,8 @@ export class CMap extends LitElement {
 
   @property({ type: Number }) gap = 0
 
+  @property({ type: Number }) bottomOffset = 40
+
   @property({ type: Number }) zoom = 12
 
 
@@ -178,7 +180,7 @@ export class CMap extends LitElement {
   }
 
   private _calcHeight(viewport: HTMLElement) {
-    const height = window.innerHeight - viewport.offsetTop - 40 - this.gap
+    const height = window.innerHeight - viewport.offsetTop - this.bottomOffset - this.gap
 
     this._setHeight(height)
   }
