@@ -44,11 +44,6 @@
     color: rgba(var(--color-text), 1);
     background-color: rgba(var(--color-background--secondary), 1);
 
-    @media (min-width: $breakpoint-xl) {
-      // gap: var(--grid-gutter);
-      // padding: 0;
-    }
-
     &__column {
       text-align: center;
     }
