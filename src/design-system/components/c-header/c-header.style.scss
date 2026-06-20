@@ -42,8 +42,12 @@
       height: auto;
       background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
 
-      @media (min-width: $breakpoint-lg) {
+      @media (min-width: $breakpoint-md) {
         padding: 0 space(2);
+      }
+
+      @media (min-width: $breakpoint-lg) {
+        padding: 0 space(3);
       }
       
       @media (min-width: $breakpoint-xl) {
@@ -90,8 +94,12 @@
       transform: translateY(0);
     }
 
-    @media (min-width: $breakpoint-lg) {
+    @media (min-width: $breakpoint-md) {
       left: space(2);
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      left: space(3);
       top: space(2);
       transform: translateY(0);
     }
