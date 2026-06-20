@@ -60,7 +60,7 @@ const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
     <c-header heading="Pasaporte" url="#"></c-header>
     <div class="u-grid ti-passport">
       <div class="u-col-4 u-col-md-12 u-col-xl-6 u-order--xl--2 ti-passport__summary">
-        <c-globe data={countries} countries={countryNames}></c-globe>
+        <c-globe data={countries} countries={countryNames} errorMessage="Ocurrió un error al cargar el mapa interactivo. Por favor, compruebe en los ajustes de su navegador que WEbGL o la aceleración por hardware está habilitado para poder verlo. Si está desactívelo, reinicie el navegador y vuelva a activarlo."></c-globe>
         <div class="ti-passport__stats">
           <div class="ti-passport__stats__column">
             <p class="ti-passport__stats__title">Países</p>
