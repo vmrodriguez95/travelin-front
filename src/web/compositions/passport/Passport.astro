@@ -1,4 +1,6 @@
 ---
+import AppMenu from '@web/components/AppMenu.astro'
+
 interface GlobeFeature {
   type: 'Feature'
   properties: Record<string, unknown>
@@ -22,39 +24,7 @@ const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
 
 <section class="u-grid-main u-bg--dark" data-component>
   <aside class="u-grid-main--sidebar">
-    <c-menu>
-      <a slot="logo" href="#">
-        <img src="/images/logo.png" alt="Logo" width="42" height="48">
-      </a>
-      <li slot="links" class="active">
-        <a href="#" title="Ir a home">
-          <e-icon icon="home" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes">
-          <e-icon icon="map" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a configuración">
-          <e-icon icon="settings" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a usuarios">
-          <e-icon icon="person" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes destacados">
-          <e-icon icon="bookmark" size="l"></e-icon>
-        </a>
-      </li>
-      <a slot="profile" href="#">
-        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
-      </a>
-    </c-menu>
+    <AppMenu />
   </aside>
   <div class="u-grid-main--main u-padding--none">
     <c-header heading="Pasaporte" url="#"></c-header>

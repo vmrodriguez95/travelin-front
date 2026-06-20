@@ -1,20 +1,23 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
   display: block;
   position: fixed;
   bottom: 0;
   left: 0;
+  padding: space(1) var(--grid-gutter);
   width: 100%;
   z-index: 1;
-  
-  @media (min-width: $breakpoint-lg) {
+
+  @media (min-width: $breakpoint-xl) {
     position: sticky;
     top: 0;
     bottom: initial;
     width: auto;
+    padding: 0;
   }
 }
 
@@ -22,14 +25,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: space(1);
+  border-radius: 40px;
   background-color: rgba(var(--color-background--secondary), 1);
-  color: rgba(var(--color-text), 1);
-  padding: space(2) space(1);
   box-sizing: border-box;
+  box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.5);
   
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: $breakpoint-md) {
+    padding: space(2);
+  }
+
+  @media (min-width: $breakpoint-xl) {
     height: 100dvh;
     flex-direction: column;
+    border-radius: 0;
   }
 
   &__list {
@@ -39,9 +48,17 @@
     margin: 0;
     padding: 0;
     
-    @media (min-width: $breakpoint-lg) {
+    @media (min-width: $breakpoint-xl) {
       flex-direction: column;
       gap: space(3);
+    }
+  }
+
+  ::slotted([slot="logo"]) {
+    width: space(4);
+
+    @media (min-width: $breakpoint-md) {
+      width: auto;
     }
   }
 
@@ -66,8 +83,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    width: space(5);
-    height: space(5);
+    width: space(6);
+    height: space(6);
     transition: background-color 0.3s ease-in-out;
   }
 
@@ -79,6 +96,7 @@
 
   ::slotted([slot="links"].active) {
     --eIconColor: var(--color-primary);
+    background-color: rgba(var(--color-background), 1);
   }
 
   ::slotted([slot="profile"]) {
