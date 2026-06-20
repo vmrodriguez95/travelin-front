@@ -43,6 +43,20 @@ body {
   --grid-columns-min: 4;
   --grid-columns-max: 12;
 
+  --grid-gutter: 8px;
+
+  @media (min-width: $breakpoint-md) {
+    --grid-gutter: 16px;
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    --grid-gutter: 24px;
+  }
+
+  @media (min-width: $breakpoint-xl) {
+    --grid-gutter: 32px;
+  }
+
   // Layout heights — shared between SCSS and JS consumers
   --ui-menu-height: 88px;
   --ui-c-header-height: 240px;
