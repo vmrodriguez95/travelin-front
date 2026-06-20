@@ -1,14 +1,40 @@
 @use './tools.scss' as *;
+@use '../variables/breakpoints.scss' as *;
 
-@mixin body--xxl($font-weight: 400) {
+@mixin heading--h1($font-weight: 600) {
   font-weight: $font-weight;
-  font-size: rem(48px);
-  line-height: rem(56px);
+  font-size: rem(40px);
+  line-height: rem(48px);
+  
+  @media (min-width: $breakpoint-lg) {
+    font-weight: $font-weight;
+    font-size: rem(48px);
+    line-height: rem(56px);
+  }
 }
-@mixin body--xl($font-weight: 400) {
+
+@mixin heading--h2($font-weight: 400) {
+  font-weight: $font-weight;
+  font-size: rem(32px);
+  line-height: rem(40px);
+
+  @media (min-width: $breakpoint-lg) {
+    font-weight: $font-weight;
+    font-size: rem(40px);
+    line-height: rem(48px);
+  }
+}
+
+@mixin heading--h3($font-weight: 400) {
   font-weight: $font-weight;
   font-size: rem(24px);
   line-height: rem(32px);
+
+  @media (min-width: $breakpoint-lg) {
+    font-weight: $font-weight;
+    font-size: rem(32px);
+    line-height: rem(40px);
+  }
 }
 
 @mixin body--l($font-weight: 400) {

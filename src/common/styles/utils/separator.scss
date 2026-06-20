@@ -2,7 +2,7 @@
 @use '@common/styles/tools/typography.scss' as *;
 
 .u-separator {
-  @include body--xl;
+  @include heading--h2;
   display: block;
   position: relative;
   margin: space(4) 0;

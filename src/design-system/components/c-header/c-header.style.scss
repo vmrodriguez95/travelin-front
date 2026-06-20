@@ -57,7 +57,7 @@
   }
 
   &__title {
-    @include body--xxl(600);
+    @include heading--h1(600);
     margin: 0;
   }
 
@@ -70,7 +70,7 @@
   }
 
   &__separator {
-    @include body--xl(700);
+    @include heading--h2(700);
   }
 
   &__link {
