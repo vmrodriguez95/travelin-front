@@ -28,7 +28,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: space(3);
+    margin-bottom: space(2);
     
     @media (min-width: $breakpoint-xl) {
       margin-bottom: 0;

@@ -3,10 +3,14 @@ import { customElement, property } from 'lit/decorators.js'
 import { styleMap } from 'lit/directives/style-map.js'
 import { when } from 'lit/directives/when.js'
 
+// Mixins
+import { Responsive } from '@ds/mixins/responsive'
+
+// Styles
 import styles from './e-achievement.style.scss?inline'
 
 @customElement('e-achievement')
-export class EAchievement extends LitElement {
+export class EAchievement extends Responsive(LitElement) {
 
   @property({ type: String }) icon = ''
 
@@ -32,7 +36,7 @@ export class EAchievement extends LitElement {
     return html`
       <div class="e-achievement" style=${styleMap(styles)}>
         <div class="e-achievement__icon">
-          <e-icon icon=${this.icon} size="xxl"></e-icon>
+          <e-icon icon=${this.icon} size=${this._getIconSize()}></e-icon>
         </div>
         <slot name="title"></slot>
         <div class="e-achievement__end">
@@ -43,5 +47,18 @@ export class EAchievement extends LitElement {
         </div>
       </div>
     `
+  }
+
+  private _getIconSize() {
+    switch (this.breakpoint) {
+      case 'sm':
+      case 'md':
+        return 'l'
+      case 'lg':
+      case 'xl':
+        return 'xl'
+      default:
+        return 'xl'
+    }
   }
 }

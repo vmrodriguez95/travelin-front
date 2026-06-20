@@ -1,0 +1,68 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.ti-home {
+  padding: space(2) var(--grid-gutter) var(--ui-menu-height);
+
+  @media (min-width: $breakpoint-xl) {
+    padding: space(2) var(--grid-gutter);
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-gutter);
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: space(2) 0;
+    gap: space(2);
+    width: 100%;
+    box-sizing: border-box;
+    
+    @media (min-width: $breakpoint-md) {
+      padding: 0;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      gap: var(--grid-gutter);
+    }
+  }
+
+  &__achievements {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: space(1);
+    padding: space(2) space(1);
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgba(var(--color-background--secondary), 1);
+    border-radius: $border-radius-l;
+    
+    @media (min-width: $breakpoint-md) {
+      display: flex;
+      justify-items: center;
+      justify-content: space-evenly;
+      gap: var(--grid-gutter);
+      padding: space(2);
+    }
+  }
+
+  &__title {
+    @include body--l;
+    color: rgba(var(--color-text), 1);
+    margin: 0 0 space(1);
+  }
+
+  &__box {
+    background-color: rgba(var(--color-background--secondary), 1);
+    border-radius: $border-radius-l;
+    text-align: center;
+    padding: space(1);
+  }
+}
