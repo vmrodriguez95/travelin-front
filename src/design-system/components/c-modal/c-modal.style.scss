@@ -68,7 +68,7 @@
   }
 
   ::slotted([slot="title"]) {
-    @include body--xl;
+    @include heading--h2;
     margin: 0 0 space(2);
     text-align: center;
     color: rgba(var(--color-text), 1);

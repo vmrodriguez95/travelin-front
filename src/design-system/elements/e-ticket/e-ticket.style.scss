@@ -52,13 +52,13 @@
   }
 
   &__big {
-    @include body--xl(600);
+    @include heading--h2(600);
     color: rgba(var(--color-text), 1);
     margin: 0;
   }
 
   &__name {
-    @include body--xl;
+    @include heading--h2;
     color: rgba(var(--color-text), 1);
     margin: 0;
   }

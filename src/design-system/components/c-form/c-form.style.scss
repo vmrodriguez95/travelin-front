@@ -125,7 +125,7 @@
   }
 
   &__title {
-    @include body--xl;
+    @include heading--h2;
     color: rgba(var(--color-text), 1);
     grid-column: span 2;
     margin: 0;
