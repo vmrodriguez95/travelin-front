@@ -7,7 +7,7 @@
   color: rgba(var(--color-text), 1);
 
   ::slotted([slot="title"]) {
-    @include body--xl(600);
+    @include heading--h2(600);
     margin: 0 0 space(1);
   }
 
@@ -29,7 +29,7 @@
   }
 
   &__input {
-    @include body--xxl;
+    @include heading--h1;
     color: rgba(var(--color-text), 1);
     width: 100%;
     box-sizing: border-box;

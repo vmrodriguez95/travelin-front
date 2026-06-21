@@ -28,12 +28,12 @@
   
   &__content {
     position: relative;
-    padding: space(2) 0;
+    padding: space(2) space(5);
     
     #{$block}--bg & {
       position: absolute;
       inset: 0;
-      padding: 0 space(0.5);
+      padding: 0 space(1);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -43,11 +43,11 @@
       background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
 
       @media (min-width: $breakpoint-md) {
-        padding: 0 space(1);
-      }
-      
-      @media (min-width: $breakpoint-lg) {
         padding: 0 space(2);
+      }
+
+      @media (min-width: $breakpoint-lg) {
+        padding: 0 space(3);
       }
       
       @media (min-width: $breakpoint-xl) {
@@ -57,7 +57,7 @@
   }
 
   &__title {
-    @include body--xxl(600);
+    @include heading--h1(600);
     margin: 0;
   }
 
@@ -70,14 +70,15 @@
   }
 
   &__separator {
-    @include body--xl(700);
+    @include heading--h2(700);
   }
 
   &__link {
     --eIconColor: var(--color-text);
     position: absolute;
-    left: space(0.5);
-    top: space(2);
+    left: space(1);
+    top: 50%;
+    transform: translateY(-50%);
     text-decoration: none;
     border-radius: 50%;
     display: inline-flex;
@@ -88,12 +89,19 @@
     background-color: rgba(var(--color-background--secondary), 1);
     transition: box-shadow 0.1s ease, transform 0.2s ease-in-out;
 
-    @media (min-width: $breakpoint-md) {
-      left: space(1);
+    #{$block}--bg & {
+      top: space(2);
+      transform: translateY(0);
     }
-    
-    @media (min-width: $breakpoint-lg) {
+
+    @media (min-width: $breakpoint-md) {
       left: space(2);
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      left: space(3);
+      top: space(2);
+      transform: translateY(0);
     }
     
     @media (min-width: $breakpoint-xl) {
@@ -120,14 +128,10 @@
     align-items: center;
     justify-content: flex-start;
     gap: space(1);
-    padding: space(0.5);
+    padding: space(1);
     z-index: 1;
     box-sizing: border-box;
 
-    @media (min-width: $breakpoint-md) {
-      padding: space(1);
-    }
-    
     @media (min-width: $breakpoint-lg) {
       padding: space(1) space(2);
     }

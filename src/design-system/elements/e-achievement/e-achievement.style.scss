@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .e-achievement {
@@ -11,10 +12,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: space(10);
-    height: space(10);
+    width: space(8);
+    height: space(8);
     border-radius: 50%;
     border: 2px solid rgba(var(--border-color, var(--color-white)), 1);
+
+    @media (min-width: $breakpoint-lg) {
+      width: space(10);
+      height: space(10);
+    }
   }
 
   ::slotted([slot="title"]) {

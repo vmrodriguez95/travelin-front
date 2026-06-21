@@ -88,5 +88,8 @@ import '@web/styles/index.scss'
     <main class="ti-layout__main">
       <slot />
     </main>
+    <script>
+      document.querySelector('.ti-layout__link.is-current')?.scrollIntoView({ block: 'center' })
+    </script>
   </body>
 </html>

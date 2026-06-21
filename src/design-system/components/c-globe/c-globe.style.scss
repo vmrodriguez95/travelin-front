@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
@@ -9,6 +10,25 @@
 }
 
 .c-globe {
+  max-height: space(50);
+
+  @media (min-width: $breakpoint-md) {
+    max-height: space(60);
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    max-height: space(90);
+  }
+
+  @media (min-width: $breakpoint-xl) {
+    max-height: 100%;
+  }
+
+  &__error {
+    @include body--l;
+    color: rgba(var(--color-text), 1);
+  }
+
   .float-tooltip-kap {
     position: absolute;
     padding: space(1);

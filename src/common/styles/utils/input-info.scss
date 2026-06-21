@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .u-input-info {
@@ -28,6 +29,16 @@
         }
       }
     }
+
+    &:focus {
+      e-icon {
+        transform: scale(1.1);
+      }
+
+      #{$root}__helpmsg {
+        display: block;
+      }
+    }
   }
 
   &__helpmsg {
@@ -35,7 +46,8 @@
     display: none;
     position: absolute;
     bottom: 80%;
-    left: 80%;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1;
     margin: 0;
     padding: space(1);
@@ -43,6 +55,12 @@
     background-color: rgba(var(--color-background--secondary), 1);
     color: rgba(var(--color-text), 1);
     border: 1px solid rgba(var(--color-primary), 1);
-    border-radius: $border-radius-m $border-radius-m $border-radius-m 0;
+    border-radius: $border-radius-m;
+
+    @media (min-width: $breakpoint-md) {
+      left: 80%;
+      transform: translate(0);
+      border-radius: $border-radius-m $border-radius-m $border-radius-m 0;
+    }
   }
 }

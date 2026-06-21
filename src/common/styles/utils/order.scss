@@ -1,0 +1,17 @@
+@use '@common/styles/variables/breakpoints.scss' as *;
+
+.u-order {
+  &--xl {
+    &--1 {
+      @media (min-width: $breakpoint-xl) {
+        order: 1;
+      }
+    }
+
+    &--2 {
+      @media (min-width: $breakpoint-xl) {
+        order: 2;
+      }
+    }
+  }
+}

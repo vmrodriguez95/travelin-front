@@ -1,29 +1,61 @@
 @use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 .ti-passport {
+  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  min-height: 0;
+  
+  @media (min-width: $breakpoint-xl) {
+    padding: 0 var(--grid-gutter);
+    height: calc(100dvh - var(--ui-menu-height));
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
   &__main,
-  &__grid,
   &__trips,
   &__summary {
     min-height: 0;
   }
 
-  &__main {
-    overflow: hidden;
-  }
-
-  &__grid {
-    height: calc(100dvh - var(--ui-menu-height));
-    grid-template-rows: auto minmax(0, 1fr);
-  }
-
   &__trips {
     height: 100%;
+    overflow: auto;
   }
 
   &__summary {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    margin-bottom: space(2);
+    
+    @media (min-width: $breakpoint-xl) {
+      margin-bottom: 0;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: space(2) space(4);
+    border-radius: $border-radius-xl;
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background--secondary), 1);
+
+    &__column {
+      text-align: center;
+    }
+
+    &__title,
+    &__text {
+      @include body--m;
+      margin: 0 0 space(1);
+    }
+
+    &__action {
+      flex: 1 0 100%;
+    }
   }
 }

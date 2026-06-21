@@ -1,4 +1,6 @@
 ---
+import AppMenu from '@web/components/AppMenu.astro'
+
 interface GlobeFeature {
   type: 'Feature'
   properties: Record<string, unknown>
@@ -21,45 +23,33 @@ const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
 ---
 
 <section class="u-grid-main u-bg--dark" data-component>
-  <div class="u-grid-main--sidebar">
-    <c-menu>
-      <a slot="logo" href="#">
-        <img src="/images/logo.png" alt="Logo" width="42" height="48">
-      </a>
-      <li slot="links" class="active">
-        <a href="#" title="Ir a home">
-          <e-icon icon="home" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes">
-          <e-icon icon="map" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a configuración">
-          <e-icon icon="settings" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a usuarios">
-          <e-icon icon="person" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes destacados">
-          <e-icon icon="bookmark" size="l"></e-icon>
-        </a>
-      </li>
-      <a slot="profile" href="#">
-        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
-      </a>
-    </c-menu>
-  </div>
+  <aside class="u-grid-main--sidebar">
+    <AppMenu />
+  </aside>
   <div class="u-grid-main--main u-padding--none">
     <c-header heading="Pasaporte" url="#"></c-header>
-    <div class="u-grid ti-passport__grid">
-      <div class="u-col-4 u-col-md-12 u-col-lg-6 u-padding--horizontal--m u-padding--vertical--m u-scroll--vertical ti-passport__trips">
+    <div class="u-grid ti-passport">
+      <div class="u-col-4 u-col-md-12 u-col-xl-6 u-order--xl--2 ti-passport__summary">
+        <c-globe data={countries} countries={countryNames} errorMessage="Ocurrió un error al cargar el mapa interactivo. Por favor, compruebe en los ajustes de su navegador que WEbGL o la aceleración por hardware está habilitado para poder verlo. Si está desactívelo, reinicie el navegador y vuelva a activarlo."></c-globe>
+        <div class="ti-passport__stats">
+          <div class="ti-passport__stats__column">
+            <p class="ti-passport__stats__title">Países</p>
+            <p class="ti-passport__stats__text">5</p>
+          </div>
+          <div class="ti-passport__stats__column u-text--center">
+            <p class="ti-passport__stats__title">Viajes</p>
+            <p class="ti-passport__stats__text">10</p>
+          </div>
+          <div class="ti-passport__stats__column u-text--right">
+            <p class="ti-passport__stats__title">Pois</p>
+            <p class="ti-passport__stats__text">54</p>
+          </div>
+          <div class="ti-passport__stats__action">
+            <e-button size="full">Compartir</e-button>
+          </div>
+        </div>
+      </div>
+      <div class="u-col-4 u-col-md-12 u-col-xl-6 u-order--xl--1 ti-passport__trips">
         <h2 class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--m">2026</h2>
         <a href="#" class="u-link--no-underline">
           <c-card-progress animated class="u-margin--bottom--s" progress="65">
@@ -145,26 +135,6 @@ const countryNames = JSON.stringify(['ES', 'AL', 'CO', 'JP', 'BR'])
             <p slot="status">Completado</p>
           </c-card-progress>
         </a>
-      </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-passport__summary">
-        <c-globe data={countries} countries={countryNames}></c-globe>
-        <div class="u-grid u-padding--vertical--m u-padding--horizontal--xxl u-bg--light u-border--radius--xl">
-          <div class="u-col-4 u-col-md-4">
-            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Países</p>
-            <p class="u-text--m u-color--text-light u-margin--none">5</p>
-          </div>
-          <div class="u-col-4 u-col-md-4 u-text--center">
-            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Viajes</p>
-            <p class="u-text--m u-color--text-light u-margin--none">10</p>
-          </div>
-          <div class="u-col-4 u-col-md-4 u-text--right">
-            <p class="u-text--m u-color--text-light u-margin--bottom--s u-margin--top--none">Pois</p>
-            <p class="u-text--m u-color--text-light u-margin--none">54</p>
-          </div>
-          <div class="u-col-4 u-col-md-12">
-            <e-button size="full">Compartir</e-button>
-          </div>
-        </div>
       </div>
     </div>
   </div>

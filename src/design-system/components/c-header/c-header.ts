@@ -20,24 +20,9 @@ export class CHeader extends LitElement {
 
   @property({ type: String }) complement = ''
 
-  @property({ type: Boolean }) animated = false
-
   @query('.c-header') _header!: HTMLElement
 
   _headerInitialHeight = 0
-
-  connectedCallback(): void {
-    super.connectedCallback()
-
-    if (this.animated) {
-      window.addEventListener('scroll', this._onScroll)
-    }
-  }
-
-  disconnectedCallback(): void {
-    window.removeEventListener('scroll', this._onScroll)
-    super.disconnectedCallback()
-  }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this._headerInitialHeight = this._header.getBoundingClientRect().height
@@ -75,12 +60,5 @@ export class CHeader extends LitElement {
         </div>
       </section>
     `
-  }
-
-  private _onScroll = () => {
-    const header = this._header
-    const scrollY = window.scrollY
-
-    header.style.height = `${this._headerInitialHeight - scrollY}px`
   }
 }

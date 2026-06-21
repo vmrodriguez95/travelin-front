@@ -1,0 +1,59 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.e-stat {
+  width: 100%;
+  padding: space(1);
+  text-align: center;
+  border-radius: $border-radius-l;
+  background-color: rgba(var(--color-background--secondary), 1);
+  box-sizing: border-box;
+
+  @media (min-width: $breakpoint-md) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: space(2);
+  }
+
+  &__icon {
+    @media (min-width: $breakpoint-md) {
+      order: 2;
+    }
+  }
+
+  &__content {
+    @media (min-width: $breakpoint-md) {
+      display: flex;
+      flex-direction: column-reverse;
+      text-align: left;
+      order: 1;
+    }
+  }
+
+  ::slotted([slot="title"]) {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+
+    @media (min-width: $breakpoint-xl) {
+      @include body--l;
+    }
+  }
+
+  ::slotted([slot="text"]) {
+    @include body--s;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+
+    @media (min-width: $breakpoint-md) {
+      @include body--l;
+    }
+
+    @media (min-width: $breakpoint-xl) {
+      @include heading--h3;
+    }
+  }
+}

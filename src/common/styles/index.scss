@@ -21,6 +21,7 @@
 @use './utils/link-icon.scss' as *;
 @use './utils/list.scss' as *;
 @use './utils/margin.scss' as *;
+@use './utils/order.scss' as *;
 @use './utils/padding.scss' as *;
 @use './utils/pin-icon.scss' as *;
 @use './utils/position.scss' as *;
@@ -30,6 +31,8 @@
 @use './utils/text.scss' as *;
 
 // Views
+@use '../../web/compositions/common/form.style.scss';
+@use '../../web/compositions/home/home.style.scss';
+@use '../../web/compositions/passport/passport.style.scss';
 @use '../../web/compositions/poi-list/poi-list.style.scss';
 @use '../../web/compositions/itinerary-list/itinerary-list.style.scss';
-@use '../../web/compositions/passport/passport.style.scss';

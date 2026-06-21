@@ -1,41 +1,13 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+---
+
 <section class="u-grid-main u-bg--dark" data-component>
-  <div class="u-grid-main--sidebar">
-    <c-menu>
-      <a slot="logo" href="#">
-        <img src="/images/logo.png" alt="Logo" width="42" height="48">
-      </a>
-      <li slot="links" class="active">
-        <a href="#" title="Ir a home">
-          <e-icon icon="home" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes">
-          <e-icon icon="map" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a configuración">
-          <e-icon icon="settings" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a usuarios">
-          <e-icon icon="person" size="l"></e-icon>
-        </a>
-      </li>
-      <li slot="links">
-        <a href="#" title="Ir a viajes destacados">
-          <e-icon icon="bookmark" size="l"></e-icon>
-        </a>
-      </li>
-      <a slot="profile" href="#">
-        <img src="https://testingbot.com/free-online-tools/random-avatar/40" alt="Avatar" width="40" height="40">
-      </a>
-    </c-menu>
-  </div>
+  <aside class="u-grid-main--sidebar">
+    <AppMenu />
+  </aside>
   <div class="u-grid-main--main">
-    <div class="u-grid u-padding--vertical--m">
+    <div class="u-grid ti-home">
       <div class="u-flex u-flex--align--center u-col-4 u-col-md-6">
         <img src="https://testingbot.com/free-online-tools/random-avatar/80" alt="Avatar" width="80" height="80" class="u-border--radius--rounded u-border--primary">
         <div>
@@ -50,31 +22,24 @@
         <e-button class="u-margin--right--s" color="dark">Guardar POI</e-button>
         <e-button>Añadir viaje</e-button>
       </div>
-      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
-        <div>
-          <p class="u-text--l u-color--text-light u-margin--vertical--none">Países visitados</p>
-          <p class="u-text--xxl u-color--text-light u-margin--none">12</p>
-        </div>
-        <e-icon icon="globe" size="xxxl"></e-icon>
+      <div class="ti-home__stats u-col-4 u-col-md-12">
+        <e-stat icon="globe">
+          <p slot="title">Países</p>
+          <p slot="text">12</p>
+        </e-stat>
+        <e-stat icon="flight">
+          <p slot="title">Viajes</p>
+          <p slot="text">23</p>
+        </e-stat>
+        <e-stat icon="steps">
+          <p slot="title">Kilómetros</p>
+          <p slot="text">23.983 km</p>
+        </e-stat>
       </div>
-      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
-        <div>
-          <p class="u-text--l u-color--text-light u-margin--vertical--none">Total de viajes</p>
-          <p class="u-text--xxl u-color--text-light u-margin--none">23</p>
-        </div>
-        <e-icon icon="flight" size="xxxl"></e-icon>
-      </div>
-      <div class="u-flex u-flex--align--center u-flex--justify--between u-col-4 u-col-md-4 u-bg--light u-border--radius--xl u-padding--l">
-        <div>
-          <p class="u-text--l u-color--text-light u-margin--vertical--none">Kilómetros recorridos</p>
-          <p class="u-text--xxl u-color--text-light u-margin--none">23.983 <span class="u-text--m">KM</span></p>
-        </div>
-        <e-icon icon="steps" size="xxxl"></e-icon>
-      </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-margin--bottom--xl">
-          <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--m">
-            <h2 class="u-text--l u-color--text-light u-margin--none">Viajes recientes</h2>
+      <div class="ti-home__column u-col-4 u-col-md-12 u-col-xl-6">
+        <div class="ti-home__section">
+          <div class="u-flex u-flex--align--center u-flex--justify--between">
+            <h2 class="ti-home__title">Viajes recientes</h2>
             <a class="u-link" href="#">Ver todos</a>
           </div>
           <a href="#" class="u-link--no-underline">
@@ -102,7 +67,7 @@
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <c-card-progress animated progress="100">
               <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
               <p slot="title">Perú</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
@@ -110,40 +75,44 @@
             </c-card-progress>
           </a>
         </div>
-        <div class="u-flex u-flex--align--center u-flex--justify--between u-margin--bottom--m">
-          <h2 class="u-text--l u-color--text-light u-margin--none">Logros</h2>
-          <a class="u-link" href="#">Ver todos</a>
-        </div>
-        <div class="u-flex u-flex--justify--evenly u-flex--gap--l u-bg--light u-border--radius--xl u-padding--vertical--l u-padding--horizontal--xxl u-text--center">
-          <e-achievement icon="diamond" actual="1" total="1" color="white">
-            <p slot="title">Pionero</p>
-            <p slot="text">Completado</p>
-          </e-achievement>
-          <e-achievement icon="landscape" actual="12" total="15" color="brown">
-            <p slot="title">Rey de la montaña</p>
-            <p slot="text">Picos</p>
-          </e-achievement>
-          <e-achievement icon="flight-takeoff" actual="9" total="15" color="yellow">
-            <p slot="title">Viajero frecuente</p>
-            <p slot="text">Vuelos</p>
-          </e-achievement>
-          <e-achievement icon="bubbles" actual="2" total="15" color="blue">
-            <p slot="title">Buceador marino</p>
-            <p slot="text">Inmersiones</p>
-          </e-achievement>
+        <div class="ti-home__section">
+          <div class="u-flex u-flex--align--center u-flex--justify--between">
+            <h2 class="ti-home__title">Logros</h2>
+            <a class="u-link" href="#">Ver todos</a>
+          </div>
+          <div class="ti-home__achievements">
+            <e-achievement icon="diamond" actual="1" total="1" color="white">
+              <p slot="title">Pionero</p>
+              <p slot="text">Completado</p>
+            </e-achievement>
+            <e-achievement icon="landscape" actual="12" total="15" color="brown">
+              <p slot="title">Rey de la montaña</p>
+              <p slot="text">Picos</p>
+            </e-achievement>
+            <e-achievement icon="flight-takeoff" actual="9" total="15" color="yellow">
+              <p slot="title">Viajero frecuente</p>
+              <p slot="text">Vuelos</p>
+            </e-achievement>
+            <e-achievement icon="bubbles" actual="2" total="15" color="blue">
+              <p slot="title">Buceador marino</p>
+              <p slot="text">Inmersiones</p>
+            </e-achievement>
+          </div>
         </div>
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6">
-        <div class="u-margin--bottom--xl">
-          <h2 class="u-text--l u-color--text-light u-margin--bottom--m u-margin--top--none">Próximo destino</h2>
+      <div class="ti-home__column u-col-4 u-col-md-12 u-col-xl-6">
+        <div class="ti-home__section">
+          <h2 class="ti-home__title u-margin--bottom--m u-margin--top--none">Próximo destino</h2>
           <c-card-image image="https://loremflickr.com/800/600/japan" name="Japón"></c-card-image>
         </div>
-        <h2 class="u-text--l u-color--text-light u-margin--top--none u-margin--bottom--m">Pasaporte</h2>
-        <a href="#">
-          <div class="u-bg--light u-border--radius--xl u-padding--l u-text--center">
-            <img class="u-image--responsive" src="/images/world.png" alt="Imagen del mapa del mundo" width="850" height="550" />
-          </div>
-        </a>
+        <div class="ti-home__section">
+          <h2 class="ti-home__title u-margin--top--none u-margin--bottom--m">Pasaporte</h2>
+          <a href="#">
+            <div class="ti-home__box">
+              <img class="u-image--responsive" src="/images/world.png" alt="Imagen del mapa del mundo" width="850" height="550" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>

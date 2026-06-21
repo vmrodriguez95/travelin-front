@@ -10,7 +10,7 @@
   box-sizing: border-box;
   width: 100%;
   
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: $breakpoint-xl) {
     grid-template-areas: 'sidebar main';
     grid-template-columns: space(14) 1fr;
   }
@@ -20,7 +20,7 @@
     padding-bottom: space(1);
     min-height: 0;
     
-    @media (min-width: $breakpoint-lg) {
+    @media (min-width: $breakpoint-xl) {
       padding-bottom: space(2);
     }
   }

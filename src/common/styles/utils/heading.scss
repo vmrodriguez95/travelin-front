@@ -1,20 +1,16 @@
 @use '@common/styles/tools/typography.scss' as *;
 
-.u-text {
-  &--l {
-    @include body--l(500);
+.u-heading {
+  &--h1 {
+    @include heading--h1(600);
   }
 
-  &--m {
-    @include body--m();
+  &--h2 {
+    @include heading--h2(600);
   }
 
-  &--s {
-    @include body--s();
-  }
-
-  &--xs {
-    @include body--xs();
+  &--h3 {
+    @include heading--h3(600);
   }
 
   &--semibold {
