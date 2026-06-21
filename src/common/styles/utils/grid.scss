@@ -4,7 +4,7 @@
 .u-grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
-  gap: space(0.5);
+  gap: space(1);
   box-sizing: border-box;
   width: 100%;
   
