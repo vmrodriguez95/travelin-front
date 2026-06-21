@@ -28,7 +28,7 @@
   
   &__content {
     position: relative;
-    padding: space(2) 0;
+    padding: space(2) space(5);
     
     #{$block}--bg & {
       position: absolute;

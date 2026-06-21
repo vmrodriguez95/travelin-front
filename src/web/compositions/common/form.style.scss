@@ -1,0 +1,9 @@
+@use '@common/styles/variables/breakpoints.scss' as *;
+
+.ti-form {
+  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  
+  @media (min-width: $breakpoint-xl) {
+    padding: 0 var(--grid-gutter);
+  }
+}

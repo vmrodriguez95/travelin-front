@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 @use '@common/styles/utils/input-info.scss' as *;
 
@@ -9,9 +10,11 @@
   position: relative;
 
   &__header {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
+    @media (min-width: $breakpoint-xl) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+    }
   }
 
   &__actions {
@@ -73,8 +76,8 @@
   &__day {
     @include body--m;
     display: block;
-    margin: space(1);
-    padding: space(2);
+    margin: space(0.5);
+    padding: space(1);
     border: 0;
     font-family: inherit;
     color: rgba(var(--color-text), 1);
@@ -83,6 +86,11 @@
     cursor: pointer;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-radius 0.2s ease-in-out, margin 0.2s ease-in-out;
+
+    @media (min-width: $breakpoint-md) {
+      margin: space(1);
+      padding: space(2);
+    }
     
     &:disabled {
       background: none;

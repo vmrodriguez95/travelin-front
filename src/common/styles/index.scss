@@ -31,6 +31,7 @@
 @use './utils/text.scss' as *;
 
 // Views
+@use '../../web/compositions/common/form.style.scss';
 @use '../../web/compositions/home/home.style.scss';
 @use '../../web/compositions/passport/passport.style.scss';
 @use '../../web/compositions/poi-list/poi-list.style.scss';
