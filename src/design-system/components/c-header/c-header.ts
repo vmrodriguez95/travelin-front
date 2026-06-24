@@ -15,22 +15,16 @@ export class CHeader extends Responsive(LitElement) {
   static styles = css`${unsafeCSS(styles)}`
 
   @property({ type: String }) bg = ''
-
   @property({ type: String }) url = ''
-
   @property({ type: String }) openA11y = ''
-
   @property({ type: String }) backA11y = ''
-
   @property({ type: String }) heading = ''
-
   @property({ type: String }) subheading = ''
-
   @property({ type: String }) complement = ''
 
   @state() _menuOpened = false
 
-  _menuBreakpointsAllowed = ['sm']
+  _menuBreakpointsAllowed = ['sm', 'md', 'lg']
 
   render() {
     const classes = classMap({

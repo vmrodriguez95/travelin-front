@@ -56,8 +56,21 @@ body {
   @media (min-width: $breakpoint-xl) {
     --grid-gutter: 32px;
   }
-
+  
   // Layout heights — shared between SCSS and JS consumers
-  --ui-menu-height: 88px;
-  --ui-c-header-height: 240px;
+  --ui-menu-height: 80px;
+
+  @media (min-width: $breakpoint-md) {
+    --ui-menu-height: 96px;
+  }
+  
+  @media (min-width: $breakpoint-xl) {
+    --ui-menu-height: 0;
+  }
+  
+  --ui-c-header-height: 120px;
+
+  @media (min-width: $breakpoint-xl) {
+    --ui-c-header-height: 147px;
+  }
 }

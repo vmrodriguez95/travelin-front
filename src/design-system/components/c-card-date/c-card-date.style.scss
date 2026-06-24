@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
@@ -8,13 +9,12 @@
 
 .c-card-date {
   $block: &;
-  display: inline-flex;
+  display: flex;
   position: relative;
   border-radius: $border-radius-xl;
   border: none;
   overflow: hidden;
   width: 100%;
-  min-height: space(23);
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
 
@@ -24,6 +24,7 @@
     justify-content: center;
     text-align: center;
     width: space(8);
+    flex: 1 0 auto;
     color: rgba(var(--color-text--light), 1);
     background-color: rgba(var(--color-background--light), 1);
 
@@ -40,8 +41,8 @@
   }
   
   ::slotted([slot="day"]) {
-    @include body--l(600);
-    margin: space(1) 0 0;
+    @include heading--h2(600);
+    margin: 0;
     flex: 0 0 auto;
   }
   
@@ -54,18 +55,28 @@
 
   &__content {
     padding: space(1) space(2);
+    flex: 1 0 100%;
   }
 
   &__title {
-    @include body--l(600);
-    margin: 0 0 space(2);
+    @include body--m(600);
+    text-align: left;
+    margin: 0 0 space(1);
+    
+    @media (min-width: $breakpoint-md) {
+      @include body--l(600);
+    }
   }
   
   ::slotted(ul) {
-    @include body--m();
+    @include body--s();
     position: relative;
     margin: 0;
     padding: 0;
     list-style: none;
+
+    @media (min-width: $breakpoint-md) {
+      @include body--m();
+    }
   }
 }

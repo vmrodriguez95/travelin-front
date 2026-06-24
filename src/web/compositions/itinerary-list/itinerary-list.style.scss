@@ -1,26 +1,19 @@
+@use '@common/styles/tools/grid.scss' as *;
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/scrollbar.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
 .ti-itinerary-list {
   position: relative;
-  padding: space(2) var(--grid-gutter) var(--ui-menu-height);
   height: calc(100dvh - var(--ui-c-header-height));
 
   @media (min-width: $breakpoint-xl) {
+    @include grid();
     padding: var(--grid-gutter);
   }
   
   &__dates-column {
     overflow: hidden;
-
-    // @media (min-width: $breakpoint-xl) {
-    //   @include apple-scrollbar;
-  
-    //   overflow-x: hidden;
-    //   overflow-y: auto;
-    //   scroll-behavior: smooth;
-    // }
   }
 
   &__dates-column,

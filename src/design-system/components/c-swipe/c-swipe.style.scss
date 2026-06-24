@@ -5,28 +5,34 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
-  height: 0;
-  background-color: transparent;
-
   position: absolute;
-  padding: var(--grid-gutter);
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 1;
-  height: 100%;
   text-align: center;
-  
+  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  border-radius: $border-radius-xl $border-radius-xl 0 0;
+  background-color: rgba(var(--color-background), 1);
+  transition: height 0.25s ease;
+
+  &.is-dragging {
+    transition: none;
+  }
+
   @media (min-width: $breakpoint-xl) {
     position: static;
+    height: 100% !important;
     padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    transition: none;
   }
 }
 
 .c-swipe {
   position: relative;
   height: 100%;
-  background-color: rgba(var(--color-background), 1);
 
   &__action {
     width: space(8);
@@ -35,12 +41,26 @@
     border: 0;
     border-radius: $border-radius-s;
     margin-bottom: space(1);
+    touch-action: none;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    @media (min-width: $breakpoint-xl) {
+      display: none;
+    }
   }
 
   &__content {
     @include apple-scrollbar;
-    height: 100%;
+    height: calc(100% - space(2));
     overflow: auto;
     scroll-behavior: smooth;
+
+    @media (min-width: $breakpoint-xl) {
+      height: 100%;
+    }
   }
 }

@@ -2,18 +2,9 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { Responsive } from '../../mixins/responsive'
+import type { GlobeGeoFeature } from './c-globe.types'
 
 import styles from './c-globe.style.scss?inline'
-
-interface GlobeGeoFeature {
-  type: string
-  properties: {
-    ADMIN: string
-    ISO_A2: string
-    [key: string]: unknown
-  }
-  geometry: object
-}
 
 @customElement('c-globe')
 export class CGlobe extends Responsive(LitElement) {

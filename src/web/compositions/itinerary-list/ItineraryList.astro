@@ -21,27 +21,27 @@ const finalData = withFormA11yDefaults(data)
       backA11y="Ir a la página de todos los viajes"
     >
       <a href="#" title="Ir a la página para ver todos los documentos del viaje">
-        <span class="u-pin-icon u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
           <e-icon icon="cards" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
           <e-icon icon="group" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <a href="#" title="Ir a la página para ver todos los gastos del viaje">
-        <span class="u-pin-icon u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
           <e-icon icon="money" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
           <e-icon icon="share" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <e-modal-trigger modal="modal">
-        <span class="u-pin-icon u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
           <e-icon icon="delete" size="m"></e-icon>
         </span>
         <template>
@@ -52,10 +52,10 @@ const finalData = withFormA11yDefaults(data)
       </e-modal-trigger>
     </c-header>
     <section class="ti-itinerary-list">
-      <c-swipe class="u-col-4 u-col-md-5 ti-itinerary-list__dates-column">
-        <div class=" ti-itinerary-list__dates-list">
+      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+        <div class="ti-itinerary-list__dates-list">
           {Array.from({ length: 15 }, (_, i) => (
-            <a href="#" title="Ir al itinerario del día 03-03-2026">
+            <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">
               <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
                 <p slot="index">Día {i + 1}</p>
                 <p slot="day">{3 + i}</p>
@@ -63,21 +63,21 @@ const finalData = withFormA11yDefaults(data)
                 <ul>
                   <li class="u-flex u-flex--align--center u-margin--bottom--s">
                     <span class="u-pin-icon u-pin-icon--s">
-                      <e-icon icon="fly" size="s"></e-icon>
+                      <e-icon icon="flight" size="s"></e-icon>
                     </span>
-                    <p class="u-margin--vertical--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
+                    <p class="u-margin--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
                   </li>
                   <li class="u-flex u-flex--align--center u-margin--bottom--s">
                     <span class="u-pin-icon u-pin-icon--s">
                       <e-icon icon="hotel" size="s"></e-icon>
                     </span>
-                    <p class="u-margin--vertical--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
+                    <p class="u-margin--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
                   </li>
-                  <li class="u-flex u-flex--align--center u-margin--bottom--s">
+                  <li class="u-flex u-flex--align--center">
                     <span class="u-pin-icon u-pin-icon--s">
                       <e-icon icon="monument" size="s"></e-icon>
                     </span>
-                    <p class="u-margin--vertical--none u-text--ellipsis">Khao Sand Road</p>
+                    <p class="u-margin--none u-text--ellipsis">Khao Sand Road</p>
                   </li>
                 </ul>
               </c-card-date>
@@ -85,7 +85,7 @@ const finalData = withFormA11yDefaults(data)
           ))}
         </div>
       </c-swipe>
-      <div class="ti-itinerary-list__content u-col-4 u-col-md-7">
+      <div class="ti-itinerary-list__content u-col-4 u-col-md-12 u-col-xl-7">
         <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto"></c-map>
       </div>
     </section>

@@ -43,6 +43,11 @@
     position: relative;
     z-index: 1;
     padding: space(2) var(--grid-gutter);
+    
+    @media (min-width: $breakpoint-xl) {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto 1fr;
+    }
   }
 
   &__info {
@@ -111,85 +116,9 @@
     }
   }
   
-  // &__content {
-  //   position: relative;
-  //   padding: space(2) space(5);
-    
-  //   #{$block}--bg & {
-  //     position: absolute;
-  //     inset: 0;
-  //     padding: space(2) space(1);
-  //     display: flex;
-  //     align-items: center;
-  //     justify-content: flex-start;
-  //     flex-direction: column;
-  //     flex: 1 0 100%;
-  //     height: auto;
-  //     background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
-      
-  //     @media (min-width: $breakpoint-md) {
-  //       padding: 0 space(2);
-  //       justify-content: center;
-  //     }
-
-  //     @media (min-width: $breakpoint-lg) {
-  //       padding: 0 space(3);
-  //     }
-      
-  //     @media (min-width: $breakpoint-xl) {
-  //       padding: 0 space(4);
-  //     }
-  //   }
-  // }
-
-  // &__link {
-  //   --eIconColor: var(--color-text);
-  //   position: absolute;
-  //   left: space(1);
-  //   top: 50%;
-  //   transform: translateY(-50%);
-  //   text-decoration: none;
-  //   border-radius: 50%;
-  //   display: inline-flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   width: space(5);
-  //   height: space(5);
-  //   background-color: rgba(var(--color-background--secondary), 1);
-  //   transition: box-shadow 0.1s ease, transform 0.2s ease-in-out;
-
-  //   #{$block}--bg & {
-  //     top: space(2);
-  //     transform: translateY(0);
-  //   }
-
-  //   @media (min-width: $breakpoint-md) {
-  //     left: space(2);
-  //   }
-
-  //   @media (min-width: $breakpoint-lg) {
-  //     left: space(3);
-  //     top: space(2);
-  //     transform: translateY(0);
-  //   }
-    
-  //   @media (min-width: $breakpoint-xl) {
-  //     left: space(4);
-  //   }
-
-  //   &:active {
-  //     box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 1);
-  //   }
-
-  //   @media (hover: hover) {
-  //     &:hover {
-  //       transform: scale(1.2);
-  //     }
-  //   }
-  // }
-
   &__actions {
     grid-row-start: 2;
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: flex-start;

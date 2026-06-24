@@ -1,88 +1,142 @@
-import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
-import { styleMap } from 'lit/directives/style-map.js'
 
+// Utils
+import { clamp } from '@ds/utils/number.utils'
+import { breakpoints } from '@ds/utils/variables'
+
+// Styles
 import styles from './c-swipe.style.scss?inline'
 
 @customElement('c-swipe')
 export class CSwipe extends LitElement {
 
-  @property({ type: String }) action = 'Desliza para ver el mapa'
+  private static readonly DESKTOP_BREAKPOINT = breakpoints.xl
 
-  @state() _offsetY = 0
+  @property({ type: String }) action = ''
+  @property({ type: Number }) cutoff = 0
 
-  @state() _isDragging = false
+  @query('slot', true) private _slot!: HTMLSlotElement
+  @query('.c-swipe__action') private _handleEl!: HTMLButtonElement | null
 
-  @query('.c-swipe') _swipe!: HTMLElement
+  @state() private _height = 0
+  @state() private _isMobile = true
+  @state() private _isDragging = false
 
-  _startingPointY = 0
+  private _minHeight = 0
+  private _maxHeight = 0
+  private _dragStartY = 0
+  private _dragStartHeight = 0
 
-  _maxOffset = 380
+  private _resizeObserver!: ResizeObserver
+  private _mediaQuery!: MediaQueryList
 
   static styles = css`${unsafeCSS(styles)}`
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    this._startingPointY = this._swipe.getBoundingClientRect().top
+  connectedCallback() {
+    super.connectedCallback()
+    this._mediaQuery = window.matchMedia(`(min-width: ${CSwipe.DESKTOP_BREAKPOINT}px)`)
+    this._mediaQuery.addEventListener('change', this._onBreakpointChange)
+    this._isMobile = !this._mediaQuery.matches
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._mediaQuery.removeEventListener('change', this._onBreakpointChange)
+    this._resizeObserver?.disconnect()
+  }
+
+  protected firstUpdated(): void {
+    this._resizeObserver = new ResizeObserver(() => this._measure())
+    if (this.parentElement) this._resizeObserver.observe(this.parentElement)
+    this._measure()
+  }
+
+  updated() {
+    if (this._isMobile) {
+      this.style.height = `${this._height}px`
+    } else {
+      this.style.height = ''
+    }
   }
 
   render() {
-    const styles = { top: `${this._offsetY}px` }
+    const showAction = this._isMobile
 
     return html`
-      <div class="c-swipe" style=${styleMap(styles)}>
-        <button
-          class="c-swipe__action"
-          aria-label=${this.action}
-          @mousedown=${this._calculateOffsetStart}
-          @touchstart=${this._calculateOffsetStart}
-          @mousemove=${this._calculateOffsetMove}
-          @touchmove=${this._calculateOffsetMove}
-          @mouseup=${this._calculateOffsetEnd}
-          @touchend=${this._calculateOffsetEnd}
-        ></button>
+      <div class="c-swipe">
+        ${showAction ? html`
+          <button
+            class="c-swipe__action"
+            aria-label=${this.action}
+            @pointerdown=${this._onPointerDown}
+            @pointermove=${this._onPointerMove}
+            @pointerup=${this._onPointerUp}
+            @pointercancel=${this._onPointerUp}
+          ></button>
+        ` : ''}
         <div class="c-swipe__content">
-          <slot></slot>
+          <slot @slotchange=${this._measure}></slot>
         </div>
       </div>
     `
   }
 
-  private _calculateOffsetStart = () => {
-    this._isDragging = true
+  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
+    this._isMobile = !ev.matches
+    this._measure()
   }
 
-  private _calculateOffsetMove = (ev: MouseEvent | TouchEvent) => {
-    if (!this._isDragging) return
-    this._deactivateScroll()
+  private _measure() {
+    if (!this._isMobile) return
 
-    const event = ev instanceof MouseEvent ? ev : ev.touches[0]
+    // Parent height is the reliable max — host has no CSS height until we set it
+    this._maxHeight = (this.parentElement?.clientHeight ?? 0) || this.getBoundingClientRect().height
 
-    let offsetY = 0
-    const swipeOffset = event.clientY - this._startingPointY
+    const wrapper = this._slot?.assignedElements()[0] as HTMLElement | undefined
+    const firstCard = wrapper?.firstElementChild as HTMLElement | undefined
 
-    if (swipeOffset < 0) {
-      offsetY = 0
-    } else if (swipeOffset < this._maxOffset) {
-      offsetY = swipeOffset
+    if (firstCard) {
+      const hostStyle = getComputedStyle(this)
+      const handleHeight = this._handleEl
+        ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom)
+        : 0
+      const paddingTop = parseInt(hostStyle.paddingTop) || 0
+      const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
+
+      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + paddingBottom
     } else {
-      offsetY = this._maxOffset
+      this._minHeight = this._maxHeight * 0.2
     }
 
-    this._offsetY = offsetY
+    if (this._height === 0 || this._height < this._minHeight) {
+      this._height = this._minHeight
+    }
+    this._height = clamp(this._height, this._minHeight, this._maxHeight)
   }
 
-  private _calculateOffsetEnd = () => {
+  private _onPointerDown = (ev: PointerEvent) => {
+    if (!this._isMobile) return
+    (ev.currentTarget as HTMLElement).setPointerCapture(ev.pointerId)
+    this._dragStartY = ev.clientY
+    this._dragStartHeight = this._height
+    this._isDragging = true
+    this.classList.add('is-dragging')
+  }
+
+  private _onPointerMove = (ev: PointerEvent) => {
+    if (!this._isDragging) return
+    ev.preventDefault()
+    const delta = this._dragStartY - ev.clientY
+    this._height = clamp(this._dragStartHeight + delta, this._minHeight, this._maxHeight)
+  }
+
+  private _onPointerUp = () => {
+    if (!this._isDragging) return
     this._isDragging = false
-    this._activateScroll()
-  }
+    this.classList.remove('is-dragging')
 
-  private _activateScroll() {
-    document.body.style.overflow = ''
-    this._swipe.style.overflow = ''
-  }
-
-  private _deactivateScroll() {
-    document.body.style.overflow = 'hidden'
-    this._swipe.style.overflow = 'hidden'
+    const mid = (this._minHeight + this._maxHeight) / 2
+    this._height = this._height > mid ? this._maxHeight : this._minHeight
   }
 }
