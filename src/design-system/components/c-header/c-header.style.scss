@@ -7,110 +7,95 @@
 }
 
 .c-header {
-  $block: &;
+  // $block: &;
   position: relative;
-  text-align: center;
-  color: rgba(var(--color-text), 1);
-
+  
   &--bg {
-    display: flex;
-    min-height: space(18);
-    height: space(30);
-    overflow: hidden;
+    min-height: space(15);
+    z-index: 2;
   }
   
   &__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
+    }
+  }
+
+  &__image {
     width: 100%;
     height: auto;
     object-fit: cover;
     object-position: center;
   }
-  
-  &__content {
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     position: relative;
-    padding: space(2) space(5);
+    z-index: 1;
+    padding: space(2) var(--grid-gutter);
     
-    #{$block}--bg & {
-      position: absolute;
-      inset: 0;
-      padding: 0 space(1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      flex: 1 0 100%;
-      height: auto;
-      background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
-
-      @media (min-width: $breakpoint-md) {
-        padding: 0 space(2);
-      }
-
-      @media (min-width: $breakpoint-lg) {
-        padding: 0 space(3);
-      }
-      
-      @media (min-width: $breakpoint-xl) {
-        padding: 0 space(4);
-      }
+    @media (min-width: $breakpoint-xl) {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto 1fr;
     }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 
   &__title {
     @include heading--h1(600);
     margin: 0;
+    color: rgba(var(--color-text), 1);
   }
-
+  
+  &__separator {
+    font-size: 2rem;
+    line-height: 0;
+    font-weight: 700;
+    color: rgba(var(--color-text), 1);
+  }
+  
   &__subtitle {
     @include body--s();
     display: flex;
     align-items: center;
     gap: space(0.5);
     margin: 0;
+    color: rgba(var(--color-text), 1);
   }
 
-  &__separator {
-    @include heading--h2(700);
+  &__menu {
+    position: relative;
   }
 
-  &__link {
+  &__link,
+  &__opener {
     --eIconColor: var(--color-text);
-    position: absolute;
-    left: space(1);
-    top: 50%;
-    transform: translateY(-50%);
-    text-decoration: none;
+    background-color: rgba(var(--color-background--secondary), 1);
+    width: space(4);
+    height: space(4);
+    border: none;
     border-radius: 50%;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: space(5);
-    height: space(5);
-    background-color: rgba(var(--color-background--secondary), 1);
-    transition: box-shadow 0.1s ease, transform 0.2s ease-in-out;
-
-    #{$block}--bg & {
-      top: space(2);
-      transform: translateY(0);
-    }
-
-    @media (min-width: $breakpoint-md) {
-      left: space(2);
-    }
-
-    @media (min-width: $breakpoint-lg) {
-      left: space(3);
-      top: space(2);
-      transform: translateY(0);
-    }
-    
-    @media (min-width: $breakpoint-xl) {
-      left: space(4);
-    }
-
-    &:active {
-      box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 1);
-    }
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 
     @media (hover: hover) {
       &:hover {
@@ -119,26 +104,25 @@
     }
   }
 
-  &__actions {
+  &__sheet {
+    display: none;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    top: space(5);
+    right: 0;
+    z-index: 1;
+
+    &--open {
+      display: block;
+    }
+  }
+  
+  &__actions {
+    grid-row-start: 2;
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: space(1);
-    padding: space(1);
-    z-index: 1;
-    box-sizing: border-box;
-
-    @media (min-width: $breakpoint-lg) {
-      padding: space(1) space(2);
-    }
-    
-    @media (min-width: $breakpoint-xl) {
-      padding: space(1) space(4);
-    }
 
     ::slotted(*:last-child) {
       margin-left: auto;

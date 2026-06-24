@@ -1,23 +1,7 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/grid.scss' as *;
 
 .u-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
-  gap: space(1);
-  box-sizing: border-box;
-  width: 100%;
-  
-  @media (min-width: $breakpoint-md) {
-    --grid-columns: 12;
-    gap: space(2);
-  }
-
-  @media (min-width: $breakpoint-lg) {
-    gap: space(3);
-  }
-
-  @media (min-width: $breakpoint-xl) {
-    gap: space(4);
-  }
+  @include grid();
 }

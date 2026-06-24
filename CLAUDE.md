@@ -102,3 +102,22 @@ Pages:
 Global styles live in `src/common/styles/`. All utility classes use the `u-` prefix; design system tokens use the `ti-` prefix. Sass variables for breakpoints, border-radius, and design tokens are in `src/common/styles/variables/`.
 
 Component-level styles use `?inline` imports and are injected via `unsafeCSS` inside the Lit component's `static styles`.
+
+## Code conventions
+
+### No bare declarations outside classes
+
+Never implement interfaces, types, functions, or variables at module scope outside a class.
+
+- **Types / interfaces:** if one is needed for a component, create a dedicated `<component>.types.ts` file inside the component folder. Do not inline them at the top of the component file.
+- **Functions / variables:** before writing one, check `src/design-system/utils/` for an existing utility that covers the need. If none exists, create a new `<domain>.utils.ts` file there and export from it. Never define a helper function in the same file as a component.
+
+### SOLID principles
+
+This project follows SOLID principles. If a violation is detected in user code, flag it explicitly before proceeding:
+
+- **S** — Single Responsibility: each class/file has one reason to change.
+- **O** — Open/Closed: extend behaviour without modifying existing code.
+- **L** — Liskov Substitution: subtypes must be substitutable for their base types.
+- **I** — Interface Segregation: prefer small, focused interfaces over large ones.
+- **D** — Dependency Inversion: depend on abstractions, not concretions.
