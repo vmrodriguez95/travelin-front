@@ -15,7 +15,6 @@
   &--bg {
     display: flex;
     min-height: space(18);
-    height: space(30);
     overflow: hidden;
   }
   
@@ -33,17 +32,18 @@
     #{$block}--bg & {
       position: absolute;
       inset: 0;
-      padding: 0 space(1);
+      padding: space(2) space(1);
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: flex-start;
       flex-direction: column;
       flex: 1 0 100%;
       height: auto;
       background: linear-gradient(rgba(var(--color-background), 0.1), rgba(var(--color-background), 0.8));
-
+      
       @media (min-width: $breakpoint-md) {
         padding: 0 space(2);
+        justify-content: center;
       }
 
       @media (min-width: $breakpoint-lg) {

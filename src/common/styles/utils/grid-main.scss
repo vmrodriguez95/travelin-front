@@ -17,12 +17,7 @@
   
   &--main {
     grid-area: main;
-    padding-bottom: space(1);
-    min-height: 0;
-    
-    @media (min-width: $breakpoint-xl) {
-      padding-bottom: space(2);
-    }
+    min-height: 0; 
   }
 
   &--sidebar {
