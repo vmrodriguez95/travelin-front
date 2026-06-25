@@ -96,6 +96,7 @@ export interface Poi extends PoiBase {
   location: string
   coordinates: Coordinates
   time: string
+  icon: string
   address: string
   image: string
   file: string

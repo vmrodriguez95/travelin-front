@@ -1,0 +1,1112 @@
+[
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d001",
+      "coordinates": [100.4931, 13.7466],
+      "name": "Wat Pho",
+      "address": "2 Sanam Chai Rd, Phra Nakhon, Bangkok 10200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d002",
+      "coordinates": [100.4913, 13.75],
+      "name": "Gran Palacio Real de Bangkok",
+      "address": "Na Phra Lan Rd, Phra Nakhon, Bangkok 10200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d003",
+      "coordinates": [100.4921, 13.7516],
+      "name": "Wat Phra Kaew (Templo del Buda Esmeralda)",
+      "address": "Na Phra Lan Rd, Phra Nakhon, Bangkok 10200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d004",
+      "coordinates": [100.4888, 13.7437],
+      "name": "Wat Arun (Templo del Amanecer)",
+      "address": "158 Thanon Wang Doem, Wat Arun, Bangkok Yai, Bangkok 10600, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d005",
+      "coordinates": [100.5074, 13.7533],
+      "name": "Wat Saket (Montaña Dorada)",
+      "address": "344 Thanon Chakkraphatdi Phong, Pom Prap, Bangkok 10100, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d006",
+      "coordinates": [100.5113, 13.765],
+      "name": "Wat Benchamabophit (Templo de Mármol)",
+      "address": "69 Rama V Rd, Dusit, Bangkok 10300, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d007",
+      "coordinates": [100.5506, 13.7999],
+      "name": "Mercado de Chatuchak",
+      "address": "587/10 Kamphaeng Phet 2 Rd, Lat Yao, Chatuchak, Bangkok 10900, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d008",
+      "coordinates": [100.5291, 13.7488],
+      "name": "Casa de Jim Thompson",
+      "address": "6 Kasem San 2 Alley, Wang Mai, Pathum Wan, Bangkok 10330, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d009",
+      "coordinates": [100.4949, 13.755],
+      "name": "Museo Nacional de Bangkok",
+      "address": "Na Phra That Alley, Phra Nakhon, Bangkok 10200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d010",
+      "coordinates": [100.542, 13.7307],
+      "name": "Parque Lumphini",
+      "address": "Rama IV Rd, Lumphini, Pathum Wan, Bangkok 10330, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d011",
+      "coordinates": [100.5009, 13.6999],
+      "name": "Asiatique The Riverfront",
+      "address": "2194 Charoen Krung Rd, Wat Phraya Krai, Bang Kho Laem, Bangkok 10120, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d012",
+      "coordinates": [100.5999, 13.5899],
+      "name": "Museo Erawan",
+      "address": "99/9 Moo 1 Bang Sao Thong, Samut Prakan 10570, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d013",
+      "coordinates": [100.5647, 14.357],
+      "name": "Wat Mahathat de Ayutthaya",
+      "address": "Naresuan Rd, Pratu Chai, Phra Nakhon Si Ayutthaya 13000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d014",
+      "coordinates": [100.5618, 14.3558],
+      "name": "Wat Phra Si Sanphet",
+      "address": "Wang, Phra Nakhon Si Ayutthaya, Ayutthaya 13000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d015",
+      "coordinates": [100.5639, 14.3554],
+      "name": "Parque Histórico de Ayutthaya",
+      "address": "Phra Nakhon Si Ayutthaya, Ayutthaya 13000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d016",
+      "coordinates": [98.9217, 18.8048],
+      "name": "Templo Doi Suthep",
+      "address": "Suthep, Mueang Chiang Mai District, Chiang Mai 50200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d017",
+      "coordinates": [98.9986, 18.7833],
+      "name": "Bazar Nocturno de Chiang Mai",
+      "address": "Chang Khlan Rd, Chang Khlan, Mueang Chiang Mai District, Chiang Mai 50100, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d018",
+      "coordinates": [98.9978, 18.7889],
+      "name": "Puerta Tha Phae",
+      "address": "Tha Phae Rd, Si Phum, Mueang Chiang Mai District, Chiang Mai 50200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d019",
+      "coordinates": [98.9898, 18.7876],
+      "name": "Wat Chedi Luang",
+      "address": "103 Prapokkloa Rd, Si Phum, Mueang Chiang Mai District, Chiang Mai 50200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d020",
+      "coordinates": [98.984, 18.7879],
+      "name": "Wat Phra Singh",
+      "address": "2 Samlaan Rd, Phra Singh, Mueang Chiang Mai District, Chiang Mai 50200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d021",
+      "coordinates": [98.9869, 18.7895],
+      "name": "Centro de Arte y Cultura de Chiang Mai",
+      "address": "27 Prapokkloa Rd, Si Phum, Mueang Chiang Mai District, Chiang Mai 50200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d022",
+      "coordinates": [98.9167, 19.1167],
+      "name": "Elephant Nature Park",
+      "address": "1 Ratmakka Rd, Tambon Mae Taeng, Chiang Mai 50150, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d023",
+      "coordinates": [98.9833, 19.2333],
+      "name": "Cascada Pegajosa Bua Tong",
+      "address": "Mae Taeng District, Chiang Mai 50150, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d024",
+      "coordinates": [98.95, 19.3667],
+      "name": "Cueva de Chiang Dao",
+      "address": "Chiang Dao, Chiang Dao District, Chiang Mai 50170, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d025",
+      "coordinates": [99.7631, 19.8248],
+      "name": "Templo Blanco (Wat Rong Khun)",
+      "address": "Pa O Don Chai, Mueang Chiang Rai District, Chiang Rai 57000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d026",
+      "coordinates": [99.8308, 19.9016],
+      "name": "Templo Azul (Wat Rong Suea Ten)",
+      "address": "306 Moo 2, Rop Wiang, Mueang Chiang Rai District, Chiang Rai 57000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d027",
+      "coordinates": [100.0849, 20.3549],
+      "name": "Triángulo Dorado",
+      "address": "Chiang Saen, Chiang Rai 57150, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d028",
+      "coordinates": [98.2982, 7.8966],
+      "name": "Playa de Patong",
+      "address": "Patong, Kathu District, Phuket 83150, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d029",
+      "coordinates": [98.3002, 7.77],
+      "name": "Cabo Promthep",
+      "address": "Rawai, Mueang Phuket District, Phuket 83130, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d030",
+      "coordinates": [98.3219, 7.8278],
+      "name": "Gran Buda de Phuket",
+      "address": "Karon, Mueang Phuket District, Phuket 83100, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d031",
+      "coordinates": [98.7664, 7.6784],
+      "name": "Bahía Maya (Maya Bay)",
+      "address": "Ko Phi Phi Le, Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d032",
+      "coordinates": [98.7696, 7.7402],
+      "name": "Mirador de Phi Phi",
+      "address": "Ko Phi Phi Don, Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d033",
+      "coordinates": [98.7678, 7.748],
+      "name": "Playa de los Monos",
+      "address": "Ko Phi Phi Don, Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d034",
+      "coordinates": [98.3875, 7.8833],
+      "name": "Casco Antiguo de Phuket",
+      "address": "Thalang Rd, Tambon Talat Yai, Mueang Phuket District, Phuket 83000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d035",
+      "coordinates": [98.3375, 7.8452],
+      "name": "Wat Chalong",
+      "address": "70/2 Moo 6, Tambon Chalong, Mueang Phuket District, Phuket 83130, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d036",
+      "coordinates": [98.2985, 7.8974],
+      "name": "Mercado Nocturno de Bangla Road",
+      "address": "Bangla Rd, Patong, Kathu District, Phuket 83150, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d037",
+      "coordinates": [98.837, 8.0111],
+      "name": "Playa Railay",
+      "address": "Railay Beach, Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d038",
+      "coordinates": [99.0378, 8.1017],
+      "name": "Templo de la Cueva del Tigre (Wat Tham Sua)",
+      "address": "Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d039",
+      "coordinates": [98.8167, 8.0333],
+      "name": "Playa de Ao Nang",
+      "address": "Ao Nang, Mueang Krabi District, Krabi 81000, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d040",
+      "coordinates": [100.0422, 9.6694],
+      "name": "Parque Marino Ang Thong",
+      "address": "Ang Thong, Ko Samui District, Surat Thani 84140, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d041",
+      "coordinates": [100.0833, 9.5333],
+      "name": "Santuario de Elefantes de Samui",
+      "address": "Maenam, Ko Samui District, Surat Thani 84330, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d042",
+      "coordinates": [100.0611, 9.5701],
+      "name": "Templo del Gran Buda de Koh Samui",
+      "address": "Ban Rak, Ko Samui District, Surat Thani 84320, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ],
+  [
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d043",
+      "coordinates": [100.5363, 13.7463],
+      "name": "Siam Paragon",
+      "address": "991 Rama I Rd, Pathum Wan, Bangkok 10330, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d044",
+      "coordinates": [100.4983, 13.7597],
+      "name": "Khao San Road",
+      "address": "Khao San Rd, Talat Yot, Phra Nakhon, Bangkok 10200, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    },
+    {
+      "id": "177278946269aa9ed6b396i",
+      "idUser": "177263595469a847322fb6d",
+      "idTrip": "177272350469a99d30551f1",
+      "idItinerary": "177272350569a99d317d045",
+      "coordinates": [99.9574, 13.5199],
+      "name": "Mercado Flotante de Damnoen Saduak",
+      "address": "Damnoen Saduak, Ratchaburi 70130, Tailandia",
+      "time": "13:30",
+      "price": 0,
+      "icon": "temple-buddhist",
+      "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+      "notes": [],
+      "type": "poi",
+      "types": ["poi"],
+      "file": "",
+      "order": 0,
+      "createdAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      },
+      "updatedAt": {
+        "$date": "2026-03-06T09:31:02.739"
+      }
+    }
+  ]
+]
