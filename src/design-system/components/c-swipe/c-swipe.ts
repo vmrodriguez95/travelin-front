@@ -1,9 +1,13 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
 // Utils
 import { clamp } from '@ds/utils/number.utils'
 import { breakpoints } from '@ds/utils/variables'
+import { DAY_ACTIVE_EVENT, type DayActiveEventDetail } from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-swipe.style.scss?inline'
@@ -12,12 +16,15 @@ import styles from './c-swipe.style.scss?inline'
 export class CSwipe extends LitElement {
 
   private static readonly DESKTOP_BREAKPOINT = breakpoints.xl
+  private static readonly SETTLE_DELAY = 120
 
   @property({ type: String }) action = ''
   @property({ type: Number }) cutoff = 0
+  @property({ type: String }) channel = ''
 
   @query('slot', true) private _slot!: HTMLSlotElement
   @query('.c-swipe__action') private _handleEl!: HTMLButtonElement | null
+  @query('.c-swipe__content') private _contentEl!: HTMLElement | null
 
   @state() private _height = 0
   @state() private _isMobile = true
@@ -27,9 +34,19 @@ export class CSwipe extends LitElement {
   private _maxHeight = 0
   private _dragStartY = 0
   private _dragStartHeight = 0
+  private _activeIndex = -1
+  private _settleTimer = 0
+  private _snapTimer = 0
+  private _isSnapping = false
 
   private _resizeObserver!: ResizeObserver
   private _mediaQuery!: MediaQueryList
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {}
+  )
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -44,12 +61,14 @@ export class CSwipe extends LitElement {
     super.disconnectedCallback()
     this._mediaQuery.removeEventListener('change', this._onBreakpointChange)
     this._resizeObserver?.disconnect()
+    this._detachScrollSpy()
   }
 
   protected firstUpdated(): void {
     this._resizeObserver = new ResizeObserver(() => this._measure())
     if (this.parentElement) this._resizeObserver.observe(this.parentElement)
     this._measure()
+    this._syncScrollSpy()
   }
 
   updated() {
@@ -76,7 +95,7 @@ export class CSwipe extends LitElement {
           ></button>
         ` : ''}
         <div class="c-swipe__content">
-          <slot @slotchange=${this._measure}></slot>
+          <slot @slotchange=${this._onSlotChange}></slot>
         </div>
       </div>
     `
@@ -85,6 +104,112 @@ export class CSwipe extends LitElement {
   private _onBreakpointChange = (ev: MediaQueryListEvent) => {
     this._isMobile = !ev.matches
     this._measure()
+    this._syncScrollSpy()
+  }
+
+  private _onSlotChange = () => {
+    this._measure()
+    this._syncScrollSpy()
+  }
+
+  private _getItems(): HTMLElement[] {
+    const wrapper = this._slot?.assignedElements()[0] as HTMLElement | undefined
+
+    return wrapper ? Array.from(wrapper.children) as HTMLElement[] : []
+  }
+
+  private _syncScrollSpy() {
+    this._detachScrollSpy()
+
+    if (!this._isMobile || !this.channel || !this._contentEl) return
+
+    this._contentEl.addEventListener('scroll', this._onScroll, { passive: true })
+    this._emitActiveIndex()
+  }
+
+  private _detachScrollSpy() {
+    this._contentEl?.removeEventListener('scroll', this._onScroll)
+    window.clearTimeout(this._settleTimer)
+    window.clearTimeout(this._snapTimer)
+    this._isSnapping = false
+  }
+
+  private _onScroll = () => {
+    // Ignore scroll events produced by our own snap-to-center animation
+    if (this._isSnapping) return
+
+    window.clearTimeout(this._settleTimer)
+    this._settleTimer = window.setTimeout(() => this._onSettle(), CSwipe.SETTLE_DELAY)
+  }
+
+  private _onSettle() {
+    const index = this._computeActiveIndex()
+
+    if (index < 0) return
+
+    if (this._isCollapsed()) {
+      this._centerItem(index)
+    }
+
+    this._emitActiveIndex(index)
+  }
+
+  private _isCollapsed(): boolean {
+    return this._height <= this._minHeight + 1
+  }
+
+  private _centerItem(index: number) {
+    if (!this._contentEl) return
+
+    const item = this._getItems()[index]
+
+    if (!item) return
+
+    const itemRect = item.getBoundingClientRect()
+    const viewport = this._contentEl.getBoundingClientRect()
+    const delta = (itemRect.top + itemRect.height / 2) - (viewport.top + viewport.height / 2)
+
+    if (Math.abs(delta) < 1) return
+
+    this._isSnapping = true
+    window.clearTimeout(this._snapTimer)
+    this._snapTimer = window.setTimeout(() => { this._isSnapping = false }, 600)
+
+    this._contentEl.scrollTo({ top: this._contentEl.scrollTop + delta, behavior: 'smooth' })
+  }
+
+  private _computeActiveIndex(): number {
+    if (!this._contentEl) return -1
+
+    const items = this._getItems()
+
+    if (!items.length) return -1
+
+    const viewport = this._contentEl.getBoundingClientRect()
+    let bestIndex = -1
+    let bestVisible = 0
+
+    items.forEach((item, index) => {
+      const rect = item.getBoundingClientRect()
+      const visible = Math.min(rect.bottom, viewport.bottom) - Math.max(rect.top, viewport.top)
+
+      if (visible > bestVisible) {
+        bestVisible = visible
+        bestIndex = index
+      }
+    })
+
+    return bestIndex
+  }
+
+  private _emitActiveIndex(index = this._computeActiveIndex()) {
+    if (index < 0 || index === this._activeIndex) return
+
+    this._activeIndex = index
+    this._channel.dispatch<DayActiveEventDetail>(DAY_ACTIVE_EVENT, {
+      day: index,
+      source: this
+    })
   }
 
   private _measure() {

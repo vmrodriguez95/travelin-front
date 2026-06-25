@@ -11,20 +11,18 @@ import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
 // Utils
 import { loadGoogleMapsApi } from '@ds/utils/google-maps.utils'
 import { getIconSvg } from '@ds/utils/icon.utils'
+import { breakpoints } from '@ds/utils/variables'
 import {
-  POI_CLEAR_EVENT,
-  POI_HOVER_CLEAR_EVENT,
-  POI_HOVER_EVENT,
-  POI_REMOVE_EVENT,
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
   type PoiRemoveEventDetail,
-  type PoiSelectEventDetail
+  type PoiSelectEventDetail,
+  type DayHoverEventDetail,
+  type DayActiveEventDetail
 } from '@ds/utils/poi-channel.utils'
 
+// Styles
 import styles from './c-map.style.scss?inline'
-
-const SELECTED_ZOOM = 15
 
 @customElement('c-map')
 export class CMap extends LitElement {
@@ -49,12 +47,13 @@ export class CMap extends LitElement {
 
   @property({ type: Number }) zoom = 12
 
-
   @property({ type: Array }) markers: Array<MapMarker> = []
 
   @state() _height = 0
 
   @queryAsync('.c-map__viewport') _viewport!: Promise<HTMLElement>
+
+  _selectedZoom = 15
 
   _defaultShowSearch = false
 
@@ -78,6 +77,16 @@ export class CMap extends LitElement {
   _selectedIdPoi = ''
 
   _hoveredIdPoi = ''
+
+  _hoveredDay = -1
+
+  _activeDay = 0
+
+  _isMobile = false
+
+  _mediaQuery: MediaQueryList | null = null
+
+  _markerStates = new Map<string, string>()
 
   _markerStyles = {
     default: {
@@ -109,19 +118,32 @@ export class CMap extends LitElement {
       onHover: (detail) => this._onHoverChange(detail),
       onHoverClear: () => this._onHoverClear(),
       onRemove: (detail) => this._onPoiRemove(detail),
+      onDayHover: (detail) => this._onDayHoverChange(detail),
+      onDayHoverClear: () => this._onDayHoverClear(),
+      onDayActive: (detail) => this._onDayActiveChange(detail),
     }
   )
 
   connectedCallback(): void {
     super.connectedCallback()
 
+    this._mediaQuery = window.matchMedia(`(min-width: ${breakpoints.xl}px)`)
+    this._isMobile = !this._mediaQuery.matches
+    this._mediaQuery.addEventListener('change', this._onBreakpointChange)
+
     this._activateFullHeight()
   }
 
   disconnectedCallback() {
     this._removeResizeHandler()
+    this._mediaQuery?.removeEventListener('change', this._onBreakpointChange)
 
     super.disconnectedCallback()
+  }
+
+  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
+    this._isMobile = !ev.matches
+    this._syncMarkers()
   }
 
   protected firstUpdated() {
@@ -269,15 +291,28 @@ export class CMap extends LitElement {
     }
   }
 
+  private _displayedMarkers(): Array<MapMarker> {
+    if (this._isMobile && this._activeDay >= 0) {
+      return this.markers.filter((marker) => marker.day === this._activeDay)
+    }
+
+    return this.markers
+  }
+
   private _syncMarkers() {
     if (!this._map || !this.markers.length) return
 
+    const displayed = this._displayedMarkers()
+
     this._clearMarkers()
+    this._markerStates.clear()
+
+    if (!displayed.length) return
 
     const bounds = new this._google.maps.LatLngBounds()
     const { AdvancedMarkerElement } = this._markerLibrary
 
-    this.markers.forEach((marker) => {
+    displayed.forEach((marker) => {
       const position = this._getMarkerPosition(marker)
       const markerInstance = new AdvancedMarkerElement({
         position,
@@ -291,11 +326,12 @@ export class CMap extends LitElement {
 
       bounds.extend(position)
       this._markerInstances.set(marker.id, markerInstance)
+      this._markerStates.set(marker.id, this._getMarkerStateKey(marker))
     })
 
-    if (this.markers.length === 1) {
-      this._map.setCenter(this._getMarkerPosition(this.markers[0]))
-      this._map.setZoom(SELECTED_ZOOM)
+    if (displayed.length === 1) {
+      this._map.setCenter(this._getMarkerPosition(displayed[0]))
+      this._map.setZoom(this._selectedZoom)
       return
     }
 
@@ -310,26 +346,39 @@ export class CMap extends LitElement {
     return marker.icon || 'location'
   }
 
-  private _getMarkerStyle(marker: MapMarker) {
+  private _getMarkerStateKey(marker: MapMarker) {
     if (this._selectedIdPoi && marker.idPoi === this._selectedIdPoi) {
-      return this._markerStyles.selected
+      return 'selected'
     }
 
     if (this._hoveredIdPoi && marker.idPoi === this._hoveredIdPoi) {
-      return this._markerStyles.hovered
+      return 'hovered'
     }
 
-    return this._markerStyles.default
+    if (this._hoveredDay >= 0 && marker.day === this._hoveredDay) {
+      return 'hovered'
+    }
+
+    return 'default'
+  }
+
+  private _getMarkerStyle(marker: MapMarker) {
+    return this._markerStyles[this._getMarkerStateKey(marker) as keyof typeof this._markerStyles]
   }
 
   private _refreshMarkerStyles() {
     if (!this._map || !this._markerLibrary || !this._markerInstances.size) return
 
-    this.markers.forEach((marker) => {
+    this._displayedMarkers().forEach((marker) => {
       const markerInstance = this._markerInstances.get(marker.id)
 
       if (!markerInstance) return
 
+      const nextState = this._getMarkerStateKey(marker)
+
+      if (this._markerStates.get(marker.id) === nextState) return
+
+      this._markerStates.set(marker.id, nextState)
       markerInstance.content = this._createMarkerContent(marker)
     })
   }
@@ -397,7 +446,7 @@ export class CMap extends LitElement {
     if (!this._map) return
 
     this._map.panTo(this._getMarkerPosition(marker))
-    this._map.setZoom(SELECTED_ZOOM)
+    this._map.setZoom(this._selectedZoom)
   }
 
   private _isDuplicateMarkerClick(marker: MapMarker) {
@@ -497,6 +546,30 @@ export class CMap extends LitElement {
 
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
+    }
+  }
+
+  private _onDayHoverChange(detail: DayHoverEventDetail) {
+    this._hoveredDay = detail.day
+
+    if (this._hasInteractiveMarkers()) {
+      this._refreshMarkerStyles()
+    }
+  }
+
+  private _onDayHoverClear() {
+    this._hoveredDay = -1
+
+    if (this._hasInteractiveMarkers()) {
+      this._refreshMarkerStyles()
+    }
+  }
+
+  private _onDayActiveChange(detail: DayActiveEventDetail) {
+    this._activeDay = detail.day
+
+    if (this._isMobile && this._hasInteractiveMarkers()) {
+      this._syncMarkers()
     }
   }
 
