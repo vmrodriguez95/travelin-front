@@ -6,10 +6,15 @@ import {
   POI_HOVER_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_REMOVE_EVENT,
+  DAY_HOVER_EVENT,
+  DAY_HOVER_CLEAR_EVENT,
+  DAY_ACTIVE_EVENT,
   type PoiSelectEventDetail,
   type PoiClearEventDetail,
   type PoiHoverEventDetail,
   type PoiRemoveEventDetail,
+  type DayHoverEventDetail,
+  type DayActiveEventDetail,
 } from '@ds/utils/poi-channel.utils'
 
 export interface PoiChannelHandlers {
@@ -18,6 +23,9 @@ export interface PoiChannelHandlers {
   onHover?: (detail: PoiHoverEventDetail) => void
   onHoverClear?: () => void
   onRemove?: (detail: PoiRemoveEventDetail) => void
+  onDayHover?: (detail: DayHoverEventDetail) => void
+  onDayHoverClear?: () => void
+  onDayActive?: (detail: DayActiveEventDetail) => void
 }
 
 export class PoiChannelController implements ReactiveController {
@@ -82,6 +90,9 @@ export class PoiChannelController implements ReactiveController {
     if (this.handlers.onHover)      add(POI_HOVER_EVENT,       wrap(this.handlers.onHover))
     if (this.handlers.onHoverClear) add(POI_HOVER_CLEAR_EVENT, this.handlers.onHoverClear)
     if (this.handlers.onRemove)     add(POI_REMOVE_EVENT,      wrap(this.handlers.onRemove))
+    if (this.handlers.onDayHover)      add(DAY_HOVER_EVENT,       wrap(this.handlers.onDayHover))
+    if (this.handlers.onDayHoverClear) add(DAY_HOVER_CLEAR_EVENT, this.handlers.onDayHoverClear)
+    if (this.handlers.onDayActive)     add(DAY_ACTIVE_EVENT,      wrap(this.handlers.onDayActive))
   }
 
   private _disconnect() {

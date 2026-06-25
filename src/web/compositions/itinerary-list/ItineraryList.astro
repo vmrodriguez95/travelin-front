@@ -1,7 +1,7 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
-import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois'
+import type { Poi } from '@ds/types/pois'
 
 const itinerariesGlob = import.meta.glob('../../../data/itineraries.json', { eager: true })
 const { id, data } = Astro.props
@@ -9,6 +9,23 @@ const { id, data } = Astro.props
 const finalData = withFormA11yDefaults(data)
 
 const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Poi[][] })?.default ?? []
+
+const channel = 'itinerary-list'
+const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
+
+const markers = itineraries.flatMap((itinerary, dayIndex) =>
+  itinerary.map((poi) => ({
+    id: poi.idItinerary,
+    idPoi: poi.idItinerary,
+    label: poi.name,
+    type: poi.type,
+    coordinates: poi.coordinates,
+    icon: poi.icon || 'location',
+    day: dayIndex,
+    data: poi,
+    view: 'resume'
+  }))
+)
 ---
 
 <main id={id} class="u-grid-main u-bg--dark" data-component>
@@ -57,11 +74,11 @@ const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Po
       </e-modal-trigger>
     </c-header>
     <section class="ti-itinerary-list">
-      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
         <div class="ti-itinerary-list__dates-list">
           {itineraries.map((itinerary, i) => (
             <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">
-              <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
+              <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok" channel={channel} day={i}>
                 <p slot="index">Día {i + 1}</p>
                 <p slot="day">{3 + i}</p>
                 <p slot="month">Marzo</p>
@@ -83,7 +100,7 @@ const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Po
         </div>
       </c-swipe>
       <div class="ti-itinerary-list__content u-col-4 u-col-md-12 u-col-xl-7">
-        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto"></c-map>
+        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} channel={channel}></c-map>
       </div>
     </section>
   </div>

@@ -24,6 +24,7 @@ export interface MapMarker {
   type: string
   coordinates: Coordinates
   icon?: string
+  day?: number
   data?: Poi | PoiHotel | PoiTransport | Reminder | Note
   view?: 'resume' | 'detail'
 }

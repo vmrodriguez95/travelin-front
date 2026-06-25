@@ -2,6 +2,16 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
+// Utils
+import {
+  DAY_HOVER_EVENT,
+  DAY_HOVER_CLEAR_EVENT,
+  type DayHoverEventDetail
+} from '@ds/utils/poi-channel.utils'
+
 import styles from './c-card-date.style.scss?inline'
 
 @customElement('c-card-date')
@@ -13,6 +23,16 @@ export class CCardDate extends LitElement {
 
   @property({ type: String }) text = ''
 
+  @property({ type: String }) channel = ''
+
+  @property({ type: Number }) day = -1
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {}
+  )
+
   render() {
     const classes = classMap({
       'c-card-date': true,
@@ -20,7 +40,13 @@ export class CCardDate extends LitElement {
     })
 
     return html`
-      <div class=${classes}>
+      <div
+        class=${classes}
+        @mouseenter=${this._onHoverStart}
+        @mouseleave=${this._onHoverEnd}
+        @focusin=${this._onHoverStart}
+        @focusout=${this._onHoverEnd}
+      >
         <div class="c-card-date__head">
           <slot name="index"></slot>
           <slot name="day"></slot>
@@ -32,5 +58,20 @@ export class CCardDate extends LitElement {
         </div>
       </div>
     `
+  }
+
+  private _onHoverStart = () => {
+    if (this.day < 0) return
+
+    this._channel.dispatch<DayHoverEventDetail>(DAY_HOVER_EVENT, {
+      day: this.day,
+      source: this
+    })
+  }
+
+  private _onHoverEnd = () => {
+    if (this.day < 0) return
+
+    this._channel.dispatch(DAY_HOVER_CLEAR_EVENT, { source: this })
   }
 }
