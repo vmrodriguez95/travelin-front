@@ -1,9 +1,14 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
+import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois'
+
+const itinerariesGlob = import.meta.glob('../../../data/itineraries.json', { eager: true })
 const { id, data } = Astro.props
 
 const finalData = withFormA11yDefaults(data)
+
+const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Poi[][] })?.default ?? []
 ---
 
 <main id={id} class="u-grid-main u-bg--dark" data-component>
@@ -54,31 +59,23 @@ const finalData = withFormA11yDefaults(data)
     <section class="ti-itinerary-list">
       <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
         <div class="ti-itinerary-list__dates-list">
-          {Array.from({ length: 15 }, (_, i) => (
+          {itineraries.map((itinerary, i) => (
             <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">
               <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok">
                 <p slot="index">Día {i + 1}</p>
                 <p slot="day">{3 + i}</p>
                 <p slot="month">Marzo</p>
                 <ul>
-                  <li class="u-flex u-flex--align--center u-margin--bottom--s">
-                    <span class="u-pin-icon u-pin-icon--s">
-                      <e-icon icon="flight" size="s"></e-icon>
-                    </span>
-                    <p class="u-margin--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
-                  </li>
-                  <li class="u-flex u-flex--align--center u-margin--bottom--s">
-                    <span class="u-pin-icon u-pin-icon--s">
-                      <e-icon icon="hotel" size="s"></e-icon>
-                    </span>
-                    <p class="u-margin--none u-text--ellipsis">9:00 AM - Aterrizaje en Bangkok</p>
-                  </li>
-                  <li class="u-flex u-flex--align--center">
-                    <span class="u-pin-icon u-pin-icon--s">
-                      <e-icon icon="monument" size="s"></e-icon>
-                    </span>
-                    <p class="u-margin--none u-text--ellipsis">Khao Sand Road</p>
-                  </li>
+                  {
+                    itinerary.map((poi: Poi) => (
+                      <li class="u-flex u-flex--align--center u-margin--bottom--s">
+                        <span class="u-pin-icon u-pin-icon--s">
+                          <e-icon icon={poi.icon} size="s"></e-icon>
+                        </span>
+                        <p class="u-margin--none u-text--ellipsis">{poi.name}</p>
+                      </li>
+                    ))
+                  }
                 </ul>
               </c-card-date>
             </a>
