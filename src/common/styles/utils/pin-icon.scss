@@ -12,13 +12,8 @@
   transition: transform 0.2s ease;
 
   &--s {
-    width: space(3);
-    height: space(3);
-
-    @media (min-width: $breakpoint-md) {
-      width: space(4);
-      height: space(4);
-    }
+    width: space(4);
+    height: space(4);
   }
 
   &--hover {
