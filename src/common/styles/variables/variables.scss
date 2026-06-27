@@ -58,10 +58,10 @@ body {
   }
   
   // Layout heights — shared between SCSS and JS consumers
-  --ui-menu-height: 80px;
+  --ui-menu-height: 88px;
 
   @media (min-width: $breakpoint-md) {
-    --ui-menu-height: 96px;
+    --ui-menu-height: 104px;
   }
   
   @media (min-width: $breakpoint-xl) {

@@ -54,7 +54,7 @@ export class CCardDate extends LitElement {
         </div>
         <div class="c-card-date__content">
           <p class="c-card-date__title">${this.text}</p>
-          <slot />
+          <slot></slot>
         </div>
       </div>
     `

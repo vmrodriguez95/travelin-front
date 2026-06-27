@@ -229,6 +229,8 @@ export class CSwipe extends LitElement {
       const paddingTop = parseInt(hostStyle.paddingTop) || 0
       const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
 
+      console.log(firstCard.offsetHeight)
+
       this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + paddingBottom
     } else {
       this._minHeight = this._maxHeight * 0.2

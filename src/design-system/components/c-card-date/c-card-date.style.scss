@@ -9,7 +9,8 @@
 
 .c-card-date {
   $block: &;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   position: relative;
   border-radius: $border-radius-xl;
   border: none;
@@ -24,7 +25,6 @@
     justify-content: center;
     text-align: center;
     width: space(8);
-    flex: 1 0 auto;
     color: rgba(var(--color-text--light), 1);
     background-color: rgba(var(--color-background--light), 1);
 
@@ -55,7 +55,6 @@
 
   &__content {
     padding: space(1) space(2);
-    flex: 1 0 100%;
   }
 
   &__title {
@@ -70,6 +69,9 @@
   
   ::slotted(ul) {
     @include body--s();
+    display: flex;
+    flex-direction: column;
+    gap: space(0.5);
     position: relative;
     margin: 0;
     padding: 0;
