@@ -33,10 +33,6 @@
     &--l {
       margin-bottom: space(3);
     }
-
-    &--xl {
-      margin-bottom: space(4);
-    }
   }
 
   &--vertical {
@@ -45,24 +41,9 @@
       margin-bottom: 0;
     }
 
-    &--s {
-      margin-top: space(1);
-      margin-bottom: space(1);
-    }
-
     &--m {
       margin-top: space(2);
       margin-bottom: space(2);
-    }
-
-    &--l {
-      margin-top: space(3);
-      margin-bottom: space(3);
-    }
-
-    &--xl {
-      margin-top: space(4);
-      margin-bottom: space(4);
     }
   }
 }

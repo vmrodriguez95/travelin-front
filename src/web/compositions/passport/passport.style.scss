@@ -9,7 +9,7 @@
   
   @media (min-width: $breakpoint-xl) {
     padding: 0 var(--grid-gutter);
-    height: calc(100dvh - var(--ui-menu-height));
+    height: calc(100dvh - var(--ui-c-header-basic-height));
     grid-template-rows: auto minmax(0, 1fr);
   }
 
@@ -32,6 +32,7 @@
     
     @media (min-width: $breakpoint-xl) {
       margin-bottom: 0;
+      order: 2;
     }
   }
 
