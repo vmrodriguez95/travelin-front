@@ -68,7 +68,13 @@ body {
     --ui-menu-height: 0;
   }
   
-  --ui-c-header-height: 120px;
+  --ui-c-header-basic-height: 80px;
+  
+  @media (min-width: $breakpoint-xl) {
+    --ui-c-header-basic-height: 88px;
+  }
+
+  --ui-c-header-image-height: 120px;
 
   @media (min-width: $breakpoint-xl) {
     --ui-c-header-height: 147px;

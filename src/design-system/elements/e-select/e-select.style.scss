@@ -7,12 +7,6 @@
   display: block;
   position: relative;
 
-  &--hidden {
-    position: absolute;
-    top: -100%;
-    opacity: 0;
-  }
-
   &__label {
     @include body--m;
     color: rgba(var(--color-text), 1);
@@ -51,16 +45,6 @@
     right: space(2);
     transform: translateY(-50%);
     pointer-events: none;
-  }
-
-  &__clear {
-    position: absolute;
-    top: 50%;
-    right: space(2);
-    transform: translateY(-50%);
-    cursor: pointer;
-    background: none;
-    border: 0;
   }
 
   &__helpmsg {
