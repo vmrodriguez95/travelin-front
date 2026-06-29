@@ -40,10 +40,13 @@ body {
   --font-base: 16px;
 
   // Grid
-  --grid-columns-min: 4;
-  --grid-columns-max: 12;
-
   --grid-gutter: 8px;
+
+  --grid-columns: 4;
+
+  @media (min-width: $breakpoint-md) {
+    --grid-columns: 12;
+  }
 
   @media (min-width: $breakpoint-md) {
     --grid-gutter: 16px;
@@ -57,7 +60,7 @@ body {
     --grid-gutter: 32px;
   }
   
-  // Layout heights — shared between SCSS and JS consumers
+  // Menu
   --ui-menu-height: 88px;
 
   @media (min-width: $breakpoint-md) {
@@ -68,6 +71,7 @@ body {
     --ui-menu-height: 0;
   }
   
+  // C-Header
   --ui-c-header-basic-height: 80px;
   
   @media (min-width: $breakpoint-xl) {
@@ -77,6 +81,10 @@ body {
   --ui-c-header-image-height: 120px;
 
   @media (min-width: $breakpoint-xl) {
-    --ui-c-header-height: 147px;
+    --ui-c-header-image-height: 144px;
+  }
+
+  @media (min-width: $breakpoint-xl) and (min-height: 1000px) {
+    --ui-c-header-image-height: 200px;
   }
 }

@@ -5,7 +5,7 @@
 
 .ti-itinerary-list {
   position: relative;
-  height: calc(100dvh - var(--ui-c-header-height));
+  height: calc(100dvh - var(--ui-c-header-image-height));
 
   @media (min-width: $breakpoint-xl) {
     @include grid();
@@ -19,11 +19,5 @@
   &__dates-column,
   &__content {
     height: 100%;
-  }
-
-  &__content {
-    @media (min-width: $breakpoint-lg) {
-      gap: space(2);
-    }
   }
 }

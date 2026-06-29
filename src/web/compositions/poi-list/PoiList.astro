@@ -9,7 +9,7 @@ const { id } = Astro.props
 const buttons = [
   {
     label: 'Transporte',
-    icon: 'transport',
+    icon: 'flight-takeoff',
   },
   {
     label: 'Alojamiento',
@@ -24,8 +24,8 @@ const buttons = [
     icon: 'reminder',
   },
   {
-    label: 'Archivo',
-    icon: 'attach-file',
+    label: 'Notas',
+    icon: 'note',
   },
   {
     label: 'Guardados',
@@ -109,77 +109,77 @@ function formatDate(dateStart: string, dateEnd: string) {
     <AppMenu />
   </div>
   <div class="u-grid-main--main">
-    <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="https://loremflickr.com/2000/600/thailand" animated backA11y="Volver atrás"></c-header>
-    <section class="u-grid u-padding--top--xl ti-poi-list">
-      <div class="u-col-4 u-col-md-12 u-border--bottom u-scroll--horizontal ti-poi-list__dates">
-        {Array.from({ length: 15 }, (_, i) => (
-          <a href="#" title={`Ir al día ${i + 1}`} class="u-date">
+    <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="/images/japan-wallpaper.jpg" animated backA11y="Volver atrás"></c-header>
+    <section class="ti-poi-list">
+      <div class="u-col-4 u-col-md-12 ti-poi-list__dates">
+        {Array.from({ length: 15 }, (_, i) =>(
+          <a href="#" title={`Ir al día ${i + 1}`} class={i === 1 ? 'u-date u-date--today' : 'u-date'}>
             <p class="u-date__date">{12 + i} May</p>
             <p class="u-date__day">Día {12 + i}</p>
           </a>
         ))}
       </div>
       <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__panel">
-        <div class="u-flex u-scroll--horizontal ti-poi-list__toolbar">
+        <div class="ti-poi-list__actions">
           {buttons.map((button) => (
-            <a href="#" class="u-link-icon">
+            <a href="#" class="u-link-icon" title={`Añadir un nuevo ${button.label}`}>
               <e-icon icon={button.icon} size="m"></e-icon>
               <span class="u-link-icon__text">{button.label}</span>
             </a>
           ))}
         </div>
-        <div class="u-scroll--vertical ti-poi-list__cards">
-          {pois.map((poi: any) => (
-            poi.type == 'poi_transport' ? (
-              <c-card-transport class="u-margin--bottom--m" icon={poi.typeTransport} data={JSON.stringify(poi)} channel={channel}>
-                <a href="#" slot="action">
-                  <e-icon icon="edit" size="m"></e-icon>
-                </a>
-                <e-modal-trigger modal="modal" slot="action">
-                  <e-icon icon="delete" size="m"></e-icon>
-                  <template>
-                    <h2 slot="title">Eliminar {poi.name}</h2>
-                    <p slot="description">Estas a punto de eliminar este transporte del listado. ¿Estás seguro de que quieres quitarlo?</p>
-                    <e-fetch action="/api/poi.json" method="DELETE">
-                      <span>Eliminar</span>
-                    </e-fetch>
-                  </template>
-                </e-modal-trigger>
-              </c-card-transport>
-            ) : (
-              <c-card-poi class="u-margin--bottom--m" icon={poi.icon} data={JSON.stringify(poi)} type={poi.type} channel={channel}>
-                {
-                  poi.image && (
-                    <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="64" height="64" loading="lazy" />
-                  )
-                }
-                <span slot="title">{poi.name}</span>
-                <span slot="description">{poi.price}</span>
-                <span slot="date">{poi.time || formatDate(poi.dateStart, poi.dateEnd)}</span>
-                <a href="#" slot="action">
-                  <e-icon icon="edit" size="m"></e-icon>
-                </a>
-                <e-modal-trigger modal="modal" slot="action">
-                  <e-icon icon="delete" size="m"></e-icon>
-                  <template>
-                    <h2 slot="title">Eliminar {poi.name}</h2>
-                    <p slot="description">Estas a punto de eliminar este elemento del listado. Si lo tienes en tus guardados, no te preocupes, no se eliminará de ahí. ¿Quieres quitarlo de este itinerario?</p>
-                    <e-fetch action="/api/poi.json" method="DELETE">
-                      <span>Eliminar</span>
-                    </e-fetch>
-                  </template>
-                </e-modal-trigger>
-              </c-card-poi>
-            )
-          ))}
-        </div>
+        <c-swipe class="ti-poi-list__cards" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+          <div class="ti-poi-list__cards-list">
+            {pois.map((poi: any) => (
+              poi.type == 'poi_transport' ? (
+                <c-card-transport icon={poi.typeTransport} data={JSON.stringify(poi)} channel={channel}>
+                  <a href="#" slot="action">
+                    <e-icon icon="edit" size="m"></e-icon>
+                  </a>
+                  <e-modal-trigger modal="modal" slot="action">
+                    <e-icon icon="delete" size="m"></e-icon>
+                    <template>
+                      <h2 slot="title">Eliminar {poi.name}</h2>
+                      <p slot="description">Estas a punto de eliminar este transporte del listado. ¿Estás seguro de que quieres quitarlo?</p>
+                      <e-fetch action="/api/poi.json" method="DELETE">
+                        <span>Eliminar</span>
+                      </e-fetch>
+                    </template>
+                  </e-modal-trigger>
+                </c-card-transport>
+              ) : (
+                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type} channel={channel}>
+                  {
+                    poi.image && (
+                      <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="64" height="64" loading="lazy" />
+                    )
+                  }
+                  <span slot="title">{poi.name}</span>
+                  <span slot="description">{poi.price}</span>
+                  <span slot="date">{poi.time || formatDate(poi.dateStart, poi.dateEnd)}</span>
+                  <a href="#" slot="action">
+                    <e-icon icon="edit" size="m"></e-icon>
+                  </a>
+                  <e-modal-trigger modal="modal" slot="action">
+                    <e-icon icon="delete" size="m"></e-icon>
+                    <template>
+                      <h2 slot="title">Eliminar {poi.name}</h2>
+                      <p slot="description">Estas a punto de eliminar este elemento del listado. Si lo tienes en tus guardados, no te preocupes, no se eliminará de ahí. ¿Quieres quitarlo de este itinerario?</p>
+                      <e-fetch action="/api/poi.json" method="DELETE">
+                        <span>Eliminar</span>
+                      </e-fetch>
+                    </template>
+                  </e-modal-trigger>
+                </c-card-poi>
+              )
+            ))}
+          </div>
+        </c-swipe>
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__map-column">
-        <div class="ti-poi-list__map">
-          <c-map apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
-          <c-poi-detail channel={channel} close="Cerrar" />
-          <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
-        </div>
+      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__map">
+        <c-map apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
+        <c-poi-detail channel={channel} close="Cerrar" />
+        <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
       </div>
     </section>
   </div>

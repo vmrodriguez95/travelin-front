@@ -1,41 +1,78 @@
+@use '@common/styles/tools/grid.scss' as *;
 @use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/scrollbar.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
 .ti-poi-list {
-  &__panel,
-  &__map-column,
-  &__map,
-  &__cards {
+  --padding-vertical: var(--grid-gutter);
+  --ui-actions-height: 64px;
+
+  display: grid;
+  padding: calc(var(--grid-gutter) / 2) 0;
+  grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
+  
+  @media (min-width: $breakpoint-xl) {
+    grid-template-rows: auto 1fr;
+    height: calc(100dvh - var(--ui-c-header-image-height) - var(--padding-vertical));
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__dates {
+    padding: 0 var(--grid-gutter);
+    border-bottom: 1px solid rgba(var(--color-gray), 1);
+  }
+
+  &__actions {
+    padding: space(2) var(--grid-gutter);
+  }
+  
+  &__dates,
+  &__actions {
+    @include apple-scrollbar;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: space(1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+
+    > * {
+      flex: 0 0 auto;
+    }
+  }
+
+  &__panel {
     min-height: 0;
   }
 
   &__cards {
-    padding: 0 space(2);
-    box-sizing: border-box;
-  }
-  
-  &__toolbar {
-    flex: 0 0 auto;
-    padding: space(2);
+    @media (min-width: $breakpoint-xl) {
+      --ui-actions-height: 88px;
+
+      height: calc(100% - var(--ui-actions-height));
+    }
+    
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: space(2);
+      padding: 0 var(--grid-gutter);
+      box-sizing: border-box;
+      overflow-x: auto;
+      
+      @media (min-width: $breakpoint-xl) {
+        padding: 0 calc(var(--grid-gutter) / 2) 0 var(--grid-gutter);
+      }
+    }
   }
 
   &__map {
     height: 100%;
     position: relative;
-  }
 
-  @media (min-width: $breakpoint-lg) {
-    &__panel,
-    &__map-column {
-      position: sticky;
-      top: space(2);
-      height: calc(100dvh - #{space(4)});
-    }
-
-    &__panel {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      gap: space(2);
+    @media (min-width: $breakpoint-xl) {
+      padding: var(--grid-gutter) var(--grid-gutter) 0 calc(var(--grid-gutter) / 2);
     }
   }
 }
