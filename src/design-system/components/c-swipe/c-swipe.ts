@@ -66,7 +66,8 @@ export class CSwipe extends LitElement {
 
   protected firstUpdated(): void {
     this._resizeObserver = new ResizeObserver(() => this._measure())
-    if (this.parentElement) this._resizeObserver.observe(this.parentElement)
+    const stageEl = (this.offsetParent as HTMLElement) ?? this.parentElement
+    if (stageEl) this._resizeObserver.observe(stageEl)
     this._measure()
     this._syncScrollSpy()
   }
@@ -74,8 +75,10 @@ export class CSwipe extends LitElement {
   updated() {
     if (this._isMobile) {
       this.style.height = `${this._height}px`
+      this.classList.toggle('is-collapsed', this._isCollapsed())
     } else {
       this.style.height = ''
+      this.classList.remove('is-collapsed')
     }
   }
 
@@ -215,8 +218,9 @@ export class CSwipe extends LitElement {
   private _measure() {
     if (!this._isMobile) return
 
-    // Parent height is the reliable max — host has no CSS height until we set it
-    this._maxHeight = (this.parentElement?.clientHeight ?? 0) || this.getBoundingClientRect().height
+    // Use the nearest positioned ancestor as the stage; fall back to parentElement
+    const stageEl = (this.offsetParent as HTMLElement) ?? this.parentElement
+    this._maxHeight = stageEl?.clientHeight || this.getBoundingClientRect().height
 
     const wrapper = this._slot?.assignedElements()[0] as HTMLElement | undefined
     const firstCard = wrapper?.firstElementChild as HTMLElement | undefined
@@ -227,9 +231,9 @@ export class CSwipe extends LitElement {
         ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom)
         : 0
       const paddingTop = parseInt(hostStyle.paddingTop) || 0
-      const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
+      const paddingBottom = parseInt(hostStyle.paddingBottom) || 8
 
-      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + paddingBottom
+      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + (paddingBottom * 2)
     } else {
       this._minHeight = this._maxHeight * 0.2
     }

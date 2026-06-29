@@ -3,19 +3,26 @@
 @use '@common/styles/tools/scrollbar.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
+.u-grid-main:has(.ti-poi-list__cards.is-collapsed) .u-grid-main--sidebar c-menu {
+  transform: translateY(100%);
+}
+
 .ti-poi-list {
   --padding-vertical: var(--grid-gutter);
   --ui-actions-height: 64px;
 
   display: grid;
+  position: relative;
+  box-sizing: border-box;
+  height: calc(100dvh - var(--ui-c-header-image-height));
+  grid-template-rows: auto auto 1fr;
   padding: calc(var(--grid-gutter) / 2) 0;
   grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
-  
+
   @media (min-width: $breakpoint-xl) {
     grid-template-rows: auto 1fr;
     height: calc(100dvh - var(--ui-c-header-image-height) - var(--padding-vertical));
     width: 100%;
-    box-sizing: border-box;
   }
 
   &__dates {
@@ -24,7 +31,12 @@
   }
 
   &__actions {
-    padding: space(2) var(--grid-gutter);
+    padding: space(1) var(--grid-gutter);
+
+    @media (min-width: $breakpoint-xl) {
+      padding: space(2) var(--grid-gutter);
+    }
+ 
   }
   
   &__dates,
@@ -69,6 +81,7 @@
 
   &__map {
     height: 100%;
+    min-height: 0;
     position: relative;
 
     @media (min-width: $breakpoint-xl) {
