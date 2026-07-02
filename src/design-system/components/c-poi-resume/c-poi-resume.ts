@@ -55,7 +55,9 @@ export class CPoiResume extends LitElement {
               ${this.getAddress()}
             </div>
             <div class="c-poi-resume__column">
-              <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>Info</e-button>
+              <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>
+                <e-icon class="c-poi-resume__icon" icon="info" size="m"></e-icon> <span class="c-poi-resume__text-button">Info</span>
+              </e-button>
             </div>
           </div>
         </div>

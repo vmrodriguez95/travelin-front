@@ -43,8 +43,10 @@ export class CSwipe extends LitElement {
   private _minHeight = 0
   private _maxHeight = 0
   private _dragStartY = 0
+  private _fixedHeight = 0
   private _settleTimer = 0
   private _activeIndex = -1
+  private _paddingBottom = 0
   private _dragStartHeight = 0
 
   private _resizeObserver!: ResizeObserver
@@ -120,6 +122,15 @@ export class CSwipe extends LitElement {
     }
 
     this._syncMenu()
+  }
+
+  private _getHostStyles(): { paddingTop: number, paddingBottom: number } {
+    const hostStyle = getComputedStyle(this)
+
+    const paddingTop = parseInt(hostStyle.paddingTop) || 0
+    const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
+
+    return { paddingTop, paddingBottom }
   }
 
   // The app menu should get out of the way whenever the sheet occupies the
@@ -267,13 +278,11 @@ export class CSwipe extends LitElement {
     const firstCard = wrapper?.firstElementChild as HTMLElement | undefined
 
     if (firstCard) {
-      const hostStyle = getComputedStyle(this)
+      const { paddingTop, paddingBottom } = this._getHostStyles()
       const handleHeight = this._handleEl ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom) : 0
-      const paddingTop = parseInt(hostStyle.paddingTop) || 0
-      // Frame padding is now constant across states, so this height is deterministic
-      const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
 
-      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + paddingBottom
+      this._fixedHeight = paddingTop + handleHeight + firstCard.offsetHeight
+      this._minHeight = this._fixedHeight + paddingBottom
     } else {
       this._minHeight = this._maxHeight * 0.2
     }
@@ -281,6 +290,7 @@ export class CSwipe extends LitElement {
     if (this._height === 0 || this._height < this._minHeight) {
       this._height = this._minHeight
     }
+
     this._height = clamp(this._height, this._minHeight, this._maxHeight)
     this._applyHeight()
   }
@@ -306,6 +316,8 @@ export class CSwipe extends LitElement {
     if (!this._isDragging) return
     this._isDragging = false
     this.classList.remove('is-dragging')
+
+    this._minHeight = this._fixedHeight + this._getHostStyles().paddingBottom
 
     const mid = (this._minHeight + this._maxHeight) / 2
     this._height = this._height > mid ? this._maxHeight : this._minHeight
