@@ -6,7 +6,7 @@ import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
 
 // Utils
 import { clamp } from '@ds/utils/number.utils'
-import { breakpoints } from '@ds/utils/variables'
+import { BREAKPOINTS } from '@ds/utils/variables'
 import {
   DAY_ACTIVE_EVENT,
   MENU_TOGGLE_EVENT,
@@ -20,7 +20,7 @@ import styles from './c-swipe.style.scss?inline'
 @customElement('c-swipe')
 export class CSwipe extends LitElement {
 
-  private static readonly DESKTOP_BREAKPOINT = breakpoints.xl
+  private static readonly DESKTOP_BREAKPOINT = BREAKPOINTS.xl
   private static readonly SETTLE_DELAY = 120
 
   @property({ type: String }) stage = ''

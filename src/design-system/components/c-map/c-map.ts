@@ -11,7 +11,7 @@ import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
 // Utils
 import { loadGoogleMapsApi } from '@ds/utils/google-maps.utils'
 import { getIconSvg } from '@ds/utils/icon.utils'
-import { breakpoints } from '@ds/utils/variables'
+import { BREAKPOINTS } from '@ds/utils/variables'
 import {
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
@@ -131,7 +131,7 @@ export class CMap extends LitElement {
   connectedCallback(): void {
     super.connectedCallback()
 
-    this._mediaQuery = window.matchMedia(`(min-width: ${breakpoints.xl}px)`)
+    this._mediaQuery = window.matchMedia(`(min-width: ${BREAKPOINTS.xl}px)`)
     this._isMobile = !this._mediaQuery.matches
     this._mediaQuery.addEventListener('change', this._onBreakpointChange)
 
