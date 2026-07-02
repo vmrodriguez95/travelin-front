@@ -6,11 +6,16 @@
 .c-modal {
   padding: var(--grid-gutter);
   width: 100%;
-  background-color: rgba(var(--color-background--light), 0.4);
+  background: none;
   transform: scale(0.95);
   border: none;
   box-sizing: border-box;
   transition: opacity .2s ease, transform .2s ease;
+
+  @media (min-width: $breakpoint-md) {
+    display: flex;
+    justify-content: center;
+  }
 
   &::backdrop {
     background-color: rgba(var(--color-background--light), 0);
@@ -45,7 +50,7 @@
   }
 
   &__content {
-    padding: space(2);
+    padding: space(2) space(4);
     width: 100%;
     background-color: rgba(var(--color-background--secondary), 1);
     max-width: 768px;
@@ -80,10 +85,14 @@
   }
 
   ::slotted([slot="title"]) {
-    @include heading--h2;
+    @include heading--h3;
     margin: 0 0 space(2);
     text-align: center;
     color: rgba(var(--color-text), 1);
+
+    @media (min-width: $breakpoint-md) {
+      @include heading--h2;
+    }
   }
   
   ::slotted([slot="description"]) {
