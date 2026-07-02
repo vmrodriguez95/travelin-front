@@ -85,9 +85,13 @@
   }
 
   &__text {
-    @include body--m;
+    @include body--s;
     color: rgba(var(--color-text), 1);
     margin: 0;
+
+    @media (min-width: $breakpoint-md) {
+      @include body--m;
+    }
   }
 
   &__separator {
