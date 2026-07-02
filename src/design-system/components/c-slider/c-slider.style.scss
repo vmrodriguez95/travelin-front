@@ -1,7 +1,8 @@
 @use '@common/styles/tools/tools.scss' as *;
-@use '@common/styles/tools/typography.scss' as *;
-@use '@common/styles/variables/border-radius.scss' as *;
 @use '@common/styles/tools/scrollbar.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 .c-slider {
   display: flex;
@@ -18,10 +19,14 @@
       @include apple-scrollbar;
 
       flex: 1 0 100%;
-      padding: space(1) space(6);
+      padding: space(1) space(2);
       box-sizing: border-box;
       max-height: 100%;
       overflow-y: auto;
+
+      @media (min-width: $breakpoint-xl) {
+        padding: space(1) space(6);
+      }
     }
   }
 

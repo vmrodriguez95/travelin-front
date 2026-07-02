@@ -103,7 +103,7 @@ export class CPoiDetail extends Responsive(LitElement) {
             ` : html`
               ${map(this._data?.notes, (note) => html`
                 <div class="c-poi-detail__note">
-                  <e-icon icon=${note.icon} size="xl"></e-icon>
+                  <e-icon icon=${note.icon} size=${this.breakpoint === 'sm' ? 'l' : 'xl'}></e-icon>
                   <p class="c-poi-detail__text">${note.text}</p>
                 </div>
               `)}
