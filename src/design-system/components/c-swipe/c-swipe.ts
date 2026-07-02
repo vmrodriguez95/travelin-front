@@ -18,29 +18,31 @@ export class CSwipe extends LitElement {
   private static readonly DESKTOP_BREAKPOINT = breakpoints.xl
   private static readonly SETTLE_DELAY = 120
 
+  @property({ type: String }) stage = ''
   @property({ type: String }) action = ''
-  @property({ type: Number }) cutoff = 0
   @property({ type: String }) channel = ''
+
+  @state() private _isMobile = true
 
   @query('slot', true) private _slot!: HTMLSlotElement
   @query('.c-swipe__action') private _handleEl!: HTMLButtonElement | null
   @query('.c-swipe__content') private _contentEl!: HTMLElement | null
 
-  @state() private _height = 0
-  @state() private _isMobile = true
-  @state() private _isDragging = false
-
+  private _isDragging = false
+  private _isSnapping = false
+  
+  private _height = 0
+  private _snapTimer = 0
   private _minHeight = 0
   private _maxHeight = 0
   private _dragStartY = 0
-  private _dragStartHeight = 0
-  private _activeIndex = -1
   private _settleTimer = 0
-  private _snapTimer = 0
-  private _isSnapping = false
+  private _activeIndex = -1
+  private _dragStartHeight = 0
 
   private _resizeObserver!: ResizeObserver
   private _mediaQuery!: MediaQueryList
+  private _stageEl: HTMLElement | null = null
 
   private _channel = new PoiChannelController(
     this,
@@ -66,20 +68,14 @@ export class CSwipe extends LitElement {
 
   protected firstUpdated(): void {
     this._resizeObserver = new ResizeObserver(() => this._measure())
-    const stageEl = (this.offsetParent as HTMLElement) ?? this.parentElement
-    if (stageEl) this._resizeObserver.observe(stageEl)
+    this._stageEl ??= this._resolveStage()
+    if (this._stageEl) this._resizeObserver.observe(this._stageEl)
     this._measure()
     this._syncScrollSpy()
   }
 
   updated() {
-    if (this._isMobile) {
-      this.style.height = `${this._height}px`
-      this.classList.toggle('is-collapsed', this._isCollapsed())
-    } else {
-      this.style.height = ''
-      this.classList.remove('is-collapsed')
-    }
+    this._applyHeight()
   }
 
   render() {
@@ -102,6 +98,16 @@ export class CSwipe extends LitElement {
         </div>
       </div>
     `
+  }
+
+  private _applyHeight() {
+    if (this._isMobile) {
+      this.style.height = `${this._height}px`
+      this.classList.toggle('is-collapsed', this._isCollapsed())
+    } else {
+      this.style.height = ''
+      this.classList.remove('is-collapsed')
+    }
   }
 
   private _onBreakpointChange = (ev: MediaQueryListEvent) => {
@@ -138,7 +144,6 @@ export class CSwipe extends LitElement {
   }
 
   private _onScroll = () => {
-    // Ignore scroll events produced by our own snap-to-center animation
     if (this._isSnapping) return
 
     window.clearTimeout(this._settleTimer)
@@ -215,12 +220,16 @@ export class CSwipe extends LitElement {
     })
   }
 
+  private _resolveStage(): HTMLElement | null {
+    if (this.stage) return this.closest<HTMLElement>(this.stage)
+    return (this.offsetParent as HTMLElement | null) ?? this.parentElement
+  }
+
   private _measure() {
     if (!this._isMobile) return
 
-    // Use the nearest positioned ancestor as the stage; fall back to parentElement
-    const stageEl = (this.offsetParent as HTMLElement) ?? this.parentElement
-    this._maxHeight = stageEl?.clientHeight || this.getBoundingClientRect().height
+    this._stageEl ??= this._resolveStage()
+    this._maxHeight = this._stageEl?.clientHeight || this.getBoundingClientRect().height
 
     const wrapper = this._slot?.assignedElements()[0] as HTMLElement | undefined
     const firstCard = wrapper?.firstElementChild as HTMLElement | undefined
@@ -229,9 +238,10 @@ export class CSwipe extends LitElement {
       const hostStyle = getComputedStyle(this)
       const handleHeight = this._handleEl ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom) : 0
       const paddingTop = parseInt(hostStyle.paddingTop) || 0
-      const paddingBottom = parseInt(hostStyle.paddingBottom) || 8
+      // Frame padding is now constant across states, so this height is deterministic
+      const paddingBottom = parseInt(hostStyle.paddingBottom) || 0
 
-      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + (paddingBottom * 2)
+      this._minHeight = paddingTop + handleHeight + firstCard.offsetHeight + paddingBottom
     } else {
       this._minHeight = this._maxHeight * 0.2
     }
@@ -240,6 +250,7 @@ export class CSwipe extends LitElement {
       this._height = this._minHeight
     }
     this._height = clamp(this._height, this._minHeight, this._maxHeight)
+    this._applyHeight()
   }
 
   private _onPointerDown = (ev: PointerEvent) => {
@@ -256,6 +267,7 @@ export class CSwipe extends LitElement {
     ev.preventDefault()
     const delta = this._dragStartY - ev.clientY
     this._height = clamp(this._dragStartHeight + delta, this._minHeight, this._maxHeight)
+    this._applyHeight()
   }
 
   private _onPointerUp = () => {
@@ -265,5 +277,6 @@ export class CSwipe extends LitElement {
 
     const mid = (this._minHeight + this._maxHeight) / 2
     this._height = this._height > mid ? this._maxHeight : this._minHeight
+    this._applyHeight()
   }
 }

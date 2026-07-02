@@ -131,7 +131,7 @@ function formatDate(dateStart: string, dateEnd: string) {
             </a>
           ))}
         </div>
-        <c-swipe class="ti-poi-list__cards" channel={channel} action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+        <c-swipe class="ti-poi-list__cards" channel={channel} stage=".ti-poi-list" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
           <div class="ti-poi-list__cards-list">
             {pois.map((poi: any) => (
               poi.type == 'poi_transport' ? (

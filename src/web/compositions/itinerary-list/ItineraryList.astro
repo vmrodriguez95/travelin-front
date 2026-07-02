@@ -73,7 +73,7 @@ const markers = itineraries.flatMap((itinerary) =>
       </e-modal-trigger>
     </c-header>
     <section class="ti-itinerary-list">
-      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} stage=".ti-itinerary-list" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
         <div class="ti-itinerary-list__dates-list">
           {itineraries.map((itinerary, i) => (
             <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">

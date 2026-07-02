@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
@@ -26,8 +27,11 @@
 
   &__viewport {
     width: 100%;
-    border-radius: $border-radius-xl;
     overflow: hidden;
+
+    @media (min-width: $breakpoint-xl) {
+      border-radius: $border-radius-xl;
+    }
 
     #{$block}--height-auto & {
       height: 100%;

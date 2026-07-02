@@ -12,10 +12,10 @@
   right: 0;
   z-index: 1;
   text-align: center;
-  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  padding: 0 var(--grid-gutter) space(2);
   border-radius: $border-radius-xl $border-radius-xl 0 0;
   background-color: rgba(var(--color-background), 1);
-  transition: height 0.25s ease, padding-bottom 0.25s ease;
+  transition: height 0.25s ease;
 
   &.is-dragging {
     transition: none;
@@ -31,8 +31,10 @@
   }
 }
 
-:host(.is-collapsed) {
-  padding-bottom: space(1);
+// Clear the app menu only while expanded (menu is hidden when collapsed).
+// Applied to the scroll content — not the frame — so snap heights stay deterministic.
+:host(:not(.is-collapsed)) .c-swipe__content {
+  padding-bottom: var(--ui-menu-height);
 }
 
 .c-swipe {

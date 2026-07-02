@@ -20,7 +20,7 @@
   height: calc(100dvh - var(--ui-c-header-image-height));
   padding: calc(var(--grid-gutter) / 2) 0;
   width: 100%;
-  
+
   &__dates,
   &__actions {
     @include apple-scrollbar;
@@ -29,12 +29,12 @@
     scroll-behavior: smooth;
     box-sizing: border-box;
     min-width: 0;
-    
+
     > * {
       flex: 0 0 auto;
     }
   }
-  
+
   &__dates {
     display: flex;
     padding: 0 var(--grid-gutter);
@@ -118,7 +118,7 @@
       min-height: 0;
       grid-area: cards;
     }
-    
+
     &-list {
       display: flex;
       flex-direction: column;
@@ -126,7 +126,7 @@
       padding: 0 var(--grid-gutter);
       box-sizing: border-box;
       overflow-x: auto;
-      
+
       @media (min-width: $breakpoint-xl) {
         padding: 0 calc(var(--grid-gutter) / 2) 0 var(--grid-gutter);
       }
