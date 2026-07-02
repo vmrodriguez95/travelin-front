@@ -1,20 +1,30 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .e-ticket {
   background-color: rgba(var(--color-background--secondary), 1);
   border-radius: $border-radius-xl;
   box-sizing: border-box;
-  padding: space(3) 0;
+  padding: space(1) 0;
+
+  @media (min-width: $breakpoint-md) {
+    padding: space(3) 0;
+  }
 
   &__head {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: space(2);
-    padding: 0 space(4);
+    margin-bottom: space(1);
+    padding: 0 space(2);
+    
+    @media (min-width: $breakpoint-md) {
+      margin-bottom: space(2);
+      padding: 0 space(4);
+    }
   }
   
   &__code {
@@ -35,39 +45,66 @@
   }
 
   &__passenger {
-    margin-bottom: space(4);
-    padding: 0 space(4);
-  }
-
-  &__small {
-    @include body--s;
-    color: rgba(var(--color-text), 1);
-    margin: 0;
-  }
-
-  &__text {
-    @include body--m;
-    color: rgba(var(--color-text), 0.7);
-    margin: 0 0 space(1);
-  }
-
-  &__big {
-    @include heading--h2(600);
-    color: rgba(var(--color-text), 1);
-    margin: 0;
+    margin-bottom: space(2);
+    padding: 0 space(2);
+    
+    @media (min-width: $breakpoint-md) {
+      margin-bottom: space(4);
+      padding: 0 space(4);
+    }
   }
 
   &__name {
-    @include heading--h2;
+    @include heading--h3;
     color: rgba(var(--color-text), 1);
     margin: 0;
+
+    @media (min-width: $breakpoint-md) {
+      @include heading--h2;
+    }
+  }
+
+  &__small {
+    @include body--xs;
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+
+    @media (min-width: $breakpoint-md) {
+      @include body--s;
+    }
+  }
+
+  &__text {
+    @include body--s;
+    color: rgba(var(--color-text), 0.7);
+    margin: 0 0 space(0.5);
+
+    @media (min-width: $breakpoint-md) {
+      @include body--m;
+      margin: 0 0 space(2);
+    }
+  }
+
+  &__big {
+    @include heading--h3(600);
+    color: rgba(var(--color-text), 1);
+    margin: 0;
+
+    @media (min-width: $breakpoint-md) {
+      @include heading--h2(600);
+    }
   }
 
   &__row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: space(4);
-    padding: 0 space(4);
+    gap: space(2);
+    padding: 0 space(2);
+    
+    @media (min-width: $breakpoint-md) {
+      gap: space(4);
+      padding: 0 space(4);
+    }
   }
 
   &__column {
@@ -87,8 +124,12 @@
     background-color: rgba(var(--color-background--light), 0.1);
     border-radius: $border-radius-l;
     box-sizing: border-box;
-    padding: space(2);
+    padding: space(1);
     text-align: center;
+
+    @media (min-width: $breakpoint-md) {
+      padding: space(2);
+    }
   }
 
   &__qr {
@@ -105,17 +146,26 @@
     background-position: center;
     background-size: space(2) $height; /* 20px es la longitud del trazo + espacio */
     background-repeat: repeat-x;
-    margin: space(4) 0;
+    margin: space(2) 0;
+
+    @media (min-width: $breakpoint-md) {
+      margin: space(4) 0;
+    }
 
     &::after,
     &::before {
       content: '';
       display: block;
       position: absolute;
-      height: space(6);
-      width: space(6);
+      height: space(4);
+      width: space(4);
       background-color: rgba(var(--color-background), 1);
       border-radius: 50%;
+
+      @media (min-width: $breakpoint-md) {
+        height: space(6);
+        width: space(6);
+      }
     }
     
     &::after {
@@ -130,7 +180,11 @@
   }
 
   &__actions {
-    padding: 0 space(4);
+    padding: 0 space(2);
     text-align: center;
+
+    @media (min-width: $breakpoint-md) {
+      padding: 0 space(4);
+    }
   }
 }
