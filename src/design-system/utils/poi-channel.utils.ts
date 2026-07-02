@@ -39,7 +39,7 @@ export interface DayHoverEventDetail {
 }
 
 export interface DayActiveEventDetail {
-  day: number
+  id: string
   source?: EventTarget | null
 }
 

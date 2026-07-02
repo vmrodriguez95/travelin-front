@@ -1,19 +1,30 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .u-link-icon {
   @include body--s;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: space(1);
   min-width: space(13);
   font-family: inherit;
   text-align: center;
   text-decoration: none;
   padding: space(1);
+  width: 100%;
   border-radius: $border-radius-s;
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
+  box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
   transition: transform .2s ease;
+
+  @media (min-width: $breakpoint-xl) {
+    flex-direction: column;
+    width: auto;
+    box-shadow: none;
+  }
 
   @media (hover: hover) {
     &:hover {

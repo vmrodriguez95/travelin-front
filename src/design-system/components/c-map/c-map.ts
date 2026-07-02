@@ -80,7 +80,7 @@ export class CMap extends LitElement {
 
   _hoveredDay = -1
 
-  _activeDay = 0
+  _markersCommonId = ''
 
   _isMobile = false
 
@@ -141,11 +141,6 @@ export class CMap extends LitElement {
     super.disconnectedCallback()
   }
 
-  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
-    this._isMobile = !ev.matches
-    this._syncMarkers()
-  }
-
   protected firstUpdated() {
     this._setupMap()
   }
@@ -179,6 +174,11 @@ export class CMap extends LitElement {
         }
       </div>
     `
+  }
+
+  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
+    this._isMobile = !ev.matches
+    this._syncMarkers()
   }
 
   private _getViewportStyle() {
@@ -292,8 +292,9 @@ export class CMap extends LitElement {
   }
 
   private _displayedMarkers(): Array<MapMarker> {
-    if (this._isMobile && this._activeDay >= 0) {
-      return this.markers.filter((marker) => marker.day === this._activeDay)
+    if (this._isMobile && this._markersCommonId) {
+      const markers = this.markers.filter((marker) => marker.id === this._markersCommonId)
+      return markers.length ? markers : this.markers
     }
 
     return this.markers
@@ -566,7 +567,7 @@ export class CMap extends LitElement {
   }
 
   private _onDayActiveChange(detail: DayActiveEventDetail) {
-    this._activeDay = detail.day
+    this._markersCommonId = detail.id
 
     if (this._isMobile && this._hasInteractiveMarkers()) {
       this._syncMarkers()

@@ -210,7 +210,7 @@ export class CSwipe extends LitElement {
 
     this._activeIndex = index
     this._channel.dispatch<DayActiveEventDetail>(DAY_ACTIVE_EVENT, {
-      day: index,
+      id: this._getItems()[index].id,
       source: this
     })
   }
@@ -227,9 +227,7 @@ export class CSwipe extends LitElement {
 
     if (firstCard) {
       const hostStyle = getComputedStyle(this)
-      const handleHeight = this._handleEl
-        ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom)
-        : 0
+      const handleHeight = this._handleEl ? this._handleEl.offsetHeight + parseInt(getComputedStyle(this._handleEl).marginBottom) : 0
       const paddingTop = parseInt(hostStyle.paddingTop) || 0
       const paddingBottom = parseInt(hostStyle.paddingBottom) || 8
 

@@ -36,11 +36,7 @@ export class PoiChannelController implements ReactiveController {
   private _currentChannel = ''
   private _boundHandlers = new Map<string, EventListener>()
 
-  constructor(
-    host: ReactiveControllerHost,
-    getChannel: () => string,
-    handlers: PoiChannelHandlers
-  ) {
+  constructor(host: ReactiveControllerHost, getChannel: () => string, handlers: PoiChannelHandlers) {
     this.getChannel = getChannel
     this.handlers = handlers
     host.addController(this)
@@ -85,14 +81,14 @@ export class PoiChannelController implements ReactiveController {
 
     const wrap = <T>(handler: (detail: T) => void) => (e: Event) => handler((e as CustomEvent<T>).detail)
 
-    if (this.handlers.onSelect)     add(POI_SELECT_EVENT,      wrap(this.handlers.onSelect))
-    if (this.handlers.onClear)      add(POI_CLEAR_EVENT,       wrap(this.handlers.onClear))
-    if (this.handlers.onHover)      add(POI_HOVER_EVENT,       wrap(this.handlers.onHover))
+    if (this.handlers.onSelect) add(POI_SELECT_EVENT, wrap(this.handlers.onSelect))
+    if (this.handlers.onClear) add(POI_CLEAR_EVENT, wrap(this.handlers.onClear))
+    if (this.handlers.onHover) add(POI_HOVER_EVENT, wrap(this.handlers.onHover))
     if (this.handlers.onHoverClear) add(POI_HOVER_CLEAR_EVENT, this.handlers.onHoverClear)
-    if (this.handlers.onRemove)     add(POI_REMOVE_EVENT,      wrap(this.handlers.onRemove))
-    if (this.handlers.onDayHover)      add(DAY_HOVER_EVENT,       wrap(this.handlers.onDayHover))
+    if (this.handlers.onRemove) add(POI_REMOVE_EVENT, wrap(this.handlers.onRemove))
+    if (this.handlers.onDayHover) add(DAY_HOVER_EVENT, wrap(this.handlers.onDayHover))
     if (this.handlers.onDayHoverClear) add(DAY_HOVER_CLEAR_EVENT, this.handlers.onDayHoverClear)
-    if (this.handlers.onDayActive)     add(DAY_ACTIVE_EVENT,      wrap(this.handlers.onDayActive))
+    if (this.handlers.onDayActive) add(DAY_ACTIVE_EVENT, wrap(this.handlers.onDayActive))
   }
 
   private _disconnect() {

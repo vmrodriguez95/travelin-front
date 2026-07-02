@@ -111,7 +111,7 @@ function formatDate(dateStart: string, dateEnd: string) {
   <div class="u-grid-main--main">
     <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="/images/japan-wallpaper.jpg" animated backA11y="Volver atrás"></c-header>
     <section class="ti-poi-list">
-      <div class="u-col-4 u-col-md-12 ti-poi-list__dates">
+      <div class="ti-poi-list__dates">
         {Array.from({ length: 15 }, (_, i) =>(
           <a href="#" title={`Ir al día ${i + 1}`} class={i === 1 ? 'u-date u-date--today' : 'u-date'}>
             <p class="u-date__date">{12 + i} May</p>
@@ -119,7 +119,10 @@ function formatDate(dateStart: string, dateEnd: string) {
           </a>
         ))}
       </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__panel">
+      <div class="ti-poi-list__panel">
+        <button class="ti-poi-list__submenu">
+          <e-icon icon="add" size="m"></e-icon>
+        </button>
         <div class="ti-poi-list__actions">
           {buttons.map((button) => (
             <a href="#" class="u-link-icon" title={`Añadir un nuevo ${button.label}`}>
@@ -128,7 +131,7 @@ function formatDate(dateStart: string, dateEnd: string) {
             </a>
           ))}
         </div>
-        <c-swipe class="ti-poi-list__cards" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+        <c-swipe class="ti-poi-list__cards" channel={channel} action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
           <div class="ti-poi-list__cards-list">
             {pois.map((poi: any) => (
               poi.type == 'poi_transport' ? (
@@ -175,11 +178,11 @@ function formatDate(dateStart: string, dateEnd: string) {
             ))}
           </div>
         </c-swipe>
-      </div>
-      <div class="u-col-4 u-col-md-12 u-col-lg-6 ti-poi-list__map">
-        <c-map apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
-        <c-poi-detail channel={channel} close="Cerrar" />
-        <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
+        <div class="ti-poi-list__map">
+          <c-map apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
+          <c-poi-detail channel={channel} close="Cerrar" />
+          <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
+        </div>
       </div>
     </section>
   </div>

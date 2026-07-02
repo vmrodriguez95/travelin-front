@@ -2,67 +2,121 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/scrollbar.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 .u-grid-main:has(.ti-poi-list__cards.is-collapsed) .u-grid-main--sidebar c-menu {
   transform: translateY(100%);
 }
 
 .ti-poi-list {
+  $root: &;
   --padding-vertical: var(--grid-gutter);
   --ui-actions-height: 64px;
 
   display: grid;
+  grid-template-rows: auto 1fr;
   position: relative;
   box-sizing: border-box;
   height: calc(100dvh - var(--ui-c-header-image-height));
-  grid-template-rows: auto auto 1fr;
   padding: calc(var(--grid-gutter) / 2) 0;
-  grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
-
-  @media (min-width: $breakpoint-xl) {
-    grid-template-rows: auto 1fr;
-    height: calc(100dvh - var(--ui-c-header-image-height) - var(--padding-vertical));
-    width: 100%;
-  }
-
-  &__dates {
-    padding: 0 var(--grid-gutter);
-    border-bottom: 1px solid rgba(var(--color-gray), 1);
-  }
-
-  &__actions {
-    padding: space(1) var(--grid-gutter);
-
-    @media (min-width: $breakpoint-xl) {
-      padding: space(2) var(--grid-gutter);
-    }
- 
-  }
+  width: 100%;
   
   &__dates,
   &__actions {
     @include apple-scrollbar;
-    display: flex;
     flex-wrap: nowrap;
     gap: space(1);
-    overflow-x: auto;
-    overflow-y: hidden;
     scroll-behavior: smooth;
-
+    box-sizing: border-box;
+    min-width: 0;
+    
     > * {
       flex: 0 0 auto;
+    }
+  }
+  
+  &__dates {
+    display: flex;
+    padding: 0 var(--grid-gutter);
+    border-bottom: 1px solid rgba(var(--color-gray), 1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+  }
+
+  &__submenu {
+    --eIconColor: var(--color-text);
+    position: fixed;
+    bottom: space(19);
+    right: space(2);
+    background-color: rgba(var(--color-primary), 1);
+    padding: space(0.5);
+    border: none;
+    border-radius: 50%;
+    width: space(5);
+    height: space(5);
+    z-index: 10;
+
+    @media (min-width: $breakpoint-xl) {
+      display: none;
+    }
+
+    &:focus {
+      ~ #{$root}__actions {
+        display: flex;
+      }
+    }
+  }
+
+  &__actions {
+    display: none;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    position: fixed;
+    bottom: space(19);
+    right: space(1);
+    z-index: 10;
+    padding: space(2);
+    border: 1px solid rgba(var(--color-primary), 1);
+    border-radius: $border-radius-l;
+    background-color: rgba(var(--color-background), 1);
+
+    @media (min-width: $breakpoint-xl) {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      position: static;
+      grid-area: actions;
+      padding: space(2) var(--grid-gutter);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      width: 100%;
+      border-radius: 0;
+      border: none;
+      background: none;
     }
   }
 
   &__panel {
     min-height: 0;
+    min-width: 0;
+
+    @media (min-width: $breakpoint-xl) {
+      display: grid;
+      grid-template-areas: 
+        "actions map"
+        "cards map"
+      ;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: min-content 1fr;
+    }
   }
 
   &__cards {
     @media (min-width: $breakpoint-xl) {
-      --ui-actions-height: 88px;
-
-      height: calc(100% - var(--ui-actions-height));
+      min-height: 0;
+      grid-area: cards;
     }
     
     &-list {
@@ -83,6 +137,7 @@
     height: 100%;
     min-height: 0;
     position: relative;
+    grid-area: map;
 
     @media (min-width: $breakpoint-xl) {
       padding: var(--grid-gutter) var(--grid-gutter) 0 calc(var(--grid-gutter) / 2);

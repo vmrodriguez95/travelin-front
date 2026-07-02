@@ -13,7 +13,7 @@ const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Po
 const channel = 'itinerary-list'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
-const markers = itineraries.flatMap((itinerary, dayIndex) =>
+const markers = itineraries.flatMap((itinerary) =>
   itinerary.map((poi) => ({
     id: poi.idItinerary,
     idPoi: poi.idItinerary,
@@ -21,7 +21,6 @@ const markers = itineraries.flatMap((itinerary, dayIndex) =>
     type: poi.type,
     coordinates: poi.coordinates,
     icon: poi.icon || 'location',
-    day: dayIndex,
     data: poi,
     view: 'resume'
   }))
