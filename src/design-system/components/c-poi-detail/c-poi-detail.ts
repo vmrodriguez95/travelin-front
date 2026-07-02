@@ -1,7 +1,6 @@
 import { LitElement, html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, query, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
-import { when } from 'lit/directives/when.js'
 import { map } from 'lit/directives/map.js'
 
 // Types
@@ -26,11 +25,15 @@ import {
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
+// Mixins
+import { Responsive } from '@ds/mixins/responsive'
+
 // Styles
 import styles from './c-poi-detail.style.scss?inline'
+import { BREAKPOINTS } from '@ds/utils/variables'
 
 @customElement('c-poi-detail')
-export class CPoiDetail extends LitElement {
+export class CPoiDetail extends Responsive(LitElement) {
 
   @property({ type: Number }) gap = 0
 
@@ -74,7 +77,7 @@ export class CPoiDetail extends LitElement {
       <div class=${classes}>
         <div class="c-poi-detail__actions">
           <button class="c-poi-detail__close" type="button" @click=${this._onClose.bind(this)} aria-label=${this.close}>
-            <e-icon icon="close" size="l"></e-icon>
+            <e-icon icon="close" size=${this.breakpoint === 'sm' ? 'm' : 'l'}></e-icon>
           </button>
         </div>
         <div class="c-poi-detail__content">

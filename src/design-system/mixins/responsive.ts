@@ -1,6 +1,6 @@
 import { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
-import { breakpoints } from '../utils/variables'
+import { BREAKPOINTS } from '../utils/variables'
 
 type Constructor<T> = new (...args: any[]) => T
 
@@ -30,10 +30,10 @@ export const Responsive =
     private _activateMediaQueries = () => {
       if (this._mediaQueryList.length === 0) {
         this._mediaQueryList = [
-          window.matchMedia(`(min-width: ${breakpoints.sm}px) and (max-width: ${breakpoints.md - 1}px)`),
-          window.matchMedia(`(min-width: ${breakpoints.md}px) and (max-width: ${breakpoints.lg - 1}px)`),
-          window.matchMedia(`(min-width: ${breakpoints.lg}px) and (max-width: ${breakpoints.xl - 1}px)`),
-          window.matchMedia(`(min-width: ${breakpoints.xl}px)`),
+          window.matchMedia(`(min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md - 1}px)`),
+          window.matchMedia(`(min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg - 1}px)`),
+          window.matchMedia(`(min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl - 1}px)`),
+          window.matchMedia(`(min-width: ${BREAKPOINTS.xl}px)`),
         ]
         this._mediaQueryList.forEach(mq => mq.addEventListener('change', this._activateMediaQueries))
       }
