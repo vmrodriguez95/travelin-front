@@ -23,11 +23,14 @@ import {
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
+// Mixins
+import { Responsive } from '@ds/mixins/responsive'
+
 // Styles
 import styles from './c-card-transport.style.scss?inline'
 
 @customElement('c-card-transport')
-export class CCardTransport extends LitElement {
+export class CCardTransport extends Responsive(LitElement) {
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -83,7 +86,7 @@ export class CCardTransport extends LitElement {
         @blur=${this._onHoverEnd}
       >
         <div class="c-card-transport__head">
-          <e-icon class="c-card-transport__icon" icon=${this.icon} size="xl"></e-icon>
+          <e-icon class="c-card-transport__icon" icon=${this.icon} size=${this.breakpoint === 'sm' ? 'l' : 'xl'}></e-icon>
         </div>
         <div class="c-card-transport__content">
           <div class="c-card-transport__segments">

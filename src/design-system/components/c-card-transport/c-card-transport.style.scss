@@ -1,5 +1,6 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
@@ -11,10 +12,10 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: space(2);
+  gap: space(1);
   position: relative;
   width: 100%;
-  padding: space(1) space(2) space(1) space(1);
+  padding: space(1);
   font-family: inherit;
   text-align: left;
   border: none;
@@ -24,6 +25,11 @@
   cursor: pointer;
   box-sizing: border-box;
   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+  @media (min-width: $breakpoint-md) {
+    gap: space(2);
+    padding: space(1) space(2) space(1) space(1);
+  }
 
   @media (hover: hover) {
     &:hover {
@@ -42,12 +48,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: space(8);
-    height: space(8);
+    width: space(6);
+    height: space(6);
     margin: 0;
     border-radius: $border-radius-s;
     background-color: rgba(var(--color-background), 1);
     overflow: hidden;
+
+    @media (min-width: $breakpoint-md) {
+      width: space(8);
+      height: space(8);
+    }
   }
 
   &__segments {
@@ -55,12 +66,16 @@
   }
 
   &__segment {
-    @include body--m;
+    @include body--s;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     margin: 0;
     width: 100%;
+
+    @media (min-width: $breakpoint-md) {
+      @include body--m;
+    }
 
     > span:first-child {
       text-align: right;
@@ -71,10 +86,14 @@
     @include body--xxs;
     position: relative;
     top: -8px;
-    padding: 0 space(2);
     margin: 0 space(1);
     text-align: center;
     border-bottom: 1px solid rgba(var(--color-text), 1);
+    white-space: nowrap;
+    
+    @media (min-width: $breakpoint-md) {
+      padding: 0 space(2);
+    }
   }
 
   &__end {

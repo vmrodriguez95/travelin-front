@@ -23,11 +23,14 @@ import {
 } from '@ds/utils/poi-channel.utils'
 import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 
+// Mixins
+import { Responsive } from '@ds/mixins/responsive'
+
 // Styles
 import styles from './c-card-poi.style.scss?inline'
 
 @customElement('c-card-poi')
-export class CCardPoi extends LitElement {
+export class CCardPoi extends Responsive(LitElement) {
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -97,7 +100,7 @@ export class CCardPoi extends LitElement {
         <div class=${headClasses}>
           <slot name="img" @slotchange=${this.handleSlotChange}></slot>
           ${when(this.icon && !this.hasImage,
-            () => html`<e-icon class="c-card-poi__icon" icon=${this.icon} size="xl"></e-icon>`
+            () => html`<e-icon class="c-card-poi__icon" icon=${this.icon} size=${this.breakpoint === 'sm' ? 'l' : 'xl'}></e-icon>`
           )}
         </div>
         <div class="c-card-poi__content">
