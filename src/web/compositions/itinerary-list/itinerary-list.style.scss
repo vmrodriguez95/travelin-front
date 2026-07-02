@@ -3,10 +3,6 @@
 @use '@common/styles/tools/scrollbar.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
-.u-grid-main:has(.ti-itinerary-list__dates-column.is-collapsed) .u-grid-main--sidebar c-menu {
-  transform: translateY(100%);
-}
-
 .ti-itinerary-list {
   position: relative;
   height: calc(100dvh - var(--ui-c-header-image-height));

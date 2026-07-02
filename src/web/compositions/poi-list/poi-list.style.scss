@@ -4,10 +4,6 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
-.u-grid-main:has(.ti-poi-list__cards.is-collapsed) .u-grid-main--sidebar c-menu {
-  transform: translateY(100%);
-}
-
 .ti-poi-list {
   $root: &;
   --padding-vertical: var(--grid-gutter);

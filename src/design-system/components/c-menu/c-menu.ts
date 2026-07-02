@@ -1,5 +1,11 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
+
+// Controllers
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+
+// Utils
+import type { MenuToggleEventDetail } from '@ds/utils/poi-channel.utils'
 
 import styles from './c-menu.style.scss?inline'
 
@@ -7,6 +13,16 @@ import styles from './c-menu.style.scss?inline'
 export class CMenu extends LitElement {
 
   static styles = css`${unsafeCSS(styles)}`
+
+  @property({ type: String }) channel = ''
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    {
+      onMenuToggle: (detail: MenuToggleEventDetail) => this._toggleHideMenu(detail),
+    }
+  )
 
   render() {
     return html`
@@ -20,5 +36,9 @@ export class CMenu extends LitElement {
         <slot name="profile"></slot>
       </div>
     `
+  }
+
+  private _toggleHideMenu = (detail: MenuToggleEventDetail) => {
+    this.classList.toggle('is-hidden', detail.hidden)
   }
 }

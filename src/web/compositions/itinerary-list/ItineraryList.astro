@@ -30,7 +30,7 @@ const markers = itineraries.flatMap((itinerary, dayIndex) =>
 
 <main id={id} class="u-grid-main u-bg--dark" data-component>
   <div class="u-grid-main--sidebar">
-    <AppMenu />
+    <AppMenu channel={channel} />
   </div>
   <div class="u-grid-main--main">
     <c-header

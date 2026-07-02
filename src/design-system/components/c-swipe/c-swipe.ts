@@ -7,7 +7,12 @@ import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
 // Utils
 import { clamp } from '@ds/utils/number.utils'
 import { breakpoints } from '@ds/utils/variables'
-import { DAY_ACTIVE_EVENT, type DayActiveEventDetail } from '@ds/utils/poi-channel.utils'
+import {
+  DAY_ACTIVE_EVENT,
+  MENU_TOGGLE_EVENT,
+  type DayActiveEventDetail,
+  type MenuToggleEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-swipe.style.scss?inline'
@@ -30,6 +35,8 @@ export class CSwipe extends LitElement {
 
   private _isDragging = false
   private _isSnapping = false
+  private _hidden = false
+  private _menuHidden = false
   
   private _height = 0
   private _snapTimer = 0
@@ -47,7 +54,10 @@ export class CSwipe extends LitElement {
   private _channel = new PoiChannelController(
     this,
     () => this.channel,
-    {}
+    {
+      onSelect: () => this._setHidden(true),
+      onClear: () => this._setHidden(false),
+    }
   )
 
   static styles = css`${unsafeCSS(styles)}`
@@ -102,10 +112,33 @@ export class CSwipe extends LitElement {
     if (this._isMobile) {
       this.style.height = `${this._height}px`
       this.classList.toggle('is-collapsed', this._isCollapsed())
+      this.classList.toggle('is-hidden', this._hidden)
     } else {
       this.style.height = ''
       this.classList.remove('is-collapsed')
+      this.classList.remove('is-hidden')
     }
+
+    this._syncMenu()
+  }
+
+  // The app menu should get out of the way whenever the sheet occupies the
+  // bottom (collapsed) or is dismissed for a selection (hidden). We broadcast
+  // that intent so c-menu can hide itself — no cross-component styling.
+  private _syncMenu() {
+    const hidden = this._isMobile && (this._hidden || this._isCollapsed())
+
+    if (hidden === this._menuHidden) return
+
+    this._menuHidden = hidden
+    this._channel.dispatch<MenuToggleEventDetail>(MENU_TOGGLE_EVENT, { hidden, source: this })
+  }
+
+  // Hidden while a POI is selected (poi-select) and restored on poi-clear
+  private _setHidden(hidden: boolean) {
+    if (this._hidden === hidden) return
+    this._hidden = hidden
+    this._applyHeight()
   }
 
   private _onBreakpointChange = (ev: MediaQueryListEvent) => {

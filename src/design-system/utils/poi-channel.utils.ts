@@ -8,6 +8,7 @@ export const POI_REMOVE_EVENT = 'poi-remove'
 export const DAY_HOVER_EVENT = 'day-hover'
 export const DAY_HOVER_CLEAR_EVENT = 'day-hover-clear'
 export const DAY_ACTIVE_EVENT = 'day-active'
+export const MENU_TOGGLE_EVENT = 'menu-toggle'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note
 
@@ -40,6 +41,11 @@ export interface DayHoverEventDetail {
 
 export interface DayActiveEventDetail {
   value: string
+  source?: EventTarget | null
+}
+
+export interface MenuToggleEventDetail {
+  hidden: boolean
   source?: EventTarget | null
 }
 

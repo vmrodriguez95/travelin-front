@@ -22,6 +22,15 @@
   }
 }
 
+// Slid off-screen while the swipe sheet owns the bottom (mobile only)
+:host(.is-hidden) {
+  transform: translateY(100%);
+
+  @media (min-width: $breakpoint-xl) {
+    transform: none;
+  }
+}
+
 .c-menu {
   display: flex;
   align-items: center;
