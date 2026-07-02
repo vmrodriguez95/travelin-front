@@ -47,6 +47,8 @@ export class CMap extends LitElement {
 
   @property({ type: Number }) zoom = 12
 
+  @property({ type: String }) activeKey = 'idPoi'
+
   @property({ type: Array }) markers: Array<MapMarker> = []
 
   @state() _height = 0
@@ -81,6 +83,8 @@ export class CMap extends LitElement {
   _hoveredDay = -1
 
   _markersCommonId = ''
+
+  _activeValue = ''
 
   _isMobile = false
 
@@ -347,8 +351,18 @@ export class CMap extends LitElement {
     return marker.icon || 'location'
   }
 
+  private _isActiveMarker(marker: MapMarker) {
+    if (this._activeValue === '') return false
+
+    return String((marker as unknown as Record<string, unknown>)[this.activeKey] ?? '') === this._activeValue
+  }
+
   private _getMarkerStateKey(marker: MapMarker) {
     if (this._selectedIdPoi && marker.idPoi === this._selectedIdPoi) {
+      return 'selected'
+    }
+
+    if (this._isActiveMarker(marker)) {
       return 'selected'
     }
 
@@ -567,11 +581,11 @@ export class CMap extends LitElement {
   }
 
   private _onDayActiveChange(detail: DayActiveEventDetail) {
-    this._markersCommonId = detail.id
+    this._activeValue = detail.value
 
-    if (this._isMobile && this._hasInteractiveMarkers()) {
-      this._syncMarkers()
-    }
+    if (!this._hasInteractiveMarkers()) return
+
+    this._refreshMarkerStyles()
   }
 
   private _onPoiRemove(detail: PoiRemoveEventDetail) {

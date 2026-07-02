@@ -79,11 +79,9 @@ export class CSwipe extends LitElement {
   }
 
   render() {
-    const showAction = this._isMobile
-
     return html`
       <div class="c-swipe">
-        ${showAction ? html`
+        ${this._isMobile ? html`
           <button
             class="c-swipe__action"
             aria-label=${this.action}
@@ -214,8 +212,9 @@ export class CSwipe extends LitElement {
     if (index < 0 || index === this._activeIndex) return
 
     this._activeIndex = index
+    const item = this._getItems()[index] as HTMLElement | undefined
     this._channel.dispatch<DayActiveEventDetail>(DAY_ACTIVE_EVENT, {
-      id: this._getItems()[index].id,
+      value: item?.dataset.marker ?? '',
       source: this
     })
   }

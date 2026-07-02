@@ -13,7 +13,7 @@ const itineraries: Poi[][] = (Object.values(itinerariesGlob)[0] as { default: Po
 const channel = 'itinerary-list'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
-const markers = itineraries.flatMap((itinerary) =>
+const markers = itineraries.flatMap((itinerary, dayIndex) =>
   itinerary.map((poi) => ({
     id: poi.idItinerary,
     idPoi: poi.idItinerary,
@@ -21,6 +21,7 @@ const markers = itineraries.flatMap((itinerary) =>
     type: poi.type,
     coordinates: poi.coordinates,
     icon: poi.icon || 'location',
+    day: dayIndex,
     data: poi,
     view: 'resume'
   }))
@@ -76,7 +77,7 @@ const markers = itineraries.flatMap((itinerary) =>
       <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} stage=".ti-itinerary-list" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
         <div class="ti-itinerary-list__dates-list">
           {itineraries.map((itinerary, i) => (
-            <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">
+            <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026" data-marker={i}>
               <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok" channel={channel} day={i}>
                 <p slot="index">Día {i + 1}</p>
                 <p slot="day">{3 + i}</p>
@@ -99,7 +100,7 @@ const markers = itineraries.flatMap((itinerary) =>
         </div>
       </c-swipe>
       <div class="ti-itinerary-list__content u-col-4 u-col-md-12 u-col-xl-7">
-        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} channel={channel}></c-map>
+        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} channel={channel} activeKey="day"></c-map>
       </div>
     </section>
   </div>

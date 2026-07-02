@@ -135,7 +135,7 @@ function formatDate(dateStart: string, dateEnd: string) {
           <div class="ti-poi-list__cards-list">
             {pois.map((poi: any) => (
               poi.type == 'poi_transport' ? (
-                <c-card-transport icon={poi.typeTransport} data={JSON.stringify(poi)} channel={channel}>
+                <c-card-transport icon={poi.typeTransport} data={JSON.stringify(poi)} channel={channel} data-marker={poi.id}>
                   <a href="#" slot="action">
                     <e-icon icon="edit" size="m"></e-icon>
                   </a>
@@ -151,7 +151,7 @@ function formatDate(dateStart: string, dateEnd: string) {
                   </e-modal-trigger>
                 </c-card-transport>
               ) : (
-                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type} channel={channel}>
+                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type} channel={channel} data-marker={poi.id}>
                   {
                     poi.image && (
                       <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="64" height="64" loading="lazy" />
