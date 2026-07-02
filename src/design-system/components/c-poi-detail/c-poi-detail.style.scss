@@ -12,7 +12,7 @@
   overflow: hidden;
   z-index: 10;
   
-  @media (min-width: $breakpoint-md) {
+  @media (min-width: $breakpoint-xl) {
     inset: var(--grid-gutter) var(--grid-gutter) 0 calc(var(--grid-gutter) / 2);
     border-radius: ($border-radius-xl - 1px);
     z-index: inherit;
@@ -32,7 +32,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: space(1) space(1);
+    padding: space(1) space(1) 0;
 
     @media (min-width: $breakpoint-md) {
       padding: space(1) space(2);
