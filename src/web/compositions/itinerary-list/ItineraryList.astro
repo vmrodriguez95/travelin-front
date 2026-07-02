@@ -30,40 +30,40 @@ const markers = itineraries.flatMap((itinerary, dayIndex) =>
 
 <main id={id} class="u-grid-main u-bg--dark" data-component>
   <div class="u-grid-main--sidebar">
-    <AppMenu />
+    <AppMenu channel={channel} />
   </div>
   <div class="u-grid-main--main">
     <c-header
-      heading="TAILANDIA"
+      heading="Japón"
       subheading="12-05-2024 / 26-05-2024"
       complement="1 adulto"
       url="#"
-      bg="https://loremflickr.com/2000/600/tailand"
+      bg="/images/japan-wallpaper.jpg"
       openA11y="Abrir menú de acciones para el viaje"
       backA11y="Ir a la página de todos los viajes"
     >
       <a href="#" title="Ir a la página para ver todos los documentos del viaje">
-        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="cards" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="group" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <a href="#" title="Ir a la página para ver todos los gastos del viaje">
-        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="money" size="m"></e-icon>
         </span>
       </a>
       <e-modal-trigger>
-        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="share" size="m"></e-icon>
         </span>
       </e-modal-trigger>
       <e-modal-trigger modal="modal">
-        <span class="u-pin-icon u-pin-icon--s u-pin-icon--hover">
+        <span class="u-pin-icon u-pin-icon--hover">
           <e-icon icon="delete" size="m"></e-icon>
         </span>
         <template>
@@ -74,10 +74,10 @@ const markers = itineraries.flatMap((itinerary, dayIndex) =>
       </e-modal-trigger>
     </c-header>
     <section class="ti-itinerary-list">
-      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
+      <c-swipe class="u-col-4 u-col-md-12 u-col-xl-5 ti-itinerary-list__dates-column" channel={channel} stage=".ti-itinerary-list" action="Desliza hacia arriba o hacia abajo para ocultar o mostrar el mapa respectivamente.">
         <div class="ti-itinerary-list__dates-list">
           {itineraries.map((itinerary, i) => (
-            <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026">
+            <a class="u-link--no-underline" href="#" title="Ir al itinerario del día 03-03-2026" data-marker={i}>
               <c-card-date class="u-margin--bottom--m" text="Llegada a Bangkok" channel={channel} day={i}>
                 <p slot="index">Día {i + 1}</p>
                 <p slot="day">{3 + i}</p>
@@ -100,7 +100,7 @@ const markers = itineraries.flatMap((itinerary, dayIndex) =>
         </div>
       </c-swipe>
       <div class="ti-itinerary-list__content u-col-4 u-col-md-12 u-col-xl-7">
-        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} channel={channel}></c-map>
+        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} channel={channel} activeKey="day"></c-map>
       </div>
     </section>
   </div>

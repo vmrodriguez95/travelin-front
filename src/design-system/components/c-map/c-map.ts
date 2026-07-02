@@ -47,6 +47,8 @@ export class CMap extends LitElement {
 
   @property({ type: Number }) zoom = 12
 
+  @property({ type: String }) activeKey = 'idPoi'
+
   @property({ type: Array }) markers: Array<MapMarker> = []
 
   @state() _height = 0
@@ -80,7 +82,9 @@ export class CMap extends LitElement {
 
   _hoveredDay = -1
 
-  _activeDay = 0
+  _markersCommonId = ''
+
+  _activeValue = ''
 
   _isMobile = false
 
@@ -141,11 +145,6 @@ export class CMap extends LitElement {
     super.disconnectedCallback()
   }
 
-  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
-    this._isMobile = !ev.matches
-    this._syncMarkers()
-  }
-
   protected firstUpdated() {
     this._setupMap()
   }
@@ -179,6 +178,11 @@ export class CMap extends LitElement {
         }
       </div>
     `
+  }
+
+  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
+    this._isMobile = !ev.matches
+    this._syncMarkers()
   }
 
   private _getViewportStyle() {
@@ -292,8 +296,9 @@ export class CMap extends LitElement {
   }
 
   private _displayedMarkers(): Array<MapMarker> {
-    if (this._isMobile && this._activeDay >= 0) {
-      return this.markers.filter((marker) => marker.day === this._activeDay)
+    if (this._isMobile && this._markersCommonId) {
+      const markers = this.markers.filter((marker) => marker.id === this._markersCommonId)
+      return markers.length ? markers : this.markers
     }
 
     return this.markers
@@ -346,8 +351,18 @@ export class CMap extends LitElement {
     return marker.icon || 'location'
   }
 
+  private _isActiveMarker(marker: MapMarker) {
+    if (this._activeValue === '') return false
+
+    return String((marker as unknown as Record<string, unknown>)[this.activeKey] ?? '') === this._activeValue
+  }
+
   private _getMarkerStateKey(marker: MapMarker) {
     if (this._selectedIdPoi && marker.idPoi === this._selectedIdPoi) {
+      return 'selected'
+    }
+
+    if (this._isActiveMarker(marker)) {
       return 'selected'
     }
 
@@ -566,11 +581,11 @@ export class CMap extends LitElement {
   }
 
   private _onDayActiveChange(detail: DayActiveEventDetail) {
-    this._activeDay = detail.day
+    this._activeValue = detail.value
 
-    if (this._isMobile && this._hasInteractiveMarkers()) {
-      this._syncMarkers()
-    }
+    if (!this._hasInteractiveMarkers()) return
+
+    this._refreshMarkerStyles()
   }
 
   private _onPoiRemove(detail: PoiRemoveEventDetail) {

@@ -5,16 +5,17 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
+  display: block;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1;
   text-align: center;
-  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  padding: 0 var(--grid-gutter) space(2);
   border-radius: $border-radius-xl $border-radius-xl 0 0;
   background-color: rgba(var(--color-background), 1);
-  transition: height 0.25s ease;
+  transition: height 0.25s ease, transform 0.25s ease;
 
   &.is-dragging {
     transition: none;
@@ -22,12 +23,23 @@
 
   @media (min-width: $breakpoint-xl) {
     position: static;
-    height: 100% !important;
+    height: 100%;
     padding: 0;
     border-radius: 0;
     background-color: transparent;
     transition: none;
   }
+}
+
+// Clear the app menu only while expanded (menu is hidden when collapsed).
+// Applied to the scroll content — not the frame — so snap heights stay deterministic.
+:host(:not(.is-collapsed)) .c-swipe__content {
+  padding-bottom: var(--ui-menu-height);
+}
+
+// Slide the sheet off-screen while a POI is selected
+:host(.is-hidden) {
+  transform: translateY(100%);
 }
 
 .c-swipe {

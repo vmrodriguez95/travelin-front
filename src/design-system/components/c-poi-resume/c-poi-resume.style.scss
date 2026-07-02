@@ -7,9 +7,9 @@
   flex-wrap: wrap;
   align-items: center;
   position: absolute;
-  bottom: space(2);
-  right: space(2);
-  left: space(2);
+  bottom: calc(var(--grid-gutter) * 0.5);
+  right: calc(var(--grid-gutter) * 1.5);
+  left: calc(var(--grid-gutter));
   gap: space(2);
 
   &__wrapper {
@@ -32,6 +32,13 @@
     border-radius: 100%;
     cursor: pointer;
     box-shadow: 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+    transition: transform 0.2s ease;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
   }
 
   &__head {

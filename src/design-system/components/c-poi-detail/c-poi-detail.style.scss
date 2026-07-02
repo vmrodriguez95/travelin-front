@@ -4,10 +4,8 @@
 
 .c-poi-detail {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: var(--grid-gutter) var(--grid-gutter) 0 calc(var(--grid-gutter) / 2);
   height: 0;
-  width: 100%;
   border-radius: ($border-radius-xl - 1px);
   box-sizing: border-box;
   background-color: rgba(var(--color-background--secondary), 1);
@@ -16,7 +14,7 @@
   &--active {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
   }
 
   &--transport {
@@ -27,8 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: space(2);
-    margin-bottom: space(2);
+    padding: space(1) space(2);
 
     button {
       background: none;
