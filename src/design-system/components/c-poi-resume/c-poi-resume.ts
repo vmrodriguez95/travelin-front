@@ -22,6 +22,10 @@ import styles from './c-poi-resume.style.scss?inline'
 @customElement('c-poi-resume')
 export class CPoiResume extends LitElement {
 
+  @property({ type: String }) icon = 'info'
+
+  @property({ type: String }) button = 'Info'
+
   @property({ type: String }) channel = ''
 
   @property({ type: String }) close = 'Cerrar resumen'
@@ -56,7 +60,7 @@ export class CPoiResume extends LitElement {
             </div>
             <div class="c-poi-resume__column">
               <e-button size="thin" @click=${this._showInfo} aria-label=${this.info}>
-                <e-icon class="c-poi-resume__icon" icon="info" size="m"></e-icon> <span class="c-poi-resume__text-button">Info</span>
+                <e-icon class="c-poi-resume__icon" icon=${this.icon} size="m"></e-icon> <span class="c-poi-resume__text-button">${this.button}</span>
               </e-button>
             </div>
           </div>

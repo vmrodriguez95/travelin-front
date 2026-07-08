@@ -14,6 +14,9 @@ import { FormElement } from '../../abstracts/form-element.base.ts'
 import type { ValidityResult } from '../../abstracts/form-element.base.ts'
 
 import style from './e-input-search.style.scss?inline'
+import { PoiChannelController } from '@ds/controllers/poi-channel.controller.ts'
+import { POI_SELECT_EVENT, type PoiSelectEventDetail } from '@ds/utils/poi-channel.utils.ts'
+import type { Poi } from '@ds/types/pois.ts'
 
 @customElement('e-input-search')
 export class EInputSearch extends FormElement {
@@ -21,6 +24,14 @@ export class EInputSearch extends FormElement {
   static styles = css`${unsafeCSS(style)}`
 
   @property({ type: String }) api = ''
+
+  @property({ type: String }) label = ''
+
+  @property({ type: String }) places = ''
+
+  @property({ type: String }) channel = ''
+
+  @property({ type: String }) placeholder = ''
 
   @property({ type: String, reflect: true }) value: string = ''
 
@@ -39,6 +50,12 @@ export class EInputSearch extends FormElement {
   private _request = new SimpleRequestController(this, this._client)
 
   private _searchId = 0
+
+  private _channel = new PoiChannelController(
+    this,
+    () => this.channel,
+    { }
+  )
 
   private _debounceSearch = debounce((query: string, searchId: number) => {
     this._onSearch(query, searchId)
@@ -69,6 +86,7 @@ export class EInputSearch extends FormElement {
             class="e-input-search__field"
             type="text"
             autocomplete="off"
+            placeholder=${this.placeholder}
             ?readonly=${this.readonly}
             ?required=${this.required}
             aria-autocomplete="list"
@@ -78,19 +96,15 @@ export class EInputSearch extends FormElement {
             @blur=${this._onBlur}
             @keyup=${this._detectEscape}
           />
-
           <e-icon class="e-input-search__icon" icon="search" size="m"></e-icon>
-
           ${when(this._request.loading, () => html`
             <span class="u-spinner" aria-hidden="true"></span>
           `)}
-
           ${when(this.displayValue, () => html`
             <button class="e-input-search__clear" type="button" @click=${this._onClean}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
           `)}
-
           ${when(this._open && this._searchResults.length, () => html`
             <ul class="e-input-search__results" role="listbox">
               ${this._searchResults.map((result: SearchResult) => html`
@@ -181,7 +195,20 @@ export class EInputSearch extends FormElement {
     }
   }
 
-  private _onChange(result: SearchResult) {
+  private async _getPlaceByRequest(placeId: string) {
+    if (!placeId) return
+
+    try {
+      return await this._request.get<SearchApiResponse>(this.places, placeId)
+    } catch (e: unknown) {
+      if ((e as Error)?.name === 'AbortError') return
+      if ((e as Error)?.message === 'Stale response ignored') return
+
+      console.error(e)
+    }
+  }
+
+  private async _onChange(result: SearchResult) {
     this._searchId++
     this._request.abort()
     this.value = result.value
@@ -193,6 +220,19 @@ export class EInputSearch extends FormElement {
     this._internals.setFormValue(this.value)
 
     this.dispatchEvent(new Event('change'))
+
+    if (this.channel) {
+      const place = await this._getPlaceByRequest(result.value)
+
+      if (place) {
+        this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+          data: place.data,
+          source: this,
+          view: 'resume'
+        })
+      }
+
+    }
   }
 
   private _onBlur() {
