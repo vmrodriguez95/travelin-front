@@ -4,7 +4,7 @@ import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
 // Types
-import type { SearchResult, SearchApiResponse } from './e-input-search.types.ts'
+import type { SearchResult, SearchApiResponse, PlaceApiResponse } from './e-input-search.types.ts'
 
 // Utils
 import { SimpleGetClient } from '@ds/requests/index.ts'
@@ -203,7 +203,7 @@ export class EInputSearch extends FormElement {
     if (!placeId) return
 
     try {
-      return await this._request.get<SearchApiResponse>(this.places, placeId)
+      return await this._request.get<PlaceApiResponse>(this.places, placeId)
     } catch (e: unknown) {
       if ((e as Error)?.name === 'AbortError') return
       if ((e as Error)?.message === 'Stale response ignored') return
