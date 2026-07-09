@@ -19,24 +19,12 @@
           "required": false,
           "readonly": false
         },
-        "location": {
-          "id": "poiLocation",
-          "name": "location",
-          "label": "Busca el punto de interés",
-          "type": "search",
-          "fieldSize": "full",
-          "api": "",
-          "queryAsValue": false,
-          "required": true,
-          "readonly": false
-        },
         "name": {
           "id": "poiName",
           "name": "name",
           "label": "Nombre del punto de interés",
           "type": "text",
           "fieldSize": "full",
-          "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
           "a11y": {
             "clear": "Limpiar campo"
           },
@@ -60,24 +48,6 @@
           "fieldSize": "full",
           "a11y": {
             "clear": "Limpiar campo"
-          },
-          "required": false,
-          "readonly": false
-        },
-        "file": {
-          "id": "poiFile",
-          "name": "file",
-          "label": "Archivo asociado",
-          "type": "file",
-          "fieldSize": "full",
-          "a11y": {
-            "clear": "Limpiar campo",
-            "upload": "Seleccionar archivo"
-          },
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
           },
           "required": false,
           "readonly": false

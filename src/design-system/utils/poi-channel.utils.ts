@@ -9,19 +9,21 @@ export const DAY_HOVER_EVENT = 'day-hover'
 export const DAY_HOVER_CLEAR_EVENT = 'day-hover-clear'
 export const DAY_ACTIVE_EVENT = 'day-active'
 export const MENU_TOGGLE_EVENT = 'menu-toggle'
+export const MODAL_OPEN_EVENT = 'modal-open'
+export const FORM_MODIFY_FIELDS_EVENT = 'form-modify-fields'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note
 
 export type PoiChannelView = 'resume' | 'detail'
 
+export interface GenericEventDetail {
+  source?: EventTarget | null
+}
+
 export interface PoiSelectEventDetail {
   data: PoiChannelData
   source?: EventTarget | null
   view: PoiChannelView
-}
-
-export interface PoiClearEventDetail {
-  source?: EventTarget | null
 }
 
 export interface PoiHoverEventDetail {
@@ -46,6 +48,11 @@ export interface DayActiveEventDetail {
 
 export interface MenuToggleEventDetail {
   hidden: boolean
+  source?: EventTarget | null
+}
+
+export interface FormModifyFieldsEventDetail {
+  fields: Record<string, string>
   source?: EventTarget | null
 }
 

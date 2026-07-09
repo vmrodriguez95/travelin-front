@@ -50,15 +50,17 @@
   }
 
   &__content {
+    position: relative;
     padding: space(2) space(4);
     width: 100%;
-    background-color: rgba(var(--color-background--secondary), 1);
+    background-color: rgba(var(--color-background), 1);
     max-width: 768px;
     text-align: center;
     border-radius: $border-radius-xl;
     border: none;
     box-sizing: border-box;
     box-shadow: 0px 0px 5px 0px rgba(var(--color-background), 1);
+    overflow-y: auto;
 
     @media (min-width: $breakpoint-md) {
       padding: space(4);

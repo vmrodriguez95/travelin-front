@@ -3,8 +3,8 @@
 
 .ti-form {
   position: relative;
-  height: 100%;
-  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  height: 100dvh;
+  padding: space(1) var(--grid-gutter) var(--ui-menu-height);
   
   @media (min-width: $breakpoint-xl) {
     padding: space(2) var(--grid-gutter);
@@ -46,5 +46,10 @@
     z-index: 1;
     max-width: space(50);
     width: 100%;
+  }
+
+  &__modal__resume {
+    display: block;
+    margin-bottom: space(1);
   }
 }

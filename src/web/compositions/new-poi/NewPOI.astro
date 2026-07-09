@@ -6,8 +6,6 @@ const channel = 'new-poi'
 
 let finalData = withFormA11yDefaults(data)
 
-finalData.sections.core.fields.location.api = '/api/places.json'
-
 finalData = JSON.stringify(finalData)
 ---
 
@@ -22,12 +20,13 @@ finalData = JSON.stringify(finalData)
           <e-icon icon="arrow-left" size="l"></e-icon>
         </a>
         <e-input-search class="ti-form__search" id="search" api="/api/places.json" places="/api/poi.json" name="search" placeholder="Busca un POI" channel={channel}></e-input-search>
-        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto"></c-map>
-        <c-poi-resume channel={channel} close="Cerrar" icon="add" button="Añadir" info="Abrir formulario para añadir el nuevo POI" />
+        <c-map latitude="13.0389969" longitude="101.490104" zoom="5" fullheight="auto" channel={channel}></c-map>
+        <c-poi-resume channel={channel} close="Cerrar" icon="add" button="Añadir" info="Abrir formulario para añadir el nuevo POI" form modal />
       </div>
     </div>
   </div>
 </section>
-<c-modal id="modal" close="Cerrar">
-  <c-form action="/" method="POST" data={finalData} submitLabel="Añadir POI" enctype="multipart/form-data"></c-form>
+<c-modal id="modal" close="Cerrar" channel={channel}>
+  <c-poi-resume channel={channel} static class="ti-form__modal__resume" />
+  <c-form action="/" method="POST" data={finalData} submitLabel="Añadir POI" enctype="multipart/form-data" modal></c-form>
 </c-modal>

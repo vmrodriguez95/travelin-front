@@ -47,6 +47,8 @@ export class CForm extends LitElement {
 
   @property({ type: Boolean }) empty = false
 
+  @property({ type: Boolean }) modal = false
+
   @query('form') _form!: HTMLFormElement
 
   @query('.c-form__submit') _submitButton!: HTMLButtonElement
@@ -71,6 +73,7 @@ export class CForm extends LitElement {
     const classes = classMap({
       'c-form': true,
       'c-form--empty': this.empty,
+      'c-form--modal': this.modal
     })
 
     return html`

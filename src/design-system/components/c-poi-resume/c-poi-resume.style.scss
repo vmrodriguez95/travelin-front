@@ -4,6 +4,7 @@
 @use '@common/styles/variables/border-radius.scss' as *;
 
 .c-poi-resume {
+  $block: &;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -21,6 +22,13 @@
     gap: space(2);
     max-width: space(80);
     width: 100%;
+  }
+  
+  &--static {
+    position: static;
+    transform: translateX(0);
+    max-width: 100%;
+    text-align: left;
   }
 
   &__wrapper {
@@ -106,7 +114,9 @@
 
   &__icon {
     @media (min-width: $breakpoint-md) {
-      display: none;
+      &:has(:not(+ #{$block}__text-button)) {
+        display: none;
+      }
     }
   }
 

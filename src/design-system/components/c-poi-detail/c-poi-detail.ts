@@ -16,12 +16,12 @@ import type {
 } from '@ds/types/pois'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import {
   POI_CLEAR_EVENT,
-  type PoiClearEventDetail,
+  type GenericEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
@@ -49,7 +49,7 @@ export class CPoiDetail extends Responsive(LitElement) {
 
   @queryAsync('.c-poi-detail') _container!: Promise<HTMLElement>
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {
@@ -137,7 +137,7 @@ export class CPoiDetail extends Responsive(LitElement) {
 
   private _onClose() {
     this._resetData()
-    this._channel.dispatch<PoiClearEventDetail>(POI_CLEAR_EVENT, { source: this })
+    this._channel.dispatch<GenericEventDetail>(POI_CLEAR_EVENT, { source: this })
   }
 
   private _resetData() {

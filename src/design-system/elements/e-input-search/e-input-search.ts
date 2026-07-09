@@ -3,20 +3,24 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
+// Types
 import type { SearchResult, SearchApiResponse } from './e-input-search.types.ts'
 
+// Utils
 import { SimpleGetClient } from '@ds/requests/index.ts'
+import { debounce } from '../../utils/action.utils.ts'
+import { POI_SELECT_EVENT, type PoiSelectEventDetail } from '@ds/utils/poi-channel.utils.ts'
+
+// Controllers
+import { ChannelController } from '@ds/controllers/channel.controller.ts'
 import { SimpleRequestController } from '@ds/controllers/request.controller.ts'
 
-import { debounce } from '../../utils/action.utils.ts'
-
+// Abstracts
 import { FormElement } from '../../abstracts/form-element.base.ts'
 import type { ValidityResult } from '../../abstracts/form-element.base.ts'
 
+// Styles
 import style from './e-input-search.style.scss?inline'
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller.ts'
-import { POI_SELECT_EVENT, type PoiSelectEventDetail } from '@ds/utils/poi-channel.utils.ts'
-import type { Poi } from '@ds/types/pois.ts'
 
 @customElement('e-input-search')
 export class EInputSearch extends FormElement {
@@ -51,7 +55,7 @@ export class EInputSearch extends FormElement {
 
   private _searchId = 0
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     { }
@@ -231,7 +235,6 @@ export class EInputSearch extends FormElement {
           view: 'resume'
         })
       }
-
     }
   }
 

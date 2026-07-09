@@ -11,7 +11,7 @@ const DATA = [
     "address": "2 Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japón",
     "time": "12:00",
     "price": 0,
-    "image": "https://loremflickr.com/72/72/thailand",
+    "image": "/images/asakusa.webp",
     "notes": [],
     "types": ["poi"],
     "file": "",
