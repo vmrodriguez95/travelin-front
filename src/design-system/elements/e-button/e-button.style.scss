@@ -35,9 +35,15 @@
   }
 
   &--dark {
-    --eIconColor: var(--color-text);
     background-color: rgba(var(--color-background--secondary), 1);
-    color: rgba(var(--color-text), 1);
+  }
+
+  &--green {
+    background-color: rgba(var(--color-success), 1);
+  }
+
+  &--red {
+    background-color: rgba(var(--color-error), 1);
   }
 
   &:active {

@@ -1,0 +1,74 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.ti-notifications {
+  padding: space(2) var(--grid-gutter) var(--ui-menu-height);
+
+  @media (min-width: $breakpoint-xl) {
+    padding: space(2) var(--grid-gutter);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: space(2);
+    list-style: none;
+    margin: space(4) 0;
+    padding: 0;
+  }
+}
+
+.ti-notification-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: space(2);
+  align-items: center;
+  padding: space(1) space(2);
+  border-radius: $border-radius-l;
+  background-color: rgba(var(--color-background--secondary), 1);
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+  }
+  
+  &__logo,
+  &__image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: space(5);
+    height: space(5);
+    border-radius: 50%;
+    background-color: rgba(var(--color-background), 1);
+    border: 1px solid rgba(var(--color-primary), 1);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  &__logo {
+    padding: space(1);
+  }
+
+  &__text,
+  &__date {
+    @include body--m;
+    margin: 0;
+    color: rgba(var(--color-text), 1);
+    
+    strong {
+      color: rgba(var(--color-primary), 1);
+    }
+  }
+
+  &__date {
+    text-align: center;
+  }
+
+  &__actions {
+    text-align: right;
+  }
+}

@@ -29,10 +29,11 @@
 @use './utils/text.scss' as *;
 
 // Views
-@use '../../web/compositions/common/form.style.scss';
 @use '../../web/compositions/home/home.style.scss';
+@use '../../web/compositions/common/form.style.scss';
 @use '../../web/compositions/profile/profile.style.scss';
 @use '../../web/compositions/passport/passport.style.scss';
 @use '../../web/compositions/poi-list/poi-list.style.scss';
 @use '../../web/compositions/trip-list-page/trip-list.style.scss';
+@use '../../web/compositions/notifications/notifications.style.scss';
 @use '../../web/compositions/itinerary-list/itinerary-list.style.scss';
