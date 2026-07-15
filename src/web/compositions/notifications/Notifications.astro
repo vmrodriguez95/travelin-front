@@ -1,0 +1,127 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+import type { Notification } from './notifications.types.ts'
+
+const filters = JSON.stringify([
+  {
+    label: 'Todas',
+    value: '',
+    icon: 'grid',
+    default: true
+  },
+  {
+    label: 'Invitaciones',
+    value: 'invitations',
+    icon: 'mail'
+  },
+  {
+    label: 'Viajes',
+    value: 'travel',
+    icon: 'flight'
+  },
+  {
+    label: 'Avisos',
+    value: 'alerts',
+    icon: 'alert'
+  }
+])
+
+const notifications: Notification[] = [
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    text: 'Has sido invitado a unirte al viaje <strong>West Coast</strong> como <strong>Editor</strong>.',
+    date: '10-10-2023',
+    confirm: true
+  },
+  {
+    logo: '/images/logo.png',
+    name: 'Equipo de Travel In',
+    text: 'Te quedan <strong>3 días</strong> para tu viaje a <strong>Japón</strong>.',
+    date: '10-10-2023',
+    confirm: false
+  },
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    text: 'Te ha enviado una petición de amistad.',
+    date: '10-10-2023',
+    confirm: true
+  },
+  {
+    logo: '/images/logo.png',
+    name: 'Equipo de Travel In',
+    text: 'Has conseguido el logro <strong>Beach Lover</strong>.',
+    date: '10-10-2023',
+    confirm: false
+  },
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    text: 'Ha añadido un POI nuevo al viaje <strong>West Coast</strong>.',
+    date: '10-10-2023',
+    confirm: true
+  },
+  {
+    logo: '/images/logo.png',
+    name: 'Equipo de Travel In',
+    text: 'Te has dado de alta en Travel In.',
+    date: '10-10-2023',
+    confirm: false
+  }
+]
+
+---
+
+<section class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Notificaciones" url="#" backA11y="Volver atrás"></c-header>
+    <div class="ti-notifications">
+      <c-filter filters={ filters }></c-filter>
+      <ul class="ti-notifications__list">
+        {
+          notifications.map((notification) => (
+            <li class="ti-notifications__item">
+              <div class="ti-notification-item">
+                <div class="ti-notification-item__head">
+                  {
+                    notification.image && (
+                      <picture class="ti-notification-item__image">
+                        <img class="u-image--responsive" src={notification.image} alt="Logo" width="40" height="40" />
+                      </picture>
+                    )
+                  }
+                  {
+                    notification.logo && (
+                      <picture class="ti-notification-item__logo">
+                        <img class="u-image--responsive" src={notification.logo} alt="Logo" width="42" height="48" />
+                      </picture>
+                    )
+                  }
+                  <span class="ti-notification-item__text">{notification.name}</span>
+                </div>
+                <p class="ti-notification-item__text" set:html={notification.text}></p>
+                <p class="ti-notification-item__date">{notification.date}</p>
+                {
+                  notification.confirm && (
+                    <div class="ti-notification-item__actions">
+                      <e-fetch action="/api/poi.json" method="POST" color="green" size="thin">
+                        <span>Aceptar</span>
+                      </e-fetch>
+                      <e-fetch action="/api/poi.json" method="POST" color="red" size="thin">
+                        <span>Rechazar</span>
+                      </e-fetch>
+                    </div>
+                  )
+                }
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

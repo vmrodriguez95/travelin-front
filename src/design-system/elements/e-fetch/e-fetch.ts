@@ -15,6 +15,8 @@ export class EFetch extends LitElement {
 
   @property({ type: String }) type = 'button' // button | link
 
+  @property({ type: String }) size = ''
+
   @property({ type: String }) waitmsg = ''
 
   @property({ type: Number }) wait = 0
@@ -49,7 +51,7 @@ export class EFetch extends LitElement {
               ${this.loading ? 'Cargando...' : html`<slot></slot>`}
             </button>
           `, () => html`
-            <e-button @click=${this._handleClick} ?disabled=${this.loading} color=${this.color}>
+            <e-button @click=${this._handleClick} ?disabled=${this.loading} color=${this.color} size=${this.size}>
               ${this.loading ? 'Cargando...' : html`<slot></slot>`}
             </e-button>
           `)}

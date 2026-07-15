@@ -1,0 +1,42 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.c-filter {
+
+  &__field {
+    display: block;
+    margin-bottom: space(2);
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__button {
+    --eIconColor: var(--color-text);
+    background-color: rgba(var(--color-background--secondary), 1);
+    border-radius: $border-radius-m;
+    border: none;
+    color: rgba(var(--color-text), 1);
+    cursor: pointer;
+    padding: space(1) space(2);
+    transition: transform .2s ease;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    &[active] {
+      background-color: rgba(var(--color-primary), 1);
+    }
+  }
+}
