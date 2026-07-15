@@ -1,0 +1,93 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+import type { Friend } from './friends.types.ts'
+
+const filters = JSON.stringify([
+  {
+    label: 'Todas',
+    value: '',
+    icon: 'grid',
+    default: true
+  },
+  {
+    label: 'Invitaciones',
+    value: 'invitations',
+    icon: 'mail'
+  },
+  {
+    label: 'Viajes',
+    value: 'travel',
+    icon: 'flight'
+  },
+  {
+    label: 'Avisos',
+    value: 'alerts',
+    icon: 'alert'
+  }
+])
+
+const notifications: Friend[] = [
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    date: '10-10-2023',
+    lastTravel: 'Costa Rica · 2024',
+    status: 'Activo'
+  },
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    date: '10-10-2023',
+    lastTravel: 'Costa Rica · 2024',
+    status: 'Pendiente'
+  },
+  {
+    image: 'https://testingbot.com/free-online-tools/random-avatar/40',
+    name: 'Daniel Fernández',
+    date: '10-10-2023',
+    lastTravel: 'Costa Rica · 2024',
+    status: 'Activo'
+  }
+]
+
+---
+
+<section class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Amigos" url="#" backA11y="Volver atrás"></c-header>
+    <div class="ti-friends">
+      <c-filter filters={ filters }></c-filter>
+      <ul class="ti-friends__list">
+        {
+          notifications.map((notification) => (
+            <li class="ti-friends__item">
+              <div class="ti-friend-item">
+                <div class="ti-friend-item__head">
+                  {
+                    notification.image && (
+                      <picture class="ti-friend-item__image">
+                        <img class="u-image--responsive" src={ notification.image } alt="Logo" width="40" height="40" />
+                      </picture>
+                    )
+                  }
+                  <span class="ti-friend-item__text">{ notification.name }</span>
+                </div>
+                <p class="ti-friend-item__date">{ notification.date }</p>
+                <p class="ti-friend-item__text"><small class="ti-friend-item__small">Último viaje:</small> { notification.lastTravel }</p>
+                <p class="ti-friend-item__text"><span class="ti-friend-item__status ti-friend-item__status--green"></span> { notification.status }</p>
+                <div class="ti-friend-item__actions">
+                  <e-fetch action="/api/poi.json" method="DELETE" icon="delete" color="dark" size="fit">
+                    <e-icon icon="delete" size="m"></e-icon>
+                  </e-fetch>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
