@@ -33,7 +33,7 @@ export class CModal extends LitElement {
       <dialog class="c-modal" aria-modal="true">
         <div class="c-modal__content">
           <button class="c-modal__close" type="button" @click=${this.closeModal} aria-label=${this.close}>
-            <e-icon icon="close" size="l"></e-icon>
+            <e-icon icon="close" size="m"></e-icon>
           </button>
           <slot name="title"></slot>
           <slot name="description"></slot>

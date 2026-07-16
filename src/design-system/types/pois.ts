@@ -120,3 +120,13 @@ export interface Note extends PoiBase {
   notes: Array<Notes>
   order: number
 }
+
+// PLACE
+export interface Place {
+  id: string
+  location: Record<string, string>
+  types: string[]
+  photos: any[]
+  displayName: Record<string, string>
+  addressComponents: any[]
+}

@@ -1,6 +1,8 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
+import { when } from 'lit/directives/when.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 // Types
 import type { Poi, PoiHotel } from '@ds/types/pois'
@@ -10,19 +12,14 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import {
-  FORM_MODIFY_FIELDS_EVENT,
-  MODAL_OPEN_EVENT,
   POI_CLEAR_EVENT,
   POI_SELECT_EVENT,
-  type FormModifyFieldsEventDetail,
   type GenericEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
 // Styles
 import styles from './c-poi-resume.style.scss?inline'
-import { when } from 'lit/directives/when.js'
-import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('c-poi-resume')
 export class CPoiResume extends LitElement {
@@ -38,12 +35,6 @@ export class CPoiResume extends LitElement {
   @property({ type: String }) info = 'Mostrar la información completa sobre el punto de interés'
 
   @property({ type: Boolean }) static = false
-
-  @property({ type: Boolean }) form = false
-
-  @property({ type: Boolean }) modal = false
-
-  @property({ type: Boolean }) poiSelect = false
 
   @state() _data: Poi | PoiHotel | null = null
 
@@ -107,24 +98,11 @@ export class CPoiResume extends LitElement {
   private _showInfo() {
     if (!this._data) return
 
-    if (this.poiSelect) {
-      this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
-        data: this._data,
-        source: this,
-        view: 'detail'
-      })
-    }
-
-    if (this.form) {
-      this._channel.dispatch<FormModifyFieldsEventDetail>(FORM_MODIFY_FIELDS_EVENT, {
-        fields: {},
-        source: this
-      })
-    }
-
-    if (this.modal) {
-      this._channel.dispatch(MODAL_OPEN_EVENT)
-    }
+    this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
+      data: this._data,
+      source: this,
+      view: 'detail'
+    })
   }
 
   private _onClose() {

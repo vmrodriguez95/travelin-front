@@ -19,15 +19,52 @@
           "required": false,
           "readonly": false
         },
+        "coordinates": {
+          "id": "poiCoordinates",
+          "name": "coordinates",
+          "label": "Coordenadas",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "types": {
+          "id": "poiTypes",
+          "name": "types",
+          "label": "Tipos",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "photos": {
+          "id": "poiPhotos",
+          "name": "photos",
+          "label": "Fotos",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "addressComponents": {
+          "id": "poiAddressComponents",
+          "name": "addressComponents",
+          "label": "Componentes de la dirección",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "displayName": {
+          "id": "poiDisplayName",
+          "name": "displayName",
+          "label": "Nombre para mostrar",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
         "name": {
           "id": "poiName",
           "name": "name",
           "label": "Nombre del punto de interés",
           "type": "text",
           "fieldSize": "full",
-          "a11y": {
-            "clear": "Limpiar campo"
-          },
           "required": false,
           "readonly": false
         },

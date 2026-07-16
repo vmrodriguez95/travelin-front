@@ -10,25 +10,24 @@ import { printDateTime } from '@ds/utils/date.utils'
 
 // Types
 import type {
+  FormBlock,
   FormSchema,
+  FormSection,
+  FileFormField,
+  DateFormField,
   BasicFormField,
   SearchFormField,
-  CalendarFormField,
-  FileFormField,
-  FormSection,
+  SelectFormField,
+  FieldDependency,
   FormArraySection,
-  FormBlock,
-  DateFormField,
-  SelectFormField
+  CalendarFormField
 } from './c-form.types'
 import type { SelectOption } from './c-form.types'
 import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
-interface FieldDependency {
-  field: string
-  dependsOn: Array<string> | undefined
-  isRegistered: boolean
-}
+// Controllers
+import { ChannelController } from '@ds/controllers/channel.controller'
+import type { FormModifyFieldsEventDetail } from '@ds/utils/poi-channel.utils'
 
 import styles from './c-form.style.scss?inline'
 
@@ -49,6 +48,8 @@ export class CForm extends LitElement {
 
   @property({ type: Boolean }) modal = false
 
+  @property({ type: String }) channel = ''
+
   @query('form') _form!: HTMLFormElement
 
   @query('.c-form__submit') _submitButton!: HTMLButtonElement
@@ -58,6 +59,14 @@ export class CForm extends LitElement {
   private _internals: ElementInternals
 
   private _dependencies: Array<FieldDependency> = []
+
+  private _channel = new ChannelController(
+    this,
+    () => this.channel,
+    {
+      onFormModifyFields: (detail) => this._onFormModifyFields(detail)
+    }
+  )
 
   static formAssociated = true
 
@@ -147,6 +156,43 @@ export class CForm extends LitElement {
     }
 
     this.requestUpdate()
+  }
+
+  private _onFormModifyFields(detail: FormModifyFieldsEventDetail) {
+    const updates = detail.fields
+
+    if (!updates || !Object.keys(updates).length) return
+
+    Object.values(this.data.sections).forEach((section) => this._applyFieldUpdates(section, updates))
+
+    this.requestUpdate()
+  }
+
+  private _applyFieldUpdates(entry: BasicFormField | FormSection | FormArraySection, updates: Record<string, string>) {
+    if ('schema' in entry) {
+      (entry as FormArraySection).fields?.forEach((block) => this._applyBlockUpdates(block, updates))
+      return
+    }
+
+    if ('fields' in entry) {
+      this._applyBlockUpdates((entry as FormSection).fields, updates)
+      return
+    }
+
+    const field = entry as BasicFormField
+
+    if (field.name in updates) {
+      field.value = updates[field.name]
+      field.fillValue = updates[field.name]
+    }
+  }
+
+  private _applyBlockUpdates(block: FormBlock, updates: Record<string, string>) {
+    Object.entries(block).forEach(([key, entry]) => {
+      if (key === 'randomId' || !this._isRenderableSectionEntry(entry)) return
+
+      this._applyFieldUpdates(entry, updates)
+    })
   }
 
   private _addNewBlock(section: FormArraySection) {
