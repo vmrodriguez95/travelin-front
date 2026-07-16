@@ -1,6 +1,10 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 
+// Controllers
+import { ChannelController } from '@ds/controllers/channel.controller'
+
+// Styles
 import styles from './c-modal.style.scss?inline'
 
 @customElement('c-modal')
@@ -10,7 +14,17 @@ export class CModal extends LitElement {
 
   @property({ type: String }) close = 'Cerrar modal'
 
+  @property({ type: String }) channel = ''
+
   @query('dialog') _dialog!: HTMLDialogElement
+
+  private _channel = new ChannelController(
+    this,
+    () => this.channel,
+    {
+      onModalOpen: () => this.showModal(),
+    }
+  )
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -19,7 +33,7 @@ export class CModal extends LitElement {
       <dialog class="c-modal" aria-modal="true">
         <div class="c-modal__content">
           <button class="c-modal__close" type="button" @click=${this.closeModal} aria-label=${this.close}>
-            <e-icon icon="close" size="l"></e-icon>
+            <e-icon icon="close" size="m"></e-icon>
           </button>
           <slot name="title"></slot>
           <slot name="description"></slot>
@@ -40,9 +54,11 @@ export class CModal extends LitElement {
     })
   }
 
-  showModal(template: HTMLTemplateElement) {
-    this.innerHTML = ''
-    this.appendChild(template.content.cloneNode(true))
+  showModal(template: HTMLTemplateElement | undefined = undefined) {
+    if (template) {
+      this.innerHTML = ''
+      this.appendChild(template.content.cloneNode(true))
+    }
 
     this._syncA11yReferences()
     this._detectFetchElement()

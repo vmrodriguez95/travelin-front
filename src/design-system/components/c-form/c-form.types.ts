@@ -115,3 +115,9 @@ interface FileFieldInfo {
 export interface FileFormField extends BasicFormField {
   file: FileFieldInfo
 }
+
+export interface FieldDependency {
+  field: string
+  dependsOn: Array<string> | undefined
+  isRegistered: boolean
+}

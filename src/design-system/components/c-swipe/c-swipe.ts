@@ -2,7 +2,7 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import { clamp } from '@ds/utils/number.utils'
@@ -53,7 +53,7 @@ export class CSwipe extends LitElement {
   private _mediaQuery!: MediaQueryList
   private _stageEl: HTMLElement | null = null
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {

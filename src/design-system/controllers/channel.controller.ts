@@ -10,18 +10,21 @@ import {
   DAY_HOVER_CLEAR_EVENT,
   DAY_ACTIVE_EVENT,
   MENU_TOGGLE_EVENT,
+  FORM_MODIFY_FIELDS_EVENT,
+  MODAL_OPEN_EVENT,
   type PoiSelectEventDetail,
-  type PoiClearEventDetail,
+  type GenericEventDetail,
   type PoiHoverEventDetail,
   type PoiRemoveEventDetail,
   type DayHoverEventDetail,
   type DayActiveEventDetail,
   type MenuToggleEventDetail,
+  type FormModifyFieldsEventDetail
 } from '@ds/utils/poi-channel.utils'
 
-export interface PoiChannelHandlers {
+export interface ChannelHandlers {
   onSelect?: (detail: PoiSelectEventDetail) => void
-  onClear?: (detail: PoiClearEventDetail) => void
+  onClear?: (detail: GenericEventDetail) => void
   onHover?: (detail: PoiHoverEventDetail) => void
   onHoverClear?: () => void
   onRemove?: (detail: PoiRemoveEventDetail) => void
@@ -29,17 +32,19 @@ export interface PoiChannelHandlers {
   onDayHoverClear?: () => void
   onDayActive?: (detail: DayActiveEventDetail) => void
   onMenuToggle?: (detail: MenuToggleEventDetail) => void
+  onModalOpen?: () => void
+  onFormModifyFields?: (detail: FormModifyFieldsEventDetail) => void
 }
 
-export class PoiChannelController implements ReactiveController {
+export class ChannelController implements ReactiveController {
   private getChannel: () => string
-  private handlers: PoiChannelHandlers
+  private handlers: ChannelHandlers
 
   private _bus: EventTarget | null = null
   private _currentChannel = ''
   private _boundHandlers = new Map<string, EventListener>()
 
-  constructor(host: ReactiveControllerHost, getChannel: () => string, handlers: PoiChannelHandlers) {
+  constructor(host: ReactiveControllerHost, getChannel: () => string, handlers: ChannelHandlers) {
     this.getChannel = getChannel
     this.handlers = handlers
     host.addController(this)
@@ -93,6 +98,8 @@ export class PoiChannelController implements ReactiveController {
     if (this.handlers.onDayHoverClear) add(DAY_HOVER_CLEAR_EVENT, this.handlers.onDayHoverClear)
     if (this.handlers.onDayActive) add(DAY_ACTIVE_EVENT, wrap(this.handlers.onDayActive))
     if (this.handlers.onMenuToggle) add(MENU_TOGGLE_EVENT, wrap(this.handlers.onMenuToggle))
+    if (this.handlers.onModalOpen) add(MODAL_OPEN_EVENT, wrap(this.handlers.onModalOpen))
+    if (this.handlers.onFormModifyFields) add(FORM_MODIFY_FIELDS_EVENT, wrap(this.handlers.onFormModifyFields))
   }
 
   private _disconnect() {

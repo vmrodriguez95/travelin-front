@@ -2,7 +2,7 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import type { MenuToggleEventDetail } from '@ds/utils/poi-channel.utils'
@@ -16,7 +16,7 @@ export class CMenu extends LitElement {
 
   @property({ type: String }) channel = ''
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {

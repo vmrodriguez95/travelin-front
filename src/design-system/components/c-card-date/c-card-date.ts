@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import {
@@ -27,7 +27,7 @@ export class CCardDate extends LitElement {
 
   @property({ type: Number }) day = -1
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {}

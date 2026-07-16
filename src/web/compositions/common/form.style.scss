@@ -1,9 +1,55 @@
+@use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
 
 .ti-form {
-  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  position: relative;
+  height: 100dvh;
+  padding: space(1) var(--grid-gutter) var(--ui-menu-height);
   
   @media (min-width: $breakpoint-xl) {
-    padding: 0 var(--grid-gutter);
+    padding: space(2) var(--grid-gutter);
+  }
+
+  &__back {
+    --eIconColor: var(--color-text);
+    position: absolute;
+    top: space(4);
+    left: var(--grid-gutter);
+    z-index: 1;
+    width: space(5);
+    height: space(5);
+    background-color: rgba(var(--color-background--secondary), 1);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &__map {
+    position: relative;
+    height: 100%;
+  }
+
+  &__search {
+    position: absolute;
+    top: space(4);
+    left: calc(var(--grid-gutter) + space(5) + space(2));
+    z-index: 1;
+    max-width: space(50);
+    width: 100%;
+  }
+
+  &__modal__resume {
+    display: block;
+    margin-bottom: space(1);
   }
 }

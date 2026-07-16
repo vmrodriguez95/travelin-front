@@ -7,7 +7,7 @@ import { map } from 'lit/directives/map.js'
 import type { PoiTransport, TransportSegment } from '@ds/types/pois'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import { printTime } from '@ds/utils/date.utils'
@@ -46,7 +46,7 @@ export class CCardTransport extends Responsive(LitElement) {
 
   _isSelectedData = false
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {

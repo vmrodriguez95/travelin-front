@@ -3,7 +3,7 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
-.c-poi-resume {
+.c-poi-resume-form {
   $block: &;
   display: grid;
   grid-template-columns: 1fr auto;
@@ -44,7 +44,7 @@
     
     @media (min-width: $breakpoint-xl) {
       gap: space(2);
-      padding: space(2);
+      padding: space(1);
     }
   }
 

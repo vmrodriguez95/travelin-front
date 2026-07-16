@@ -57,11 +57,7 @@ export class SimpleRequestController implements ReactiveController {
     this.host.requestUpdate()
 
     try {
-      const data = await this.client.get<T>(
-        path,
-        query,
-        this.abortController.signal
-      )
+      const data = await this.client.get<T>(path, query, this.abortController.signal)
 
       if (currentRequestId !== this.requestId) {
         throw new Error('Stale response ignored')

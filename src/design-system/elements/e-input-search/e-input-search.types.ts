@@ -1,3 +1,5 @@
+import type { PoiChannelData } from '@ds/utils/poi-channel.utils.ts'
+
 export interface SearchResult {
     value: string
     label: string
@@ -5,3 +7,5 @@ export interface SearchResult {
 }
 
 export type SearchApiResponse = { data: Array<SearchResult> }
+
+export type PlaceApiResponse = { data: PoiChannelData }

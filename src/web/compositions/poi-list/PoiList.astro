@@ -181,7 +181,7 @@ function formatDate(dateStart: string, dateEnd: string) {
         <div class="ti-poi-list__map">
           <c-map apiKey={googleMapsApiKey} markers={JSON.stringify(markers)} fullheight="auto" channel={channel}></c-map>
           <c-poi-detail channel={channel} close="Cerrar" />
-          <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" />
+          <c-poi-resume channel={channel} close="Cerrar" info="Mostrar la información completa sobre el punto de interés" icon="info" button="info" />
         </div>
       </div>
     </section>

@@ -3,10 +3,11 @@ import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
-import type { MapMarker } from '@ds/types/pois'
+import type { MapMarker, Poi, PoiHotel } from '@ds/types/pois'
+import type { PoiChannelData } from '@ds/utils/poi-channel.utils'
 
 // Controllers
-import { PoiChannelController } from '@ds/controllers/poi-channel.controller'
+import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import { loadGoogleMapsApi } from '@ds/utils/google-maps.utils'
@@ -78,6 +79,12 @@ export class CMap extends LitElement {
 
   _selectedIdPoi = ''
 
+  _initialLatitude = ''
+
+  _initialLongitude = ''
+
+  _initialZoom = 12
+
   _hoveredIdPoi = ''
 
   _hoveredDay = -1
@@ -113,7 +120,7 @@ export class CMap extends LitElement {
     }
   }
 
-  private _channel = new PoiChannelController(
+  private _channel = new ChannelController(
     this,
     () => this.channel,
     {
@@ -130,6 +137,10 @@ export class CMap extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback()
+
+    this._initialLatitude = this.latitude
+    this._initialLongitude = this.longitude
+    this._initialZoom = this.zoom
 
     this._mediaQuery = window.matchMedia(`(min-width: ${BREAKPOINTS.xl}px)`)
     this._isMobile = !this._mediaQuery.matches
@@ -537,7 +548,20 @@ export class CMap extends LitElement {
     if (this._hasInteractiveMarkers()) {
       this._refreshMarkerStyles()
       this._focusPoiMarkers(this._selectedIdPoi)
+      return
     }
+
+    this._centerOnPoi(detail.data)
+  }
+
+  private _centerOnPoi(data: PoiChannelData) {
+    const coordinates = (data as Poi | PoiHotel).coordinates
+
+    if (!coordinates) return
+
+    this.longitude = String(coordinates[0])
+    this.latitude = String(coordinates[1])
+    this.zoom = this._selectedZoom
   }
 
   private _onSelectionClear() {
@@ -545,7 +569,16 @@ export class CMap extends LitElement {
 
     if (this._hasInteractiveMarkers()) {
       this._syncMarkers()
+      return
     }
+
+    this._resetCenter()
+  }
+
+  private _resetCenter() {
+    this.latitude = this._initialLatitude
+    this.longitude = this._initialLongitude
+    this.zoom = this._initialZoom
   }
 
   private _onHoverChange(detail: PoiHoverEventDetail) {
