@@ -1,5 +1,5 @@
 export interface Friend {
-  image: string
+  image?: string
   name: string
   date: string
   lastTravel: string
