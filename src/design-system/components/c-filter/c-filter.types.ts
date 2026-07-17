@@ -4,3 +4,9 @@ export interface Filter {
   icon: string
   default?: boolean
 }
+
+export interface FilterChangeDetail {
+  query: string
+  filter: string
+  data: unknown[]
+}

@@ -3,6 +3,10 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
+c-friends-list {
+  display: block;
+}
+
 .ti-friends {
   padding: space(2) var(--grid-gutter) var(--ui-menu-height);
 

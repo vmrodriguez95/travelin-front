@@ -6,8 +6,34 @@
 .c-filter {
 
   &__field {
+    position: relative;
     display: block;
     margin-bottom: space(2);
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: space(2);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__input {
+    @include body--m;
+    display: block;
+    width: 100%;
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background), 1);
+    border: 1px solid rgba(var(--color-gray--light), 1);
+    padding: space(1) space(2) space(1) space(6);
+    box-sizing: border-box;
+    border-radius: space(1);
+    font-family: inherit;
+
+    &::-webkit-search-cancel-button {
+      cursor: pointer;
+    }
   }
 
   &__list {
@@ -21,6 +47,7 @@
 
   &__button {
     --eIconColor: var(--color-text);
+    font-family: inherit;
     background-color: rgba(var(--color-background--secondary), 1);
     border-radius: $border-radius-m;
     border: none;

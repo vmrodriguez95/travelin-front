@@ -1,6 +1,6 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
-import type { Notification } from './notifications.types.ts'
+import type { Notification } from '@ds/components/c-notifications-list/c-notifications-list.types.ts'
 
 const filters = JSON.stringify([
   {
@@ -80,10 +80,11 @@ const notifications: Notification[] = [
   <div class="u-grid-main--main">
     <c-header heading="Notificaciones" url="#" backA11y="Volver atrás"></c-header>
     <div class="ti-notifications">
-      <c-filter filters={ filters }></c-filter>
-      <ul class="ti-notifications__list">
-        {
-          notifications.map((notification) => (
+      <c-filter filters={ filters } api="/api/notifications.json" placeholder="Busca una notificación"></c-filter>
+      <c-notifications-list>
+        <ul class="ti-notifications__list">
+          {
+            notifications.map((notification) => (
             <li class="ti-notifications__item">
               <div class="ti-notification-item">
                 <div class="ti-notification-item__head">
@@ -119,9 +120,10 @@ const notifications: Notification[] = [
                 }
               </div>
             </li>
-          ))
-        }
-      </ul>
+            ))
+          }
+        </ul>
+      </c-notifications-list>
     </div>
   </div>
 </section>

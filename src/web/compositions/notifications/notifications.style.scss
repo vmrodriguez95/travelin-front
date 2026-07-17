@@ -3,6 +3,10 @@
 @use '@common/styles/variables/breakpoints.scss' as *;
 @use '@common/styles/variables/border-radius.scss' as *;
 
+c-notifications-list {
+  display: block;
+}
+
 .ti-notifications {
   padding: space(2) var(--grid-gutter) var(--ui-menu-height);
 
