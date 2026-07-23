@@ -1,0 +1,175 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+import type { Achievement, AchievementTree } from './achievements.types.ts'
+
+const achievements: AchievementTree[] = [
+  {
+    title: 'Explorador',
+    achievements: [
+      {
+        icon: 'landscape',
+        title: 'Mountain King I',
+        description: 'Visita 5 montañas',
+        color: 'brown',
+        completed: true,
+        active: true
+      },
+      {
+        icon: 'landscape',
+        title: 'Mountain King II',
+        description: 'Visita 10 montañas',
+        color: 'brown',
+        amount: 6,
+        total: 10,
+        completed: false,
+        active: true
+      },
+      {
+        icon: 'landscape',
+        title: 'Mountain King III',
+        description: 'Visita 15 montañas',
+        color: 'brown',
+        completed: false,
+        active: false
+      }
+    ]
+  },
+  {
+    title: 'Playero',
+    achievements: [
+      {
+        icon: 'beach',
+        title: 'Beach Seeker I',
+        description: 'Visita 5 playas',
+        color: 'brown',
+        completed: true,
+        active: true
+      },
+      {
+        icon: 'beach',
+        title: 'Beach Seeker II',
+        description: 'Visita 10 playas',
+        color: 'brown',
+        amount: 6,
+        total: 10,
+        completed: false,
+        active: true
+      },
+      {
+        icon: 'beach',
+        title: 'Beach Seeker III',
+        description: 'Visita 15 playas',
+        color: 'brown',
+        completed: false,
+        active: false
+      }
+    ]
+  },
+  {
+    title: 'Urbanita',
+    achievements: [
+      {
+        icon: 'city',
+        title: 'World Citizen I',
+        description: 'Visita 5 ciudades',
+        color: 'brown',
+        completed: true,
+        active: true
+      },
+      {
+        icon: 'city',
+        title: 'World Citizen II',
+        description: 'Visita 10 ciudades',
+        color: 'brown',
+        amount: 6,
+        total: 10,
+        completed: false,
+        active: true
+      },
+      {
+        icon: 'city',
+        title: 'World Citizen III',
+        description: 'Visita 15 ciudades',
+        color: 'brown',
+        completed: false,
+        active: false
+      }
+    ]
+  }
+]
+
+function getAchievementItemClasses(achievement: Achievement) {
+  return `
+    u-link--no-underline
+    ti-achievement-item
+    ti-achievement-item--${achievement.color}
+    ${achievement.active === false ? 'ti-achievement-item--unactive' : ''}
+  `
+}
+
+---
+
+<section class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Logros" url="#" backA11y="Volver atrás"></c-header>
+    <div class="ti-achievements u-grid">
+      <div class="ti-achievements__container u-col-4 u-col-md-12">
+        <div class="ti-achievements__outstanding">
+          <h3 class="ti-achievements__outstanding__title">PUNTOS TOTALES</h3>
+          <p class="ti-achievements__outstanding__text">15.400</p>
+        </div>
+        <div class="ti-achievements__outstanding">
+          <h3 class="ti-achievements__outstanding__title">RANKING</h3>
+          <p class="ti-achievements__outstanding__text">Global Explorer</p>
+        </div>
+        <div class="ti-achievements__outstanding">
+          <h3 class="ti-achievements__outstanding__title">COMPLETADO</h3>
+          <p class="ti-achievements__outstanding__text">68%</p>
+        </div>
+      </div>
+      {
+        achievements.map((achievement: AchievementTree) => (
+          <div class="u-col-4 u-col-md-12 u-col-lg-6">
+            <h3 class="ti-achievements__title">{ achievement.title }</h3>
+            <ul class="ti-achievements__list u-grid">
+              {
+                achievement.achievements.map((subAchievement: Achievement) => (
+                  <li class="ti-achievements__item u-col-2 u-col-md-4 u-col-lg-6 u-col-xl-4">
+                    <a class={ getAchievementItemClasses(subAchievement) } href="#" title={ `Ver logro ${subAchievement.title}` }>
+                      <div class="ti-achievement-item__head">
+                        {
+                          subAchievement.completed && (
+                            <e-icon class="ti-achievement-item__verified" icon="verified" size="m"></e-icon>
+                          )
+                        }
+                        <e-icon class={`ti-achievement-item__icon ti-achievement-item__icon--${subAchievement.color}`} icon={ subAchievement.icon } size="xl"></e-icon>
+                      </div>
+                      <h3 class="ti-achievement-item__title">{ subAchievement.title }</h3>
+                      <p class="ti-achievement-item__text">{ subAchievement.description }</p>
+                      {
+                        subAchievement.completed === false && subAchievement.active === true && (
+                          <e-progress-bar class="ti-achievement-item__progress-bar" value={ subAchievement.amount } total={ subAchievement.total } showValues></e-progress-bar>
+                        )
+                      }
+                      {
+                        subAchievement.completed && (
+                          <e-button class="ti-achievement-item__share" size="thin" outline title={ `Compartir logro ${subAchievement.title}` }>
+                            <e-icon icon="share" size="m"></e-icon>
+                            <span class="ti-achievement-item__share-text">Compartir</span>
+                          </e-button>
+                        )
+                      }
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

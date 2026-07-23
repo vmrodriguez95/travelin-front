@@ -17,13 +17,16 @@ export class EButton extends LitElement {
 
   @property({ type: String, attribute: 'aria-label' }) ariaLabel = ''
 
+  @property({ type: Boolean }) outline = false
+
   @property({ type: Boolean }) disabled = false
 
   render() {
     const classes = classMap({
       'e-button': true,
       [`e-button--${this.size}`]: this.size,
-      [`e-button--${this.color}`]: this.color
+      [`e-button--${this.color}`]: this.color,
+      'e-button--outline': this.outline
     })
 
     return html`
