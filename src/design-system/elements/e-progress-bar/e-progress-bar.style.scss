@@ -7,20 +7,25 @@
 }
 
 .e-progress-bar {
-  &__head {
+  &__values {
     display: flex;
-    align-items: center;
-    justify-content: space-between
+    justify-content: space-between;
   }
 
   &__text {
-    @include body--m;
+    @include body--s;
     margin: 0;
     color: rgba(var(--color-text), 1);
   }
 
+  &__wrapper {
+    display: flex;
+    gap: space(2);
+  }
+
   &__bar {
     display: block;
+    width: 100%;
     height: space(1);
     border-radius: $border-radius-s;
     background-color: rgba(var(--color-background), 1);

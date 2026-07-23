@@ -19,13 +19,23 @@
   border-radius: $border-radius-s;
   border: none;
   text-transform: uppercase;
-  background-color: rgba(var(--eButtonColor, var(--color-primary)), 1);
+  background-color: rgba(var(--color-primary), 1);
   color: rgba(var(--color-text), 1);
   cursor: pointer;
   transition: box-shadow 0.1s ease, background-color 0.2s ease-in-out, transform 0.2s ease;
 
   @media (min-width: $breakpoint-md) {
     padding: space(2) space(3);
+  }
+
+  &:active {
+    box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 0.3);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   &--secondary {
@@ -46,13 +56,21 @@
     background-color: rgba(var(--color-error), 1);
   }
 
-  &:active {
-    box-shadow: inset 0px 0px 15px 3px rgba(var(--color-background), 0.3);
-  }
+  &--outline {
+    --eIconColor: var(--color-primary);
+    background-color: transparent;
+    color: rgba(var(--color-primary), 1);
+    border: 1px solid rgba(var(--color-primary), 1);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 
-  @media (hover: hover) {
-    &:hover {
-      transform: scale(1.1);
+    @media (hover: hover) {
+      &:hover {
+        --eIconColor: var(--color-text);
+        background-color: rgba(var(--color-primary), 1);
+        color: rgba(var(--color-text), 1);
+        border: 1px solid transparent;
+        transform: scale(1);
+      }
     }
   }
 

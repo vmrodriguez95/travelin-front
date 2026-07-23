@@ -26,7 +26,6 @@
     }
   }
 
-
   ::slotted([slot="image"]) {
     margin-right: space(2);
     border-radius: $border-radius-l;
@@ -37,8 +36,7 @@
     color: rgba(var(--color-text), 1);
     margin: 0 0 space(0.5);
   }
-  
-  &__text,
+
   ::slotted([slot="text"]) {
     @include body--s();
     display: flex;
@@ -60,27 +58,6 @@
     box-sizing: border-box;
     border-radius: $border-radius-m;
     text-align: center;
-    background-color: rgba(var(--color-primary), 1);
-  }
-
-  &__wrapper {
-    display: flex;
-    gap: space(2);
-  }
-
-  &__bar {
-    display: block;
-    width: 100%;
-    height: space(1);
-    border-radius: $border-radius-m;
-    margin-top: space(1);
-    background-color: rgba(var(--color-background), 1);
-  }
-
-  &__progress {
-    display: block;
-    height: space(1);
-    border-radius: $border-radius-m;
     background-color: rgba(var(--color-primary), 1);
   }
 
