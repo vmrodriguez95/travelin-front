@@ -1,4 +1,4 @@
-import type { Note, Poi, PoiHotel, PoiTransport, Reminder, Place } from '@ds/types/pois'
+import type { Note, Poi, PoiHotel, PoiTransport, Reminder, Place } from '@ds/types/pois.types'
 
 export const POI_SELECT_EVENT = 'poi-select'
 export const POI_CLEAR_EVENT = 'poi-clear'

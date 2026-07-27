@@ -13,7 +13,7 @@ import type {
   Note,
   TransportSegment,
   TransportPerson
-} from '@ds/types/pois'
+} from '@ds/types/pois.types'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'

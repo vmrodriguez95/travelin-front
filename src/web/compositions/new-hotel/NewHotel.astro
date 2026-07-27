@@ -1,7 +1,9 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
+
 const { id, data } = Astro.props
+const channel = 'new-hotel'
 
 let finalData = withFormA11yDefaults(data)
 
@@ -23,7 +25,17 @@ finalData = JSON.stringify(finalData)
     <div class="ti-form u-grid">
       <div class="u-col-4 u-col-md-2"></div>
       <div class="u-col-4 u-col-md-8">
-        <c-form action="/" method="POST" data={finalData} submitLabel="Añadir alojamiento" enctype="multipart/form-data"></c-form>
+        <c-tabs data-component id={id}>
+          <div data-label="Automático">
+            <c-voucher-reader data-component poiType="poi_hotel">
+              <h3 slot="title">¿Tienes ya un alojamiento reservado?</h3>
+              <p slot="description">Sube el archivo de la reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1 MB) y rellenaremos los datos por ti.</p>
+            </c-voucher-reader>
+          </div>
+          <div data-label="Manual">
+            <c-form action="/" method="POST" data={finalData} submitLabel="Añadir alojamiento" enctype="multipart/form-data"></c-form>
+          </div>
+        </c-tabs>
       </div>
       <div class="u-col-4 u-col-md-2"></div>
     </div>

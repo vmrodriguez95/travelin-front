@@ -1,0 +1,52 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+
+.c-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__tab {
+    @include body--m;
+    font-family: inherit;
+    padding: space(1) space(2);
+    background: rgba(var(--color-background--secondary), 1);
+    border: none;
+    color: rgba(var(--color-text), 1);
+    cursor: pointer;
+    transition: background-color .2s ease;
+
+    &:first-child {
+      border-top-left-radius: $border-radius-m;
+      border-bottom-left-radius: $border-radius-m;
+    }
+
+    &:last-child {
+      border-top-right-radius: $border-radius-m;
+      border-bottom-right-radius: $border-radius-m;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(var(--color-primary), 1);
+      }
+    }
+
+    &--active {
+      background-color: rgba(var(--color-primary), 1);
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-height: 0;
+    padding: space(2) 0;
+  }
+}

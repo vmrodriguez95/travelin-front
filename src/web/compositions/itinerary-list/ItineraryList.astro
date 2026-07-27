@@ -1,7 +1,7 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
-import type { Poi } from '@ds/types/pois'
+import type { Poi } from '@ds/types/pois.types'
 
 const itinerariesGlob = import.meta.glob('../../../data/itineraries.json', { eager: true })
 const { id, data } = Astro.props

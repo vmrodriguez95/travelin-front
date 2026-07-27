@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js'
 import { map } from 'lit/directives/map.js'
 
 // Types
-import type { PoiTransport, TransportSegment } from '@ds/types/pois'
+import type { PoiTransport, TransportSegment } from '@ds/types/pois.types'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'

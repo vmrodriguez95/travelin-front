@@ -211,3 +211,19 @@ export function printDateTime(date: string) {
 export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal.PlainDate | string) {
   return Temporal.PlainDate.compare(date1, date2)
 }
+
+// Normalizes any date-like string (with or without time/offset) to the
+// "YYYY-MM-DDTHH:mm:ss.SSS" wall-clock format used by our POI drafts.
+export function toIsoDateTime(date?: string | null): string {
+  if (!date) return ''
+
+  try {
+    return Temporal.PlainDateTime.from(date).toString({ fractionalSecondDigits: 3 })
+  } catch {
+    try {
+      return Temporal.PlainDate.from(date.slice(0, 10)).toPlainDateTime().toString({ fractionalSecondDigits: 3 })
+    } catch {
+      return ''
+    }
+  }
+}

@@ -72,23 +72,6 @@
     "booking": {
       "legend": "Datos sobre la reserva",
       "fields": {
-        "reference": {
-          "id": "poiTransporBookingReference",
-          "name": "reference",
-          "label": "Referencia de la reserva",
-          "helpmsg": "Hace referencia al PNR o localizador de la reserva",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
-        "ticketNumber": {
-          "id": "poiTransporBookingTicketNumber",
-          "name": "ticketNumber",
-          "label": "Número del ticket",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
         "provider": {
           "id": "poiTransporBookingProvider",
           "name": "provider",
@@ -345,43 +328,12 @@
           ],
           "required": true,
           "readonly": false
-        },
-        "file": {
-          "id": "poiTransportFile",
-          "name": "file",
-          "label": "Archivo",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "type": "file",
-          "required": false,
-          "readonly": false
         }
       }
     },
     "booking": {
       "legend": "Datos sobre la reserva",
       "fields": {
-        "reference": {
-          "id": "poiTransporBookingReference",
-          "name": "reference",
-          "label": "Referencia de la reserva",
-          "helpmsg": "Hace referencia al PNR o localizador de la reserva",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
-        "ticketNumber": {
-          "id": "poiTransporBookingTicketNumber",
-          "name": "ticketNumber",
-          "label": "Número del ticket",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
         "provider": {
           "id": "poiTransporBookingProvider",
           "name": "provider",

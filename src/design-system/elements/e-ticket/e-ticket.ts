@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
 // Types
-import type { TransportPerson, TransportSegment } from '@ds/types/pois'
+import type { TransportPerson, TransportSegment } from '@ds/types/pois.types'
 
 import styles from './e-ticket.style.scss?inline'
 

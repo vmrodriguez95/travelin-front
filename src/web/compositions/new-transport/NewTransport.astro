@@ -23,7 +23,17 @@ finalData = JSON.stringify(finalData)
     <div class="ti-form u-grid">
       <div class="u-col-4 u-col-md-2"></div>
       <div class="u-col-4 u-col-md-8">
-        <c-form action="/" method="POST" data={finalData} submitLabel="Añadir Transporte" enctype="multipart/form-data"></c-form>
+        <c-tabs data-component id={id}>
+          <div data-label="Automático">
+            <c-voucher-reader data-component poiType="poi_transport">
+              <h3 slot="title">¿Tienes ya un transporte reservado?</h3>
+              <p slot="description">Sube el archivo de la reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1 MB) y rellenaremos los datos por ti.</p>
+            </c-voucher-reader>
+          </div>
+          <div data-label="Manual">
+            <c-form action="/" method="POST" data={finalData} submitLabel="Añadir Transporte" enctype="multipart/form-data"></c-form>
+          </div>
+        </c-tabs>
       </div>
       <div class="u-col-4 u-col-md-2"></div>
     </div>
