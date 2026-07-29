@@ -123,10 +123,14 @@ export interface Note extends PoiBase {
 
 // PLACE
 export interface Place {
-  id: string
-  location: Record<string, string>
+  coordinates: Number[]
   types: string[]
-  photos: any[]
-  displayName: Record<string, string>
-  addressComponents: any[]
+  location: string
+  image: string
+  name: string
+  address: String
+  city: string
+  country: string
+  iso: string
+  locality: string
 }

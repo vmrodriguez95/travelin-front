@@ -42,6 +42,7 @@ export class SimpleRequestController implements ReactiveController {
       throw new Error('Query cannot be empty')
     }
 
+    // TODO: cambiar `query` por un nombre de parámetro variable y permitir varios parámetros en la query
     const cacheKey = `${path}?query=${query.trim()}`
 
     if (this.cache.has(cacheKey)) {
