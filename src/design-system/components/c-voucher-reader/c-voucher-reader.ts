@@ -2,19 +2,21 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
+// Controllers
 import { LitertController } from '@ds/controllers/litert.controller'
-import { extractPdfText } from '@ds/utils/pdf.utils'
-import { pkpassToHotelDraft, pkpassToTransportDraft, readPassJson } from '@ds/utils/pkpass.utils'
-import { buildVoucherPrompt, parseVoucherJson } from '@ds/utils/voucher-prompt.utils'
-import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
 
+// Utils
+import { extractPdfText } from '@ds/utils/pdf.utils'
+import { DEFAULT_MODEL, PDF_MAX_SIZE } from '@ds/utils/variables'
+import { buildVoucherPrompt, parseVoucherJson } from '@ds/utils/voucher-prompt.utils'
+import { pkpassToHotelDraft, pkpassToTransportDraft, readPassJson } from '@ds/utils/pkpass.utils'
+
+// Types
 import type { VoucherReaderStatus } from './c-voucher-reader.types'
+import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
 
 // Styles
 import styles from './c-voucher-reader.style.scss?inline'
-
-const DEFAULT_MODEL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.litertlm'
-const PDF_MAX_SIZE = 1024 * 1024 // 1 MB
 
 @customElement('c-voucher-reader')
 export class CVoucherReader extends LitElement {

@@ -1,15 +1,12 @@
 import { unzipSync } from 'fflate'
 
-import type { Coordinates } from '@ds/types/pois.types'
-import type {
-  HotelVoucherDraft,
-  TransportSegmentPointDraft,
-  TransportType,
-  TransportVoucherDraft,
-  VoucherNote
-} from '@ds/types/voucher.types'
+// Utils
 import { toIsoDateTime } from '@ds/utils/date.utils'
+
+// Types
+import type { Coordinates } from '@ds/types/pois.types'
 import type { PassField, PassJson, PassStructure, PkpassTransportAdapter } from '@ds/types/pkpass.types'
+import type { HotelVoucherDraft, TransportParts, TransportSegmentPointDraft, TransportType, TransportVoucherDraft, VoucherNote } from '@ds/types/voucher.types'
 
 const TRANSIT_TYPE_MAP: Record<string, TransportType> = {
   PKTransitTypeAir: 'flight',
@@ -158,23 +155,6 @@ function point(opts: Partial<TransportSegmentPointDraft>): TransportSegmentPoint
   }
 }
 
-interface TransportParts {
-  typeTransport: TransportType
-  reference?: string
-  ticketNumber?: string
-  provider?: string
-  price?: number
-  currency?: string
-  operator?: string
-  transportNumber?: string
-  seatClass?: string
-  duration?: string
-  passengerName?: string
-  seat?: string
-  origin: TransportSegmentPointDraft
-  destiny: TransportSegmentPointDraft
-}
-
 function assembleTransportDraft(parts: TransportParts): TransportVoucherDraft {
   const label = TRANSPORT_LABEL[parts.typeTransport]
   const originName = parts.origin.name || parts.origin.code
@@ -188,8 +168,6 @@ function assembleTransportDraft(parts: TransportParts): TransportVoucherDraft {
     type: 'poi_transport',
     typeTransport: parts.typeTransport,
     booking: {
-      reference: parts.reference ?? '',
-      ticketNumber: parts.ticketNumber ?? '',
       provider: parts.provider ?? '',
       price: parts.price ?? 0,
       currency: parts.currency ?? ''
@@ -224,8 +202,6 @@ const airEuropaAdapter: PkpassTransportAdapter = {
 
     return assembleTransportDraft({
       typeTransport: 'flight',
-      reference: fieldValue(byKey(fields, 'recloc')),
-      ticketNumber: fieldValue(byKey(fields, 'ticket')),
       provider: pass.organizationName ?? 'Air Europa',
       operator: pass.organizationName ?? 'Air Europa',
       transportNumber: fieldValue(byKey(fields, 'flightNb')),
@@ -254,8 +230,6 @@ const iberiaAdapter: PkpassTransportAdapter = {
 
     return assembleTransportDraft({
       typeTransport: 'flight',
-      reference: fieldValue(byKey(fields, 'bookingCode')),
-      ticketNumber: fieldValue(byKey(fields, 'numBillete')),
       provider: pass.organizationName ?? 'Iberia',
       operator: fieldValue(byKey(fields, 'ciaName')).replace(/^operad(or|o por)\s+/i, '') || (pass.organizationName ?? 'Iberia'),
       transportNumber: fieldValue(byKey(fields, 'flightNumber')),
@@ -286,13 +260,8 @@ const alsaAdapter: PkpassTransportAdapter = {
     const destination = byKey(fields, 'destination')
     const day = datePart(pass.relevantDate)
 
-    const reservation = fieldValue(byKey(fields, 'yourReservation'))
-    const ticketNumber = reservation.match(/billete[^:]*:\s*([0-9]+)/i)?.[1] ?? ''
-
     return assembleTransportDraft({
       typeTransport: 'bus',
-      reference: fieldValue(byKey(fields, 'locator')),
-      ticketNumber,
       provider: pass.organizationName ?? 'Alsa',
       operator: pass.organizationName ?? 'Alsa',
       seatClass: fieldValue(byKey(fields, 'class')),
@@ -316,8 +285,6 @@ const renfeAdapter: PkpassTransportAdapter = {
 
     return assembleTransportDraft({
       typeTransport: 'train',
-      reference: fieldValue(byKey(fields, 'localizador')),
-      ticketNumber: fieldValue(byKey(fields, 'numbil')),
       provider: pass.organizationName ?? 'Renfe',
       operator: pass.organizationName ?? 'Renfe',
       price,
@@ -349,8 +316,6 @@ const genericAdapter: PkpassTransportAdapter = {
 
     return assembleTransportDraft({
       typeTransport,
-      reference: fieldValue(findField(fields, ['recloc', 'booking', 'localizador', 'locator', 'reference', 'reserva'])),
-      ticketNumber: fieldValue(findField(fields, ['ticket', 'billete', 'numbil'])),
       provider: pass.organizationName ?? '',
       operator: pass.organizationName ?? '',
       transportNumber: fieldValue(findField(fields, ['flight', 'tren', 'train', 'number', 'vuelo', 'numero', 'número'])),

@@ -25,8 +25,6 @@ export interface HotelVoucherDraft {
 
 // TRANSPORT
 export interface TransportBookingDraft {
-  reference: string
-  ticketNumber: string
   provider: string
   price: number
   currency: string
@@ -70,3 +68,20 @@ export interface TransportVoucherDraft {
 }
 
 export type VoucherDraft = HotelVoucherDraft | TransportVoucherDraft
+
+export interface TransportParts {
+  typeTransport: TransportType
+  reference?: string
+  ticketNumber?: string
+  provider?: string
+  price?: number
+  currency?: string
+  operator?: string
+  transportNumber?: string
+  seatClass?: string
+  duration?: string
+  passengerName?: string
+  seat?: string
+  origin: TransportSegmentPointDraft
+  destiny: TransportSegmentPointDraft
+}
