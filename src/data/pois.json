@@ -40,6 +40,7 @@
           "address": "Madrid, España",
           "coordinates": [-3.560, 40.472],
           "platform": "T1",
+          "gate": "12",
           "date": "2025-10-28T10:30:00.000"
         },
         "destiny": {
@@ -48,6 +49,7 @@
           "address": "Shanghai, China",
           "coordinates": [139.779, 35.549],
           "platform": "T1",
+          "gate": "--",
           "date": "2025-10-29T06:20:00.000"
         },
         "passengers": [

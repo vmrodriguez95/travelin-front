@@ -1,0 +1,21 @@
+{
+  "id": "air-europa",
+  "match": ["air europa"],
+  "typeTransport": "flight",
+  "provider": "Air Europa",
+  "date": "field:boardingTime",
+  "transportNumber": "flightNb",
+  "class": "bookingClass",
+  "passenger": "passenger",
+  "seat": "seat",
+  "origin": {
+    "code": "boardPoint",
+    "name": { "field": "boardPoint", "from": "label" },
+    "platform": "gate",
+    "time": "departureTime"
+  },
+  "destiny": {
+    "code": "offPoint",
+    "name": { "field": "offPoint", "from": "label" }
+  }
+}

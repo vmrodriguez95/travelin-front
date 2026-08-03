@@ -5,14 +5,18 @@ import { when } from 'lit/directives/when.js'
 // Controllers
 import { LitertController } from '@ds/controllers/litert.controller'
 
+// Requests
+import { SimpleGetClient } from '@ds/requests/index'
+
 // Utils
 import { extractPdfText } from '@ds/utils/pdf.utils'
-import { DEFAULT_MODEL, PDF_MAX_SIZE } from '@ds/utils/variables'
 import { buildVoucherPrompt, parseVoucherJson } from '@ds/utils/voucher-prompt.utils'
-import { pkpassToHotelDraft, pkpassToTransportDraft, readPassJson } from '@ds/utils/pkpass.utils'
+import { DEFAULT_MODEL, DEFAULT_PROFILES_ENDPOINT, PDF_MAX_SIZE } from '@ds/utils/variables'
+import { getPassProfileId, pkpassToHotelDraft, pkpassToTransportDraft, readPassJson } from '@ds/utils/pkpass.utils'
 
 // Types
 import type { VoucherReaderStatus } from './c-voucher-reader.types'
+import type { PassJson, VendorProfile } from '@ds/types/pkpass.types'
 import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
 
 // Styles
@@ -27,6 +31,8 @@ export class CVoucherReader extends LitElement {
 
   @property({ type: String }) model = DEFAULT_MODEL
 
+  @property({ type: String }) endpoint = DEFAULT_PROFILES_ENDPOINT
+
   @state() private _status: VoucherReaderStatus = 'idle'
 
   @state() private _error = ''
@@ -34,6 +40,8 @@ export class CVoucherReader extends LitElement {
   static styles = css`${unsafeCSS(styles)}`
 
   private _litert = new LitertController(this, () => this.model)
+
+  private _client = new SimpleGetClient({ baseUrl: window.origin })
 
   render() {
     return html`
@@ -101,7 +109,30 @@ export class CVoucherReader extends LitElement {
 
   private async _readPkpass(file: File): Promise<VoucherDraft> {
     const pass = await readPassJson(file)
-    return this.poiType === 'poi_hotel' ? pkpassToHotelDraft(pass) : pkpassToTransportDraft(pass)
+
+    console.log('Pass JSON:', pass)
+
+    if (this.poiType === 'poi_hotel') {
+      return pkpassToHotelDraft(pass)
+    }
+
+    const profile = await this._fetchProfile(pass)
+    return pkpassToTransportDraft(pass, profile)
+  }
+
+  // Asks the backend for the vendor profile matching this pass's organization.
+  // Any miss (no org, unknown vendor → 404, or a request error) falls back to generic parsing.
+  private async _fetchProfile(pass: PassJson): Promise<VendorProfile | null> {
+    const id = getPassProfileId(pass)
+    if (!id || !this.endpoint) return null
+
+    try {
+      const url = new URL(`${this.endpoint}/${id}.json`, window.origin).toString()
+      const response = await this._client.request<{ data: VendorProfile | null }>(url, 'GET')
+      return response.data ?? null
+    } catch {
+      return null
+    }
   }
 
   private async _readPdf(file: File): Promise<VoucherDraft> {
