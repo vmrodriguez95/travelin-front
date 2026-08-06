@@ -35,26 +35,58 @@
           "required": false,
           "readonly": false
         },
-        "photos": {
-          "id": "poiPhotos",
-          "name": "photos",
-          "label": "Fotos",
+        "location": {
+          "id": "poiLocation",
+          "name": "location",
+          "label": "Id de la localización",
           "type": "hidden",
           "required": false,
           "readonly": false
         },
-        "addressComponents": {
-          "id": "poiAddressComponents",
-          "name": "addressComponents",
-          "label": "Componentes de la dirección",
+        "image": {
+          "id": "poiImage",
+          "name": "image",
+          "label": "Imagen",
           "type": "hidden",
           "required": false,
           "readonly": false
         },
-        "displayName": {
-          "id": "poiDisplayName",
-          "name": "displayName",
-          "label": "Nombre para mostrar",
+        "city": {
+          "id": "poiCity",
+          "name": "city",
+          "label": "Ciudad",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "locality": {
+          "id": "poiLocality",
+          "name": "locality",
+          "label": "Localidad",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "country": {
+          "id": "poiCountry",
+          "name": "country",
+          "label": "País",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "iso": {
+          "id": "poiIso",
+          "name": "iso",
+          "label": "ISO",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "address": {
+          "id": "poiAddress",
+          "name": "address",
+          "label": "Dirección del poi",
           "type": "hidden",
           "required": false,
           "readonly": false
@@ -140,15 +172,6 @@
       "legend": "Nuevo punto de interés",
       "removeMainKey": true,
       "fields": {
-        "icon": {
-          "id": "poiIcon",
-          "name": "icon",
-          "label": "Icono",
-          "type": "hidden",
-          "fillValue": "poi",
-          "required": false,
-          "readonly": false
-        },
         "name": {
           "id": "poiName",
           "name": "name",
@@ -174,20 +197,6 @@
           "label": "Precio",
           "type": "text",
           "fieldSize": "full",
-          "required": false,
-          "readonly": false
-        },
-        "file": {
-          "id": "poiFile",
-          "name": "file",
-          "label": "Archivo asociado",
-          "type": "file",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
           "required": false,
           "readonly": false
         },

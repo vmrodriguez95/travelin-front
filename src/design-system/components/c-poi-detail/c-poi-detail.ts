@@ -30,7 +30,6 @@ import { Responsive } from '@ds/mixins/responsive'
 
 // Styles
 import styles from './c-poi-detail.style.scss?inline'
-import { BREAKPOINTS } from '@ds/utils/variables'
 
 @customElement('c-poi-detail')
 export class CPoiDetail extends Responsive(LitElement) {

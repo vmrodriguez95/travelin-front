@@ -56,8 +56,8 @@ export class CPoiResumeForm extends LitElement {
       'c-poi-resume-form--static': this.static
     })
 
-    const name = this._data.displayName.text
-    const photo = this._data.photos[0].authorAttribution[0].photoUri
+    const name = this._data.name
+    const photo = this._data.image
 
     return html`
       <div class=${classes}>
@@ -68,7 +68,7 @@ export class CPoiResumeForm extends LitElement {
           <div class="c-poi-resume-form__details">
             <div class="c-poi-resume-form__column">
               <p class="c-poi-resume-form__text">${name}</p>
-              ${map(this._data.addressComponents, (chunk: any, index: number) => when(index > 0, () => html`
+              ${map(this._data.address, (chunk: any, index: number) => when(index > 0, () => html`
                 <p class="c-poi-resume-form__subtext">${chunk.longText}</p>
               `))}
             </div>
@@ -95,12 +95,16 @@ export class CPoiResumeForm extends LitElement {
 
     this._channel.dispatch<FormModifyFieldsEventDetail>(FORM_MODIFY_FIELDS_EVENT, {
       fields: {
-        name: this._data.displayName.text,
-        coordinates: [this._data.location.longitude, this._data.location.latitude],
+        location: this._data.location,
+        name: this._data.name,
+        coordinates: this._data.coordinates,
+        address: `${this._data.name}, ${this._data.address}`,
         types: this._data.types,
-        photos: this._data.photos,
-        addressComponents: this._data.addressComponents,
-        displayName: JSON.stringify(this._data.displayName)
+        city: this._data.city,
+        locality: this._data.locality,
+        country: this._data.country,
+        iso: this._data.iso,
+        image: this._data.image,
       },
       source: this
     })
