@@ -30,6 +30,14 @@
           "required": true,
           "readonly": false
         },
+        "coordinates": {
+          "id": "poiHotelCoordinates",
+          "name": "coordinates",
+          "type": "hidden",
+          "fillValue": "",
+          "required": false,
+          "readonly": false
+        },
         "price": {
           "id": "poiHotelPrice",
           "name": "price",

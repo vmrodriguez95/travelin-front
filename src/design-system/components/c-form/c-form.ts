@@ -252,12 +252,23 @@ export class CForm extends LitElement {
       return
     }
 
+    // Array values (e.g. coordinates) are carried as-is; hidden fields serialize them to JSON.
+    if (Array.isArray(value)) {
+      field.fillValue = value as unknown as Array<string>
+      return
+    }
+
     const stringValue = value == null ? '' : String(value)
 
     switch (field.type) {
       case 'search':
-        field.value = stringValue
-        ;(field as SearchFormField).displayValue = stringValue
+        // A place-search field submits a resolved place ID (in `value`). From a
+        // voucher we only have the text, so we prefill what's shown and leave
+        // `value` empty — required validation then asks the user to confirm the
+        // real place. Free-text searches (queryAsValue) submit the text itself.
+        const search = field as SearchFormField
+        search.displayValue = stringValue
+        field.value = search.queryAsValue ? stringValue : ''
         break
       case 'date':
       case 'time':

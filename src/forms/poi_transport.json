@@ -187,6 +187,14 @@
               "showInResume": true,
               "required": true,
               "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsOriginCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -221,6 +229,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsDestinyCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             }
           }
@@ -447,6 +463,14 @@
               "showInResume": true,
               "required": true,
               "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsOriginCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -481,6 +505,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsDestinyCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             }
           }

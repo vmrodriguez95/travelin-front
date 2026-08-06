@@ -6,7 +6,8 @@ function pointToFormFill(point: TransportSegmentPointDraft): FormFillPoint {
   return {
     location: point.name || point.code,
     platform: point.platform,
-    date: point.date
+    date: point.date,
+    coordinates: point.coordinates
   }
 }
 
@@ -40,6 +41,7 @@ export function hotelDraftToFormFill(draft: HotelVoucherDraft): HotelFormFill {
   return {
     core: {
       location: draft.name,
+      coordinates: draft.coordinates,
       date: { dateStart: draft.dateStart, dateEnd: draft.dateEnd },
       notes: draft.notes.map((note) => ({ icon: note.icon, text: note.text }))
     }

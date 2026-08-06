@@ -5,6 +5,7 @@ export interface FormFillPoint {
   location: string
   platform: string
   date: string
+  coordinates: [number, number]
 }
 
 export interface FormFillSegment {
@@ -27,6 +28,7 @@ export interface TransportFormFill {
 export interface HotelFormFill {
   core: {
     location: string
+    coordinates: [number, number]
     date: { dateStart: string; dateEnd: string }
     notes: Array<{ icon: string; text: string }>
   }
