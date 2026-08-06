@@ -52,43 +52,12 @@
           ],
           "required": true,
           "readonly": false
-        },
-        "file": {
-          "id": "poiTransportFile",
-          "name": "file",
-          "label": "Archivo",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "type": "file",
-          "required": false,
-          "readonly": false
         }
       }
     },
     "booking": {
       "legend": "Datos sobre la reserva",
       "fields": {
-        "reference": {
-          "id": "poiTransporBookingReference",
-          "name": "reference",
-          "label": "Referencia de la reserva",
-          "helpmsg": "Hace referencia al PNR o localizador de la reserva",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
-        "ticketNumber": {
-          "id": "poiTransporBookingTicketNumber",
-          "name": "ticketNumber",
-          "label": "Número del ticket",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
         "provider": {
           "id": "poiTransporBookingProvider",
           "name": "provider",
@@ -218,6 +187,14 @@
               "showInResume": true,
               "required": true,
               "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsOriginCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -252,6 +229,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsDestinyCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             }
           }
@@ -345,43 +330,12 @@
           ],
           "required": true,
           "readonly": false
-        },
-        "file": {
-          "id": "poiTransportFile",
-          "name": "file",
-          "label": "Archivo",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
-          "type": "file",
-          "required": false,
-          "readonly": false
         }
       }
     },
     "booking": {
       "legend": "Datos sobre la reserva",
       "fields": {
-        "reference": {
-          "id": "poiTransporBookingReference",
-          "name": "reference",
-          "label": "Referencia de la reserva",
-          "helpmsg": "Hace referencia al PNR o localizador de la reserva",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
-        "ticketNumber": {
-          "id": "poiTransporBookingTicketNumber",
-          "name": "ticketNumber",
-          "label": "Número del ticket",
-          "type": "text",
-          "required": false,
-          "readonly": false
-        },
         "provider": {
           "id": "poiTransporBookingProvider",
           "name": "provider",
@@ -509,6 +463,14 @@
               "showInResume": true,
               "required": true,
               "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsOriginCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -543,6 +505,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "coordinates": {
+              "id": "poiTransportSegmentsDestinyCoordinates",
+              "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             }
           }

@@ -46,7 +46,7 @@
     box-sizing: border-box;
     
     @media (min-width: $breakpoint-xl) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: minmax(space(5), auto) 1fr minmax(space(5), auto);
       grid-template-rows: 1fr auto;
       height: 100%;
     }

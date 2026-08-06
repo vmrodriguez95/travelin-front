@@ -1,4 +1,4 @@
-import type { Note, Poi, PoiHotel, PoiTransport, Reminder, Place } from '@ds/types/pois'
+import type { Note, Poi, PoiHotel, PoiTransport, Reminder, Place } from '@ds/types/pois.types'
 
 export const POI_SELECT_EVENT = 'poi-select'
 export const POI_CLEAR_EVENT = 'poi-clear'
@@ -11,6 +11,8 @@ export const DAY_ACTIVE_EVENT = 'day-active'
 export const MENU_TOGGLE_EVENT = 'menu-toggle'
 export const MODAL_OPEN_EVENT = 'modal-open'
 export const FORM_MODIFY_FIELDS_EVENT = 'form-modify-fields'
+export const FORM_FILL_EVENT = 'form-fill'
+export const TAB_SELECT_EVENT = 'tab-select'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note | Place
 
@@ -53,6 +55,16 @@ export interface MenuToggleEventDetail {
 
 export interface FormModifyFieldsEventDetail {
   fields: Record<string, any>
+  source?: EventTarget | null
+}
+
+export interface FormFillEventDetail {
+  data: Record<string, any>
+  source?: EventTarget | null
+}
+
+export interface TabSelectEventDetail {
+  index: number
   source?: EventTarget | null
 }
 

@@ -73,6 +73,8 @@ export class CModal extends LitElement {
       this._dialog.close()
       this._dialog.classList.remove('is-closing')
     }, 201)
+
+    this.dispatchEvent(new CustomEvent('modal-close', { bubbles: true, composed: true }))
   }
 
   private _detectFetchElement() {

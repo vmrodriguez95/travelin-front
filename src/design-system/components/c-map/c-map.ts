@@ -3,7 +3,7 @@ import { customElement, property, queryAsync, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Types
-import type { MapMarker, Poi, PoiHotel } from '@ds/types/pois'
+import type { MapMarker, Poi, PoiHotel } from '@ds/types/pois.types'
 import type { PoiChannelData } from '@ds/utils/poi-channel.utils'
 
 // Controllers

@@ -10,13 +10,17 @@ export class SimpleGetClient {
     this.timeoutMs = options.timeoutMs ?? 8000
   }
 
-  async get<T>(path: string, query: string, signal?: AbortSignal): Promise<T> {
+  async get<T>(path: string, query: string = '', signal?: AbortSignal): Promise<T> {
     if (typeof query !== 'string') {
       throw new TypeError('Query must be a string')
     }
 
     const url = new URL(path, this.baseUrl)
-    url.searchParams.set('query', query.trim())
+
+    if (query.trim()) {
+      url.searchParams.set('query', query.trim())
+    }
+
 
     return await this.request(url.toString(), 'GET', signal)
   }

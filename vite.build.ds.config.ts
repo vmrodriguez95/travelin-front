@@ -35,6 +35,12 @@ export default defineConfig(({ mode }) => {
             if (id.includes('/node_modules/globe.gl/')) {
               return 'globe.gl'
             }
+            if (id.includes('/node_modules/pdfjs-dist/')) {
+              return 'pdf'
+            }
+            if (id.includes('/node_modules/@litert-lm/')) {
+              return 'litert'
+            }
           }
         }
       },

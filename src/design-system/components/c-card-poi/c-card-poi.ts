@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 
 // Types
-import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois'
+import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois.types'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'

@@ -30,17 +30,11 @@
           "required": true,
           "readonly": false
         },
-        "file": {
-          "id": "poiHotelFile",
-          "name": "file",
-          "label": "Archivo de reserva",
-          "type": "file",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
+        "coordinates": {
+          "id": "poiHotelCoordinates",
+          "name": "coordinates",
+          "type": "hidden",
+          "fillValue": "",
           "required": false,
           "readonly": false
         },
@@ -124,20 +118,6 @@
           "label": "Icono",
           "type": "hidden",
           "fillValue": "hotel",
-          "required": false,
-          "readonly": false
-        },
-        "file": {
-          "id": "poiHotelFile",
-          "name": "file",
-          "label": "Archivo de reserva",
-          "type": "file",
-          "fieldSize": "full",
-          "file": {
-            "extensions": ".pdf",
-            "maxSize": 521000,
-            "multiple": false
-          },
           "required": false,
           "readonly": false
         },

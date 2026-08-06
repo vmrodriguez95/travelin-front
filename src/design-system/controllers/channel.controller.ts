@@ -11,6 +11,8 @@ import {
   DAY_ACTIVE_EVENT,
   MENU_TOGGLE_EVENT,
   FORM_MODIFY_FIELDS_EVENT,
+  FORM_FILL_EVENT,
+  TAB_SELECT_EVENT,
   MODAL_OPEN_EVENT,
   type PoiSelectEventDetail,
   type GenericEventDetail,
@@ -19,7 +21,9 @@ import {
   type DayHoverEventDetail,
   type DayActiveEventDetail,
   type MenuToggleEventDetail,
-  type FormModifyFieldsEventDetail
+  type FormModifyFieldsEventDetail,
+  type FormFillEventDetail,
+  type TabSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
 export interface ChannelHandlers {
@@ -34,6 +38,8 @@ export interface ChannelHandlers {
   onMenuToggle?: (detail: MenuToggleEventDetail) => void
   onModalOpen?: () => void
   onFormModifyFields?: (detail: FormModifyFieldsEventDetail) => void
+  onFormFill?: (detail: FormFillEventDetail) => void
+  onTabSelect?: (detail: TabSelectEventDetail) => void
 }
 
 export class ChannelController implements ReactiveController {
@@ -100,6 +106,8 @@ export class ChannelController implements ReactiveController {
     if (this.handlers.onMenuToggle) add(MENU_TOGGLE_EVENT, wrap(this.handlers.onMenuToggle))
     if (this.handlers.onModalOpen) add(MODAL_OPEN_EVENT, wrap(this.handlers.onModalOpen))
     if (this.handlers.onFormModifyFields) add(FORM_MODIFY_FIELDS_EVENT, wrap(this.handlers.onFormModifyFields))
+    if (this.handlers.onFormFill) add(FORM_FILL_EVENT, wrap(this.handlers.onFormFill))
+    if (this.handlers.onTabSelect) add(TAB_SELECT_EVENT, wrap(this.handlers.onTabSelect))
   }
 
   private _disconnect() {

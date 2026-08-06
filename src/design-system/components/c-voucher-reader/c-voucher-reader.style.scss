@@ -1,0 +1,42 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/spinner.scss' as *;
+
+.c-voucher-reader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: rgba(var(--color-text), 1);
+
+  ::slotted([slot="title"]) {
+    @include heading--h3(600);
+    margin: 0;
+  }
+
+  ::slotted([slot="description"]) {
+    @include body--s;
+    margin: 0;
+    color: rgba(var(--color-gray), 1);
+  }
+
+  ::slotted([slot="success"]) {
+    @include body--s;
+    margin: 0;
+    color: rgba(var(--color-success), 1);
+  }
+
+  ::slotted([slot="error"]) {
+    @include body--s;
+    margin: 0;
+    color: rgba(var(--color-error), 1);
+  }
+
+  &__input {
+    display: block;
+  }
+
+  .u-spinner {
+    display: inline-block;
+  }
+}

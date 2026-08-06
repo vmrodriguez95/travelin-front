@@ -86,6 +86,8 @@ export class EInputFile extends FormElement {
 
     this._validate()
     this._internals.setFormValue(this.value?.[0] || '')
+
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }))
   }
 
   private _onClean() {
@@ -94,7 +96,7 @@ export class EInputFile extends FormElement {
     this._validate()
     this._internals.setFormValue(this.value)
 
-    this.dispatchEvent(new Event('change'))
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }))
   }
 
   protected _calculateValidity(): ValidityResult {
