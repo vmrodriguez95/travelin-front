@@ -27,7 +27,7 @@ import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
-import type { FormModifyFieldsEventDetail } from '@ds/utils/poi-channel.utils'
+import type { FormFillEventDetail, FormModifyFieldsEventDetail } from '@ds/utils/poi-channel.utils'
 
 import styles from './c-form.style.scss?inline'
 
@@ -64,7 +64,8 @@ export class CForm extends LitElement {
     this,
     () => this.channel,
     {
-      onFormModifyFields: (detail) => this._onFormModifyFields(detail)
+      onFormModifyFields: (detail) => this._onFormModifyFields(detail),
+      onFormFill: (detail) => this._onFormFill(detail)
     }
   )
 
@@ -193,6 +194,81 @@ export class CForm extends LitElement {
 
       this._applyFieldUpdates(entry, updates)
     })
+  }
+
+  // Structured fill: the payload mirrors the schema (section keys + field names),
+  // so repeater arrays (segments, passengers) are rebuilt block by block.
+  private _onFormFill(detail: FormFillEventDetail) {
+    const data = detail.data
+
+    if (!data || !Object.keys(data).length) return
+
+    Object.entries(this.data.sections).forEach(([key, section]) => {
+      if (key in data) this._fillEntry(section, (data as Record<string, unknown>)[key])
+    })
+
+    this.requestUpdate()
+  }
+
+  private _fillEntry(entry: BasicFormField | FormSection | FormArraySection, value: unknown) {
+    if (value == null) return
+
+    if ('schema' in entry) {
+      const section = entry as FormArraySection
+      const items = Array.isArray(value) ? value : []
+
+      section.fields = items.map((item) => {
+        const block = window.structuredClone(section.schema)
+        block.randomId = crypto.randomUUID()
+        this._fillBlock(block, item as Record<string, unknown>)
+        return block
+      })
+      return
+    }
+
+    if ('fields' in entry) {
+      this._fillBlock((entry as FormSection).fields, value as Record<string, unknown>)
+      return
+    }
+
+    this._setFilledValue(entry as BasicFormField, value)
+  }
+
+  private _fillBlock(block: FormBlock, values: Record<string, unknown>) {
+    if (!values || typeof values !== 'object') return
+
+    Object.entries(block).forEach(([key, entry]) => {
+      if (key === 'randomId' || !this._isRenderableSectionEntry(entry) || !(key in values)) return
+
+      this._fillEntry(entry, values[key])
+    })
+  }
+
+  private _setFilledValue(field: BasicFormField, value: unknown) {
+    // Calendar returns a structured value ({ dateStart, dateEnd }); keep it as-is.
+    if (field.type === 'calendar') {
+      field.value = value as string
+      field.fillValue = value as string
+      return
+    }
+
+    const stringValue = value == null ? '' : String(value)
+
+    switch (field.type) {
+      case 'search':
+        field.value = stringValue
+        ;(field as SearchFormField).displayValue = stringValue
+        break
+      case 'date':
+      case 'time':
+      case 'datetime-local':
+        field.value = stringValue.slice(0, 16)
+        field.fillValue = field.value
+        break
+      default:
+        field.value = stringValue
+        field.fillValue = stringValue
+    }
   }
 
   private _addNewBlock(section: FormArraySection) {

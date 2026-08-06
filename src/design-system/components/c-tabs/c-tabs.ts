@@ -2,6 +2,9 @@ import { LitElement, html, css, unsafeCSS } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
+// Controllers
+import { ChannelController } from '@ds/controllers/channel.controller'
+
 // Styles
 import styles from './c-tabs.style.scss?inline'
 
@@ -10,7 +13,17 @@ export class CTabs extends LitElement {
 
   @property({ type: Number }) selected = 0
 
+  @property({ type: String }) channel = ''
+
   @state() _tabs: string[] = []
+
+  private _channel = new ChannelController(
+    this,
+    () => this.channel,
+    {
+      onTabSelect: (detail) => this._selectByIndex(detail.index)
+    }
+  )
 
   static styles = css`${unsafeCSS(styles)}`
 
@@ -49,17 +62,19 @@ export class CTabs extends LitElement {
   }
 
   private _selectTab(index: number) {
-    this.selected = index
-
-    const elements = this._getPanels()
-
-    this._syncPanels(elements)
+    this._selectByIndex(index)
 
     this.dispatchEvent(new CustomEvent('tab-change', {
       detail: { index },
       bubbles: true,
       composed: true
     }))
+  }
+
+  private _selectByIndex(index: number) {
+    this.selected = index
+
+    this._syncPanels(this._getPanels())
   }
 
   private _getPanels() {

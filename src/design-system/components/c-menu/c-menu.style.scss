@@ -14,9 +14,7 @@
   transition: transform 0.25s ease;
 
   @media (min-width: $breakpoint-xl) {
-    position: sticky;
-    top: 0;
-    bottom: initial;
+    position: static;
     width: auto;
     padding: 0;
   }

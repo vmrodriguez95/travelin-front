@@ -1,5 +1,5 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit'
-import { Engine, type Message } from '@litert-lm/core'
+import { Engine, type Conversation, type Message } from '@litert-lm/core'
 
 // Lazily loads an in-browser Gemma model via LiteRT-LM and runs text generation.
 // The model is a large download, so the engine is created on first use and reused.
@@ -10,6 +10,7 @@ export class LitertController implements ReactiveController {
 
   private engine?: Engine
   private enginePromise?: Promise<Engine>
+  private conversation?: Conversation
 
   loading = false
 
@@ -55,14 +56,22 @@ export class LitertController implements ReactiveController {
     try {
       const engine = await this.getEngine()
       const conversation = await engine.createConversation()
+      this.conversation = conversation
+
       const response = await conversation.sendMessage(prompt)
       await conversation.delete()
 
       return this.extractText(response)
     } finally {
+      this.conversation = undefined
       this.loading = false
       this.host.requestUpdate()
     }
+  }
+
+  // Aborts any in-flight generation (e.g. the user closed the reader).
+  cancel() {
+    this.conversation?.cancel()
   }
 
   private extractText(message: Message): string {

@@ -4,6 +4,22 @@ export type VoucherPoiType = 'poi_hotel' | 'poi_transport'
 
 export type TransportType = 'flight' | 'cruise' | 'ferry' | 'train' | 'bus' | 'car'
 
+export interface VoucherErrors {
+  invalidFile: string
+  fileTooLarge: string
+  emptyContent: string
+  readError: string
+}
+
+export type VoucherErrorCode = keyof VoucherErrors
+
+export interface VoucherStatusMessages {
+  reading: string
+  processing: string
+}
+
+export type VoucherStatusKey = keyof VoucherStatusMessages
+
 export interface VoucherNote {
   icon: string
   text: string

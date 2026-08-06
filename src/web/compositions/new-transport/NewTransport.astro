@@ -3,6 +3,7 @@ import AppMenu from '@web/components/AppMenu.astro'
 import { getCurrencies } from '@web/utils/form.utils.ts'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 const { id, data } = Astro.props
+const channel = 'new-transport'
 
 let finalData = withFormA11yDefaults(data)
 
@@ -12,6 +13,18 @@ finalData.sections.segments.schema.origin.fields.location.api = '/api/places.jso
 finalData.sections.segments.schema.destiny.fields.location.api = '/api/places.json'
 
 finalData = JSON.stringify(finalData)
+
+const voucherErrors = {
+  invalidFile: 'Sube el archivo de la reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1,5 MB) y rellenaremos los datos por ti.',
+  fileTooLarge: 'El archivo supera el tamaño máximo de 1,5 MB.',
+  emptyContent: 'No hemos podido leer el contenido del archivo. Prueba con otro documento.',
+  readError: 'No hemos podido procesar tu voucher. Inténtalo de nuevo.'
+}
+
+const voucherStatus = {
+  reading: 'Leyendo tu voucher...',
+  processing: 'Procesando con IA (puede tardar unos minutos)...'
+}
 ---
 
 <section id={id} class="u-grid-main u-bg--dark" data-component>
@@ -23,15 +36,16 @@ finalData = JSON.stringify(finalData)
     <div class="ti-form u-grid">
       <div class="u-col-4 u-col-md-2"></div>
       <div class="u-col-4 u-col-md-8">
-        <c-tabs data-component id={id}>
+        <c-tabs data-component id={id} channel={channel}>
           <div data-label="Automático">
-            <c-voucher-reader data-component poiType="poi_transport">
+            <c-voucher-reader data-component poiType="poi_transport" channel={channel} extensions=".pdf,.pkpass" errorMessages={JSON.stringify(voucherErrors)} statusMessages={JSON.stringify(voucherStatus)}>
               <h3 slot="title">¿Tienes ya un transporte reservado?</h3>
-              <p slot="description">Sube el archivo de la reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1 MB) y rellenaremos los datos por ti.</p>
+              <p slot="description">Sube el archivo de la reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1,5 MB) y rellenaremos los datos por ti.</p>
+              <p slot="success">Hemos rellenado el formulario con los datos de tu voucher.</p>
             </c-voucher-reader>
           </div>
           <div data-label="Manual">
-            <c-form action="/" method="POST" data={finalData} submitLabel="Añadir Transporte" enctype="multipart/form-data"></c-form>
+            <c-form action="/" method="POST" data={finalData} submitLabel="Añadir Transporte" enctype="multipart/form-data" channel={channel}></c-form>
           </div>
         </c-tabs>
       </div>
