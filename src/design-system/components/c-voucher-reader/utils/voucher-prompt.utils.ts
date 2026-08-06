@@ -1,4 +1,4 @@
-import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
+import type { VoucherDraft, VoucherPoiType } from '../types/voucher.types'
 
 const HOTEL_SCHEMA = `{
   "coordinates": [longitude, latitude],

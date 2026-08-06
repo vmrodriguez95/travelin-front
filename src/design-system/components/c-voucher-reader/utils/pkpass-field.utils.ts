@@ -3,8 +3,8 @@ import { toIsoDateTime } from '@ds/utils/date.utils'
 
 // Types
 import type { Coordinates } from '@ds/types/pois.types'
-import type { PassField, PassJson, PassStructure } from '@ds/types/pkpass.types'
-import type { TransportParts, TransportSegmentPointDraft, TransportType, TransportVoucherDraft } from '@ds/types/voucher.types'
+import type { PassField, PassJson, PassStructure } from '../types/pkpass.types'
+import type { TransportParts, TransportSegmentPointDraft, TransportType, TransportVoucherDraft } from '../types/voucher.types'
 
 export const TRANSIT_TYPE_MAP: Record<string, TransportType> = {
   PKTransitTypeAir: 'flight',

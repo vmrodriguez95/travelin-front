@@ -1,4 +1,4 @@
-import type { TransportType, TransportVoucherDraft } from '@ds/types/voucher.types'
+import type { TransportType, TransportVoucherDraft } from './voucher.types'
 
 // Raw Apple Wallet pass.json shapes (https://developer.apple.com/documentation/walletpasses)
 

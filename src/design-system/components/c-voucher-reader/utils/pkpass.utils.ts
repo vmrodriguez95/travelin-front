@@ -1,7 +1,7 @@
 import { unzipSync } from 'fflate'
 
 // Utils
-import { toIsoDateTime } from '@ds/utils/date.utils'
+// import { toIsoDateTime } from '@ds/utils/date.utils'
 import {
   TRANSIT_TYPE_MAP,
   assembleTransportDraft,
@@ -15,12 +15,12 @@ import {
   getStructure,
   point,
   toCoordinates
-} from '@ds/utils/pkpass-field.utils'
-import { parseWithProfile } from '@ds/utils/pkpass-profile.utils'
+} from '@ds/components/c-voucher-reader/utils/pkpass-field.utils'
+import { parseWithProfile } from '@ds/components/c-voucher-reader/utils/pkpass-profile.utils'
 
 // Types
-import type { PassJson, VendorProfile } from '@ds/types/pkpass.types'
-import type { HotelVoucherDraft, TransportVoucherDraft, VoucherNote } from '@ds/types/voucher.types'
+import type { TransportVoucherDraft } from '../types/voucher.types'
+import type { PassJson, VendorProfile } from '../types/pkpass.types'
 
 // --- reading -----------------------------------------------------------------
 
@@ -91,36 +91,36 @@ function parseGenericTransport(pass: PassJson): TransportVoucherDraft {
 }
 
 // --- hotel -------------------------------------------------------------------
-export function pkpassToHotelDraft(pass: PassJson): HotelVoucherDraft {
-  const fields = collectFields(getStructure(pass))
+// export function pkpassToHotelDraft(pass: PassJson): HotelVoucherDraft {
+//   const fields = collectFields(getStructure(pass))
 
-  const notes: VoucherNote[] = []
-  const checkIn = findField(fields, ['check-in', 'checkin', 'entrada'])
-  const checkOut = findField(fields, ['check-out', 'checkout', 'salida'])
-  if (checkIn || checkOut) {
-    notes.push({
-      icon: 'check-in-out',
-      text: [fieldValue(checkIn), fieldValue(checkOut)].filter(Boolean).join(' · ')
-    })
-  }
+//   const notes: VoucherNote[] = []
+//   const checkIn = findField(fields, ['check-in', 'checkin', 'entrada'])
+//   const checkOut = findField(fields, ['check-out', 'checkout', 'salida'])
+//   if (checkIn || checkOut) {
+//     notes.push({
+//       icon: 'check-in-out',
+//       text: [fieldValue(checkIn), fieldValue(checkOut)].filter(Boolean).join(' · ')
+//     })
+//   }
 
-  const room = findField(fields, ['room', 'habitación', 'habitacion'])
-  if (room) {
-    notes.push({ icon: 'bed', text: fieldValue(room) })
-  }
+//   const room = findField(fields, ['room', 'habitación', 'habitacion'])
+//   if (room) {
+//     notes.push({ icon: 'bed', text: fieldValue(room) })
+//   }
 
-  const address = findField(fields, ['address', 'dirección', 'direccion'])
+//   const address = findField(fields, ['address', 'dirección', 'direccion'])
 
-  return {
-    coordinates: toCoordinates(pass),
-    name: pass.logoText || pass.organizationName || pass.description || '',
-    type: 'poi_hotel',
-    icon: 'hotel',
-    types: ['hotel'],
-    address: fieldValue(address) || pass.locations?.[0]?.relevantText || '',
-    dateStart: toIsoDateTime(pass.relevantDate),
-    dateEnd: toIsoDateTime(pass.expirationDate),
-    image: '',
-    notes
-  }
-}
+//   return {
+//     coordinates: toCoordinates(pass),
+//     name: pass.logoText || pass.organizationName || pass.description || '',
+//     type: 'poi_hotel',
+//     icon: 'hotel',
+//     types: ['hotel'],
+//     address: fieldValue(address) || pass.locations?.[0]?.relevantText || '',
+//     dateStart: toIsoDateTime(pass.relevantDate),
+//     dateEnd: toIsoDateTime(pass.expirationDate),
+//     image: '',
+//     notes
+//   }
+// }

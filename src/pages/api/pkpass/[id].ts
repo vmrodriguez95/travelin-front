@@ -1,8 +1,8 @@
 import type { APIRoute, GetStaticPaths } from 'astro'
-import type { VendorProfile } from '@ds/types/pkpass.types'
+import type { VendorProfile } from '@ds/components/c-voucher-reader/types/pkpass.types'
 
 // Mock backend: owns the vendor profiles, one static file per business at
-// /api/pkpass/<id>.json. In production the real Travelin backend replaces this.
+// /api/pkpass/<id>. In production the real Travelin backend replaces this.
 const modules = import.meta.glob('../../../data/pkpass/*.json', { eager: true, import: 'default' })
 const PROFILES = Object.values(modules) as VendorProfile[]
 

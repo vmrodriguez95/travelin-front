@@ -1,4 +1,4 @@
-import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
+import type { VoucherDraft, VoucherPoiType } from './voucher.types'
 
 export type VoucherReaderStatus = 'idle' | 'reading' | 'success' | 'error'
 

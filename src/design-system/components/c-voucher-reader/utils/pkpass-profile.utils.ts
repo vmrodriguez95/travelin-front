@@ -11,11 +11,11 @@ import {
   parsePrice,
   point,
   toCoordinates
-} from '@ds/utils/pkpass-field.utils'
+} from '@ds/components/c-voucher-reader/utils/pkpass-field.utils'
 
 // Types
-import type { TransportSegmentPointDraft, TransportVoucherDraft } from '@ds/types/voucher.types'
-import type { PassField, PassJson, ProfileAccessor, ProfileAccessorSingle, ProfileDate, ProfilePoint, TransformName, VendorProfile } from '@ds/types/pkpass.types'
+import type { TransportSegmentPointDraft, TransportVoucherDraft } from '../types/voucher.types'
+import type { PassField, PassJson, ProfileAccessor, ProfileAccessorSingle, ProfileDate, ProfilePoint, TransformName, VendorProfile } from '../types/pkpass.types'
 
 // Fixed, named transforms. Extend here rather than growing the JSON DSL.
 const TRANSFORMS: Record<TransformName, (value: string) => string> = {

@@ -9,15 +9,15 @@ import { LitertController } from '@ds/controllers/litert.controller'
 import { SimpleGetClient } from '@ds/requests/index'
 
 // Utils
-import { extractPdfText } from '@ds/utils/pdf.utils'
-import { buildVoucherPrompt, parseVoucherJson } from '@ds/utils/voucher-prompt.utils'
+import { extractPdfText } from '@ds/components/c-voucher-reader/utils/pdf.utils'
 import { DEFAULT_MODEL, DEFAULT_PROFILES_ENDPOINT, PDF_MAX_SIZE } from '@ds/utils/variables'
-import { getPassProfileId, pkpassToHotelDraft, pkpassToTransportDraft, readPassJson } from '@ds/utils/pkpass.utils'
+import { buildVoucherPrompt, parseVoucherJson } from '@ds/components/c-voucher-reader/utils/voucher-prompt.utils'
+import { getPassProfileId, pkpassToTransportDraft, readPassJson } from '@ds/components/c-voucher-reader/utils/pkpass.utils'
 
 // Types
-import type { VoucherReaderStatus } from './c-voucher-reader.types'
-import type { PassJson, VendorProfile } from '@ds/types/pkpass.types'
-import type { VoucherDraft, VoucherPoiType } from '@ds/types/voucher.types'
+import type { PassJson, VendorProfile } from './types/pkpass.types'
+import type { VoucherReaderStatus } from './types/c-voucher-reader.types'
+import type { VoucherDraft, VoucherPoiType } from './types/voucher.types'
 
 // Styles
 import styles from './c-voucher-reader.style.scss?inline'
@@ -76,7 +76,7 @@ export class CVoucherReader extends LitElement {
   }
 
   private async _onFileChange(event: Event) {
-    const input = event.target as HTMLElement & { value: FileList | null }
+    const input = event.target as HTMLInputElement & { value: FileList | null }
     const file = input.value?.[0]
     if (!file) return
 
@@ -110,10 +110,11 @@ export class CVoucherReader extends LitElement {
   private async _readPkpass(file: File): Promise<VoucherDraft> {
     const pass = await readPassJson(file)
 
-    console.log('Pass JSON:', pass)
-
     if (this.poiType === 'poi_hotel') {
-      return pkpassToHotelDraft(pass)
+      // TODO: Recopilar más información sobre los pkpass de los hoteles para implementarlos.
+      throw new Error('Formato no soportado. Sube un archivo .pdf')
+
+    //   return pkpassToHotelDraft(pass)
     }
 
     const profile = await this._fetchProfile(pass)
@@ -127,8 +128,7 @@ export class CVoucherReader extends LitElement {
     if (!id || !this.endpoint) return null
 
     try {
-      const url = new URL(`${this.endpoint}/${id}.json`, window.origin).toString()
-      const response = await this._client.request<{ data: VendorProfile | null }>(url, 'GET')
+      const response = await this._client.get<{ data: VendorProfile | null }>(`${this.endpoint}/${id}`)
       return response.data ?? null
     } catch {
       return null
@@ -137,7 +137,7 @@ export class CVoucherReader extends LitElement {
 
   private async _readPdf(file: File): Promise<VoucherDraft> {
     if (file.size > PDF_MAX_SIZE) {
-      throw new Error('El PDF supera el tamaño máximo de 1 MB')
+      throw new Error('El PDF supera el tamaño máximo de 1,5 MB')
     }
 
     const text = await extractPdfText(file)
