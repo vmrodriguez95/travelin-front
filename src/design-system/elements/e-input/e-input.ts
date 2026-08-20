@@ -98,12 +98,12 @@ export class EInput extends FormElement {
             @blur=${this._onBlur}
           />
           ${when(this._isPasswordField, () => html`
-            <button class="e-input__show-password" type="button" @click=${this._onShowPassword} aria-label=${this.type === 'password' ? this.a11y.showPassword : this.a11y.hidePassword}>
+            <button class="e-input__show-password" type="button" @click=${this._onShowPassword} aria-label=${this.type === 'password' ? this.a11y?.showPassword : this.a11y?.hidePassword}>
               <e-icon icon="${this.type === 'password' ? 'eye' : 'eye-off'}" size="m"></e-icon>
             </button>
           `)}
           ${when(this.value, () => html`
-            <button class="e-input__clear" type="button" @click=${this._onClean} aria-label=${this.a11y.clear}>
+            <button class="e-input__clear" type="button" @click=${this._onClean} aria-label=${this.a11y?.clear}>
               <e-icon icon="close" size="m"></e-icon>
             </button>
           `)}

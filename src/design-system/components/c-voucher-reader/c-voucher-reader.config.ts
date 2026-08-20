@@ -13,17 +13,17 @@ export const config = {
       type: 'text',
       default: 'Sube tu voucher'
     },
-    model: {
-      name: 'model',
-      label: 'URL del modelo LiteRT-LM (para PDF)',
-      type: 'text',
-      default: 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.litertlm'
-    },
     endpoint: {
       name: 'endpoint',
       label: 'Endpoint de perfiles de proveedor (.pkpass)',
       type: 'text',
       default: '/api/pkpass'
+    },
+    pdfEndpoint: {
+      name: 'pdfEndpoint',
+      label: 'Endpoint de perfiles de proveedor (.pdf)',
+      type: 'text',
+      default: '/api/pdf'
     }
   },
   slots: {

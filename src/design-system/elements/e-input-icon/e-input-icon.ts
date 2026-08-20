@@ -64,21 +64,21 @@ export class EInputIcon extends FormElement {
             class="e-input-icon__choose"
             type="button"
             @click=${this._openPopup}
-            aria-label=${this.a11y.choose}
+            aria-label=${this.a11y?.choose}
             aria-expanded=${this._open ? 'true' : 'false'}
             aria-controls=${popupId}
           >
             <e-icon icon=${this.value || 'smile-add'} size="l"></e-icon>
           </button>
           <div class=${popupClasses} aria-hidden=${this._open ? 'false' : 'true'}>
-            <ul id=${popupId} class="e-input-icon__popup__list" aria-label=${this.a11y.list}>
+            <ul id=${popupId} class="e-input-icon__popup__list" aria-label=${this.a11y?.list}>
               ${map(Object.keys(EICON_LIST), (iconKey) => html`
                 <li>
                   <button
                     class=${this._getIconClasses(iconKey)}
                     type="button"
                     @click=${() => this._onChange(iconKey)}
-                    aria-label="${this.a11y.icon} ${iconKey}"
+                    aria-label="${this.a11y?.icon} ${iconKey}"
                   >
                     <e-icon icon=${iconKey} size="m"></e-icon>
                   </button>

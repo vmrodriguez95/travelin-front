@@ -245,10 +245,21 @@ export class CForm extends LitElement {
   }
 
   private _setFilledValue(field: BasicFormField, value: unknown) {
-    // Calendar returns a structured value ({ dateStart, dateEnd }); keep it as-is.
+    // A calendar is filled with a structured range ({ dateStart, dateEnd }), but
+    // e-calendar paints and submits from its own `start`/`end`, so the range has
+    // to be mapped onto those. The keys come from the field's own
+    // `returnedValues`, which is the same contract e-calendar submits under.
     if (field.type === 'calendar') {
-      field.value = value as string
-      field.fillValue = value as string
+      const calendar = field as CalendarFormField
+      const [startKey, endKey] = calendar.returnedValues ?? []
+      const range = (value ?? {}) as Record<string, string>
+
+      // Drafts carry full ISO datetimes; the calendar matches days as
+      // "YYYY-MM-DD", so an unsliced value would never match a rendered day.
+      calendar.start = (range[startKey] ?? '').slice(0, 10)
+      calendar.end = (range[endKey] ?? '').slice(0, 10)
+      calendar.value = calendar.start
+      calendar.fillValue = calendar.start
       return
     }
 
@@ -506,7 +517,7 @@ export class CForm extends LitElement {
             label=${field.label}
             type=${field.type}
             helpmsg=${field.helpmsg}
-            .a11y=${field.a11y}
+            .a11y=${field.a11y ?? {}}
             .messages=${field.messages ?? {}}
             .minlength=${field.minLength || 0}
             .maxlength=${field.maxLength || 255}
@@ -576,7 +587,7 @@ export class CForm extends LitElement {
             extensions=${fieldFile.file.extensions}
             size=${fieldFile.file.maxSize}
             ?multiple=${fieldFile.file.multiple}
-            .a11y=${fieldFile.a11y}
+            .a11y=${fieldFile.a11y ?? {}}
             @change=${(ev: CustomEvent) => this._onChange(ev, fieldFile)}
           ></e-input-file>
         `
@@ -612,7 +623,7 @@ export class CForm extends LitElement {
             helpmsg=${field.helpmsg}
             .messages=${field.messages ?? {}}
             .value=${this._getFieldValue(field)}
-            .a11y=${field.a11y}
+            .a11y=${field.a11y ?? {}}
             ?required=${field.required}
             ?readonly=${field.readonly}
             @change=${(ev: CustomEvent) => this._onChange(ev, field)}

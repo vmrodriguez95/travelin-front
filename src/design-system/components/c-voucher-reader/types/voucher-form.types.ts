@@ -29,6 +29,11 @@ export interface HotelFormFill {
   core: {
     location: string
     coordinates: [number, number]
+    // String, like the transport form's price: the field is a number input and
+    // an empty string is what leaves it blank rather than showing a stray 0.
+    price: string
+    // ISO code ("EUR"), matching the `value` of the currency select options.
+    currency: string
     date: { dateStart: string; dateEnd: string }
     notes: Array<{ icon: string; text: string }>
   }

@@ -7,6 +7,6 @@ export const BREAKPOINTS = {
 
 export const PDF_MAX_SIZE = 1024 * 1024 * 1.5 // 1,5 MB
 
-export const DEFAULT_MODEL = 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.litertlm'
-
 export const DEFAULT_PROFILES_ENDPOINT = '/api/pkpass'
+
+export const DEFAULT_PDF_PROFILES_ENDPOINT = '/api/pdf'

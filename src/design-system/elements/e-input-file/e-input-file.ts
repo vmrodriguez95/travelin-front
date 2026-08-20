@@ -56,11 +56,11 @@ export class EInputFile extends FormElement {
             accept=${this.extensions}
             @change=${this._onChange}
           />
-          <button class="e-input-file__fake-field" type="button" @click=${this._openFileBrowser} aria-label=${this.a11y.upload}>
+          <button class="e-input-file__fake-field" type="button" @click=${this._openFileBrowser} aria-label=${this.a11y?.upload}>
             <e-icon icon="attach-file" size="m"></e-icon> ${this._filename}
           </button>
           ${when(this.value, () => html`
-            <button class="e-input-file__clear" type="button" @click=${this._onClean} aria-label=${this.a11y.clear}>
+            <button class="e-input-file__clear" type="button" @click=${this._onClean} aria-label=${this.a11y?.clear}>
               <e-icon icon="close" size="s"></e-icon>
             </button>
           `)}

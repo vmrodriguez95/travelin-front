@@ -1,11 +1,14 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
+import { getCurrencies } from '@web/utils/form.utils.ts'
 import { withFormA11yDefaults } from '@web/utils/form.server.ts'
 
 const { id, data } = Astro.props
 const channel = 'new-hotel'
 
 let finalData = withFormA11yDefaults(data)
+
+finalData.sections.core.fields.currency.options = getCurrencies()
 
 finalData.sections.core.fields.location.api = '/api/places.json'
 

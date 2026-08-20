@@ -4,29 +4,26 @@ import { when } from 'lit/directives/when.js'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 
 // Controllers
-import { LitertController } from '@ds/controllers/litert.controller'
 import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Requests
 import { SimpleGetClient } from '@ds/requests/index'
 
 // Utils
-import { extractPdfText } from '@ds/components/c-voucher-reader/utils/pdf.utils'
-import { DEFAULT_MODEL, DEFAULT_PROFILES_ENDPOINT, PDF_MAX_SIZE } from '@ds/utils/variables'
-import { buildVoucherPrompt, parseVoucherJson } from '@ds/components/c-voucher-reader/utils/voucher-prompt.utils'
-import { getPassProfileId, pkpassToTransportDraft, readPassJson } from '@ds/components/c-voucher-reader/utils/pkpass.utils'
+import { extractPdfPages } from '@ds/components/c-voucher-reader/utils/pdf.utils'
+import { renderPages } from '@ds/components/c-voucher-reader/utils/pdf-field.utils'
+import { parseGenericPdf, sanitizeDraft } from '@ds/components/c-voucher-reader/utils/pdf-generic.utils'
+import { DEFAULT_PDF_PROFILES_ENDPOINT, DEFAULT_PROFILES_ENDPOINT, PDF_MAX_SIZE } from '@ds/utils/variables'
+import { detectProfileId, parseWithPdfProfile } from '@ds/components/c-voucher-reader/utils/pdf-profile.utils'
 import { hotelDraftToFormFill, transportDraftToFormFill } from '@ds/components/c-voucher-reader/utils/voucher-form.utils'
-import {
-  FORM_FILL_EVENT,
-  TAB_SELECT_EVENT,
-  type FormFillEventDetail,
-  type TabSelectEventDetail
-} from '@ds/utils/poi-channel.utils'
+import { getPassProfileId, pkpassToTransportDraft, readPassJson } from '@ds/components/c-voucher-reader/utils/pkpass.utils'
+import { FORM_FILL_EVENT, TAB_SELECT_EVENT, type FormFillEventDetail, type TabSelectEventDetail } from '@ds/utils/poi-channel.utils'
 
 // Types
 import type { CModal } from '@ds/components/c-modal/c-modal'
 import type { PassJson, VendorProfile } from './types/pkpass.types'
 import type { VoucherReaderStatus } from './types/c-voucher-reader.types'
+import type { PdfProfile, PdfProfileManifestEntry } from './types/pdf-profile.types'
 import type { HotelVoucherDraft, TransportVoucherDraft, VoucherDraft, VoucherErrorCode, VoucherErrors, VoucherPoiType, VoucherStatusMessages } from './types/voucher.types'
 
 // Styles
@@ -39,9 +36,9 @@ export class CVoucherReader extends LitElement {
 
   @property({ type: String }) label = 'Sube tu voucher'
 
-  @property({ type: String }) model = DEFAULT_MODEL
-
   @property({ type: String }) endpoint = DEFAULT_PROFILES_ENDPOINT
+
+  @property({ type: String }) pdfEndpoint = DEFAULT_PDF_PROFILES_ENDPOINT
 
   @property({ type: String }) extensions = '.pdf,.pkpass'
 
@@ -55,11 +52,15 @@ export class CVoucherReader extends LitElement {
 
   @state() private _errorCode: VoucherErrorCode = 'readError'
 
+  // True once the text is out and we are matching it against a vendor profile.
+  @state() private _processing = false
+
   @query('c-modal') private _modal!: CModal
 
   private _cancelled = false
 
-  private _litert = new LitertController(this, () => this.model)
+  // The manifest is the same for every file, so it is fetched at most once.
+  private _manifest: PdfProfileManifestEntry[] | null = null
 
   private _client = new SimpleGetClient({ baseUrl: window.origin })
 
@@ -106,17 +107,16 @@ export class CVoucherReader extends LitElement {
     }
   }
 
-  // The user closed the modal: if a read is still in flight, cancel it (incl. the AI request).
+  // The user closed the modal: if a read is still in flight, abandon its result.
   private _onModalClose() {
     if (this._status !== 'reading') return
 
     this._cancelled = true
-    this._litert.cancel()
     this._status = 'idle'
   }
 
   private _statusMessage(): string {
-    const key = this._litert.loading ? 'processing' : 'reading'
+    const key = this._processing ? 'processing' : 'reading'
 
     return this.statusMessages?.[key] ?? ''
   }
@@ -128,6 +128,7 @@ export class CVoucherReader extends LitElement {
 
     this._status = 'reading'
     this._cancelled = false
+    this._processing = false
 
     try {
       const draft = await this._readFile(file)
@@ -140,6 +141,8 @@ export class CVoucherReader extends LitElement {
 
       this._errorCode = this._resolveErrorCode(error)
       this._status = 'error'
+    } finally {
+      this._processing = false
     }
   }
 
@@ -208,14 +211,43 @@ export class CVoucherReader extends LitElement {
       throw new Error('fileTooLarge')
     }
 
-    const text = await extractPdfText(file)
+    const pages = await extractPdfPages(file)
+    const text = renderPages(pages)
+
+    // No text layer at all: the PDF is a scan, and there is nothing to read.
     if (!text) {
       throw new Error('emptyContent')
     }
 
-    const prompt = buildVoucherPrompt(this.poiType, text)
-    const raw = await this._litert.generate(prompt)
+    this._processing = true
 
-    return parseVoucherJson(raw, this.poiType)
+    const profile = await this._fetchPdfProfile(text)
+
+    // A known vendor is read by its profile; anything else falls back to the
+    // generic parser, which fills what it recognises and leaves the rest for
+    // the user to correct.
+    return sanitizeDraft(profile
+      ? parseWithPdfProfile(pages, text, profile)
+      : parseGenericPdf(pages, text, this.poiType))
+  }
+
+  // Recognises the vendor against the backend manifest, then asks for that
+  // profile. The requested id always comes from the manifest, never from the
+  // document, so a crafted PDF cannot steer which resource gets fetched.
+  // Any miss (unknown vendor → 404, or a request error) falls back to generic.
+  private async _fetchPdfProfile(text: string): Promise<PdfProfile | null> {
+    if (!this.pdfEndpoint) return null
+
+    try {
+      this._manifest ??= (await this._client.get<{ data: PdfProfileManifestEntry[] }>(`${this.pdfEndpoint}/manifest`)).data ?? []
+
+      const id = detectProfileId(text, this._manifest)
+      if (!id) return null
+
+      const response = await this._client.get<{ data: PdfProfile | null }>(`${this.pdfEndpoint}/${id}`)
+      return response.data ?? null
+    } catch {
+      return null
+    }
   }
 }
