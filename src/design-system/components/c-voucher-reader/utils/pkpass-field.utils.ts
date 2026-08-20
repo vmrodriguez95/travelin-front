@@ -114,15 +114,30 @@ export function combineDateTime(date: string, time: string): string {
   return toIsoDateTime(`${date}T${hour.padStart(2, '0')}:${minute}:00`)
 }
 
-// Extracts amount + currency from a free-text price such as "65,70 €".
+// Extracts amount + currency from a free-text price such as "65,70 €" or
+// "€ 1.262,74".
+//
+// Both "1.210,53" and "1,234.56" are the same amount written in different
+// locales, so neither separator can be assumed to mean one thing. The rule
+// used here: the last separator is the decimal point only when it splits off
+// one or two digits; anything else is a thousands separator and is dropped.
 export function parsePrice(value: string): { price: number; currency: string } {
-  if (!value) return { price: 0, currency: '' }
-
-  const amount = value.match(/(\d+(?:[.,]\d{1,2})?)/)
-  const price = amount ? Number(amount[1].replace(',', '.')) : 0
   const currency = /€|eur/i.test(value) ? 'EUR' : /\$|usd/i.test(value) ? 'USD' : /£|gbp/i.test(value) ? 'GBP' : ''
 
-  return { price, currency }
+  const match = value?.match(/\d[\d.,]*/)
+  if (!match) return { price: 0, currency }
+
+  const digits = match[0].replace(/[.,]+$/, '')
+  const separator = Math.max(digits.lastIndexOf('.'), digits.lastIndexOf(','))
+  const decimals = separator === -1 ? 0 : digits.length - separator - 1
+
+  const normalized = decimals >= 1 && decimals <= 2
+    ? `${digits.slice(0, separator).replace(/[.,]/g, '')}.${digits.slice(separator + 1)}`
+    : digits.replace(/[.,]/g, '')
+
+  const price = Number(normalized)
+
+  return { price: Number.isFinite(price) ? price : 0, currency }
 }
 
 // --- draft assembly ----------------------------------------------------------

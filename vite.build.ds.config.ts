@@ -19,7 +19,19 @@ export default defineConfig(({ mode }) => {
         { find: '@common', replacement: '/src/common' },
       ]
     },
+    worker: {
+      // The pdf.js worker ships as an ES module, so it cannot be wrapped as iife.
+      format: 'es',
+      rollupOptions: {
+        output: {
+          // Keep it next to the other chunks instead of in its own assets/ dir.
+          entryFileNames: 'lib/[name].js',
+          chunkFileNames: 'lib/[name].js'
+        }
+      }
+    },
     build: {
+      minify: 'esbuild',
       lib: {
         entry: 'src/design-system/index.ts',
         name: 'DesignSystem',
@@ -29,7 +41,9 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         external: [], // aquí puedes excluir dependencias externas
         output: {
-          assetFileNames: 'app[extname]',
+          // The consuming app loads the stylesheet as app.css, so that name is
+          // pinned; everything else keeps its own name to avoid collisions.
+          assetFileNames: (asset) => asset.name?.endsWith('.css') ? 'app[extname]' : '[name][extname]',
           chunkFileNames: 'lib/[name].js',
           manualChunks(id) {
             if (id.includes('/node_modules/globe.gl/')) {
@@ -37,9 +51,6 @@ export default defineConfig(({ mode }) => {
             }
             if (id.includes('/node_modules/pdfjs-dist/')) {
               return 'pdf'
-            }
-            if (id.includes('/node_modules/@litert-lm/')) {
-              return 'litert'
             }
           }
         }

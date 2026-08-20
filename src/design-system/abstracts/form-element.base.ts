@@ -52,13 +52,20 @@ export abstract class FormElement extends LitElement {
 
   protected _validate(): void {
     const validity = this._calculateValidity()
+    const previousMessage = this._internals.validationMessage
 
     if (validity.valid) {
       this._internals.setValidity({})
-      return
+    } else {
+      this._internals.setValidity(validity.state, validity.message, this._getAnchorElement())
     }
 
-    this._internals.setValidity(validity.state, validity.message, this._getAnchorElement())
+    // The message lives on ElementInternals, which Lit does not observe. Without
+    // this, a template printing it keeps showing a stale error after the field
+    // has been corrected — including when it is corrected programmatically.
+    if (this._internals.validationMessage !== previousMessage) {
+      this.requestUpdate()
+    }
   }
 
   reportValidity(): boolean {

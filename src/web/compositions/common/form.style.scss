@@ -3,7 +3,7 @@
 
 .ti-form {
   position: relative;
-  height: 100dvh;
+  height: auto;
   padding: space(1) var(--grid-gutter) var(--ui-menu-height);
   
   @media (min-width: $breakpoint-xl) {

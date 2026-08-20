@@ -35,6 +35,8 @@ export interface HotelVoucherDraft {
   address: string
   dateStart: string
   dateEnd: string
+  price: number
+  currency: string
   image: string
   notes: VoucherNote[]
 }

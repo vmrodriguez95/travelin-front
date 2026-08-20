@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
-    "@litert-lm/core": "^0.14.0",
     "astro": "^5.16.15",
     "fflate": "^0.8.3",
     "globe.gl": "^2.46.1",

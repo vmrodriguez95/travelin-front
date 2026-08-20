@@ -212,6 +212,75 @@ export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal
   return Temporal.PlainDate.compare(date1, date2)
 }
 
+// Month names as printed on vouchers. Kept explicit rather than derived from
+// navigator.language: the document's language has nothing to do with the
+// browser's, and a Spanish booking must parse for an English-locale user.
+const MONTH_NAMES: Record<string, number> = {
+  enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6,
+  julio: 7, agosto: 8, septiembre: 9, setiembre: 9, octubre: 10, noviembre: 11, diciembre: 12,
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12
+}
+
+function normalizeMonth(value: string): number {
+  const key = value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+
+  if (MONTH_NAMES[key]) return MONTH_NAMES[key]
+
+  // Abbreviations such as "sept", "ago." or "Aug".
+  const match = Object.keys(MONTH_NAMES).find((name) => name.startsWith(key) && key.length >= 3)
+  return match ? MONTH_NAMES[match] : 0
+}
+
+// Reads a date written out in words — "29 AGOSTO", "18 de agosto de 2026",
+// "18 August 2026", "August 18, 2026" — and returns it as "YYYY-MM-DD".
+// Vouchers often omit the year, so `fallbackYear` fills that gap; without one
+// the current year is assumed, matching the rule already used for "DD/MM".
+export function parseNaturalDate(value?: string | null, fallbackYear?: number): string {
+  if (!value) return ''
+
+  const year = fallbackYear ?? Temporal.Now.plainDateISO().year
+
+  // The day is bounded on both sides so a four-digit year is never mistaken
+  // for one: without it, "agosto 2026" reads as day 20 of August.
+  // "29 [de] agosto [de 2026]"
+  const dayFirst = value.match(/(?<!\d)(\d{1,2})(?!\d)\s*(?:de\s+)?([A-Za-zÁÉÍÓÚáéíóúÜü.]{3,})(?:\s*(?:de|,)?\s*(\d{4}))?/)
+  // "August 18, 2026"
+  const monthFirst = value.match(/([A-Za-zÁÉÍÓÚáéíóúÜü.]{3,})\s+(\d{1,2})(?!\d)(?:\s*,?\s*(\d{4}))?/)
+
+  for (const [, first, second, matchedYear] of [dayFirst, monthFirst].filter(Boolean) as RegExpMatchArray[]) {
+    const dayFromFirst = /^\d/.test(first)
+    const day = Number(dayFromFirst ? first : second)
+    const month = normalizeMonth(dayFromFirst ? second : first)
+
+    if (!month || !day || day > 31) continue
+
+    try {
+      return Temporal.PlainDate.from({ year: Number(matchedYear) || year, month, day }).toString()
+    } catch {
+      continue
+    }
+  }
+
+  return ''
+}
+
+// Picks the most plausible year mentioned in a document, so a voucher that
+// prints "29 AGOSTO" without a year can still be dated. Falls back to the
+// current year when the text names none.
+export function findDocumentYear(text: string): number {
+  const current = Temporal.Now.plainDateISO().year
+  const years = [...text.matchAll(/\b(20\d{2})\b/g)]
+    .map((match) => Number(match[1]))
+    .filter((year) => year >= current - 1 && year <= current + 5)
+
+  return years.length ? Math.min(...years) : current
+}
+
 // Normalizes any date-like string (with or without time/offset) to the
 // "YYYY-MM-DDTHH:mm:ss.SSS" wall-clock format used by our POI drafts.
 export function toIsoDateTime(date?: string | null): string {

@@ -5,8 +5,6 @@ const { poiType = 'poi_transport', label = 'Sube tu voucher' } = Astro.props
 <c-voucher-reader data-component poiType={poiType} label={label}>
   <h3 slot="title">Lee tu voucher automáticamente</h3>
   <p slot="description">
-    Sube tu billete o reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1 MB)
-    y rellenaremos los datos por ti. El JSON generado se muestra en la consola. La lectura de PDF usa
-    IA en el navegador (requiere WebGPU y descarga el modelo la primera vez).
+    Sube tu billete o reserva en formato <strong>.pkpass</strong> o <strong>.pdf</strong> (menos de 1,5 MB) y rellenaremos los datos por ti. La lectura de PDF usa IA en el navegador (requiere WebGPU y descarga el modelo la primera vez).
   </p>
 </c-voucher-reader>

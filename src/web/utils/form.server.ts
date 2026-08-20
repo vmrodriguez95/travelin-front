@@ -59,8 +59,12 @@ function isBasicFormField(value: any): value is BasicFormField {
   return Boolean(value) && typeof value === 'object' && 'type' in value
 }
 
+// Every type c-form routes to e-input, which all render the same clear button.
+// Leaving one out means that field ships without an aria-label on it.
+const TEXT_LIKE_TYPES = ['text', 'email', 'password', 'number']
+
 function addA11yToField(field: BasicFormField, config: Required<FormA11yConfig>) {
-  if (field.type === 'text') {
+  if (TEXT_LIKE_TYPES.includes(field.type)) {
     field.a11y = {
       ...config.text,
       ...(field.a11y || {})

@@ -69,6 +69,15 @@ export class ECalendar extends FormElement {
     this._weekdaysInititals = getWeekdayInitials()
   }
 
+  // `value` is always the start of the range, whether it came from a click or
+  // from a prefill. Deriving it here keeps the two entry points consistent
+  // without an extra render pass.
+  protected willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('start') && this.start && this.value !== this.start) {
+      this.value = this.start
+    }
+  }
+
   protected updated(changedProperties: PropertyValues<this>) {
     if (
       changedProperties.has('start')
@@ -76,6 +85,19 @@ export class ECalendar extends FormElement {
       || changedProperties.has('max')
     ) {
       this._syncCalendarView()
+    }
+
+    // A range set from outside never went through the click handler, so this is
+    // what makes prefilled dates count as a value: valid, and part of the form.
+    //
+    // The guard skips an untouched empty calendar on its first paint: validating
+    // there would show "no dates selected" before the user has done anything.
+    // A range that was present and got cleared still publishes, so the error
+    // does appear once there is something to correct.
+    const hadRange = Boolean(changedProperties.get('start') || changedProperties.get('end'))
+
+    if ((changedProperties.has('start') || changedProperties.has('end')) && (this.start || this.end || hadRange)) {
+      this._publishValue()
     }
   }
 
@@ -327,8 +349,22 @@ export class ECalendar extends FormElement {
     this._goToMonth(newMonth, newYear)
   }
 
-  private _onChange(day: number) {
+  // Publishes the current range to the owning form. Split out of the click
+  // handler because a range can also arrive as properties — a voucher
+  // prefilling the form — and those dates have to submit just the same.
+  private _publishValue() {
     const formData = new FormData()
+
+    if (this.returnedValues.length) {
+      formData.append(this.returnedValues[0], this.start)
+      formData.append(this.returnedValues[1], this.end || '')
+    }
+
+    this._validate()
+    this._internals.setFormValue(formData)
+  }
+
+  private _onChange(day: number) {
     const newDate = this._getActualDate(day).toString()
 
     if (this._isDayDisabled(day)) return
@@ -347,13 +383,7 @@ export class ECalendar extends FormElement {
       this.end = ''
     }
 
-    if (this.returnedValues.length) {
-      formData.append(this.returnedValues[0], this.start)
-      formData.append(this.returnedValues[1], this.end || '')
-    }
-
-    this._validate()
-    this._internals.setFormValue(formData)
+    this._publishValue()
     this.dispatchEvent(new CustomEvent('change', { detail: [this.start, this.end] }))
   }
 

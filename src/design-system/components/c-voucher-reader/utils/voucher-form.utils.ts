@@ -42,6 +42,8 @@ export function hotelDraftToFormFill(draft: HotelVoucherDraft): HotelFormFill {
     core: {
       location: draft.name,
       coordinates: draft.coordinates,
+      price: draft.price ? String(draft.price) : '',
+      currency: draft.currency,
       date: { dateStart: draft.dateStart, dateEnd: draft.dateEnd },
       notes: draft.notes.map((note) => ({ icon: note.icon, text: note.text }))
     }
