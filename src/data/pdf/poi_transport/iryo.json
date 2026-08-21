@@ -1,0 +1,28 @@
+{
+  "id": "iryo",
+  "match": ["iryo.eu", "intermodalidad de levante"],
+  "poiType": "poi_transport",
+  "typeTransport": "train",
+  "provider": "iryo",
+  "segments": {
+    "perPage": true,
+    "transportNumber": { "label": "Salida", "below": 1, "column": 1 },
+    "passenger": {
+      "regex": "\\n([^\\n\\t\\d:]{5,})\\n(?=LOCALIZADOR)",
+      "within": { "xMax": 0.39 },
+      "transform": "collapseSpaces"
+    },
+    "seat": { "label": "ASIENTO", "below": 1, "column": 1 },
+    "class": { "label": "ASIENTO", "below": 2, "column": 0, "within": { "xMin": 0.39 } },
+    "origin": {
+      "name": { "regex": "([\\s\\S]+)", "within": { "xMax": 0.39, "yMin": 0.08, "yMax": 0.145 }, "transform": "collapseSpaces" },
+      "date": { "label": "Salida", "below": 1, "within": { "xMax": 0.39 } },
+      "time": { "label": "Salida", "below": 2, "within": { "xMax": 0.39 } }
+    },
+    "destiny": {
+      "name": { "regex": "([\\s\\S]+)", "within": { "xMin": 0.39, "yMin": 0.08, "yMax": 0.145 }, "transform": "collapseSpaces" },
+      "date": { "label": "Llegada", "below": 1, "column": 1, "within": { "xMin": 0.39 } },
+      "time": { "label": "Llegada", "below": 2, "within": { "xMin": 0.39 } }
+    }
+  }
+}

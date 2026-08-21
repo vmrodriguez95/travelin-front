@@ -62,6 +62,12 @@ function blockSource(lines: string[]): PdfLineSource {
   return () => lines
 }
 
+// A source pinned to one page: the accessor's crop still applies, but only
+// within that sheet. This is what a per-page segment reads from.
+function pageSource(pages: PdfPage[], index: number): PdfLineSource {
+  return (box) => linesFor(pages, { ...box, page: index })
+}
+
 function resolveSingle(source: PdfLineSource, accessor: PdfAccessorSingle): string {
   if (typeof accessor === 'string') {
     return resolveSingle(source, { label: accessor })
@@ -139,8 +145,8 @@ function resolveDate(source: PdfLineSource, year: number, accessor?: PdfAccessor
 }
 
 // Rows of a passenger table, bounded by the labels the profile gives.
-function passengerRows(pages: PdfPage[], list: PdfPassengerList): string[] {
-  const lines = linesFor(pages, list.within)
+function passengerRows(pages: PdfPage[], source: PdfLineSource, list: PdfPassengerList): string[] {
+  const lines = source(list.within)
   const start = findLabelIndex(lines, list.after)
   if (start === -1) return []
 
@@ -165,18 +171,24 @@ function readFromLine(line: string, accessor?: PdfLineAccessor): string {
   return applyTransform(raw, accessor.transform)
 }
 
-function resolvePassengers(pages: PdfPage[], profile: PdfTransportProfile): TransportSegmentPassengerDraft[] {
-  if (profile.passengers) {
-    return passengerRows(pages, profile.passengers)
+// Travellers as described by one of the two shapes a profile can use: a table
+// of rows, or a single name and seat.
+function resolvePassengers(
+  pages: PdfPage[],
+  source: PdfLineSource,
+  spec: { passengers?: PdfPassengerList; passenger?: PdfAccessor; seat?: PdfAccessor }
+): TransportSegmentPassengerDraft[] {
+  if (spec.passengers) {
+    return passengerRows(pages, source, spec.passengers)
       .map((line) => ({
-        name: readFromLine(line, profile.passengers?.name),
-        seat: readFromLine(line, profile.passengers?.seat)
+        name: readFromLine(line, spec.passengers?.name),
+        seat: readFromLine(line, spec.passengers?.seat)
       }))
       .filter((passenger) => passenger.name)
   }
 
-  const name = resolveAccessor(documentSource(pages), profile.passenger)
-  return name ? [{ name, seat: resolveAccessor(documentSource(pages), profile.seat) }] : []
+  const name = resolveAccessor(source, spec.passenger)
+  return name ? [{ name, seat: resolveAccessor(source, spec.seat) }] : []
 }
 
 // A vendor that only ever sells one mode states it outright; the rest point at
@@ -241,6 +253,8 @@ function parseHotel(pages: PdfPage[], profile: PdfHotelProfile, year: number): V
 // declares as the end of the list.
 function segmentBlocks(pages: PdfPage[], list: PdfProfileSegments): string[][] {
   const lines = linesFor(pages, list.within)
+  if (!list.startsAt) return []
+
   const startsAt = new RegExp(list.startsAt, 'i')
   const blocks: string[][] = []
 
@@ -269,20 +283,31 @@ function buildSegments(
 
   if (!list) return []
 
-  return segmentBlocks(pages, list).map((block) => {
-    const source = blockSource(block)
-    const day = resolveDate(source, year, list.date ?? profile.date)
+  // A leg is either a whole page or a run of lines. Both end up as a source the
+  // ordinary accessors can read from.
+  const sources = list.perPage
+    ? pages.map((_, index) => pageSource(pages, index))
+    : segmentBlocks(pages, list).map(blockSource)
 
-    return {
-      duration: '',
-      operator: resolveAccessor(source, list.operator ?? profile.operator) || profile.provider,
-      transportNumber: resolveAccessor(source, list.transportNumber ?? profile.transportNumber),
-      class: resolveAccessor(source, list.class ?? profile.class),
-      origin: buildPoint(source, day, year, list.origin),
-      destiny: buildPoint(source, day, year, list.destiny),
-      passengers
-    }
-  })
+  const carriesTravellers = list.passengers ?? list.passenger
+
+  return sources
+    .map((source) => {
+      const day = resolveDate(source, year, list.date ?? profile.date)
+
+      return {
+        duration: '',
+        operator: resolveAccessor(source, list.operator ?? profile.operator) || profile.provider,
+        transportNumber: resolveAccessor(source, list.transportNumber ?? profile.transportNumber),
+        class: resolveAccessor(source, list.class ?? profile.class),
+        origin: buildPoint(source, day, year, list.origin),
+        destiny: buildPoint(source, day, year, list.destiny),
+        passengers: carriesTravellers ? resolvePassengers(pages, source, list) : passengers
+      }
+    })
+    // A page with no journey on it — a terms-and-conditions sheet, a blank —
+    // is not a leg.
+    .filter((segment) => segment.origin.name || segment.origin.code || segment.destiny.name || segment.destiny.code)
 }
 
 function parseTransport(pages: PdfPage[], profile: PdfTransportProfile, year: number): VoucherDraft {
@@ -292,7 +317,7 @@ function parseTransport(pages: PdfPage[], profile: PdfTransportProfile, year: nu
     ? parsePrice(resolveAccessor(source, profile.price))
     : { price: 0, currency: '' }
 
-  const passengers = resolvePassengers(pages, profile)
+  const passengers = resolvePassengers(pages, source, profile)
   const segments = buildSegments(pages, profile, year, passengers)
 
   return assembleTransportDraft({

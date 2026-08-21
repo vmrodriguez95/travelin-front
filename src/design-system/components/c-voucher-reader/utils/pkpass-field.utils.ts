@@ -75,7 +75,8 @@ export function organizationMatches(pass: PassJson, needle: string): boolean {
 
 // --- date helpers ------------------------------------------------------------
 
-// Returns the "YYYY-MM-DD" part of a pass date. Accepts ISO, "DD/MM/YYYY" and
+// Returns the "YYYY-MM-DD" part of a pass date. Accepts ISO, "DD/MM/YYYY",
+// "DD.MM.YYYY" — the usual form on Spanish and Italian tickets — and the
 // year-less "DD/MM" (in which case the current year is assumed, per product rule).
 export function datePart(value?: string): string {
   if (!value) return ''
@@ -86,11 +87,16 @@ export function datePart(value?: string): string {
     return `${year}-${month}-${day}`
   }
 
-  const slashMatch = value.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/)
-  if (slashMatch) {
-    const [, day, month, year] = slashMatch
-    const resolvedYear = year ?? String(new Date().getFullYear())
-    return `${resolvedYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+  // Both halves are bounded and the separator has to repeat, so a thousands
+  // separator is never read as a date: "1.500,20 EUR" is not the 1st of May.
+  const numericMatch = value.match(/(?<!\d)(\d{1,2})([/.])(\d{1,2})(?:\2(\d{4}))?(?!\d)/)
+  if (numericMatch) {
+    const [, day, , month, year] = numericMatch
+
+    if (Number(month) >= 1 && Number(month) <= 12 && Number(day) >= 1 && Number(day) <= 31) {
+      const resolvedYear = year ?? String(new Date().getFullYear())
+      return `${resolvedYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    }
   }
 
   return ''
@@ -204,6 +210,14 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
     ? parts.passengers
     : (parts.passengerName ? [{ name: parts.passengerName, seat: parts.seat ?? '' }] : [])
 
+  // A ticket that names its travellers inside each leg — one sheet per journey,
+  // with its own seat — says nothing about them anywhere else. The booking's
+  // traveller list is then whoever appears in the legs.
+  const travellers = passengers.length
+    ? passengers
+    : (parts.segments ?? []).flatMap((segment) => segment.passengers)
+        .filter((passenger, index, all) => all.findIndex((other) => other.name === passenger.name) === index)
+
   return {
     name,
     type: 'poi_transport',
@@ -213,7 +227,7 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
       price: parts.price ?? 0,
       currency: parts.currency ?? ''
     },
-    passengers: passengers.map((passenger) => ({ name: passenger.name })),
+    passengers: travellers.map((passenger) => ({ name: passenger.name })),
     segments: parts.segments ?? [
       {
         duration: parts.duration ?? '',
