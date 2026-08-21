@@ -75,9 +75,11 @@ export function organizationMatches(pass: PassJson, needle: string): boolean {
 
 // --- date helpers ------------------------------------------------------------
 
-// Returns the "YYYY-MM-DD" part of a pass date. Accepts ISO, "DD/MM/YYYY",
-// "DD.MM.YYYY" — the usual form on Spanish and Italian tickets — and the
-// year-less "DD/MM" (in which case the current year is assumed, per product rule).
+// Returns the "YYYY-MM-DD" part of a pass date. Accepts ISO, and the day-first
+// numeric forms with any of the three separators in use — "25/12/2026",
+// "03.04.2024", "12-08-25" — with a two-digit year read as this century and a
+// missing one as the current year, per product rule. The separator may be
+// followed by whitespace: a table column that wraps prints "12- 08- 25".
 export function datePart(value?: string): string {
   if (!value) return ''
 
@@ -89,12 +91,15 @@ export function datePart(value?: string): string {
 
   // Both halves are bounded and the separator has to repeat, so a thousands
   // separator is never read as a date: "1.500,20 EUR" is not the 1st of May.
-  const numericMatch = value.match(/(?<!\d)(\d{1,2})([/.])(\d{1,2})(?:\2(\d{4}))?(?!\d)/)
+  const numericMatch = value.match(/(?<!\d)(\d{1,2})\s*([-/.])\s*(\d{1,2})(?:\s*\2\s*(\d{4}|\d{2}))?(?!\d)/)
   if (numericMatch) {
     const [, day, , month, year] = numericMatch
 
     if (Number(month) >= 1 && Number(month) <= 12 && Number(day) >= 1 && Number(day) <= 31) {
-      const resolvedYear = year ?? String(new Date().getFullYear())
+      const resolvedYear = year
+        ? (year.length === 2 ? `20${year}` : year)
+        : String(new Date().getFullYear())
+
       return `${resolvedYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     }
   }

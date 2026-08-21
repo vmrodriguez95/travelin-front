@@ -114,8 +114,10 @@ prints one.
 voucher, which the profile already knows.
 
 Dates and prices normalise themselves: return the raw text and
-`parseNaturalDate` and `parsePrice` will parse it. A numeric date is read with
-either separator — `25/12/2026` and `03.04.2024` both work. `parsePrice` reads the
+`parseNaturalDate` and `parsePrice` will parse it. A numeric date is read day-first with any
+of the three separators — `25/12/2026`, `03.04.2024`, `12-08-25` — with a
+two-digit year read as this century, and it survives a column that wrapped it
+into `12- 08- 25`. `parsePrice` reads the
 currency out of the same string — any ISO code (`542 THB`) or a common symbol
 (`€`, `฿`, `R$`, `S/`) — so when the amount and the currency sit in different
 places, `concat` them into one value instead of dropping the currency.
@@ -194,6 +196,28 @@ layout wrapped onto a second line: crop to the box that holds only that name and
 take everything inside it. A page with no journey on it — terms and conditions,
 a blank — resolves to no origin and no destiny, and is dropped rather than
 becoming an empty leg.
+
+**When the legs are rows of a table, say `"perRow": true`** and let `startsAt`
+match the row's own mark — the flight number. A leg is then that row *plus the
+cells the layout wrapped under it*, and `within` addresses the table's columns
+by their x range:
+
+```json
+"segments": {
+  "perRow": true,
+  "startsAt": "^LA\\s?\\d{3,}",
+  "origin": {
+    "name": { "regex": "([\\s\\S]+)", "within": { "xMin": 0.13, "xMax": 0.23 }, "transform": "collapseSpaces" },
+    "time": { "regex": "(\\d{1,2}:\\d{2})", "within": { "xMin": 0.41, "xMax": 0.49 } }
+  }
+}
+```
+
+Airline tables wrap hard — a station over four lines, a date printed as `12-`,
+`08-`, `25` down three of them — and the column crop is what puts each cell back
+together. Take the x ranges from a coordinate dump rather than by eye, and check
+**both** documents: a row with more wrapped lines than its neighbour sits at a
+different rhythm, which is why the band is measured per row and not per page.
 
 A leg can also carry its **own travellers**, with `passenger`/`seat` or a
 `passengers` table, for a ticket that seats the same person differently on the

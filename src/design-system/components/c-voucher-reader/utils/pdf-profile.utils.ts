@@ -7,12 +7,14 @@ import {
   normalizeLabel,
   parseGpsCoordinates,
   readLine,
-  toLines
+  renderRow,
+  toLines,
+  toRows
 } from '@ds/components/c-voucher-reader/utils/pdf-field.utils'
 import { findDocumentYear, parseNaturalDate } from '@ds/utils/date.utils'
 
 // Types
-import type { PdfPage } from '../types/pdf.types'
+import type { PdfCropBox, PdfPage } from '../types/pdf.types'
 import type { TransportSegmentDraft, TransportSegmentPassengerDraft, TransportSegmentPointDraft, TransportType, VoucherDraft, VoucherNote } from '../types/voucher.types'
 import type {
   PdfAccessor,
@@ -38,6 +40,14 @@ const TRANSFORMS: Record<PdfTransformName, (value: string) => string> = {
   stripLabel: (value) => value.replace(/^[^:]*:\s*/, '').trim()
 }
 
+// How much wider than a band's own line spacing a vertical gap has to be before
+// it reads as the end of a table row rather than a wrapped cell.
+const BAND_GAP_FACTOR = 1.8
+
+// Fallback padding, in PDF user-space units, for a band with no neighbour to
+// measure its spacing against.
+const ROW_MARGIN = 2
+
 function applyTransform(value: string, transform?: PdfTransformName): string {
   return transform && TRANSFORMS[transform] ? TRANSFORMS[transform](value) : value
 }
@@ -62,10 +72,67 @@ function blockSource(lines: string[]): PdfLineSource {
   return () => lines
 }
 
-// A source pinned to one page: the accessor's crop still applies, but only
-// within that sheet. This is what a per-page segment reads from.
-function pageSource(pages: PdfPage[], index: number): PdfLineSource {
-  return (box) => linesFor(pages, { ...box, page: index })
+// Narrows an accessor's own crop to the region a segment occupies. The segment
+// wins on the page and on the bounds it sets; the accessor can only tighten
+// what is left, which is how a leg's columns stay addressable.
+function narrow(region: PdfCropBox, box?: PdfCropBox): PdfCropBox {
+  return {
+    page: region.page,
+    xMin: Math.max(region.xMin ?? 0, box?.xMin ?? 0),
+    xMax: Math.min(region.xMax ?? 1, box?.xMax ?? 1),
+    yMin: Math.max(region.yMin ?? 0, box?.yMin ?? 0),
+    yMax: Math.min(region.yMax ?? 1, box?.yMax ?? 1)
+  }
+}
+
+// A source pinned to a region of the document — a whole sheet, or the band of
+// one table row. The accessor's crop still applies, inside that region.
+function regionSource(pages: PdfPage[], region: PdfCropBox): PdfLineSource {
+  return (box) => linesFor(pages, narrow(region, box))
+}
+
+// The band one table row occupies, wrapped cells included. The row carrying the
+// leg's own mark — its flight number — is the spine; the band grows from there
+// while rows keep arriving at the spacing the layout wrapped them at, and stops
+// when the gap widens into the next row of the table.
+//
+// The spacing is measured per band, not per page: two rows of the same table
+// wrap at different rhythms when one holds more lines than the other.
+function rowBands(pages: PdfPage[], list: PdfProfileSegments): PdfCropBox[] {
+  const pageIndex = list.within?.page ?? 0
+  const page = pages[pageIndex]
+  if (!page || !list.startsAt) return []
+
+  const rows = toRows(cropCells(page, list.within))
+  const startsAt = new RegExp(list.startsAt, 'i')
+  const spines = rows.map((row) => startsAt.test(renderRow(row)))
+
+  return rows.flatMap((row, index) => {
+    if (!spines[index]) return []
+
+    // Rows come out top-down, so a gap is the drop from one baseline to the next.
+    const above = index > 0 ? rows[index - 1].y - row.y : Infinity
+    const below = index < rows.length - 1 ? row.y - rows[index + 1].y : Infinity
+    const spacing = Math.min(above, below)
+
+    // A row with no neighbour has no spacing to go by, so it stays on its own.
+    const limit = Number.isFinite(spacing) ? spacing * BAND_GAP_FACTOR : 0
+    const margin = Number.isFinite(spacing) ? spacing / 2 : ROW_MARGIN
+
+    let top = row.y
+    let bottom = row.y
+
+    for (let i = index - 1; i >= 0 && !spines[i] && rows[i].y - top <= limit; i--) top = rows[i].y
+    for (let i = index + 1; i < rows.length && !spines[i] && bottom - rows[i].y <= limit; i++) bottom = rows[i].y
+
+    return [{
+      page: pageIndex,
+      xMin: list.within?.xMin,
+      xMax: list.within?.xMax,
+      yMin: (page.height - top - margin) / page.height,
+      yMax: (page.height - bottom + margin) / page.height
+    }]
+  })
 }
 
 function resolveSingle(source: PdfLineSource, accessor: PdfAccessorSingle): string {
@@ -289,6 +356,15 @@ function segmentBlocks(pages: PdfPage[], list: PdfProfileSegments): string[][] {
   return blocks
 }
 
+// The three shapes a repeating leg takes: one per page, one per row of a table,
+// or one per run of lines.
+function segmentSources(pages: PdfPage[], list: PdfProfileSegments): PdfLineSource[] {
+  if (list.perPage) return pages.map((_, index) => regionSource(pages, { page: index }))
+  if (list.perRow) return rowBands(pages, list).map((band) => regionSource(pages, band))
+
+  return segmentBlocks(pages, list).map(blockSource)
+}
+
 function buildSegments(
   pages: PdfPage[],
   profile: PdfTransportProfile,
@@ -301,9 +377,7 @@ function buildSegments(
 
   // A leg is either a whole page or a run of lines. Both end up as a source the
   // ordinary accessors can read from.
-  const sources = list.perPage
-    ? pages.map((_, index) => pageSource(pages, index))
-    : segmentBlocks(pages, list).map(blockSource)
+  const sources = segmentSources(pages, list)
 
   const carriesTravellers = list.passengers ?? list.passenger
 

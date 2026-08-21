@@ -122,8 +122,15 @@ export interface PdfProfileSegments {
   // own sheet. Accessors inside keep their `within` crop, applied to that page,
   // which is what lets a leg's two columns be told apart.
   perPage?: boolean
-  // Otherwise a new block opens on every line matching this pattern
-  // (case-insensitive), and `within` no longer applies inside it.
+  // One leg per row of a table, wrapped cells included: rows are grouped into
+  // bands, and a band ends where the vertical gap to the next row grows past
+  // the line spacing. `within` keeps working inside, so a leg's columns can be
+  // told apart by their x range.
+  perRow?: boolean
+  // In line mode, a new block opens on every line matching this pattern. In row
+  // mode, it is the pattern the leg's own row has to match — the flight number,
+  // say — which is what tells a leg apart from the table's header.
+  // Case-insensitive in both.
   startsAt?: string
   // The list closes before the first line matching any of these.
   until?: string[]
