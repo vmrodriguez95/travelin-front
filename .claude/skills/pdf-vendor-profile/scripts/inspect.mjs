@@ -18,7 +18,7 @@ const flag = (name) => args.find((a) => a.startsWith(`--${name}=`))?.split('=')[
   ?? (args.includes(`--${name}`) ? args[args.indexOf(`--${name}`) + 1] : undefined)
 
 if (!file) {
-  console.error('uso: node inspect.mjs <pdf> [--page N] [--crop xMin,xMax,yMin,yMax] [--mask]')
+  console.error('usage: node inspect.mjs <pdf> [--page N] [--crop xMin,xMax,yMin,yMax] [--mask]')
   process.exit(1)
 }
 
@@ -81,7 +81,7 @@ for (let n = 1; n <= doc.numPages; n++) {
       : [])
 
   console.log(`\n${'='.repeat(70)}`)
-  console.log(`PÁGINA ${n} (índice ${n - 1})   ${width.toFixed(0)} x ${height.toFixed(0)}`)
+  console.log(`PAGE ${n} (index ${n - 1})   ${width.toFixed(0)} x ${height.toFixed(0)}`)
 
   if (crop) {
     const [xMin, xMax, yMin, yMax] = crop
@@ -90,7 +90,7 @@ for (let n = 1; n <= doc.numPages; n++) {
       return c.x >= xMin * width && c.x <= xMax * width
         && fromTop >= yMin * height && fromTop <= yMax * height
     })
-    console.log(`RECORTE { xMin: ${xMin}, xMax: ${xMax}, yMin: ${yMin}, yMax: ${yMax} }  ->  ${cells.length} fragmentos`)
+    console.log(`CROP { xMin: ${xMin}, xMax: ${xMax}, yMin: ${yMin}, yMax: ${yMax} }  ->  ${cells.length} fragments`)
   }
   console.log('='.repeat(70))
 
@@ -101,15 +101,15 @@ for (let n = 1; n <= doc.numPages; n++) {
 
   // Side-by-side blocks are the main trap: their rows share no baseline, so a
   // whole-page read interleaves them. A wide horizontal gap is where to cut.
-  console.log('\n── huecos horizontales (candidatos a separar columnas) ──')
-  const bands = [['cabecera (0–35%)', 0, 0.35], ['centro (35–70%)', 0.35, 0.7], ['pie (70–100%)', 0.7, 1]]
+  console.log('\n── horizontal gaps (candidates for splitting columns) ──')
+  const bands = [['header (0–35%)', 0, 0.35], ['middle (35–70%)', 0.35, 0.7], ['footer (70–100%)', 0.7, 1]]
 
   for (const [label, from, to] of bands) {
     const band = cells.filter((c) => {
       const fromTop = height - c.y
       return fromTop >= from * height && fromTop <= to * height
     })
-    if (band.length < 4) { console.log(`  ${label}: pocos fragmentos`); continue }
+    if (band.length < 4) { console.log(`  ${label}: too few fragments`); continue }
 
     const xs = [...new Set(band.map((c) => Math.round(c.x)))].sort((a, b) => a - b)
     let best = { gap: 0, at: 0 }
@@ -119,8 +119,8 @@ for (let n = 1; n <= doc.numPages; n++) {
     }
     const cut = (best.at + best.gap / 2) / width
     console.log(best.gap > 40
-      ? `  ${label}: hueco de ${best.gap.toFixed(0)}u  ->  corta en x ≈ ${cut.toFixed(2)}  (izquierda: xMax ${cut.toFixed(2)} · derecha: xMin ${cut.toFixed(2)})`
-      : `  ${label}: sin hueco claro (mayor ${best.gap.toFixed(0)}u) — probablemente una sola columna`)
+      ? `  ${label}: ${best.gap.toFixed(0)}u gap  ->  cut at x ≈ ${cut.toFixed(2)}  (left: xMax ${cut.toFixed(2)} · right: xMin ${cut.toFixed(2)})`
+      : `  ${label}: no clear gap (largest ${best.gap.toFixed(0)}u) — probably a single column`)
   }
 }
 

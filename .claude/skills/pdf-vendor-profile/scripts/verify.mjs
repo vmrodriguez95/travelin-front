@@ -16,7 +16,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 
 const [file, profilePath] = process.argv.slice(2).filter((a) => !a.startsWith('--'))
 if (!file || !profilePath) {
-  console.error('uso: node verify.mjs <pdf> <profile.json>')
+  console.error('usage: node verify.mjs <pdf> <profile.json>')
   process.exit(1)
 }
 
@@ -68,11 +68,11 @@ const text = renderPages(pages)
 
 // --- report ------------------------------------------------------------------
 const detected = detectProfileId(text, [{ id: profile.id, match: profile.match }])
-console.log(`\nperfil        ${profile.id}  (${profile.poiType})`)
+console.log(`\nprofile       ${profile.id}  (${profile.poiType})`)
 console.log(`match         ${JSON.stringify(profile.match)}`)
 console.log(detected === profile.id
-  ? `detección     OK — la huella aparece en el documento`
-  : `detección     FALLA — ninguna cadena de "match" aparece en el texto`)
+  ? `detection     OK — the fingerprint appears in the document`
+  : `detection     FAILS — no "match" string appears in the text`)
 
 const withProfile = sanitizeDraft(parseWithPdfProfile(pages, text, profile))
 const generic = sanitizeDraft(parseGenericPdf(pages, text, profile.poiType))
@@ -86,20 +86,20 @@ const skip = new Set(['type', 'icon', 'types'])
 const rows = flat(withProfile).filter(([k]) => !skip.has(k))
 const genericMap = Object.fromEntries(flat(generic))
 
-console.log('\n  campo                 perfil                                    genérico')
+console.log('\n  field                 profile                                   generic')
 console.log('  ' + '-'.repeat(84))
 for (const [key, value] of rows) {
-  const mine = value === '' || value === '0' ? '· vacío' : value.slice(0, 40)
-  const theirs = (genericMap[key] ?? '') === '' || genericMap[key] === '0' ? '· vacío' : String(genericMap[key]).slice(0, 24)
+  const mine = value === '' || value === '0' ? '· empty' : value.slice(0, 40)
+  const theirs = (genericMap[key] ?? '') === '' || genericMap[key] === '0' ? '· empty' : String(genericMap[key]).slice(0, 24)
   console.log(`  ${key.padEnd(21)} ${mine.padEnd(41)} ${theirs}`)
 }
 
 const empty = rows.filter(([, v]) => v === '' || v === '0').map(([k]) => k)
 console.log(empty.length
-  ? `\n  ${empty.length} campo(s) sin valor: ${empty.join(', ')}`
-  : '\n  todos los campos resueltos')
-console.log('\n  Un campo vacío es correcto si el PDF no trae ese dato.')
-console.log('  Comprueba a ojo que cada valor es el que pone el documento: un dato')
-console.log('  plausible pero equivocado es peor que un hueco.\n')
+  ? `\n  ${empty.length} field(s) with no value: ${empty.join(', ')}`
+  : '\n  all fields resolved')
+console.log('\n  An empty field is correct if the PDF does not carry that data.')
+console.log('  Eyeball every value against the document: a plausible but wrong')
+console.log('  piece of data is worse than a blank.\n')
 
 fs.rmSync(tmp, { recursive: true, force: true })

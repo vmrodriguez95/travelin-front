@@ -1,152 +1,184 @@
 ---
 name: pdf-vendor-profile
-description: Genera el perfil JSON de un proveedor para leer sus vouchers en PDF (c-voucher-reader). Úsala cuando el usuario suba un PDF de reserva —hotel, vuelo, tren, bus— y pida crear o corregir el JSON de esa marca para extraer sus datos, o cuando un perfil existente haya dejado de funcionar porque el proveedor cambió su plantilla.
+description: Generates the JSON profile of a vendor so their PDF vouchers can be read (c-voucher-reader). Use it when the user uploads a booking PDF in any language —hotel, flight, train, bus— and asks to create or fix the JSON for that brand to extract its data, or when an existing profile stopped working because the vendor changed its template.
 ---
 
-# Perfiles de proveedor para vouchers en PDF
+# Vendor profiles for PDF vouchers
 
-`c-voucher-reader` lee un PDF aplicando un perfil declarativo por marca. Esta
-skill produce ese perfil: un JSON en `src/data/pdf/<id>.json`.
+`c-voucher-reader` reads a PDF by applying a declarative per-brand profile. This
+skill produces that profile: a JSON file in `src/data/pdf/<id>.json`.
 
-**El perfil es dato, nunca código.** Lo interpreta `pdf-profile.utils.ts` en el
-navegador. No generes nunca JavaScript para que lo cargue el cliente: sería
-ejecución de código remoto escrito a partir de un fichero que sube un usuario.
+**The profile is data, never code.** It is interpreted by `pdf-profile.utils.ts`
+in the browser. Never generate JavaScript for the client to load: that would be
+remote code execution written from a file a user uploads.
 
-## Flujo
+## Flow
 
-### 1. Mirar el documento
+### 1. Look at the document
 
 ```bash
 node .claude/skills/pdf-vendor-profile/scripts/inspect.mjs <pdf> --page 1
 ```
 
-Imprime las líneas numeradas tal y como las ve el lector (`⇥` = separador de
-columna) y analiza los huecos horizontales.
+Prints the numbered lines exactly as the reader sees them (`⇥` = column
+separator) and analyses the horizontal gaps.
 
-`--mask` oculta emails, teléfonos y números largos (localizadores, tarjetas).
-**No oculta nombres de personas**, que no se pueden detectar de forma fiable:
-revisa la salida antes de pegarla en ningún sitio.
+`--mask` hides emails, phone numbers and long digit runs (booking references,
+cards). **It does not hide people's names**, which cannot be detected reliably:
+review the output before pasting it anywhere.
 
-Si el análisis dice *"hueco de 93u → corta en x ≈ 0.45"*, hay dos bloques
-lado a lado. Previsualiza cada uno antes de escribir nada:
+If the analysis says *"93u gap → cut at x ≈ 0.45"*, there are two blocks side by
+side. Preview each one before writing anything:
 
 ```bash
 node .claude/skills/pdf-vendor-profile/scripts/inspect.mjs <pdf> --crop 0.45,1,0,0.32
 ```
 
-Los índices que salen en el recorte son los que usarás en `below`.
+The indices printed in the crop are the ones you will use in `below`.
 
-### 2. Escribir el perfil
+### 2. Write the profile
 
-Empieza por los campos con etiqueta clara y deja para el final los que estén
-partidos entre líneas. Guárdalo en `src/data/pdf/<id>.json`.
+Start with the fields that have a clear label and leave the ones split across
+lines for last. Save it to `src/data/pdf/<id>.json`.
 
-### 3. Verificarlo contra el PDF real
+### 3. Verify it against the real PDF
 
 ```bash
 node .claude/skills/pdf-vendor-profile/scripts/verify.mjs <pdf> src/data/pdf/<id>.json
 ```
 
-Bundlea el intérprete real desde `src/`, así que no puede desviarse de lo que
-hace el navegador. Compara la salida campo a campo con lo que pone el
-documento. **Un perfil que no ha pasado por aquí no está probado.**
+It bundles the real interpreter from `src/`, so it cannot drift from what the
+browser does. Compare the output field by field with what the document says.
+**A profile that has not been through this is not tested.**
 
-### 4. Comprobar que no rompe los que ya había
+### 4. Check it does not break the existing ones
 
-Vuelve a pasar `verify.mjs` con los PDFs de los otros perfiles que tengas a
-mano. Los accesores sin `within` leen el documento entero y son sensibles a
-cambios en el intérprete.
+Run `verify.mjs` again with the PDFs of the other profiles you have at hand.
+Accessors without `within` read the whole document and are sensitive to changes
+in the interpreter.
 
-## Accesores
+## Accessors
 
-| Forma | Qué hace |
+| Shape | What it does |
 |---|---|
-| `"Dirección"` | Atajo: ancla en la etiqueta, valor en la misma línea |
-| `{ "label", "below", "column", "within", "transform" }` | `below` = líneas por debajo (0 = misma línea). `column` = índice tras `⇥` |
-| `{ "regex", "group", "within", "transform" }` | Sobre el texto del recorte. Insensible a mayúsculas. `group` por defecto 1 |
-| `{ "linesAfter" \| "linesBefore", "count", "separator", "within" }` | Bloque de líneas enteras. Para direcciones |
-| `{ "concat": [...], "separator" }` | Pega varios accesores. Para valores partidos entre líneas |
+| `"Address"` | Shorthand: anchor on the label, value on the same line |
+| `{ "label", "below", "column", "within", "transform" }` | `below` = lines further down (0 = same line). `column` = index after `⇥` |
+| `{ "regex", "group", "within", "transform" }` | Over the crop's text. Case-insensitive. `group` defaults to 1 |
+| `{ "linesAfter" \| "linesBefore", "count", "separator", "within" }` | Block of whole lines. For addresses |
+| `{ "concat": [...], "separator" }` | Joins several accessors. For values split across lines |
 | `{ "const": "..." }` | Literal |
-| `[ ... ]` | Array = gana el primero que devuelva algo |
+| `[ ... ]` | Array = the first one that returns something wins. The way to cover a label in several languages |
 
-`within` es una caja en **fracciones de página** (`{ page, xMin, xMax, yMin, yMax }`),
-con `y` contada **desde arriba**. Al ser fracciones, el perfil sobrevive a A4 y Letter.
+`within` is a box in **page fractions** (`{ page, xMin, xMax, yMin, yMax }`),
+with `y` counted **from the top**. Being fractions, the profile survives both A4
+and Letter.
 
-Transformaciones: `collapseSpaces`, `stripTrailingPunctuation`, `upper`, `stripLabel`
-(esta última quita todo hasta el primer `:`, útil junto a `column`, que no
-recorta la etiqueta).
+Transforms: `collapseSpaces`, `stripTrailingPunctuation`, `upper`, `stripLabel`
+(this last one strips everything up to the first `:`, useful alongside `column`,
+which does not trim the label).
 
-## Campos del perfil
+## Profile fields
 
-**Comunes:** `id`, `match` (array de huellas), `poiType`.
+**Common:** `id`, `match` (array of fingerprints), `poiType`.
 
 **`poi_hotel`:** `name`, `address`, `coordinates`, `price`, `dateStart`, `dateEnd`,
-`timeStart`, `timeEnd`, `notes` (array de `{ icon, text }`).
+`timeStart`, `timeEnd`, `notes` (array of `{ icon, text }`).
 
 **`poi_transport`:** `typeTransport`, `provider`, `operator`, `transportNumber`,
 `class`, `passenger`, `seat`, `price`, `date`, `origin`, `destiny`
-(estos dos con `code`, `name`, `address`, `platform`, `time`).
+(these last two with `code`, `name`, `address`, `platform`, `time`).
 
-Fechas y precios se normalizan solos: devuelve el texto crudo y ya lo parsean
-`parseNaturalDate` y `parsePrice`.
+Dates and prices normalise themselves: return the raw text and
+`parseNaturalDate` and `parsePrice` will parse it.
 
-## Trampas reales
+## Documents in Spanish or English
 
-**Las columnas se entrelazan.** Dos bloques lado a lado no comparten línea
-base, así que una lectura de página entera los mezcla. Este es el caso más
-frecuente y la razón de que exista `within`. En el PDF de Booking, la dirección
-del hotel y la caja de fechas se intercalan línea sí, línea no.
+The same vendor issues the same voucher in either language, and the user may
+hand you one or the other. **A profile must cope with both**, and the whole
+point is that you do not need a second profile per language.
 
-**Los valores se parten.** Un día en una línea y su mes en la siguiente; unas
-coordenadas cortadas por la mitad. Es lo que resuelve `concat`:
+Labels are matched case- and accent-insensitively and as a substring, so
+`"direccion"` already matches `Dirección`, `DIRECCIÓN` and `Dirección del
+hotel`. What it does not do is translate: `ENTRADA` will never match `CHECK-IN`.
+Cover both with an array, most specific first:
+
+```json
+"dateStart": [
+  { "label": "ENTRADA", "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
+  { "label": "CHECK-IN", "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } }
+]
+```
+
+The layout is normally the same in both editions — the same box in the same
+place, only the wording changes. So the `within` crop carries over unchanged and
+only the `label` needs the alternative. Do check it: a longer translation can
+wrap onto an extra line and shift the `below` count.
+
+Month names are parsed in both languages, abbreviations included (`18 de agosto
+de 2026`, `18 August 2026`, `29 AGO`). Return the raw text either way.
+
+Prefer a `within` + `below` anchor over a `regex` full of alternations. And when
+you only have one of the two editions in front of you, say so when you hand over
+the profile, so the other one gets tested before it is trusted.
+
+## Real-world traps
+
+**Columns interleave.** Two blocks side by side share no baseline, so a
+whole-page read mixes them together. This is the most frequent case and the
+reason `within` exists. In Booking's PDF, the hotel address and the dates box
+alternate line by line.
+
+**Values get split.** A day on one line and its month on the next; coordinates
+cut in half. That is what `concat` solves:
 
 ```json
 "dateStart": { "concat": [
-  { "label": "ENTRADA", "column": 0, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
-  { "label": "ENTRADA", "column": 0, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
+  { "label": "CHECK-IN", "column": 0, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
+  { "label": "CHECK-IN", "column": 0, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
 ]}
 ```
 
-Ancla en la etiqueta que sí existe (`ENTRADA`) y llega a la de al lado con
-`column: 1`, en vez de buscar `SALIDA` por separado.
+Anchor on the label that does exist (`CHECK-IN`) and reach the neighbouring one
+with `column: 1`, instead of looking up `CHECK-OUT` separately.
 
-**Muchos vouchers no llevan año.** No lo inventes: `findDocumentYear` lo saca
-de otra parte del documento.
+**Many vouchers carry no year.** Do not invent it: `findDocumentYear` gets it
+from elsewhere in the document.
 
-**Los metadatos del PDF no sirven para identificar la marca.** Si el usuario
-reenvió o reimprimió el documento desde el móvil, `Producer` dice
-"iOS Quartz PDFContext". Usa el texto.
+**PDF metadata is useless for identifying the brand.** If the user forwarded or
+reprinted the document from their phone, `Producer` says "iOS Quartz
+PDFContext". Use the text.
 
-**`manifest` es un id reservado.** El manifiesto se sirve en `/api/pdf/manifest`.
+**`manifest` is a reserved id.** The manifest is served at `/api/pdf/manifest`.
 
-## Elegir el `match`
+## Choosing the `match`
 
-Es la huella con la que se reconoce la marca. Escoge lo más estable del
-documento: un dominio (`booking.com`), un CIF, un número de licencia, una frase
-del pie legal. Evita nombres de producto o cualquier cosa que cambie por
-campaña o por idioma.
+It is the fingerprint the brand is recognised by. Pick the most stable thing in
+the document: a domain (`booking.com`), a tax id, a licence number. Avoid
+product names, and above all avoid anything translated — a footer sentence is
+only a good fingerprint if it is the same string in the Spanish and the English
+edition. A domain or a tax id always is.
 
-Cuidado con lo demasiado genérico: `"hotel"` casaría con medio mundo. Y ojo con
-los PDFs de agregadores, que mencionan varias marcas — usa la que emite el
-documento, no la del alojamiento.
+Beware of anything too generic: `"hotel"` would match half the world. And watch
+out for aggregator PDFs, which mention several brands — use the one that issues
+the document, not the accommodation's.
 
-## Reglas
+## Rules
 
-**Vacío es mejor que equivocado.** El usuario revisa un hueco, pero se le puede
-colar una fecha plausible y falsa. Si un campo no se puede leer con seguridad,
-déjalo fuera del perfil; `sanitizeDraft` hace lo mismo al final.
+**Empty beats wrong.** The user reviews a blank, but a plausible and false date
+can slip past them. If a field cannot be read with confidence, leave it out of
+the profile; `sanitizeDraft` does the same at the end.
 
-**Prefiere anclas por etiqueta a `regex`.** Aguantan mejor los retoques de
-plantilla. Reserva `regex` para lo que no tenga etiqueta.
+**Prefer label anchors over `regex`.** They hold up better against template
+tweaks and against translation. Keep `regex` for whatever has no label.
 
-**Un `within` por campo, lo más ajustado posible.** Un accesor sin recorte lee
-el documento entero y puede engancharse a la sección equivocada.
+**One `within` per field, as tight as possible.** An accessor without a crop
+reads the whole document and can latch onto the wrong section.
 
-**Comprueba los valores a ojo.** Que un campo salga relleno no significa que
-sea el dato correcto. Contrasta cada uno con el PDF.
+**Eyeball the values.** A field coming back filled does not mean it is the right
+piece of data. Check each one against the PDF.
 
-## Después
+## Afterwards
 
-El perfil se sirve solo: `/api/pdf/[id].ts` recorre `src/data/pdf/*.json` con un
-glob, y `manifest.ts` publica los pares `{id, match}`. No hay que registrar nada
-a mano ni desplegar el frontend.
+The profile is served on its own: `/api/pdf/[id].ts` walks `src/data/pdf/*.json`
+with a glob, and `manifest.ts` publishes the `{id, match}` pairs. Nothing needs
+registering by hand and there is no frontend deploy.
