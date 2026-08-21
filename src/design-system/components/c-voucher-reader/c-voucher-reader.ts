@@ -13,7 +13,7 @@ import { SimpleGetClient } from '@ds/requests/index'
 import { extractPdfPages } from '@ds/components/c-voucher-reader/utils/pdf.utils'
 import { renderPages } from '@ds/components/c-voucher-reader/utils/pdf-field.utils'
 import { parseGenericPdf, sanitizeDraft } from '@ds/components/c-voucher-reader/utils/pdf-generic.utils'
-import { DEFAULT_PDF_PROFILES_ENDPOINT, DEFAULT_PROFILES_ENDPOINT, PDF_MAX_SIZE } from '@ds/utils/variables'
+import { PDF_MAX_SIZE } from '@ds/utils/variables'
 import { detectProfileId, parseWithPdfProfile } from '@ds/components/c-voucher-reader/utils/pdf-profile.utils'
 import { hotelDraftToFormFill, transportDraftToFormFill } from '@ds/components/c-voucher-reader/utils/voucher-form.utils'
 import { getPassProfileId, pkpassToTransportDraft, readPassJson } from '@ds/components/c-voucher-reader/utils/pkpass.utils'
@@ -36,9 +36,12 @@ export class CVoucherReader extends LitElement {
 
   @property({ type: String }) label = 'Sube tu voucher'
 
-  @property({ type: String }) endpoint = DEFAULT_PROFILES_ENDPOINT
+  // Both endpoints are scoped by poiType — "/api/poi_hotel/pdf" — so the vendor
+  // catalogue the reader sees is the one for the form being filled in. There is
+  // no default: the host owns the API layout and has to state it.
+  @property({ type: String }) endpoint = ''
 
-  @property({ type: String }) pdfEndpoint = DEFAULT_PDF_PROFILES_ENDPOINT
+  @property({ type: String }) endpointPdf = ''
 
   @property({ type: String }) extensions = '.pdf,.pkpass'
 
@@ -95,6 +98,26 @@ export class CVoucherReader extends LitElement {
         </c-modal>
       </div>
     `
+  }
+
+  protected firstUpdated() {
+    this._warnMissingEndpoints()
+  }
+
+  // Without an endpoint the reader still works, but every voucher falls back to
+  // the generic parser and the user silently gets a worse read. That is a
+  // misconfiguration of the host page, so it is reported as one.
+  private _warnMissingEndpoints() {
+    const missing = [
+      !this.endpointPdf && 'endpointPdf',
+      !this.endpoint && this.extensions.includes('.pkpass') && 'endpoint'
+    ].filter(Boolean)
+
+    if (!missing.length) return
+
+    console.error(`<c-voucher-reader>: missing required ${missing.join(' and ')} attribute(s). ` +
+      `Set them to the vendor profile endpoints for this poiType, e.g. endpointPdf="/api/${this.poiType}/pdf". ` +
+      'Vouchers will be read by the generic parser until then.')
   }
 
   protected updated(changed: PropertyValues) {
@@ -236,15 +259,15 @@ export class CVoucherReader extends LitElement {
   // document, so a crafted PDF cannot steer which resource gets fetched.
   // Any miss (unknown vendor → 404, or a request error) falls back to generic.
   private async _fetchPdfProfile(text: string): Promise<PdfProfile | null> {
-    if (!this.pdfEndpoint) return null
+    if (!this.endpointPdf) return null
 
     try {
-      this._manifest ??= (await this._client.get<{ data: PdfProfileManifestEntry[] }>(`${this.pdfEndpoint}/manifest`)).data ?? []
+      this._manifest ??= (await this._client.get<{ data: PdfProfileManifestEntry[] }>(`${this.endpointPdf}/manifest`)).data ?? []
 
       const id = detectProfileId(text, this._manifest)
       if (!id) return null
 
-      const response = await this._client.get<{ data: PdfProfile | null }>(`${this.pdfEndpoint}/${id}`)
+      const response = await this._client.get<{ data: PdfProfile | null }>(`${this.endpointPdf}/${id}`)
       return response.data ?? null
     } catch {
       return null
