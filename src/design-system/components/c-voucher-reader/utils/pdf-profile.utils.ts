@@ -13,16 +13,19 @@ import { findDocumentYear, parseNaturalDate } from '@ds/utils/date.utils'
 
 // Types
 import type { PdfPage } from '../types/pdf.types'
-import type { TransportSegmentPointDraft, VoucherDraft, VoucherNote } from '../types/voucher.types'
+import type { TransportSegmentPassengerDraft, TransportSegmentPointDraft, TransportType, VoucherDraft, VoucherNote } from '../types/voucher.types'
 import type {
   PdfAccessor,
   PdfAccessorSingle,
   PdfHotelProfile,
+  PdfLineAccessor,
+  PdfPassengerList,
   PdfProfile,
   PdfProfileManifestEntry,
   PdfProfilePoint,
   PdfTransformName,
-  PdfTransportProfile
+  PdfTransportProfile,
+  PdfTypeTransport
 } from '../types/pdf-profile.types'
 
 // Fixed, named transforms. Extend here rather than growing the JSON DSL.
@@ -122,6 +125,61 @@ function resolveDate(pages: PdfPage[], year: number, accessor?: PdfAccessor): st
   return datePart(raw) || parseNaturalDate(raw, year)
 }
 
+// Rows of a passenger table, bounded by the labels the profile gives.
+function passengerRows(pages: PdfPage[], list: PdfPassengerList): string[] {
+  const lines = linesFor(pages, list.within)
+  const start = findLabelIndex(lines, list.after)
+  if (start === -1) return []
+
+  const rows: string[] = []
+
+  for (const line of lines.slice(start + 1)) {
+    const normalized = normalizeLabel(line)
+    if (list.until?.some((needle) => normalized.includes(normalizeLabel(needle)))) break
+    rows.push(line)
+  }
+
+  return rows
+}
+
+function readFromLine(line: string, accessor?: PdfLineAccessor): string {
+  if (!accessor) return ''
+
+  const raw = 'column' in accessor
+    ? readLine(line, accessor.column)
+    : line.match(new RegExp(accessor.regex, 'i'))?.[accessor.group ?? 1] ?? ''
+
+  return applyTransform(raw, accessor.transform)
+}
+
+function resolvePassengers(pages: PdfPage[], profile: PdfTransportProfile): TransportSegmentPassengerDraft[] {
+  if (profile.passengers) {
+    return passengerRows(pages, profile.passengers)
+      .map((line) => ({
+        name: readFromLine(line, profile.passengers?.name),
+        seat: readFromLine(line, profile.passengers?.seat)
+      }))
+      .filter((passenger) => passenger.name)
+  }
+
+  const name = resolveAccessor(pages, profile.passenger)
+  return name ? [{ name, seat: resolveAccessor(pages, profile.seat) }] : []
+}
+
+// A vendor that only ever sells one mode states it outright; the rest point at
+// the line where the vehicle is printed and map its wording onto a type.
+function resolveTypeTransport(pages: PdfPage[], typeTransport: PdfTypeTransport): TransportType {
+  if (typeof typeTransport === 'string') return typeTransport
+
+  const value = normalizeLabel(resolveAccessor(pages, typeTransport.from))
+  if (!value) return typeTransport.fallback
+
+  const entry = Object.entries(typeTransport.map)
+    .find(([needle]) => value.includes(normalizeLabel(needle)))
+
+  return entry?.[1] ?? typeTransport.fallback
+}
+
 function buildPoint(pages: PdfPage[], day: string, profilePoint?: PdfProfilePoint): TransportSegmentPointDraft {
   if (!profilePoint) return point({})
 
@@ -169,15 +227,14 @@ function parseTransport(pages: PdfPage[], profile: PdfTransportProfile, year: nu
     : { price: 0, currency: '' }
 
   return assembleTransportDraft({
-    typeTransport: profile.typeTransport,
+    typeTransport: resolveTypeTransport(pages, profile.typeTransport),
     provider: profile.provider,
     operator: resolveAccessor(pages, profile.operator) || undefined,
     price,
     currency,
     transportNumber: resolveAccessor(pages, profile.transportNumber),
     seatClass: resolveAccessor(pages, profile.class),
-    passengerName: resolveAccessor(pages, profile.passenger),
-    seat: resolveAccessor(pages, profile.seat),
+    passengers: resolvePassengers(pages, profile),
     origin: buildPoint(pages, day, profile.origin),
     destiny: buildPoint(pages, day, profile.destiny)
   })

@@ -98,8 +98,11 @@ export interface TransportParts {
   transportNumber?: string
   seatClass?: string
   duration?: string
+  // One traveller, as read from a pass. `passengers` carries a full list when
+  // the source is a voucher that prints several rows; it wins when set.
   passengerName?: string
   seat?: string
+  passengers?: TransportSegmentPassengerDraft[]
   origin: TransportSegmentPointDraft
   destiny: TransportSegmentPointDraft
 }

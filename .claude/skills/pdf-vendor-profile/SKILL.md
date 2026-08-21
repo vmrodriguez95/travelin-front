@@ -6,7 +6,7 @@ description: Generates the JSON profile of a vendor so their PDF vouchers can be
 # Vendor profiles for PDF vouchers
 
 `c-voucher-reader` reads a PDF by applying a declarative per-brand profile. This
-skill produces that profile: a JSON file in `src/data/pdf/<id>.json`.
+skill produces that profile: a JSON file in `src/data/pdf/<poiType>/<id>.json`.
 
 **The profile is data, never code.** It is interpreted by `pdf-profile.utils.ts`
 in the browser. Never generate JavaScript for the client to load: that would be
@@ -39,12 +39,30 @@ The indices printed in the crop are the ones you will use in `below`.
 ### 2. Write the profile
 
 Start with the fields that have a clear label and leave the ones split across
-lines for last. Save it to `src/data/pdf/<id>.json`.
+lines for last.
+
+**The folder is the classification, so decide the `poiType` before writing
+anything.** A stay — hotel, hostel, apartment, guesthouse — is `poi_hotel`; a
+journey — flight, train, bus, ferry, transfer — is `poi_transport`. The file
+goes in the matching folder and the JSON repeats it in its own `poiType` field:
+
+```
+src/data/pdf/poi_hotel/booking.json
+src/data/pdf/poi_transport/12go.json
+```
+
+Both have to agree. The folder is what the API globs; the field is what the
+interpreter reads to pick a parser. They are served as `/api/<poiType>/pdf/<id>`.
+
+The two are separate catalogues, so a brand selling both — Booking sells stays
+and flights, 12Go sells buses and ferries — gets **one profile per type**, each
+in its folder, and the two may share the same `match` fingerprint. Never try to
+cover both from a single file: the field sets have nothing in common.
 
 ### 3. Verify it against the real PDF
 
 ```bash
-node .claude/skills/pdf-vendor-profile/scripts/verify.mjs <pdf> src/data/pdf/<id>.json
+node .claude/skills/pdf-vendor-profile/scripts/verify.mjs <pdf> src/data/pdf/<poiType>/<id>.json
 ```
 
 It bundles the real interpreter from `src/`, so it cannot drift from what the
@@ -85,11 +103,63 @@ which does not trim the label).
 `timeStart`, `timeEnd`, `notes` (array of `{ icon, text }`).
 
 **`poi_transport`:** `typeTransport`, `provider`, `operator`, `transportNumber`,
-`class`, `passenger`, `seat`, `price`, `date`, `origin`, `destiny`
-(these last two with `code`, `name`, `address`, `platform`, `time`).
+`class`, `price`, `date`, `origin`, `destiny` (these last two with `code`,
+`name`, `address`, `platform`, `time`), plus the travellers — `passengers` for a
+list, or `passenger` + `seat` for a vendor that only ever prints one.
+
+`provider` is a plain string, not an accessor: it is the brand issuing the
+voucher, which the profile already knows.
 
 Dates and prices normalise themselves: return the raw text and
-`parseNaturalDate` and `parsePrice` will parse it.
+`parseNaturalDate` and `parsePrice` will parse it. `parsePrice` reads the
+currency out of the same string — any ISO code (`542 THB`) or a common symbol
+(`€`, `฿`, `R$`, `S/`) — so when the amount and the currency sit in different
+places, `concat` them into one value instead of dropping the currency.
+
+### `typeTransport`
+
+A vendor that only sells one mode states it outright: `"typeTransport": "bus"`.
+An aggregator sells several, and printing `bus` on a ferry ticket is exactly the
+plausible-but-wrong value the user will not catch. Read it instead:
+
+```json
+"typeTransport": {
+  "from": { "label": "Class:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
+  "map": { "ferry": "ferry", "boat": "ferry", "train": "train", "bus": "bus", "van": "bus" },
+  "fallback": "bus"
+}
+```
+
+`from` is a normal accessor, so it can be a `concat` of the two or three places
+where the vehicle might be named. The `map` keys are matched as case- and
+accent-insensitive substrings **in the order written**, so put the specific
+before the generic (`boat` before `van`, for a "Long Tail Boat" run by a van
+company). `fallback` is what the vendor sells most of.
+
+### `passengers`
+
+A list, one row per traveller, bounded by labels rather than counted:
+
+```json
+"passengers": {
+  "within": { "yMin": 0.1, "yMax": 0.42 },
+  "after": "Passengers",
+  "until": ["Total", "Information"],
+  "name": { "regex": "^([^\\n\\t(]+?)\\s*\\((?:M|F)[,)]" },
+  "seat": { "regex": "\\t\\s*([^\\s(\\t]+)\\s*\\(" }
+}
+```
+
+`after` is the header the table hangs off; the rows are the lines below it,
+stopping before the first line that matches `until`. `name` and `seat` run
+against **one row at a time** — they take `regex` (with `group`) or `column`,
+plus `transform`, and nothing else: no `label`, no `within`, because the row has
+already been located. A row whose `name` comes out empty is dropped, which is
+what keeps a footer line out of the list.
+
+Prefer patterns that key on the row's *shape* — `(M)`, `(F, Passport …)`, a seat
+in its own column — over anything worded, since that survives both languages.
+
 
 ## Documents in Spanish or English
 
@@ -148,7 +218,8 @@ from elsewhere in the document.
 reprinted the document from their phone, `Producer` says "iOS Quartz
 PDFContext". Use the text.
 
-**`manifest` is a reserved id.** The manifest is served at `/api/pdf/manifest`.
+**`manifest` is a reserved id.** The manifest is served next to the profiles, at
+`/api/<poiType>/pdf/manifest`.
 
 ## Choosing the `match`
 
@@ -179,6 +250,12 @@ piece of data. Check each one against the PDF.
 
 ## Afterwards
 
-The profile is served on its own: `/api/pdf/[id].ts` walks `src/data/pdf/*.json`
-with a glob, and `manifest.ts` publishes the `{id, match}` pairs. Nothing needs
-registering by hand and there is no frontend deploy.
+The profile is served on its own: `src/pages/api/[poiType]/pdf/[id].ts` walks
+`src/data/pdf/*/*.json` with a glob, and `manifest.ts` publishes the
+`{id, match}` pairs of each type. Dropping the file in the right folder is the
+whole registration — nothing to wire by hand, no frontend deploy.
+
+Each type has its own manifest, so the reader only ever downloads the catalogue
+for the form the user is filling in. That is what stops `booking` under
+`poi_hotel` from being tried against a flight voucher, and it means an id only
+has to be unique within its own `poiType`.

@@ -17,13 +17,13 @@ export const config = {
       name: 'endpoint',
       label: 'Endpoint de perfiles de proveedor (.pkpass)',
       type: 'text',
-      default: '/api/pkpass'
+      default: '/api/poi_transport/pkpass'
     },
-    pdfEndpoint: {
-      name: 'pdfEndpoint',
+    endpointPdf: {
+      name: 'endpointPdf',
       label: 'Endpoint de perfiles de proveedor (.pdf)',
       type: 'text',
-      default: '/api/pdf'
+      default: '/api/poi_transport/pdf'
     }
   },
   slots: {

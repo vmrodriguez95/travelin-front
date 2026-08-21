@@ -1,6 +1,6 @@
 // Runs a vendor profile against a real PDF and prints what it extracts.
 //
-//   node verify.mjs <pdf> <profile.json>
+//   node verify.mjs <pdf> <profile.json> [--json]
 //
 // The interpreter is bundled from src/ on every run, so this can never drift
 // from what the browser actually does. A profile that has not been through
@@ -16,7 +16,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 
 const [file, profilePath] = process.argv.slice(2).filter((a) => !a.startsWith('--'))
 if (!file || !profilePath) {
-  console.error('usage: node verify.mjs <pdf> <profile.json>')
+  console.error('usage: node verify.mjs <pdf> <profile.json> [--json]')
   process.exit(1)
 }
 
@@ -33,7 +33,25 @@ export { parseGenericPdf, sanitizeDraft } from '@ds/components/c-voucher-reader/
 export { renderPages } from '@ds/components/c-voucher-reader/utils/pdf-field.utils'
 `)
 
-execFileSync(path.join(ROOT, 'node_modules/.bin/esbuild'), [
+// pnpm does not always hoist esbuild into node_modules/.bin, so fall back to
+// its package directory inside the store.
+function esbuildBinary() {
+  const hoisted = path.join(ROOT, 'node_modules/.bin/esbuild')
+  if (fs.existsSync(hoisted)) return hoisted
+
+  const store = path.join(ROOT, 'node_modules/.pnpm')
+  const pkg = fs.existsSync(store)
+    ? fs.readdirSync(store).filter((name) => name.startsWith('esbuild@')).sort().pop()
+    : undefined
+
+  const nested = pkg && path.join(store, pkg, 'node_modules/esbuild/bin/esbuild')
+  if (nested && fs.existsSync(nested)) return nested
+
+  console.error('esbuild not found — install dependencies first (pnpm install)')
+  process.exit(1)
+}
+
+execFileSync(esbuildBinary(), [
   entry, '--bundle', '--format=esm', '--platform=node',
   `--alias:@ds=${path.join(ROOT, 'src/design-system')}`,
   `--outfile=${bundle}`, '--log-level=error'
@@ -75,6 +93,12 @@ console.log(detected === profile.id
   : `detection     FAILS — no "match" string appears in the text`)
 
 const withProfile = sanitizeDraft(parseWithPdfProfile(pages, text, profile))
+
+// Arrays (segments, passengers, notes) do not fit the comparison table, so
+// --json prints the draft exactly as the form will receive it.
+if (process.argv.includes('--json')) {
+  console.log('\n' + JSON.stringify(withProfile, null, 2))
+}
 const generic = sanitizeDraft(parseGenericPdf(pages, text, profile.poiType))
 
 const flat = (draft, prefix = '') => Object.entries(draft).flatMap(([key, value]) =>

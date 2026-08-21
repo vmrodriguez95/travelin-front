@@ -121,8 +121,42 @@ export function combineDateTime(date: string, time: string): string {
 // locales, so neither separator can be assumed to mean one thing. The rule
 // used here: the last separator is the decimal point only when it splits off
 // one or two digits; anything else is a thousands separator and is dropped.
+// Symbols vouchers print instead of an ISO code. Order matters: "R$" and "S/"
+// have to win over the bare "$" they contain.
+const CURRENCY_SYMBOLS: Array<[string, string]> = [
+  ['R$', 'BRL'], ['S/', 'PEN'], ['€', 'EUR'], ['£', 'GBP'], ['¥', 'JPY'], ['฿', 'THB'],
+  ['₹', 'INR'], ['₩', 'KRW'], ['₫', 'VND'], ['₱', 'PHP'], ['₺', 'TRY'], ['₪', 'ILS'],
+  ['₦', 'NGN'], ['₴', 'UAH'], ['₸', 'KZT'], ['zł', 'PLN'], ['Kč', 'CZK'], ['$', 'USD']
+]
+
+// The full ISO 4217 list, taken from the runtime rather than hardcoded, so any
+// currency is recognised without a table to maintain. Resolved once; an engine
+// without it (ES2022) leaves the set empty and symbol matching still applies.
+let currencyCodes: Set<string> | null = null
+
+function knownCurrencyCodes(): Set<string> {
+  if (!currencyCodes) {
+    try {
+      currencyCodes = new Set(Intl.supportedValuesOf('currency'))
+    } catch {
+      currencyCodes = new Set()
+    }
+  }
+
+  return currencyCodes
+}
+
+// An ISO code as printed — matched case-sensitively, because lowercasing turns
+// ordinary words ("top", "all") into valid currency codes.
+export function detectCurrency(value: string): string {
+  const code = value.match(/\b[A-Z]{3}\b/g)?.find((candidate) => knownCurrencyCodes().has(candidate))
+  if (code) return code
+
+  return CURRENCY_SYMBOLS.find(([symbol]) => value.includes(symbol))?.[1] ?? ''
+}
+
 export function parsePrice(value: string): { price: number; currency: string } {
-  const currency = /€|eur/i.test(value) ? 'EUR' : /\$|usd/i.test(value) ? 'USD' : /£|gbp/i.test(value) ? 'GBP' : ''
+  const currency = detectCurrency(value ?? '')
 
   const match = value?.match(/\d[\d.,]*/)
   if (!match) return { price: 0, currency }
@@ -159,7 +193,9 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
   const destinyName = parts.destiny.name || parts.destiny.code
   const name = `${label} ${originName} - ${destinyName}`.trim()
 
-  const passengerName = parts.passengerName ?? ''
+  const passengers = parts.passengers?.length
+    ? parts.passengers
+    : (parts.passengerName ? [{ name: parts.passengerName, seat: parts.seat ?? '' }] : [])
 
   return {
     name,
@@ -170,7 +206,7 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
       price: parts.price ?? 0,
       currency: parts.currency ?? ''
     },
-    passengers: passengerName ? [{ name: passengerName }] : [],
+    passengers: passengers.map((passenger) => ({ name: passenger.name })),
     segments: [
       {
         duration: parts.duration ?? '',
@@ -179,7 +215,7 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
         class: parts.seatClass ?? '',
         origin: parts.origin,
         destiny: parts.destiny,
-        passengers: passengerName ? [{ name: passengerName, seat: parts.seat ?? '' }] : []
+        passengers: passengers.map((passenger) => ({ name: passenger.name, seat: passenger.seat ?? '' }))
       }
     ]
   }
