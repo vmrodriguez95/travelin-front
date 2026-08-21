@@ -84,6 +84,7 @@ in the interpreter.
 | `{ "regex", "group", "within", "transform" }` | Over the crop's text. Case-insensitive. `group` defaults to 1 |
 | `{ "linesAfter" \| "linesBefore", "count", "separator", "within" }` | Block of whole lines. For addresses |
 | `{ "concat": [...], "separator" }` | Joins several accessors. For values split across lines |
+| `{ "sum": "regex", "group", "within" }` | Adds up **every** match. For a total printed per leg and never for the booking |
 | `{ "const": "..." }` | Literal |
 | `[ ... ]` | Array = the first one that returns something wins. The way to cover a label in several languages |
 
@@ -113,10 +114,22 @@ prints one.
 voucher, which the profile already knows.
 
 Dates and prices normalise themselves: return the raw text and
-`parseNaturalDate` and `parsePrice` will parse it. `parsePrice` reads the
+`parseNaturalDate` and `parsePrice` will parse it. A numeric date is read with
+either separator — `25/12/2026` and `03.04.2024` both work. `parsePrice` reads the
 currency out of the same string — any ISO code (`542 THB`) or a common symbol
 (`€`, `฿`, `R$`, `S/`) — so when the amount and the currency sit in different
 places, `concat` them into one value instead of dropping the currency.
+
+When the voucher never prints a booking total — only one per leg, one per
+passenger — add them up rather than picking one:
+
+```json
+"price": { "sum": "PRECIO TOTAL:\\s*([^\\n]+)" }
+```
+
+Every match of the pattern is parsed as a price and totalled, and the currency
+of the first one carries over. Check the count: a pattern that also catches a
+subtotal or a per-passenger line will quietly double the booking.
 
 ### `typeTransport`
 
@@ -162,6 +175,30 @@ accessors are the **ordinary ones** — label, regex, concat, arrays — resolve
 against that block's lines. `within` has no meaning there: the block is already
 the scope. `operator`, `transportNumber`, `class` and `date` fall back to the
 top-level field when the block does not define one.
+
+**When each leg gets its own page, say `"perPage": true` and drop `startsAt`.**
+Then a leg is a sheet rather than a run of lines, and `within` keeps working
+inside it, applied to that page — which is how a leg printed in two columns
+(origin on the left, destination on the right) gets told apart at all:
+
+```json
+"segments": {
+  "perPage": true,
+  "origin": { "name": { "regex": "([\\s\\S]+)", "within": { "xMax": 0.39, "yMin": 0.08, "yMax": 0.145 }, "transform": "collapseSpaces" } },
+  "destiny": { "name": { "regex": "([\\s\\S]+)", "within": { "xMin": 0.39, "yMin": 0.08, "yMax": 0.145 }, "transform": "collapseSpaces" } }
+}
+```
+
+That `([\s\S]+)` with `collapseSpaces` is the tool for a station name the
+layout wrapped onto a second line: crop to the box that holds only that name and
+take everything inside it. A page with no journey on it — terms and conditions,
+a blank — resolves to no origin and no destiny, and is dropped rather than
+becoming an empty leg.
+
+A leg can also carry its **own travellers**, with `passenger`/`seat` or a
+`passengers` table, for a ticket that seats the same person differently on the
+way back. The booking's traveller list is then whoever appears across the legs,
+so there is no need to repeat the names at the top level.
 
 The draft takes its name from the **first** leg, so a return trip reads as
 "Madrid - Tokyo" rather than "Madrid - Madrid".

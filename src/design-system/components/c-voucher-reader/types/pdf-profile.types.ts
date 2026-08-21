@@ -61,6 +61,14 @@ export interface PdfConstAccessor {
   const: string
 }
 
+// Adds up every match of a pattern. For a voucher that prints a total per leg
+// and none for the booking: half a total looks right and is not.
+export interface PdfSumAccessor {
+  sum: string
+  group?: number
+  within?: PdfCropBox
+}
+
 export type PdfAccessorSingle =
   | string
   | PdfLabelAccessor
@@ -68,6 +76,7 @@ export type PdfAccessorSingle =
   | PdfBlockAccessor
   | PdfConcatAccessor
   | PdfConstAccessor
+  | PdfSumAccessor
 
 // An array means "first non-empty wins" (same rule as the pkpass profiles).
 export type PdfAccessor = PdfAccessorSingle | PdfAccessorSingle[]
@@ -109,14 +118,24 @@ export interface PdfPassengerList {
 // lines: `within` has no meaning there, since the block is already the scope.
 export interface PdfProfileSegments {
   within?: PdfCropBox
-  // A new block opens on every line matching this pattern (case-insensitive).
-  startsAt: string
-  // ...and the list closes before the first line matching any of these.
+  // One leg per page — the shape of a ticket that prints each journey on its
+  // own sheet. Accessors inside keep their `within` crop, applied to that page,
+  // which is what lets a leg's two columns be told apart.
+  perPage?: boolean
+  // Otherwise a new block opens on every line matching this pattern
+  // (case-insensitive), and `within` no longer applies inside it.
+  startsAt?: string
+  // The list closes before the first line matching any of these.
   until?: string[]
   date?: PdfAccessor
   operator?: PdfAccessor
   transportNumber?: PdfAccessor
   class?: PdfAccessor
+  // Travellers of this leg, when the seats differ from one leg to the next.
+  // Falls back to the profile's own list.
+  passenger?: PdfAccessor
+  seat?: PdfAccessor
+  passengers?: PdfPassengerList
   origin: PdfProfilePoint
   destiny: PdfProfilePoint
 }
