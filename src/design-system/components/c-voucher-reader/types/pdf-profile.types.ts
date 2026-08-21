@@ -72,6 +72,48 @@ export type PdfAccessorSingle =
 // An array means "first non-empty wins" (same rule as the pkpass profiles).
 export type PdfAccessor = PdfAccessorSingle | PdfAccessorSingle[]
 
+// Reads a value out of a single already-located line. Used by the passenger
+// list, where the anchor is the row itself rather than a label.
+export interface PdfLineRegexAccessor {
+  regex: string
+  group?: number
+  transform?: PdfTransformName
+}
+
+export interface PdfLineColumnAccessor {
+  // Index into the line's tab-separated columns.
+  column: number
+  transform?: PdfTransformName
+}
+
+export type PdfLineAccessor = PdfLineRegexAccessor | PdfLineColumnAccessor
+
+// A repeating block of rows — one per traveller. Vouchers print these as a
+// table under a header, so the list is bounded by labels rather than counted.
+export interface PdfPassengerList {
+  within?: PdfCropBox
+  // The list starts on the line after the one holding this label.
+  after: string
+  // ...and ends before the first line matching any of these. Rows with no
+  // name are dropped anyway, so this is a safety net for open-ended tables.
+  until?: string[]
+  name: PdfLineAccessor
+  seat?: PdfLineAccessor
+}
+
+// Vendors that sell several modes of transport print the vehicle somewhere in
+// the voucher, so the type can be read instead of being fixed per vendor.
+export interface PdfTypeTransportAccessor {
+  from: PdfAccessor
+  // Needle -> transport type, tried in order. Matched as a case- and
+  // accent-insensitive substring of the resolved value.
+  map: Record<string, TransportType>
+  // Used when the value is missing or matches nothing.
+  fallback: TransportType
+}
+
+export type PdfTypeTransport = TransportType | PdfTypeTransportAccessor
+
 export interface PdfProfilePoint {
   code?: PdfAccessor
   name?: PdfAccessor
@@ -104,13 +146,16 @@ export interface PdfHotelProfile extends PdfProfileBase {
 
 export interface PdfTransportProfile extends PdfProfileBase {
   poiType: 'poi_transport'
-  typeTransport: TransportType
+  typeTransport: PdfTypeTransport
   provider: string
   operator?: PdfAccessor
   transportNumber?: PdfAccessor
   class?: PdfAccessor
+  // Single traveller. `passengers` supersedes these when the voucher lists
+  // several; both are kept so a one-passenger vendor stays a two-line profile.
   passenger?: PdfAccessor
   seat?: PdfAccessor
+  passengers?: PdfPassengerList
   price?: PdfAccessor
   date?: PdfAccessor
   origin: PdfProfilePoint
