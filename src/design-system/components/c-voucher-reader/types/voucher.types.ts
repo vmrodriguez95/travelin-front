@@ -103,6 +103,9 @@ export interface TransportParts {
   passengerName?: string
   seat?: string
   passengers?: TransportSegmentPassengerDraft[]
+  // Several legs, already assembled. Supersedes origin/destiny, which then only
+  // name the draft.
+  segments?: TransportSegmentDraft[]
   origin: TransportSegmentPointDraft
   destiny: TransportSegmentPointDraft
 }

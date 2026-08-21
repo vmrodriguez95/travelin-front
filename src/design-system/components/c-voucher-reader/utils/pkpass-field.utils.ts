@@ -189,8 +189,15 @@ export function point(opts: Partial<TransportSegmentPointDraft>): TransportSegme
 
 export function assembleTransportDraft(parts: TransportParts): TransportVoucherDraft {
   const label = TRANSPORT_LABEL[parts.typeTransport]
-  const originName = parts.origin.name || parts.origin.code
-  const destinyName = parts.destiny.name || parts.destiny.code
+
+  // A return trip would otherwise be named "Madrid - Madrid": the draft takes
+  // its name from the outbound leg, which is the one a traveller recognises.
+  const first = parts.segments?.[0]
+  const origin = first?.origin ?? parts.origin
+  const destiny = first?.destiny ?? parts.destiny
+
+  const originName = origin.name || origin.code
+  const destinyName = destiny.name || destiny.code
   const name = `${label} ${originName} - ${destinyName}`.trim()
 
   const passengers = parts.passengers?.length
@@ -207,7 +214,7 @@ export function assembleTransportDraft(parts: TransportParts): TransportVoucherD
       currency: parts.currency ?? ''
     },
     passengers: passengers.map((passenger) => ({ name: passenger.name })),
-    segments: [
+    segments: parts.segments ?? [
       {
         duration: parts.duration ?? '',
         operator: parts.operator ?? parts.provider ?? '',
