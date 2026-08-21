@@ -13,7 +13,7 @@ import { findDocumentYear, parseNaturalDate } from '@ds/utils/date.utils'
 
 // Types
 import type { PdfPage } from '../types/pdf.types'
-import type { TransportSegmentPassengerDraft, TransportSegmentPointDraft, TransportType, VoucherDraft, VoucherNote } from '../types/voucher.types'
+import type { TransportSegmentDraft, TransportSegmentPassengerDraft, TransportSegmentPointDraft, TransportType, VoucherDraft, VoucherNote } from '../types/voucher.types'
 import type {
   PdfAccessor,
   PdfAccessorSingle,
@@ -21,8 +21,10 @@ import type {
   PdfLineAccessor,
   PdfPassengerList,
   PdfProfile,
+  PdfLineSource,
   PdfProfileManifestEntry,
   PdfProfilePoint,
+  PdfProfileSegments,
   PdfTransformName,
   PdfTransportProfile,
   PdfTypeTransport
@@ -49,9 +51,20 @@ function linesFor(pages: PdfPage[], box?: { page?: number }): string[] {
   return page ? toLines(cropCells(page, box)) : []
 }
 
-function resolveSingle(pages: PdfPage[], accessor: PdfAccessorSingle): string {
+// Where an accessor reads from. The document answers with the crop it is asked
+// for; a segment block ignores the crop and answers with its own lines, which
+// is what lets the same accessors work inside a repeating block.
+function documentSource(pages: PdfPage[]): PdfLineSource {
+  return (box) => linesFor(pages, box)
+}
+
+function blockSource(lines: string[]): PdfLineSource {
+  return () => lines
+}
+
+function resolveSingle(source: PdfLineSource, accessor: PdfAccessorSingle): string {
   if (typeof accessor === 'string') {
-    return resolveSingle(pages, { label: accessor })
+    return resolveSingle(source, { label: accessor })
   }
 
   if ('const' in accessor) {
@@ -60,14 +73,14 @@ function resolveSingle(pages: PdfPage[], accessor: PdfAccessorSingle): string {
 
   if ('concat' in accessor) {
     return accessor.concat
-      .map((part) => resolveSingle(pages, part))
+      .map((part) => resolveSingle(source, part))
       .filter(Boolean)
       .join(accessor.separator ?? ' ')
       .trim()
   }
 
   if ('regex' in accessor) {
-    const text = linesFor(pages, accessor.within).join('\n')
+    const text = source(accessor.within).join('\n')
 
     try {
       const match = text.match(new RegExp(accessor.regex, 'i'))
@@ -79,7 +92,7 @@ function resolveSingle(pages: PdfPage[], accessor: PdfAccessorSingle): string {
   }
 
   if ('linesAfter' in accessor || 'linesBefore' in accessor) {
-    const lines = linesFor(pages, accessor.within)
+    const lines = source(accessor.within)
     const after = 'linesAfter' in accessor
     const index = findLabelIndex(lines, after ? accessor.linesAfter : accessor.linesBefore)
     if (index === -1) return ''
@@ -91,7 +104,7 @@ function resolveSingle(pages: PdfPage[], accessor: PdfAccessorSingle): string {
     return applyTransform(block.join(accessor.separator ?? ', ').trim(), accessor.transform)
   }
 
-  const lines = linesFor(pages, accessor.within)
+  const lines = source(accessor.within)
   const index = findLabelIndex(lines, accessor.label)
   if (index === -1) return ''
 
@@ -102,24 +115,24 @@ function resolveSingle(pages: PdfPage[], accessor: PdfAccessorSingle): string {
   return applyTransform(raw, accessor.transform)
 }
 
-function resolveAccessor(pages: PdfPage[], accessor?: PdfAccessor): string {
+function resolveAccessor(source: PdfLineSource, accessor?: PdfAccessor): string {
   if (accessor == null) return ''
 
   if (Array.isArray(accessor)) {
     for (const candidate of accessor) {
-      const value = resolveSingle(pages, candidate)
+      const value = resolveSingle(source, candidate)
       if (value) return value
     }
     return ''
   }
 
-  return resolveSingle(pages, accessor)
+  return resolveSingle(source, accessor)
 }
 
 // Vouchers often print a day and month with no year; the year is taken from
 // elsewhere in the document, falling back to the current one.
-function resolveDate(pages: PdfPage[], year: number, accessor?: PdfAccessor): string {
-  const raw = resolveAccessor(pages, accessor)
+function resolveDate(source: PdfLineSource, year: number, accessor?: PdfAccessor): string {
+  const raw = resolveAccessor(source, accessor)
   if (!raw) return ''
 
   return datePart(raw) || parseNaturalDate(raw, year)
@@ -162,8 +175,8 @@ function resolvePassengers(pages: PdfPage[], profile: PdfTransportProfile): Tran
       .filter((passenger) => passenger.name)
   }
 
-  const name = resolveAccessor(pages, profile.passenger)
-  return name ? [{ name, seat: resolveAccessor(pages, profile.seat) }] : []
+  const name = resolveAccessor(documentSource(pages), profile.passenger)
+  return name ? [{ name, seat: resolveAccessor(documentSource(pages), profile.seat) }] : []
 }
 
 // A vendor that only ever sells one mode states it outright; the rest point at
@@ -171,7 +184,7 @@ function resolvePassengers(pages: PdfPage[], profile: PdfTransportProfile): Tran
 function resolveTypeTransport(pages: PdfPage[], typeTransport: PdfTypeTransport): TransportType {
   if (typeof typeTransport === 'string') return typeTransport
 
-  const value = normalizeLabel(resolveAccessor(pages, typeTransport.from))
+  const value = normalizeLabel(resolveAccessor(documentSource(pages), typeTransport.from))
   if (!value) return typeTransport.fallback
 
   const entry = Object.entries(typeTransport.map)
@@ -180,63 +193,120 @@ function resolveTypeTransport(pages: PdfPage[], typeTransport: PdfTypeTransport)
   return entry?.[1] ?? typeTransport.fallback
 }
 
-function buildPoint(pages: PdfPage[], day: string, profilePoint?: PdfProfilePoint): TransportSegmentPointDraft {
+function buildPoint(source: PdfLineSource, day: string, year: number, profilePoint?: PdfProfilePoint): TransportSegmentPointDraft {
   if (!profilePoint) return point({})
 
+  const pointDay = (profilePoint.date && resolveDate(source, year, profilePoint.date)) || day
+
   return point({
-    code: resolveAccessor(pages, profilePoint.code),
-    name: resolveAccessor(pages, profilePoint.name),
-    address: resolveAccessor(pages, profilePoint.address),
-    platform: resolveAccessor(pages, profilePoint.platform),
-    date: profilePoint.time ? combineDateTime(day, resolveAccessor(pages, profilePoint.time)) : ''
+    code: resolveAccessor(source, profilePoint.code),
+    name: resolveAccessor(source, profilePoint.name),
+    address: resolveAccessor(source, profilePoint.address),
+    platform: resolveAccessor(source, profilePoint.platform),
+    date: profilePoint.time ? combineDateTime(pointDay, resolveAccessor(source, profilePoint.time)) : ''
   })
 }
 
 function parseHotel(pages: PdfPage[], profile: PdfHotelProfile, year: number): VoucherDraft {
-  const dateStart = resolveDate(pages, year, profile.dateStart)
-  const dateEnd = resolveDate(pages, year, profile.dateEnd)
+  const source = documentSource(pages)
+  const dateStart = resolveDate(source, year, profile.dateStart)
+  const dateEnd = resolveDate(source, year, profile.dateEnd)
 
   const notes: VoucherNote[] = (profile.notes ?? [])
-    .map((note) => ({ icon: note.icon, text: resolveAccessor(pages, note.text) }))
+    .map((note) => ({ icon: note.icon, text: resolveAccessor(source, note.text) }))
     .filter((note) => note.text)
 
   const coordinates = profile.coordinates
-    ? parseGpsCoordinates(resolveAccessor(pages, profile.coordinates))
+    ? parseGpsCoordinates(resolveAccessor(source, profile.coordinates))
     : undefined
 
   const { price, currency } = profile.price
-    ? parsePrice(resolveAccessor(pages, profile.price))
+    ? parsePrice(resolveAccessor(source, profile.price))
     : { price: 0, currency: '' }
 
   return hotelDraft({
-    name: resolveAccessor(pages, profile.name),
-    address: resolveAccessor(pages, profile.address),
+    name: resolveAccessor(source, profile.name),
+    address: resolveAccessor(source, profile.address),
     coordinates,
     price,
     currency,
-    dateStart: combineDateTime(dateStart, resolveAccessor(pages, profile.timeStart)) || dateStart,
-    dateEnd: combineDateTime(dateEnd, resolveAccessor(pages, profile.timeEnd)) || dateEnd,
+    dateStart: combineDateTime(dateStart, resolveAccessor(source, profile.timeStart)) || dateStart,
+    dateEnd: combineDateTime(dateEnd, resolveAccessor(source, profile.timeEnd)) || dateEnd,
     notes
   })
 }
 
+// One block of lines per leg: a new one opens on every line matching `startsAt`
+// and runs until the next one, the end of the crop, or a line the profile
+// declares as the end of the list.
+function segmentBlocks(pages: PdfPage[], list: PdfProfileSegments): string[][] {
+  const lines = linesFor(pages, list.within)
+  const startsAt = new RegExp(list.startsAt, 'i')
+  const blocks: string[][] = []
+
+  for (const line of lines) {
+    const normalized = normalizeLabel(line)
+    if (list.until?.some((needle) => normalized.includes(normalizeLabel(needle)))) break
+
+    if (startsAt.test(line)) {
+      blocks.push([line])
+      continue
+    }
+
+    blocks.at(-1)?.push(line)
+  }
+
+  return blocks
+}
+
+function buildSegments(
+  pages: PdfPage[],
+  profile: PdfTransportProfile,
+  year: number,
+  passengers: TransportSegmentPassengerDraft[]
+): TransportSegmentDraft[] {
+  const list = profile.segments
+
+  if (!list) return []
+
+  return segmentBlocks(pages, list).map((block) => {
+    const source = blockSource(block)
+    const day = resolveDate(source, year, list.date ?? profile.date)
+
+    return {
+      duration: '',
+      operator: resolveAccessor(source, list.operator ?? profile.operator) || profile.provider,
+      transportNumber: resolveAccessor(source, list.transportNumber ?? profile.transportNumber),
+      class: resolveAccessor(source, list.class ?? profile.class),
+      origin: buildPoint(source, day, year, list.origin),
+      destiny: buildPoint(source, day, year, list.destiny),
+      passengers
+    }
+  })
+}
+
 function parseTransport(pages: PdfPage[], profile: PdfTransportProfile, year: number): VoucherDraft {
-  const day = resolveDate(pages, year, profile.date)
+  const source = documentSource(pages)
+  const day = resolveDate(source, year, profile.date)
   const { price, currency } = profile.price
-    ? parsePrice(resolveAccessor(pages, profile.price))
+    ? parsePrice(resolveAccessor(source, profile.price))
     : { price: 0, currency: '' }
+
+  const passengers = resolvePassengers(pages, profile)
+  const segments = buildSegments(pages, profile, year, passengers)
 
   return assembleTransportDraft({
     typeTransport: resolveTypeTransport(pages, profile.typeTransport),
     provider: profile.provider,
-    operator: resolveAccessor(pages, profile.operator) || undefined,
+    operator: resolveAccessor(source, profile.operator) || undefined,
     price,
     currency,
-    transportNumber: resolveAccessor(pages, profile.transportNumber),
-    seatClass: resolveAccessor(pages, profile.class),
-    passengers: resolvePassengers(pages, profile),
-    origin: buildPoint(pages, day, profile.origin),
-    destiny: buildPoint(pages, day, profile.destiny)
+    transportNumber: resolveAccessor(source, profile.transportNumber),
+    seatClass: resolveAccessor(source, profile.class),
+    passengers,
+    segments: segments.length ? segments : undefined,
+    origin: buildPoint(source, day, year, profile.origin),
+    destiny: buildPoint(source, day, year, profile.destiny)
   })
 }
 

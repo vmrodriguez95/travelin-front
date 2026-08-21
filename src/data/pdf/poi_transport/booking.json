@@ -1,0 +1,34 @@
+{
+  "id": "booking",
+  "match": ["referencia del cliente: 40-"],
+  "poiType": "poi_transport",
+  "typeTransport": "flight",
+  "provider": "Booking.com",
+  "passengers": {
+    "within": { "page": 0, "xMax": 0.49 },
+    "after": "Datos del pasajero",
+    "until": ["Equipaje", "Baggage", "Pago", "Payment"],
+    "name": { "regex": "^(?!.*document)(?!.*·)\\s*([A-Za-z\\u00C0-\\u024F'’.\\- ]{4,})\\s*$", "transform": "collapseSpaces" }
+  },
+  "price": { "regex": "\\bTotal\\t\\s*([^\\n]+)" },
+  "segments": {
+    "within": { "page": 0, "xMax": 0.49 },
+    "startsAt": "^De\\s+[^(\\n]+\\([A-Z]{3}\\)\\s*a\\s+[^(\\n]+\\([A-Z]{3}\\)",
+    "until": ["Datos del pasajero", "Passenger details"],
+    "date": { "regex": "([A-Za-z\\u00C0-\\u024F]{3,}\\.?,\\s*\\d{1,2}\\s+[A-Za-z\\u00C0-\\u024F]{3,})\\s*·" },
+    "operator": { "regex": "\\n([^·\\n]+?)\\s*·\\s*[A-Z]{2}\\d{2,}(?=[,\\n]|$)", "transform": "collapseSpaces" },
+    "transportNumber": { "regex": "·\\s*([A-Z]{2}\\d{2,}(?:\\s*,\\s*[A-Z]{2}\\d{2,})*)\\s*(?=\\n|$)", "transform": "collapseSpaces" },
+    "class": { "regex": "(?:escala|direct|stop)[^\\n]*·\\s*([^·\\n]+?)\\s*(?=\\n|$)" },
+    "origin": {
+      "code": { "regex": "\\bDe\\s+[^(\\n]+\\(([A-Z]{3})\\)" },
+      "name": { "regex": "\\bDe\\s+([^(\\n]+?)\\s*\\([A-Z]{3}\\)" },
+      "time": { "regex": "\\d{1,2}\\s+[A-Za-z\\u00C0-\\u024F]{3,}\\s*·\\s*(\\d{1,2}:\\d{2})" }
+    },
+    "destiny": {
+      "code": { "regex": "\\bDe\\s+[^(\\n]+\\([A-Z]{3}\\)\\s*a\\s+[^(\\n]+\\(([A-Z]{3})\\)" },
+      "name": { "regex": "\\bDe\\s+[^(\\n]+\\([A-Z]{3}\\)\\s*a\\s+([^(\\n]+?)\\s*\\([A-Z]{3}\\)" },
+      "time": { "regex": "-\\s*[^\\n·]*·\\s*(\\d{1,2}:\\d{2})" },
+      "date": { "regex": "-\\s*([A-Za-z\\u00C0-\\u024F]{3,}\\.?,\\s*\\d{1,2}\\s+[A-Za-z\\u00C0-\\u024F]{3,})\\s*·" }
+    }
+  }
+}

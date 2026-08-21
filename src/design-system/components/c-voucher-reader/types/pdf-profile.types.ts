@@ -101,6 +101,26 @@ export interface PdfPassengerList {
   seat?: PdfLineAccessor
 }
 
+// A repeating block of lines — one per leg of the journey. A return trip prints
+// the same shape twice, so the blocks are delimited by the line that opens each
+// one rather than counted.
+//
+// The accessors inside are the ordinary ones, resolved against the block's own
+// lines: `within` has no meaning there, since the block is already the scope.
+export interface PdfProfileSegments {
+  within?: PdfCropBox
+  // A new block opens on every line matching this pattern (case-insensitive).
+  startsAt: string
+  // ...and the list closes before the first line matching any of these.
+  until?: string[]
+  date?: PdfAccessor
+  operator?: PdfAccessor
+  transportNumber?: PdfAccessor
+  class?: PdfAccessor
+  origin: PdfProfilePoint
+  destiny: PdfProfilePoint
+}
+
 // Vendors that sell several modes of transport print the vehicle somewhere in
 // the voucher, so the type can be read instead of being fixed per vendor.
 export interface PdfTypeTransportAccessor {
@@ -114,12 +134,20 @@ export interface PdfTypeTransportAccessor {
 
 export type PdfTypeTransport = TransportType | PdfTypeTransportAccessor
 
+// Where an accessor's lines come from: the document answers with the crop it is
+// asked for, a segment block answers with its own lines and ignores the crop.
+export type PdfLineSource = (within?: PdfCropBox) => string[]
+
 export interface PdfProfilePoint {
   code?: PdfAccessor
   name?: PdfAccessor
   address?: PdfAccessor
   platform?: PdfAccessor
   time?: PdfAccessor
+  // The point's own day, for a leg that lands after midnight. Without it the
+  // journey's date is used, which would date a red-eye arrival to the day it
+  // took off — and print an arrival earlier than its departure.
+  date?: PdfAccessor
 }
 
 interface PdfProfileBase {
@@ -158,8 +186,12 @@ export interface PdfTransportProfile extends PdfProfileBase {
   passengers?: PdfPassengerList
   price?: PdfAccessor
   date?: PdfAccessor
-  origin: PdfProfilePoint
-  destiny: PdfProfilePoint
+  // One journey, described once. A voucher that prints several legs — an
+  // outbound and a return — uses `segments` instead, and then these two are
+  // read from each block rather than from the page.
+  origin?: PdfProfilePoint
+  destiny?: PdfProfilePoint
+  segments?: PdfProfileSegments
 }
 
 export type PdfProfile = PdfHotelProfile | PdfTransportProfile

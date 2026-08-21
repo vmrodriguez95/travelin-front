@@ -103,9 +103,11 @@ which does not trim the label).
 `timeStart`, `timeEnd`, `notes` (array of `{ icon, text }`).
 
 **`poi_transport`:** `typeTransport`, `provider`, `operator`, `transportNumber`,
-`class`, `price`, `date`, `origin`, `destiny` (these last two with `code`,
-`name`, `address`, `platform`, `time`), plus the travellers — `passengers` for a
-list, or `passenger` + `seat` for a vendor that only ever prints one.
+`class`, `price`, `date`, and the journey — `origin` + `destiny` for a single
+leg (each with `code`, `name`, `address`, `platform`, `time`, `date`), or
+`segments` for a voucher that prints several. Plus the travellers:
+`passengers` for a list, or `passenger` + `seat` for a vendor that only ever
+prints one.
 
 `provider` is a plain string, not an accessor: it is the brand issuing the
 voucher, which the profile already knows.
@@ -135,6 +137,38 @@ where the vehicle might be named. The `map` keys are matched as case- and
 accent-insensitive substrings **in the order written**, so put the specific
 before the generic (`boat` before `van`, for a "Long Tail Boat" run by a van
 company). `fallback` is what the vendor sells most of.
+
+### `segments`
+
+One journey is described once, with `origin`/`destiny` at the top level. A
+voucher that prints several legs — an outbound and a return — uses `segments`
+instead, and each leg is read from its own block of lines:
+
+```json
+"segments": {
+  "within": { "page": 0, "xMax": 0.49 },
+  "startsAt": "^De\\s+[^(\\n]+\\([A-Z]{3}\\)\\s*a\\s+",
+  "until": ["Datos del pasajero"],
+  "date": { "regex": "([A-Za-z]{3,}\\.?,\\s*\\d{1,2}\\s+[A-Za-z]{3,})\\s*·" },
+  "operator": { "regex": "\\n([^·\\n]+?)\\s*·\\s*[A-Z]{2}\\d{2,}" },
+  "origin": { "code": { "regex": "\\bDe\\s+[^(\\n]+\\(([A-Z]{3})\\)" } },
+  "destiny": { "code": { "regex": "a\\s+[^(\\n]+\\(([A-Z]{3})\\)" } }
+}
+```
+
+A new block opens on every line matching `startsAt` and runs to the next one;
+`until` closes the list before the section that follows. Inside a block the
+accessors are the **ordinary ones** — label, regex, concat, arrays — resolved
+against that block's lines. `within` has no meaning there: the block is already
+the scope. `operator`, `transportNumber`, `class` and `date` fall back to the
+top-level field when the block does not define one.
+
+The draft takes its name from the **first** leg, so a return trip reads as
+"Madrid - Tokyo" rather than "Madrid - Madrid".
+
+A point also accepts its own `date`, alongside `time`. Use it whenever a leg can
+land after midnight: without it the arrival inherits the departure's day, and a
+red-eye ends up arriving before it left.
 
 ### `passengers`
 
@@ -211,8 +245,20 @@ cut in half. That is what `concat` solves:
 Anchor on the label that does exist (`CHECK-IN`) and reach the neighbouring one
 with `column: 1`, instead of looking up `CHECK-OUT` separately.
 
-**Many vouchers carry no year.** Do not invent it: `findDocumentYear` gets it
-from elsewhere in the document.
+**Many vouchers carry no year.** Do not invent it, and do not go looking for one
+to staple on: what you return is parsed by `parseNaturalDate`, which resolves the
+year itself, in this order.
+
+1. A year printed inside the value wins — `18 August 2026`.
+2. Otherwise, **the weekday pins it down**: `mar, 28 oct` can only be 2025 within
+   any realistic travel window, because that date is a Tuesday in no other
+   nearby year. So when the voucher prints the weekday, **capture it** — start
+   the match at `mar,` rather than at `28`. It costs nothing and it is the only
+   thing standing between you and a wrong year.
+3. Only as a last resort, `findDocumentYear` takes the earliest plausible year
+   mentioned anywhere in the document — which on a flight voucher is quite
+   likely to be **a passport expiry date**, not the journey. Do not rely on it
+   when a weekday is available.
 
 **PDF metadata is useless for identifying the brand.** If the user forwarded or
 reprinted the document from their phone, `Producer` says "iOS Quartz
