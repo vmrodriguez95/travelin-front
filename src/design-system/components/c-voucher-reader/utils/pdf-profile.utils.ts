@@ -85,6 +85,22 @@ function resolveSingle(source: PdfLineSource, accessor: PdfAccessorSingle): stri
       .trim()
   }
 
+  // Every match is added up, and the currency of the first one carries over so
+  // the total is still a price and not a bare number.
+  if ('sum' in accessor) {
+    const text = source(accessor.within).join('\n')
+    const values = [...text.matchAll(new RegExp(accessor.sum, 'gi'))]
+      .map((match) => match[accessor.group ?? 1] ?? match[0])
+      .map((value) => parsePrice(value))
+
+    if (!values.length) return ''
+
+    const total = values.reduce((sum, value) => sum + value.price, 0)
+    const currency = values.find((value) => value.currency)?.currency ?? ''
+
+    return `${(Math.round(total * 100) / 100).toFixed(2)} ${currency}`.trim()
+  }
+
   if ('regex' in accessor) {
     const text = source(accessor.within).join('\n')
 

@@ -84,6 +84,7 @@ in the interpreter.
 | `{ "regex", "group", "within", "transform" }` | Over the crop's text. Case-insensitive. `group` defaults to 1 |
 | `{ "linesAfter" \| "linesBefore", "count", "separator", "within" }` | Block of whole lines. For addresses |
 | `{ "concat": [...], "separator" }` | Joins several accessors. For values split across lines |
+| `{ "sum": "regex", "group", "within" }` | Adds up **every** match. For a total printed per leg and never for the booking |
 | `{ "const": "..." }` | Literal |
 | `[ ... ]` | Array = the first one that returns something wins. The way to cover a label in several languages |
 
@@ -118,6 +119,17 @@ either separator — `25/12/2026` and `03.04.2024` both work. `parsePrice` reads
 currency out of the same string — any ISO code (`542 THB`) or a common symbol
 (`€`, `฿`, `R$`, `S/`) — so when the amount and the currency sit in different
 places, `concat` them into one value instead of dropping the currency.
+
+When the voucher never prints a booking total — only one per leg, one per
+passenger — add them up rather than picking one:
+
+```json
+"price": { "sum": "PRECIO TOTAL:\\s*([^\\n]+)" }
+```
+
+Every match of the pattern is parsed as a price and totalled, and the currency
+of the first one carries over. Check the count: a pattern that also catches a
+subtotal or a per-passenger line will quietly double the booking.
 
 ### `typeTransport`
 

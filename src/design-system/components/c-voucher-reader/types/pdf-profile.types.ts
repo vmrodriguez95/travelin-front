@@ -61,6 +61,14 @@ export interface PdfConstAccessor {
   const: string
 }
 
+// Adds up every match of a pattern. For a voucher that prints a total per leg
+// and none for the booking: half a total looks right and is not.
+export interface PdfSumAccessor {
+  sum: string
+  group?: number
+  within?: PdfCropBox
+}
+
 export type PdfAccessorSingle =
   | string
   | PdfLabelAccessor
@@ -68,6 +76,7 @@ export type PdfAccessorSingle =
   | PdfBlockAccessor
   | PdfConcatAccessor
   | PdfConstAccessor
+  | PdfSumAccessor
 
 // An array means "first non-empty wins" (same rule as the pkpass profiles).
 export type PdfAccessor = PdfAccessorSingle | PdfAccessorSingle[]

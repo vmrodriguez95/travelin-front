@@ -4,6 +4,7 @@
   "poiType": "poi_transport",
   "typeTransport": "train",
   "provider": "iryo",
+  "price": { "sum": "PRECIO TOTAL:\\s*([^\\n]+)" },
   "segments": {
     "perPage": true,
     "transportNumber": { "label": "Salida", "below": 1, "column": 1 },
