@@ -101,8 +101,12 @@ export interface CalendarFormField extends BasicFormField {
 }
 export interface SearchFormField extends BasicFormField {
   api: string
-  displayValue: string
-  queryAsValue: boolean
+  // Key of the sibling field in the same block that stores the id of the option
+  // the user picks. Left out when the search has no catalogue behind it.
+  placeIdField?: string
+  // Keys of the sibling fields that only describe a picked option (coordinates,
+  // for instance) and are therefore cleared whenever the text changes.
+  resetFields?: Array<string>
 }
 
 interface FileFieldInfo {

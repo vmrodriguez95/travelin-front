@@ -26,8 +26,17 @@
           "type": "search",
           "fieldSize": "full",
           "api": "",
-          "queryAsValue": false,
+          "placeIdField": "placeId",
+          "resetFields": ["coordinates"],
           "required": true,
+          "readonly": false
+        },
+        "placeId": {
+          "id": "poiHotelPlaceId",
+          "name": "placeId",
+          "type": "hidden",
+          "fillValue": "",
+          "required": false,
           "readonly": false
         },
         "coordinates": {

@@ -1,4 +1,4 @@
-import { html, css, unsafeCSS } from 'lit'
+import { html, css, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 
@@ -24,6 +24,21 @@ export class EInputDate extends FormElement {
 
   protected override _getAnchorElement(): HTMLElement {
     return this._input ?? this
+  }
+
+  protected firstUpdated() {
+    this._internals.setFormValue(this.value)
+  }
+
+  // Same contract as e-input and e-select: `value` is also written from outside
+  // (a form filled from a voucher, an edit form hydrated from the API), and the
+  // submission value has to follow it there too — not only on user input.
+  protected updated(changed: PropertyValues) {
+    if (!changed.has('value')) return
+
+    this._internals.setFormValue(this.value)
+
+    if (this._internals.validationMessage) this._validate()
   }
 
   render() {

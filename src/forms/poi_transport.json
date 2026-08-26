@@ -104,7 +104,6 @@
           "fieldSize": "full",
           "api": "",
           "showInResume": true,
-          "queryAsValue": true,
           "required": false,
           "readonly": false
         }
@@ -165,7 +164,8 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
-              "queryAsValue": false,
+              "placeIdField": "placeId",
+              "resetFields": ["coordinates"],
               "required": true,
               "readonly": false
             },
@@ -188,6 +188,14 @@
               "required": true,
               "readonly": false
             },
+            "placeId": {
+              "id": "poiTransportSegmentsOriginPlaceId",
+              "name": "placeId",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
+            },
             "coordinates": {
               "id": "poiTransportSegmentsOriginCoordinates",
               "name": "coordinates",
@@ -208,7 +216,8 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
-              "queryAsValue": false,
+              "placeIdField": "placeId",
+              "resetFields": ["coordinates"],
               "required": true,
               "readonly": false
             },
@@ -229,6 +238,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "placeId": {
+              "id": "poiTransportSegmentsDestinyPlaceId",
+              "name": "placeId",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             },
             "coordinates": {
@@ -382,7 +399,6 @@
           "fieldSize": "full",
           "api": "",
           "showInResume": true,
-          "queryAsValue": true,
           "required": false,
           "readonly": false
         }
@@ -441,7 +457,8 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
-              "queryAsValue": false,
+              "placeIdField": "placeId",
+              "resetFields": ["coordinates"],
               "required": true,
               "readonly": false
             },
@@ -464,6 +481,14 @@
               "required": true,
               "readonly": false
             },
+            "placeId": {
+              "id": "poiTransportSegmentsOriginPlaceId",
+              "name": "placeId",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
+            },
             "coordinates": {
               "id": "poiTransportSegmentsOriginCoordinates",
               "name": "coordinates",
@@ -484,7 +509,8 @@
               "type": "search",
               "fieldSize": "full",
               "api": "",
-              "queryAsValue": false,
+              "placeIdField": "placeId",
+              "resetFields": ["coordinates"],
               "required": true,
               "readonly": false
             },
@@ -505,6 +531,14 @@
               "fieldSize": "full",
               "showInResume": true,
               "required": true,
+              "readonly": false
+            },
+            "placeId": {
+              "id": "poiTransportSegmentsDestinyPlaceId",
+              "name": "placeId",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
               "readonly": false
             },
             "coordinates": {

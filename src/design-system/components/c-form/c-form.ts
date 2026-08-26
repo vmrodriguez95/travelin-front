@@ -136,7 +136,7 @@ export class CForm extends LitElement {
     this._submitButton.disabled = true
   }
 
-  private _onChange(ev: CustomEvent, field: BasicFormField) {
+  private _onChange(ev: CustomEvent, field: BasicFormField, block?: FormBlock) {
     switch (field.type) {
       case 'calendar':
         field.value = ev.detail
@@ -145,9 +145,9 @@ export class CForm extends LitElement {
       case 'search':
         const searchInput = ev.currentTarget as EInputSearch
 
-        (field as SearchFormField).displayValue = searchInput.displayValue
         field.value = searchInput.value
         field.fillValue = searchInput.value
+        this._syncSearchSiblings(field as SearchFormField, searchInput, block)
         break
       default:
         const defaultTarget = ev.currentTarget as HTMLInputElement
@@ -157,6 +157,41 @@ export class CForm extends LitElement {
     }
 
     this.requestUpdate()
+  }
+
+  // A search field submits the text the user sees. The id of the picked option,
+  // and anything else that only describes that option, live in sibling fields —
+  // they are rewritten from the element on every change so they can never
+  // describe a place other than the one currently written in the field.
+  private _syncSearchSiblings(field: SearchFormField, input: EInputSearch, block?: FormBlock) {
+    if (!block) return
+
+    this._setSiblingValue(block, field.placeIdField, input.placeId)
+
+    field.resetFields?.forEach((key) => this._setSiblingValue(block, key, ''))
+  }
+
+  private _getSiblingValue(block: FormBlock | undefined, key: string | undefined): string {
+    if (!block || !key) return ''
+
+    const sibling = block[key]
+
+    if (!this._isRenderableSectionEntry(sibling) || 'fields' in sibling || 'schema' in sibling) return ''
+
+    return String(this._getFieldValue(sibling as BasicFormField) ?? '')
+  }
+
+  private _setSiblingValue(block: FormBlock, key: string | undefined, value: string) {
+    if (!key) return
+
+    const sibling = block[key]
+
+    if (!this._isRenderableSectionEntry(sibling) || 'fields' in sibling || 'schema' in sibling) return
+
+    const target = sibling as BasicFormField
+
+    target.value = value
+    target.fillValue = value
   }
 
   private _onFormModifyFields(detail: FormModifyFieldsEventDetail) {
@@ -272,15 +307,10 @@ export class CForm extends LitElement {
     const stringValue = value == null ? '' : String(value)
 
     switch (field.type) {
-      case 'search':
-        // A place-search field submits a resolved place ID (in `value`). From a
-        // voucher we only have the text, so we prefill what's shown and leave
-        // `value` empty — required validation then asks the user to confirm the
-        // real place. Free-text searches (queryAsValue) submit the text itself.
-        const search = field as SearchFormField
-        search.displayValue = stringValue
-        field.value = search.queryAsValue ? stringValue : ''
-        break
+      // A search field needs no special case: it submits its own text, so a
+      // voucher fills it exactly like any other field and the user only reviews
+      // it. Its sibling `placeId` stays empty until the user picks an option,
+      // which is what tells the backend to resolve the place by text instead.
       case 'date':
       case 'time':
       case 'datetime-local':
@@ -327,21 +357,17 @@ export class CForm extends LitElement {
     return false
   }
 
-  private _hasAnyValue(section: FormArraySection | FormSection): boolean {
-    const fields = section.fields as Array<FormBlock>
+  private _hasAnyValue(block: FormBlock): boolean {
+    for (const [key, field] of Object.entries(block)) {
+      if (key !== 'randomId') {
+        const basicField = field as BasicFormField
 
-    for (const fieldList of fields) {
-      for (const [key, field] of Object.entries(fieldList)) {
-        if (key !== 'randomId') {
-          const basicField = field as BasicFormField
-
-          if (
-            ('value' in basicField && basicField.value !== '' || basicField.fillValue) ||
-            this._hasArrayFields(field as FormArraySection) ||
-            this._hasFieldsWithValues(field as FormSection)
-          ) {
-            return true
-          }
+        if (
+          ('value' in basicField && basicField.value !== '' || basicField.fillValue) ||
+          this._hasArrayFields(field as FormArraySection) ||
+          this._hasFieldsWithValues(field as FormSection)
+        ) {
+          return true
         }
       }
     }
@@ -349,10 +375,42 @@ export class CForm extends LitElement {
     return false
   }
 
-  private _confirmBlock(section: FormArraySection) {
-    if (!this._hasAnyValue(section)) {
-      section.fields?.splice(section.editingElementIdx as number, 1)
+  // Validates only the block being collapsed. Its fields live in this same
+  // shadow root, so the confirm button reaches them through its own wrapper.
+  private _isBlockValid(ev: Event): boolean {
+    const wrapper = (ev.currentTarget as HTMLElement).closest('.c-form__repeater__block')
+
+    if (!wrapper) return true
+
+    let isValid = true
+
+    wrapper.querySelectorAll<HTMLInputElement>('.c-form__field').forEach((field: HTMLInputElement) => {
+      if (!field.reportValidity()) {
+        isValid = false
+      }
+    })
+
+    return isValid
+  }
+
+  private _confirmBlock(ev: Event, section: FormArraySection) {
+    const index = section.editingElementIdx as number
+    const block = section.fields?.[index]
+
+    // A block the user added and never filled in is discarded rather than
+    // validated: there is nothing to keep, and nothing to complain about.
+    if (block && !this._hasAnyValue(block)) {
+      section.fields?.splice(index, 1)
+      delete section.editingElementIdx
+
+      this.requestUpdate()
+      return
     }
+
+    // Once collapsed the block renders as hidden inputs, so _isValid() can no
+    // longer reach its fields on submit. This is the last point where a required
+    // field can be stopped from being submitted empty.
+    if (!this._isBlockValid(ev)) return
 
     delete section.editingElementIdx
 
@@ -485,7 +543,7 @@ export class CForm extends LitElement {
   }
     
 
-  private _printField(field: BasicFormField, breadcrumbs: string): TemplateResult {
+  private _printField(field: BasicFormField, breadcrumbs: string, block?: FormBlock): TemplateResult {
     const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
 
     if ('dependsOn' in field) {
@@ -604,12 +662,11 @@ export class CForm extends LitElement {
             label=${fieldSearch.label}
             helpmsg=${fieldSearch.helpmsg}
             .messages=${field.messages ?? {}}
-            ?queryAsValue=${fieldSearch.queryAsValue}
             ?required=${fieldSearch.required}
             ?readonly=${fieldSearch.readonly}
             .value=${this._getFieldValue(fieldSearch)}
-            displayValue=${fieldSearch.displayValue}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch)}
+            placeId=${this._getSiblingValue(block, fieldSearch.placeIdField)}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch, block)}
           ></e-input-search>
         `
 
@@ -684,7 +741,7 @@ export class CForm extends LitElement {
     return html`
       <div class="c-form__repeater__block">
         <div class="c-form__repeater__actions">
-          <button class="c-form__repeater__action" type="button" @click=${() => this._confirmBlock(section)} aria-label=${section.confirmLabel ?? 'Confirmar cambios'}>
+          <button class="c-form__repeater__action" type="button" @click=${(ev: MouseEvent) => this._confirmBlock(ev, section)} aria-label=${section.confirmLabel ?? 'Confirmar cambios'}>
             <e-icon icon="check" size="s"></e-icon>
           </button>
           <button class="c-form__repeater__action" type="button" @click=${() => this._removeBlock(fields, index)} aria-label=${section.cancelLabel ?? 'Cancelar cambios'}>
@@ -696,7 +753,7 @@ export class CForm extends LitElement {
             const entry = fieldBlock[key]
 
             if (key !== 'randomId' && this._isRenderableSectionEntry(entry)) {
-              return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`)
+              return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`, fieldBlock)
             }
 
             return ''
@@ -717,7 +774,7 @@ export class CForm extends LitElement {
           const entry = fields[key]
 
           if (this._isRenderableSectionEntry(entry)) {
-            return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`)
+            return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`, fields)
           }
 
           return ''
@@ -840,7 +897,7 @@ export class CForm extends LitElement {
       `
   }
 
-  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string): TemplateResult {
+  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string, block?: FormBlock): TemplateResult {
     if ('schema' in section) {
       // Schema indica que esa estructura de campos se debe pintar en un repeater
       // En caso de que la casuística sea un FormArraySection
@@ -857,7 +914,7 @@ export class CForm extends LitElement {
     }
 
     // En caso de que la casuística sea un BasicFormField
-    return this._printField(section as BasicFormField, breadcrumbs)
+    return this._printField(section as BasicFormField, breadcrumbs, block)
   }
 
   private _printSections(sections: FormSchema['sections']) {
