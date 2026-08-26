@@ -15,15 +15,9 @@ export const config = {
     },
     endpoint: {
       name: 'endpoint',
-      label: 'Endpoint de perfiles de proveedor (.pkpass)',
+      label: 'Endpoint de perfiles de proveedor',
       type: 'text',
-      default: '/api/poi_transport/pkpass'
-    },
-    endpointPdf: {
-      name: 'endpointPdf',
-      label: 'Endpoint de perfiles de proveedor (.pdf)',
-      type: 'text',
-      default: '/api/poi_transport/pdf'
+      default: '/api/{id}/{poiType}/{extension}'
     }
   },
   slots: {

@@ -1,18 +1,22 @@
 {
   "id": "alsa",
   "match": ["alsa"],
-  "typeTransport": "bus",
-  "provider": "Alsa",
-  "date": "relevantDate",
-  "class": "class",
-  "passenger": "name",
-  "seat": "seat",
-  "origin": {
-    "name": { "field": "origin", "from": "label" },
-    "time": "origin"
-  },
-  "destiny": {
-    "name": { "field": "destination", "from": "label" },
-    "time": "destination"
+  "poiType": "poi_transport",
+  "extension": "pkpass",
+  "mapper": {
+    "typeTransport": "bus",
+    "provider": "Alsa",
+    "date": "relevantDate",
+    "class": "class",
+    "passenger": "name",
+    "seat": "seat",
+    "origin": {
+      "name": { "field": "origin", "from": "label" },
+      "time": "origin"
+    },
+    "destiny": {
+      "name": { "field": "destination", "from": "label" },
+      "time": "destination"
+    }
   }
 }

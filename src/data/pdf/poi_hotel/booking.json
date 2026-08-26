@@ -2,55 +2,58 @@
   "id": "booking",
   "match": ["booking.com"],
   "poiType": "poi_hotel",
-  "name": {
-    "linesBefore": "Dirección",
-    "count": 1,
-    "within": { "xMax": 0.45, "yMax": 0.32 }
-  },
-  "address": {
-    "concat": [
-      { "label": "Dirección", "within": { "xMax": 0.45, "yMax": 0.32 } },
-      { "linesAfter": "Dirección", "count": 2, "separator": " ", "within": { "xMax": 0.45, "yMax": 0.32 } }
-    ],
-    "separator": " "
-  },
-  "coordinates": {
-    "concat": [
-      { "label": "Coordenadas GPS", "within": { "xMax": 0.45, "yMax": 0.32 } },
-      { "label": "Coordenadas GPS", "below": 1, "within": { "xMax": 0.45, "yMax": 0.32 } }
-    ]
-  },
-  "dateStart": {
-    "concat": [
-      { "label": "ENTRADA", "column": 0, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
-      { "label": "ENTRADA", "column": 0, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
-    ]
-  },
-  "dateEnd": {
-    "concat": [
-      { "label": "ENTRADA", "column": 1, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
-      { "label": "ENTRADA", "column": 1, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
-    ]
-  },
-  "price": { "label": "Precio final", "column": 1 },
-  "timeStart": {
-    "regex": "de\\s*(\\d{1,2}:\\d{2})",
-    "within": { "xMin": 0.45, "yMax": 0.32 }
-  },
-  "timeEnd": {
-    "regex": "de\\s*\\d{1,2}:\\d{2}[\\s\\S]*?de\\s*(\\d{1,2}:\\d{2})",
-    "within": { "xMin": 0.45, "yMax": 0.32 }
-  },
-  "notes": [
-    { "icon": "bed", "text": { "label": "Tipo de cama", "column": 0, "transform": "stripLabel" } },
-    {
-      "icon": "restaurant",
-      "text": {
-        "concat": [
-          { "label": "Régimen de comidas", "column": 0, "transform": "stripLabel" },
-          { "label": "Régimen de comidas", "below": 1, "column": 0 }
-        ]
+  "extension": "pdf",
+  "mapper": {
+    "name": {
+      "linesBefore": "Dirección",
+      "count": 1,
+      "within": { "xMax": 0.45, "yMax": 0.32 }
+    },
+    "address": {
+      "concat": [
+        { "label": "Dirección", "within": { "xMax": 0.45, "yMax": 0.32 } },
+        { "linesAfter": "Dirección", "count": 2, "separator": " ", "within": { "xMax": 0.45, "yMax": 0.32 } }
+      ],
+      "separator": " "
+    },
+    "coordinates": {
+      "concat": [
+        { "label": "Coordenadas GPS", "within": { "xMax": 0.45, "yMax": 0.32 } },
+        { "label": "Coordenadas GPS", "below": 1, "within": { "xMax": 0.45, "yMax": 0.32 } }
+      ]
+    },
+    "dateStart": {
+      "concat": [
+        { "label": "ENTRADA", "column": 0, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
+        { "label": "ENTRADA", "column": 0, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
+      ]
+    },
+    "dateEnd": {
+      "concat": [
+        { "label": "ENTRADA", "column": 1, "below": 1, "within": { "xMin": 0.45, "yMax": 0.32 } },
+        { "label": "ENTRADA", "column": 1, "below": 2, "within": { "xMin": 0.45, "yMax": 0.32 } }
+      ]
+    },
+    "price": { "label": "Precio final", "column": 1 },
+    "timeStart": {
+      "regex": "de\\s*(\\d{1,2}:\\d{2})",
+      "within": { "xMin": 0.45, "yMax": 0.32 }
+    },
+    "timeEnd": {
+      "regex": "de\\s*\\d{1,2}:\\d{2}[\\s\\S]*?de\\s*(\\d{1,2}:\\d{2})",
+      "within": { "xMin": 0.45, "yMax": 0.32 }
+    },
+    "notes": [
+      { "icon": "bed", "text": { "label": "Tipo de cama", "column": 0, "transform": "stripLabel" } },
+      {
+        "icon": "restaurant",
+        "text": {
+          "concat": [
+            { "label": "Régimen de comidas", "column": 0, "transform": "stripLabel" },
+            { "label": "Régimen de comidas", "below": 1, "column": 0 }
+          ]
+        }
       }
-    }
-  ]
+    ]
+  }
 }

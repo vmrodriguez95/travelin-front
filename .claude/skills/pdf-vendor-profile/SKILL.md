@@ -52,7 +52,23 @@ src/data/pdf/poi_transport/12go.json
 ```
 
 Both have to agree. The folder is what the API globs; the field is what the
-interpreter reads to pick a parser. They are served as `/api/<poiType>/pdf/<id>`.
+interpreter reads to pick a parser. They are served as `/api/<id>/<poiType>/pdf`.
+
+**The reading rules go inside `mapper`.** The file is an envelope the backend
+files the profile by, and the rules it wraps:
+
+```json
+{
+  "id": "12go",
+  "match": ["12go.asia"],
+  "poiType": "poi_transport",
+  "extension": "pdf",
+  "mapper": { "typeTransport": "bus", "provider": "12Go", "origin": {}, "destiny": {} }
+}
+```
+
+`extension` is always `"pdf"` here — the pkpass profiles in `src/data/pkpass/`
+share the same envelope with `"pkpass"` and a mapper of their own.
 
 The two are separate catalogues, so a brand selling both — Booking sells stays
 and flights, 12Go sells buses and ferries — gets **one profile per type**, each
@@ -98,7 +114,8 @@ which does not trim the label).
 
 ## Profile fields
 
-**Common:** `id`, `match` (array of fingerprints), `poiType`.
+**Envelope:** `id`, `match` (array of fingerprints), `poiType`, `extension`.
+Everything below lives inside `mapper`.
 
 **`poi_hotel`:** `name`, `address`, `coordinates`, `price`, `dateStart`, `dateEnd`,
 `timeStart`, `timeEnd`, `notes` (array of `{ icon, text }`).
@@ -325,8 +342,8 @@ year itself, in this order.
 reprinted the document from their phone, `Producer` says "iOS Quartz
 PDFContext". Use the text.
 
-**`manifest` is a reserved id.** The manifest is served next to the profiles, at
-`/api/<poiType>/pdf/manifest`.
+**`manifest` is a reserved id.** The manifest is served from the same route as
+the profiles, at `/api/manifest/<poiType>/pdf`.
 
 ## Choosing the `match`
 
@@ -357,12 +374,15 @@ piece of data. Check each one against the PDF.
 
 ## Afterwards
 
-The profile is served on its own: `src/pages/api/[poiType]/pdf/[id].ts` walks
-`src/data/pdf/*/*.json` with a glob, and `manifest.ts` publishes the
-`{id, match}` pairs of each type. Dropping the file in the right folder is the
-whole registration — nothing to wire by hand, no frontend deploy.
+The profile is served on its own: `src/pages/api/[id]/[poiType]/[extension].ts`
+walks `src/data/pdf/*/*.json` and `src/data/pkpass/*/*.json` with a glob, serves
+each profile at `/api/<id>/<poiType>/<extension>`, and publishes the
+`{id, match}` pairs of each catalogue under the reserved id `manifest`. Dropping
+the file in the right folder is the whole registration — nothing to wire by
+hand, no frontend deploy.
 
-Each type has its own manifest, so the reader only ever downloads the catalogue
-for the form the user is filling in. That is what stops `booking` under
-`poi_hotel` from being tried against a flight voucher, and it means an id only
-has to be unique within its own `poiType`.
+Each poiType and file type has its own manifest, so the reader only ever
+downloads the catalogue for the form the user is filling in and the file they
+uploaded. That is what stops `booking` under `poi_hotel` from being tried
+against a flight voucher, and it means an id only has to be unique within its
+own catalogue.

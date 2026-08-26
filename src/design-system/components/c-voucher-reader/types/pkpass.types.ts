@@ -1,4 +1,4 @@
-import type { TransportType, TransportVoucherDraft } from './voucher.types'
+import type { TransportType, TransportVoucherDraft, VoucherExtension, VoucherPoiType } from './voucher.types'
 
 // Raw Apple Wallet pass.json shapes (https://developer.apple.com/documentation/walletpasses)
 
@@ -98,9 +98,8 @@ export interface ProfilePoint {
   coordinates?: boolean // true → pass.locations[0]
 }
 
-export interface VendorProfile {
-  id: string
-  match: string[]
+// How to read a journey out of a pass.json.
+export interface VendorProfileMapper {
   typeTransport: TransportType
   provider: string
   date?: ProfileDate
@@ -113,4 +112,15 @@ export interface VendorProfile {
   origin: ProfilePoint
   destiny: ProfilePoint
   custom?: string // escape-hatch: delegate to a coded parser by id
+}
+
+// Same envelope as the PDF profiles — id, match, poiType, extension, mapper —
+// so both catalogues are stored and served the same way. The reader still finds
+// a pass profile by the pass's own organization, never by `match`.
+export interface VendorProfile {
+  id: string
+  match: string[]
+  poiType: VoucherPoiType
+  extension: Extract<VoucherExtension, 'pkpass'>
+  mapper: VendorProfileMapper
 }

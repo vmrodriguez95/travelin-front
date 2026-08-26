@@ -93,26 +93,28 @@ function buildPoint(pass: PassJson, fields: PassField[], day: string, profilePoi
 
 // Turns a pass.json into a transport draft using a declarative vendor profile.
 export function parseWithProfile(pass: PassJson, profile: VendorProfile): TransportVoucherDraft {
-  if (profile.custom && CUSTOM_PARSERS[profile.custom]) {
-    return CUSTOM_PARSERS[profile.custom](pass)
+  const mapper = profile.mapper
+
+  if (mapper.custom && CUSTOM_PARSERS[mapper.custom]) {
+    return CUSTOM_PARSERS[mapper.custom](pass)
   }
 
   const fields = collectFields(getStructure(pass))
-  const day = resolveDate(pass, fields, profile.date)
-  const { price, currency } = profile.price ? parsePrice(resolveAccessor(pass, fields, profile.price)) : { price: 0, currency: '' }
-  const operator = resolveAccessor(pass, fields, profile.operator)
+  const day = resolveDate(pass, fields, mapper.date)
+  const { price, currency } = mapper.price ? parsePrice(resolveAccessor(pass, fields, mapper.price)) : { price: 0, currency: '' }
+  const operator = resolveAccessor(pass, fields, mapper.operator)
 
   return assembleTransportDraft({
-    typeTransport: profile.typeTransport,
-    provider: profile.provider,
+    typeTransport: mapper.typeTransport,
+    provider: mapper.provider,
     operator: operator || undefined,
     price,
     currency,
-    transportNumber: resolveAccessor(pass, fields, profile.transportNumber),
-    seatClass: resolveAccessor(pass, fields, profile.class),
-    passengerName: resolveAccessor(pass, fields, profile.passenger),
-    seat: resolveAccessor(pass, fields, profile.seat),
-    origin: buildPoint(pass, fields, day, profile.origin),
-    destiny: buildPoint(pass, fields, day, profile.destiny)
+    transportNumber: resolveAccessor(pass, fields, mapper.transportNumber),
+    seatClass: resolveAccessor(pass, fields, mapper.class),
+    passengerName: resolveAccessor(pass, fields, mapper.passenger),
+    seat: resolveAccessor(pass, fields, mapper.seat),
+    origin: buildPoint(pass, fields, day, mapper.origin),
+    destiny: buildPoint(pass, fields, day, mapper.destiny)
   })
 }

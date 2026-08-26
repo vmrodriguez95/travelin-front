@@ -2,6 +2,8 @@
   "id": "booking",
   "match": ["referencia del cliente: 40-"],
   "poiType": "poi_transport",
+  "extension": "pdf",
+  "mapper": {
   "typeTransport": "flight",
   "provider": "Booking.com",
   "passengers": {
@@ -30,5 +32,5 @@
       "time": { "regex": "-\\s*[^\\n·]*·\\s*(\\d{1,2}:\\d{2})" },
       "date": { "regex": "-\\s*([A-Za-z\\u00C0-\\u024F]{3,}\\.?,\\s*\\d{1,2}\\s+[A-Za-z\\u00C0-\\u024F]{3,})\\s*·" }
     }
-  }
+  }}
 }

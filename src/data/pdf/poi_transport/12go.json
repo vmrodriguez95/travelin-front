@@ -2,90 +2,93 @@
   "id": "12go",
   "match": ["12go.asia", "12go asia pte"],
   "poiType": "poi_transport",
-  "typeTransport": {
-    "from": {
+  "extension": "pdf",
+  "mapper": {
+    "typeTransport": {
+      "from": {
+        "concat": [
+          { "label": "Class:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
+          { "label": "Clase:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
+          { "label": "Operator:", "column": 1, "within": { "yMin": 0.1, "yMax": 0.34 } },
+          { "label": "Operador:", "column": 1, "within": { "yMin": 0.1, "yMax": 0.34 } }
+        ]
+      },
+      "map": {
+        "ferry": "ferry",
+        "boat": "ferry",
+        "catamaran": "ferry",
+        "barco": "ferry",
+        "cruise": "cruise",
+        "crucero": "cruise",
+        "train": "train",
+        "tren": "train",
+        "flight": "flight",
+        "vuelo": "flight",
+        "bus": "bus",
+        "van": "bus",
+        "minibus": "bus",
+        "shuttle": "bus"
+      },
+      "fallback": "bus"
+    },
+    "provider": "12Go",
+    "operator": [
+      { "label": "Operator:", "column": 1, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "label": "Operador:", "column": 1, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
+    ],
+    "transportNumber": [
+      { "regex": "Trip code\\s*([^)\\s][^)]*)", "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "regex": "C(?:o|ó)digo de viaje\\s*([^)\\s][^)]*)", "within": { "yMin": 0.1, "yMax": 0.34 } }
+    ],
+    "class": [
+      { "regex": "Class:\\s*([^\\n(]+?)\\s*\\(Trip code", "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "regex": "Clase:\\s*([^\\n(]+?)\\s*\\(C(?:o|ó)digo", "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "label": "Class:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "label": "Clase:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } }
+    ],
+    "passengers": {
+      "within": { "yMin": 0.1, "yMax": 0.42 },
+      "after": "Passengers",
+      "until": ["Total", "Information"],
+      "name": { "regex": "^([^\\n\\t(]+?)\\s*\\((?:M|F)[,)]", "transform": "collapseSpaces" },
+      "seat": { "regex": "\\t\\s*([^\\s(\\t]+)\\s*\\(" }
+    },
+    "price": {
       "concat": [
-        { "label": "Class:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
-        { "label": "Clase:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
-        { "label": "Operator:", "column": 1, "within": { "yMin": 0.1, "yMax": 0.34 } },
-        { "label": "Operador:", "column": 1, "within": { "yMin": 0.1, "yMax": 0.34 } }
+        { "label": "Total", "column": 1, "within": { "yMin": 0.1, "yMax": 0.42 } },
+        { "regex": "Passengers[^\\n]*\\t([A-Z]{3})", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "regex": "Pasajeros[^\\n]*\\t([A-Z]{3})", "within": { "yMin": 0.1, "yMax": 0.34 } }
       ]
     },
-    "map": {
-      "ferry": "ferry",
-      "boat": "ferry",
-      "catamaran": "ferry",
-      "barco": "ferry",
-      "cruise": "cruise",
-      "crucero": "cruise",
-      "train": "train",
-      "tren": "train",
-      "flight": "flight",
-      "vuelo": "flight",
-      "bus": "bus",
-      "van": "bus",
-      "minibus": "bus",
-      "shuttle": "bus"
+    "date": [
+      { "regex": "Date:\\s*(\\d{1,2}\\s+[A-Za-z]{3,}\\s+\\d{4})", "within": { "yMin": 0.1, "yMax": 0.34 } },
+      { "regex": "Fecha:\\s*(\\d{1,2}\\s+de\\s+[A-Za-z\\u00C0-\\u00FF]{3,}\\s+de\\s+\\d{4})", "within": { "yMin": 0.1, "yMax": 0.34 } }
+    ],
+    "origin": {
+      "name": [
+        { "label": "From:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "label": "Desde:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "label": "Origen:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
+      ],
+      "address": [
+        { "linesAfter": "Boarding point", "count": 1, "within": { "yMin": 0.4, "yMax": 0.95 } },
+        { "linesAfter": "Punto de embarque", "count": 1, "within": { "yMin": 0.4, "yMax": 0.95 } }
+      ],
+      "time": [
+        { "regex": "Date:[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "regex": "Fecha:[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } }
+      ]
     },
-    "fallback": "bus"
-  },
-  "provider": "12Go",
-  "operator": [
-    { "label": "Operator:", "column": 1, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "label": "Operador:", "column": 1, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
-  ],
-  "transportNumber": [
-    { "regex": "Trip code\\s*([^)\\s][^)]*)", "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "regex": "C(?:o|ó)digo de viaje\\s*([^)\\s][^)]*)", "within": { "yMin": 0.1, "yMax": 0.34 } }
-  ],
-  "class": [
-    { "regex": "Class:\\s*([^\\n(]+?)\\s*\\(Trip code", "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "regex": "Clase:\\s*([^\\n(]+?)\\s*\\(C(?:o|ó)digo", "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "label": "Class:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "label": "Clase:", "column": 2, "within": { "yMin": 0.1, "yMax": 0.34 } }
-  ],
-  "passengers": {
-    "within": { "yMin": 0.1, "yMax": 0.42 },
-    "after": "Passengers",
-    "until": ["Total", "Information"],
-    "name": { "regex": "^([^\\n\\t(]+?)\\s*\\((?:M|F)[,)]", "transform": "collapseSpaces" },
-    "seat": { "regex": "\\t\\s*([^\\s(\\t]+)\\s*\\(" }
-  },
-  "price": {
-    "concat": [
-      { "label": "Total", "column": 1, "within": { "yMin": 0.1, "yMax": 0.42 } },
-      { "regex": "Passengers[^\\n]*\\t([A-Z]{3})", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "regex": "Pasajeros[^\\n]*\\t([A-Z]{3})", "within": { "yMin": 0.1, "yMax": 0.34 } }
-    ]
-  },
-  "date": [
-    { "regex": "Date:\\s*(\\d{1,2}\\s+[A-Za-z]{3,}\\s+\\d{4})", "within": { "yMin": 0.1, "yMax": 0.34 } },
-    { "regex": "Fecha:\\s*(\\d{1,2}\\s+de\\s+[A-Za-z\\u00C0-\\u00FF]{3,}\\s+de\\s+\\d{4})", "within": { "yMin": 0.1, "yMax": 0.34 } }
-  ],
-  "origin": {
-    "name": [
-      { "label": "From:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "label": "Desde:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "label": "Origen:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
-    ],
-    "address": [
-      { "linesAfter": "Boarding point", "count": 1, "within": { "yMin": 0.4, "yMax": 0.95 } },
-      { "linesAfter": "Punto de embarque", "count": 1, "within": { "yMin": 0.4, "yMax": 0.95 } }
-    ],
-    "time": [
-      { "regex": "Date:[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "regex": "Fecha:[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } }
-    ]
-  },
-  "destiny": {
-    "name": [
-      { "label": "To:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "label": "Hasta:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "label": "Destino:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
-    ],
-    "time": [
-      { "regex": "arrival\\s*(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } },
-      { "regex": "llegada[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } }
-    ]
+    "destiny": {
+      "name": [
+        { "label": "To:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "label": "Hasta:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "label": "Destino:", "column": 0, "transform": "stripLabel", "within": { "yMin": 0.1, "yMax": 0.34 } }
+      ],
+      "time": [
+        { "regex": "arrival\\s*(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } },
+        { "regex": "llegada[^\\n]*?(\\d{1,2}:\\d{2})", "within": { "yMin": 0.1, "yMax": 0.34 } }
+      ]
+    }
   }
 }
