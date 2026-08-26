@@ -203,6 +203,14 @@
               "fillValue": "",
               "required": false,
               "readonly": false
+            },
+            "iata": {
+              "id": "poiTransportSegmentsOriginIata",
+              "name": "iata",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -251,6 +259,14 @@
             "coordinates": {
               "id": "poiTransportSegmentsDestinyCoordinates",
               "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
+            },
+            "iata": {
+              "id": "poiTransportSegmentsDestinyIata",
+              "name": "iata",
               "type": "hidden",
               "fillValue": "",
               "required": false,
@@ -496,6 +512,14 @@
               "fillValue": "",
               "required": false,
               "readonly": false
+            },
+            "iata": {
+              "id": "poiTransportSegmentsOriginIata",
+              "name": "iata",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
             }
           }
         },
@@ -544,6 +568,14 @@
             "coordinates": {
               "id": "poiTransportSegmentsDestinyCoordinates",
               "name": "coordinates",
+              "type": "hidden",
+              "fillValue": "",
+              "required": false,
+              "readonly": false
+            },
+            "iata": {
+              "id": "poiTransportSegmentsDestinyIata",
+              "name": "iata",
               "type": "hidden",
               "fillValue": "",
               "required": false,

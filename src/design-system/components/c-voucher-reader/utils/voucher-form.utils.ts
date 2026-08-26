@@ -2,17 +2,23 @@
 import type { HotelVoucherDraft, TransportSegmentPointDraft, TransportVoucherDraft } from '../types/voucher.types'
 import type { FormFillPoint, HotelFormFill, TransportFormFill } from '../types/voucher-form.types'
 
-function pointToFormFill(point: TransportSegmentPointDraft): FormFillPoint {
+// A point's `code` is only an IATA code when the journey is a flight: a train
+// or a ferry numbers its stations by its own scheme, and passing that on as
+// IATA would put a plausible wrong code in a hidden field nobody reviews.
+function pointToFormFill(point: TransportSegmentPointDraft, isFlight: boolean): FormFillPoint {
   return {
     location: point.name || point.code,
     platform: point.platform,
     date: point.date,
-    coordinates: point.coordinates
+    coordinates: point.coordinates,
+    iata: isFlight ? point.code : ''
   }
 }
 
 // Maps a parsed transport draft to the poi_transport form's section/field shape.
 export function transportDraftToFormFill(draft: TransportVoucherDraft): TransportFormFill {
+  const isFlight = draft.typeTransport === 'flight'
+
   return {
     core: {
       name: draft.name,
@@ -29,8 +35,8 @@ export function transportDraftToFormFill(draft: TransportVoucherDraft): Transpor
       duration: segment.duration,
       transportNumber: segment.transportNumber,
       class: segment.class,
-      origin: pointToFormFill(segment.origin),
-      destiny: pointToFormFill(segment.destiny),
+      origin: pointToFormFill(segment.origin, isFlight),
+      destiny: pointToFormFill(segment.destiny, isFlight),
       passengers: segment.passengers.map((passenger) => ({ name: passenger.name, seat: passenger.seat }))
     }))
   }

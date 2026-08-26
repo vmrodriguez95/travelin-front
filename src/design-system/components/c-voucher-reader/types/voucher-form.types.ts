@@ -6,6 +6,9 @@ export interface FormFillPoint {
   platform: string
   date: string
   coordinates: [number, number]
+  // IATA code of the airport, for flights only. Station codes are not IATA, so
+  // the field stays empty for every other mode.
+  iata: string
 }
 
 export interface FormFillSegment {

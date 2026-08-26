@@ -130,6 +130,18 @@ prints one.
 `provider` is a plain string, not an accessor: it is the brand issuing the
 voucher, which the profile already knows.
 
+**On a flight, a point's `code` is its IATA code**, and nothing else. It is
+copied into the form's hidden `iata` field, which later resolves the airport, so
+a wrong one is not something the user gets a chance to catch. Read it where the
+document prints it — Booking writes it in brackets, `De Madrid (MAD) a Tokyo
+(HND)` — and **leave `code` unset when the document only names the airport**:
+LATAM prints "Lima (J Chavez Intl.)" and nowhere a single IATA code, so its
+profile has no `code` at all. Never translate a city or airport name into the
+code you happen to know; that guess is exactly what the field cannot survive.
+
+For every other mode the code is ignored as IATA — a station code is not one —
+so `code` is free to hold whatever the vendor numbers its stops by.
+
 Dates and prices normalise themselves: return the raw text and
 `parseNaturalDate` and `parsePrice` will parse it. A numeric date is read day-first with any
 of the three separators — `25/12/2026`, `03.04.2024`, `12-08-25` — with a
@@ -172,7 +184,7 @@ company). `fallback` is what the vendor sells most of.
 
 ### `segments`
 
-One journey is described once, with `origin`/`destiny` at the top level. A
+One journey is described once, with `origin`/`destiny` directly in the mapper. A
 voucher that prints several legs — an outbound and a return — uses `segments`
 instead, and each leg is read from its own block of lines:
 
@@ -193,7 +205,7 @@ A new block opens on every line matching `startsAt` and runs to the next one;
 accessors are the **ordinary ones** — label, regex, concat, arrays — resolved
 against that block's lines. `within` has no meaning there: the block is already
 the scope. `operator`, `transportNumber`, `class` and `date` fall back to the
-top-level field when the block does not define one.
+mapper's own field when the block does not define one.
 
 **When each leg gets its own page, say `"perPage": true` and drop `startsAt`.**
 Then a leg is a sheet rather than a run of lines, and `within` keeps working
@@ -239,7 +251,7 @@ different rhythm, which is why the band is measured per row and not per page.
 A leg can also carry its **own travellers**, with `passenger`/`seat` or a
 `passengers` table, for a ticket that seats the same person differently on the
 way back. The booking's traveller list is then whoever appears across the legs,
-so there is no need to repeat the names at the top level.
+so there is no need to repeat the names in the mapper itself.
 
 The draft takes its name from the **first** leg, so a return trip reads as
 "Madrid - Tokyo" rather than "Madrid - Madrid".
