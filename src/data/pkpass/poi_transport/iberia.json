@@ -1,23 +1,27 @@
 {
   "id": "iberia",
   "match": ["iberia"],
-  "typeTransport": "flight",
-  "provider": "Iberia",
-  "date": "relevantDate",
-  "operator": { "field": "ciaName", "transform": "stripCarrierPrefix" },
-  "transportNumber": "flightNumber",
-  "class": "class",
-  "passenger": "passenger",
-  "seat": "seat",
-  "origin": {
-    "code": [{ "top": "departureCode" }, "depart"],
-    "name": { "field": "depart", "from": "label" },
-    "platform": "gate",
-    "time": "horaSalida"
-  },
-  "destiny": {
-    "code": [{ "top": "arrivalCode" }, "destination"],
-    "name": { "field": "destination", "from": "label" },
-    "time": "horaLlegada"
+  "poiType": "poi_transport",
+  "extension": "pkpass",
+  "mapper": {
+    "typeTransport": "flight",
+    "provider": "Iberia",
+    "date": "relevantDate",
+    "operator": { "field": "ciaName", "transform": "stripCarrierPrefix" },
+    "transportNumber": "flightNumber",
+    "class": "class",
+    "passenger": "passenger",
+    "seat": "seat",
+    "origin": {
+      "code": [{ "top": "departureCode" }, "depart"],
+      "name": { "field": "depart", "from": "label" },
+      "platform": "gate",
+      "time": "horaSalida"
+    },
+    "destiny": {
+      "code": [{ "top": "arrivalCode" }, "destination"],
+      "name": { "field": "destination", "from": "label" },
+      "time": "horaLlegada"
+    }
   }
 }

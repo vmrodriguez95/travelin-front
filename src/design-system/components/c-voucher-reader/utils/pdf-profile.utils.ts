@@ -19,7 +19,7 @@ import type { TransportSegmentDraft, TransportSegmentPassengerDraft, TransportSe
 import type {
   PdfAccessor,
   PdfAccessorSingle,
-  PdfHotelProfile,
+  PdfHotelMapper,
   PdfLineAccessor,
   PdfPassengerList,
   PdfProfile,
@@ -28,7 +28,7 @@ import type {
   PdfProfilePoint,
   PdfProfileSegments,
   PdfTransformName,
-  PdfTransportProfile,
+  PdfTransportMapper,
   PdfTypeTransport
 } from '../types/pdf-profile.types'
 
@@ -302,31 +302,31 @@ function buildPoint(source: PdfLineSource, day: string, year: number, profilePoi
   })
 }
 
-function parseHotel(pages: PdfPage[], profile: PdfHotelProfile, year: number): VoucherDraft {
+function parseHotel(pages: PdfPage[], mapper: PdfHotelMapper, year: number): VoucherDraft {
   const source = documentSource(pages)
-  const dateStart = resolveDate(source, year, profile.dateStart)
-  const dateEnd = resolveDate(source, year, profile.dateEnd)
+  const dateStart = resolveDate(source, year, mapper.dateStart)
+  const dateEnd = resolveDate(source, year, mapper.dateEnd)
 
-  const notes: VoucherNote[] = (profile.notes ?? [])
+  const notes: VoucherNote[] = (mapper.notes ?? [])
     .map((note) => ({ icon: note.icon, text: resolveAccessor(source, note.text) }))
     .filter((note) => note.text)
 
-  const coordinates = profile.coordinates
-    ? parseGpsCoordinates(resolveAccessor(source, profile.coordinates))
+  const coordinates = mapper.coordinates
+    ? parseGpsCoordinates(resolveAccessor(source, mapper.coordinates))
     : undefined
 
-  const { price, currency } = profile.price
-    ? parsePrice(resolveAccessor(source, profile.price))
+  const { price, currency } = mapper.price
+    ? parsePrice(resolveAccessor(source, mapper.price))
     : { price: 0, currency: '' }
 
   return hotelDraft({
-    name: resolveAccessor(source, profile.name),
-    address: resolveAccessor(source, profile.address),
+    name: resolveAccessor(source, mapper.name),
+    address: resolveAccessor(source, mapper.address),
     coordinates,
     price,
     currency,
-    dateStart: combineDateTime(dateStart, resolveAccessor(source, profile.timeStart)) || dateStart,
-    dateEnd: combineDateTime(dateEnd, resolveAccessor(source, profile.timeEnd)) || dateEnd,
+    dateStart: combineDateTime(dateStart, resolveAccessor(source, mapper.timeStart)) || dateStart,
+    dateEnd: combineDateTime(dateEnd, resolveAccessor(source, mapper.timeEnd)) || dateEnd,
     notes
   })
 }
@@ -367,11 +367,11 @@ function segmentSources(pages: PdfPage[], list: PdfProfileSegments): PdfLineSour
 
 function buildSegments(
   pages: PdfPage[],
-  profile: PdfTransportProfile,
+  mapper: PdfTransportMapper,
   year: number,
   passengers: TransportSegmentPassengerDraft[]
 ): TransportSegmentDraft[] {
-  const list = profile.segments
+  const list = mapper.segments
 
   if (!list) return []
 
@@ -383,13 +383,13 @@ function buildSegments(
 
   return sources
     .map((source) => {
-      const day = resolveDate(source, year, list.date ?? profile.date)
+      const day = resolveDate(source, year, list.date ?? mapper.date)
 
       return {
         duration: '',
-        operator: resolveAccessor(source, list.operator ?? profile.operator) || profile.provider,
-        transportNumber: resolveAccessor(source, list.transportNumber ?? profile.transportNumber),
-        class: resolveAccessor(source, list.class ?? profile.class),
+        operator: resolveAccessor(source, list.operator ?? mapper.operator) || mapper.provider,
+        transportNumber: resolveAccessor(source, list.transportNumber ?? mapper.transportNumber),
+        class: resolveAccessor(source, list.class ?? mapper.class),
         origin: buildPoint(source, day, year, list.origin),
         destiny: buildPoint(source, day, year, list.destiny),
         passengers: carriesTravellers ? resolvePassengers(pages, source, list) : passengers
@@ -400,28 +400,28 @@ function buildSegments(
     .filter((segment) => segment.origin.name || segment.origin.code || segment.destiny.name || segment.destiny.code)
 }
 
-function parseTransport(pages: PdfPage[], profile: PdfTransportProfile, year: number): VoucherDraft {
+function parseTransport(pages: PdfPage[], mapper: PdfTransportMapper, year: number): VoucherDraft {
   const source = documentSource(pages)
-  const day = resolveDate(source, year, profile.date)
-  const { price, currency } = profile.price
-    ? parsePrice(resolveAccessor(source, profile.price))
+  const day = resolveDate(source, year, mapper.date)
+  const { price, currency } = mapper.price
+    ? parsePrice(resolveAccessor(source, mapper.price))
     : { price: 0, currency: '' }
 
-  const passengers = resolvePassengers(pages, source, profile)
-  const segments = buildSegments(pages, profile, year, passengers)
+  const passengers = resolvePassengers(pages, source, mapper)
+  const segments = buildSegments(pages, mapper, year, passengers)
 
   return assembleTransportDraft({
-    typeTransport: resolveTypeTransport(pages, profile.typeTransport),
-    provider: profile.provider,
-    operator: resolveAccessor(source, profile.operator) || undefined,
+    typeTransport: resolveTypeTransport(pages, mapper.typeTransport),
+    provider: mapper.provider,
+    operator: resolveAccessor(source, mapper.operator) || undefined,
     price,
     currency,
-    transportNumber: resolveAccessor(source, profile.transportNumber),
-    seatClass: resolveAccessor(source, profile.class),
+    transportNumber: resolveAccessor(source, mapper.transportNumber),
+    seatClass: resolveAccessor(source, mapper.class),
     passengers,
     segments: segments.length ? segments : undefined,
-    origin: buildPoint(source, day, year, profile.origin),
-    destiny: buildPoint(source, day, year, profile.destiny)
+    origin: buildPoint(source, day, year, mapper.origin),
+    destiny: buildPoint(source, day, year, mapper.destiny)
   })
 }
 
@@ -430,8 +430,8 @@ export function parseWithPdfProfile(pages: PdfPage[], text: string, profile: Pdf
   const year = findDocumentYear(text)
 
   return profile.poiType === 'poi_hotel'
-    ? parseHotel(pages, profile, year)
-    : parseTransport(pages, profile, year)
+    ? parseHotel(pages, profile.mapper, year)
+    : parseTransport(pages, profile.mapper, year)
 }
 
 // Picks the vendor whose fingerprint appears in the document. The id can only

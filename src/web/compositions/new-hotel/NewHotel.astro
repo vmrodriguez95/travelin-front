@@ -38,7 +38,7 @@ const voucherStatus = {
       <div class="u-col-4 u-col-md-8">
         <c-tabs data-component id={id} channel={channel}>
           <div data-label="Automático">
-            <c-voucher-reader data-component poiType="poi_hotel" endpoint="/api/poi_hotel/pkpass" endpointPdf="/api/poi_hotel/pdf" channel={channel} extensions=".pdf" errorMessages={JSON.stringify(voucherErrors)} statusMessages={JSON.stringify(voucherStatus)}>
+            <c-voucher-reader data-component poiType="poi_hotel" endpoint="/api/{id}/{poiType}/{extension}" channel={channel} extensions=".pdf" errorMessages={JSON.stringify(voucherErrors)} statusMessages={JSON.stringify(voucherStatus)}>
               <h3 slot="title">¿Tienes ya un alojamiento reservado?</h3>
               <p slot="description">Sube el archivo de la reserva en formato <strong>.pdf</strong> (menos de 1,5 MB) y rellenaremos los datos por ti.</p>
               <p slot="success">Hemos rellenado el formulario con los datos de tu voucher.</p>

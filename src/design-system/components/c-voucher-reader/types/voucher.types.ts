@@ -2,6 +2,11 @@ import type { Coordinates } from '@ds/types/pois.types'
 
 export type VoucherPoiType = 'poi_hotel' | 'poi_transport'
 
+// The file the user uploads, and the catalogue of profiles that reads it: the
+// backend serves one profile per extension, so it is part of the profile's own
+// identity and of the endpoint that returns it.
+export type VoucherExtension = 'pdf' | 'pkpass'
+
 export type TransportType = 'flight' | 'cruise' | 'ferry' | 'train' | 'bus' | 'car'
 
 export interface VoucherErrors {

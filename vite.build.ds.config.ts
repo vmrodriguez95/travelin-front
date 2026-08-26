@@ -30,6 +30,13 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
+    // Asset URLs inside JS (the pdf.js worker) must resolve next to app.js, not
+    // from the site root: the consuming app mounts the library under its own path.
+    experimental: {
+      renderBuiltUrl(_filename, { hostType }) {
+        return hostType === 'js' ? { relative: true } : undefined
+      }
+    },
     build: {
       minify: 'esbuild',
       lib: {

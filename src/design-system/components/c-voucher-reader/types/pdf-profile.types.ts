@@ -1,5 +1,5 @@
 import type { PdfCropBox } from './pdf.types'
-import type { TransportType, VoucherPoiType } from './voucher.types'
+import type { TransportType, VoucherExtension, VoucherPoiType } from './voucher.types'
 
 // --- Vendor profiles for PDF vouchers (declarative, backend-owned) -----------
 //
@@ -176,16 +176,21 @@ export interface PdfProfilePoint {
   date?: PdfAccessor
 }
 
+// The envelope every profile shares with the pkpass ones: what the backend
+// needs to file it (id, poiType, extension) and what the client needs to
+// recognise the vendor (match). The reading rules live in `mapper`, so the two
+// catalogues can be stored and served through one route.
 interface PdfProfileBase {
   id: string
   // Substrings looked up in the document text to recognise the vendor.
   // Unlike the pkpass profiles, this field is actually read.
   match: string[]
   poiType: VoucherPoiType
+  extension: Extract<VoucherExtension, 'pdf'>
 }
 
-export interface PdfHotelProfile extends PdfProfileBase {
-  poiType: 'poi_hotel'
+// How to read a stay out of the document.
+export interface PdfHotelMapper {
   name?: PdfAccessor
   address?: PdfAccessor
   coordinates?: PdfAccessor
@@ -198,8 +203,8 @@ export interface PdfHotelProfile extends PdfProfileBase {
   notes?: Array<{ icon: string; text: PdfAccessor }>
 }
 
-export interface PdfTransportProfile extends PdfProfileBase {
-  poiType: 'poi_transport'
+// How to read a journey out of the document.
+export interface PdfTransportMapper {
   typeTransport: PdfTypeTransport
   provider: string
   operator?: PdfAccessor
@@ -218,6 +223,16 @@ export interface PdfTransportProfile extends PdfProfileBase {
   origin?: PdfProfilePoint
   destiny?: PdfProfilePoint
   segments?: PdfProfileSegments
+}
+
+export interface PdfHotelProfile extends PdfProfileBase {
+  poiType: 'poi_hotel'
+  mapper: PdfHotelMapper
+}
+
+export interface PdfTransportProfile extends PdfProfileBase {
+  poiType: 'poi_transport'
+  mapper: PdfTransportMapper
 }
 
 export type PdfProfile = PdfHotelProfile | PdfTransportProfile

@@ -1,21 +1,25 @@
 {
   "id": "renfe",
   "match": ["renfe"],
-  "typeTransport": "train",
-  "provider": "Renfe",
-  "date": ["relevantDate", "field:destinofecha"],
-  "price": "precio",
-  "transportNumber": "tren",
-  "class": "clasefrontal",
-  "passenger": ["nombrepasajero", "pasajero"],
-  "seat": "asiento",
-  "origin": {
-    "name": { "field": "boardingTime", "from": "label" },
-    "time": "boardingTime",
-    "coordinates": true
-  },
-  "destiny": {
-    "name": { "field": "destino", "from": "label" },
-    "time": "destino"
+  "poiType": "poi_transport",
+  "extension": "pkpass",
+  "mapper": {
+    "typeTransport": "train",
+    "provider": "Renfe",
+    "date": ["relevantDate", "field:destinofecha"],
+    "price": "precio",
+    "transportNumber": "tren",
+    "class": "clasefrontal",
+    "passenger": ["nombrepasajero", "pasajero"],
+    "seat": "asiento",
+    "origin": {
+      "name": { "field": "boardingTime", "from": "label" },
+      "time": "boardingTime",
+      "coordinates": true
+    },
+    "destiny": {
+      "name": { "field": "destino", "from": "label" },
+      "time": "destino"
+    }
   }
 }
