@@ -64,7 +64,7 @@ export class CGlobe extends Responsive(LitElement) {
     try {
       return new Globe(container)
         .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg')
-        .backgroundColor('rgba(34, 34, 34, 1)')
+        .backgroundColor('rgba(26, 28, 32, 1)')
         .pointOfView({ altitude: this._getAltitudeByBreakpoint() }, 0)
         .lineHoverPrecision(0)
         .polygonsData(this.data)
@@ -77,10 +77,10 @@ export class CGlobe extends Responsive(LitElement) {
             return 'rgba(252, 110, 32, 1)'
           }
   
-          return 'rgba(34, 34, 34, 1)'
+          return 'rgba(26, 28, 32, 1)'
         })
         .polygonSideColor(() => 'black')
-        .polygonStrokeColor(() => 'rgba(50, 50, 50, 1)')
+        .polygonStrokeColor(() => 'rgba(43, 47, 54, 1)')
         .polygonLabel((d: object) => {
           const feature = d as GlobeGeoFeature
           return `<b>${feature.properties.ADMIN} (${feature.properties.ISO_A2})</b>`

@@ -15,8 +15,6 @@ export class CCardProgress extends LitElement {
 
   @property({ type: Boolean }) animated = false
 
-  _progress = 0
-
   static styles = css`${unsafeCSS(styles)}`
 
   render() {
@@ -33,7 +31,7 @@ export class CCardProgress extends LitElement {
           <slot name="title"></slot>
           <slot name="text"></slot>
           ${when(this.value < this.total, () => html`
-            <e-progress-bar value=${this.value} total=${this.total} showPercentage></e-progress-bar>
+            <e-progress-bar class="c-card-progress__progress-bar" value=${this.value} total=${this.total} showPercentage></e-progress-bar>
           `)}
         </div>
         <div class="c-card-progress__end">

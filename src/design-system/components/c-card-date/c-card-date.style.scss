@@ -16,8 +16,13 @@
   border: none;
   overflow: hidden;
   width: 100%;
+  min-height: space(11);
   color: rgba(var(--color-text), 1);
   background-color: rgba(var(--color-background--secondary), 1);
+
+  @media (min-width: $breakpoint-md) {
+    min-height: space(15);
+  }
 
   &__head {
     display: flex;

@@ -8,19 +8,21 @@ import AppMenu from '@web/components/AppMenu.astro'
   </aside>
   <div class="u-grid-main--main">
     <div class="u-grid ti-home">
-      <div class="u-flex u-flex--align--center u-col-4 u-col-md-6">
-        <img src="https://testingbot.com/free-online-tools/random-avatar/80" alt="Avatar" width="80" height="80" class="u-border--radius--rounded u-border--primary">
-        <div>
-          <p class="u-text--l u-color--text-light u-margin--none">Hi, Dani!</p>
-          <p class="u-text--m u-color--text-light u-margin--none">Ready for your next adventure?</p>
+      <div class="u-col-4 u-col-md-12 ti-home__header">
+        <div class="ti-home__user">
+          <img src="https://testingbot.com/free-online-tools/random-avatar/80" alt="Avatar" width="80" height="80" class="u-border--radius--rounded u-border--primary">
+          <div>
+            <p class="u-text--l u-color--text-light u-margin--none">Hi, Dani!</p>
+            <p class="u-text--m u-color--text-light u-margin--none">Ready for your next adventure?</p>
+          </div>
         </div>
-      </div>
-      <div class="u-flex u-flex--align--end u-flex--justify--end u-col-4 u-col-md-6">
-        <e-button class="u-margin--right--s" color="dark" size="fit">
-          <e-icon icon="bell" size="m"></e-icon>
-        </e-button>
-        <e-button class="u-margin--right--s" color="dark">Guardar POI</e-button>
-        <e-button>Añadir viaje</e-button>
+        <a class="ti-home__link" href="#">
+          <e-icon icon="bell" size="l"></e-icon>
+        </a>
+        <div class="ti-home__actions">
+          <e-button class="ti-home__button">Añadir viaje</e-button>
+          <e-button class="ti-home__button" color="dark">Guardar POI</e-button>
+        </div>
       </div>
       <div class="ti-home__stats u-col-4 u-col-md-12">
         <e-stat icon="globe">
@@ -43,7 +45,7 @@ import AppMenu from '@web/components/AppMenu.astro'
             <a class="u-link" href="#">Ver todos</a>
           </div>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress animated class="u-margin--bottom--s" progress="65">
+            <c-card-progress animated class="u-margin--bottom--s" value="65" total="100">
               <img slot="image" src="https://dynamic-media.tacdn.com/media/photo-o/30/4c/52/8e/caption.jpg?w=2400&h=-1&s=1" alt="Imagen sobre Tailandia" width="80" height="80" />
               <p slot="title">Tailandia</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 12 May - 29 May</p>
@@ -51,7 +53,7 @@ import AppMenu from '@web/components/AppMenu.astro'
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <c-card-progress animated class="u-margin--bottom--s" value="100" total="100">
               <img slot="image" src="https://1000sitiosquever.com/public/images/supima-402-petra.X91.jpg" alt="Imagen sobre Jordania" width="80" height="80" />
               <p slot="title">Jordania</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 8 Jul - 15 Jul</p>
@@ -59,7 +61,7 @@ import AppMenu from '@web/components/AppMenu.astro'
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress animated class="u-margin--bottom--s" progress="100">
+            <c-card-progress animated class="u-margin--bottom--s" value="100" total="100">
               <img slot="image" src="https://www.travual.com/userfiles/fotos/monument-valley_4869_l.jpg" alt="Imagen sobre West Coast" width="80" height="80" />
               <p slot="title">West Coast</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>
@@ -67,7 +69,7 @@ import AppMenu from '@web/components/AppMenu.astro'
             </c-card-progress>
           </a>
           <a href="#" class="u-link--no-underline">
-            <c-card-progress animated progress="100">
+            <c-card-progress animated value="100" total="100">
               <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
               <p slot="title">Perú</p>
               <p slot="text"><e-icon icon="calendar" size="m"></e-icon> 2 Ago - 18 Ago</p>

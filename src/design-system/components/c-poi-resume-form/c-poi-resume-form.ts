@@ -36,7 +36,7 @@ export class CPoiResumeForm extends LitElement {
 
   @property({ type: Boolean }) static = false
 
-  @state() _data: Place | null = null
+  @property({ type: Object }) place: Place | null = null
 
   private _channel = new ChannelController(
     this,
@@ -50,14 +50,14 @@ export class CPoiResumeForm extends LitElement {
   static styles = css`${unsafeCSS(styles)}`
 
   render() {
-    if (!this._data) return ''
+    if (!this.place) return ''
     const classes = classMap({
       'c-poi-resume-form': true,
       'c-poi-resume-form--static': this.static
     })
 
-    const name = this._data.name
-    const photo = this._data.image
+    const name = this.place.name
+    const photo = this.place.image
 
     return html`
       <div class=${classes}>
@@ -68,7 +68,7 @@ export class CPoiResumeForm extends LitElement {
           <div class="c-poi-resume-form__details">
             <div class="c-poi-resume-form__column">
               <p class="c-poi-resume-form__text">${name}</p>
-              ${map(this._data.address, (chunk: any, index: number) => when(index > 0, () => html`
+              ${map(this.place.address, (chunk: any, index: number) => when(index > 0, () => html`
                 <p class="c-poi-resume-form__subtext">${chunk.longText}</p>
               `))}
             </div>
@@ -91,20 +91,20 @@ export class CPoiResumeForm extends LitElement {
   }
 
   private _showInfo() {
-    if (!this._data) return
+    if (!this.place) return
 
     this._channel.dispatch<FormModifyFieldsEventDetail>(FORM_MODIFY_FIELDS_EVENT, {
       fields: {
-        location: this._data.location,
-        name: this._data.name,
-        coordinates: this._data.coordinates,
-        address: `${this._data.name}, ${this._data.address}`,
-        types: this._data.types,
-        city: this._data.city,
-        locality: this._data.locality,
-        country: this._data.country,
-        iso: this._data.iso,
-        image: this._data.image,
+        location: this.place.location,
+        name: this.place.name,
+        coordinates: this.place.coordinates,
+        address: `${this.place.name}, ${this.place.address}`,
+        types: this.place.types,
+        city: this.place.city,
+        locality: this.place.locality,
+        country: this.place.country,
+        iso: this.place.iso,
+        image: this.place.image,
       },
       source: this
     })
@@ -119,11 +119,11 @@ export class CPoiResumeForm extends LitElement {
   }
 
   private _onSelectionChange(detail: PoiSelectEventDetail) {
-    this._data = detail.data as Place
+    this.place = detail.data as Place
   }
 
   private _resetData() {
-    this._data = null
+    this.place = null
   }
 
   private _onSelectionClear() {

@@ -42,6 +42,8 @@ export class CCardPoi extends Responsive(LitElement) {
 
   @property({ type: String }) channel = ''
 
+  @property({ type: String }) menu = ''
+
   @property({ type: Boolean, reflect: true }) active = false
 
   @query('.c-card-poi') _card!: HTMLElement
@@ -49,6 +51,8 @@ export class CCardPoi extends Responsive(LitElement) {
   @state() removing = false
 
   @state() hasImage = false
+
+  @state() actionsShowed = false
 
   _isSelectedData = false
 
@@ -110,8 +114,14 @@ export class CCardPoi extends Responsive(LitElement) {
         <div class="c-card-poi__end">
           <slot name="date"></slot>
 
-          <div class="c-card-poi__actions">
+          <div class=${classMap({
+            'c-card-poi__actions': true,
+            'c-card-poi__actions--showed': this.actionsShowed
+          })}>
             <slot name="action"></slot>
+            <button class="c-card-poi__menu" @click=${this._showActions} aria-label=${this.menu}>
+              <e-icon icon="menu" size="m"></e-icon>
+            </button>
           </div>
         </div>
       </div>
@@ -197,5 +207,10 @@ export class CCardPoi extends Responsive(LitElement) {
   private _onSelectionClear() {
     this._isSelectedData = false
     this.active = false
+  }
+
+  private _showActions(ev: Event) {
+    ev.stopPropagation()
+    this.actionsShowed = !this.actionsShowed
   }
 }

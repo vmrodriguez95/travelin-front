@@ -1,6 +1,7 @@
 // Main styles file that imports all other styles
 
 // Variables
+@use './variables/colors.scss' as *;
 @use './variables/variables.scss' as *;
 
 // Base styles
@@ -16,6 +17,7 @@
 @use './utils/flex.scss' as *;
 @use './utils/grid-main.scss' as *;
 @use './utils/grid.scss' as *;
+@use './utils/heading.scss' as *;
 @use './utils/image.scss' as *;
 @use './utils/link.scss' as *;
 @use './utils/link-icon.scss' as *;

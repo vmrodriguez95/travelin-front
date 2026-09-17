@@ -92,6 +92,14 @@
     }
   }
 
+  &--icon {
+    padding: space(0.5);
+
+    @media (min-width: $breakpoint-md) {
+      padding: space(1) space(1.5);
+    }
+  }
+
   &:disabled {
     background: rgba(var(--color-primary), 0.67);
     cursor: not-allowed;

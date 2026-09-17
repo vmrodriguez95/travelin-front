@@ -1,0 +1,15 @@
+@use '@common/styles/tools/typography.scss' as *;
+
+.u-heading {
+  &--h1 {
+    @include heading--h1;
+  }
+
+  &--h2 {
+    @include heading--h2;
+  }
+
+  &--h3 {
+    @include heading--h3;
+  }
+}

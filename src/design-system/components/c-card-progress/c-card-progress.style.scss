@@ -54,7 +54,7 @@
     color: rgba(var(--color-text), 1);
     margin: 0;
     width: space(12);
-    padding: 0 space(1);
+    padding: space(0.5) space(1);
     box-sizing: border-box;
     border-radius: $border-radius-m;
     text-align: center;
@@ -71,5 +71,9 @@
     ::slotted([slot="status"]) {
       background-color: rgba(var(--color-gray), 1);
     }
+  }
+
+  &__progress-bar {
+    margin-top: space(1);
   }
 }

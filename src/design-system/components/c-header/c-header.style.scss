@@ -1,26 +1,31 @@
 @use '@common/styles/tools/tools.scss' as *;
 @use '@common/styles/tools/typography.scss' as *;
 @use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
 
 :host {
   display: block;
 }
 
 .c-header {
-  // $block: &;
   position: relative;
-  
+
   &--bg {
     height: var(--ui-c-header-image-height);
     z-index: 2;
+
+    @media (min-width: $breakpoint-xl) {
+      padding: space(1);
+    }
   }
-  
+
   &__background {
     position: absolute;
-    inset: 0;
+    inset: space(1);
     z-index: 0;
+    border-radius: $border-radius-xl;
     overflow: hidden;
-    
+
     &::after {
       content: '';
       display: block;
@@ -44,7 +49,7 @@
     z-index: 1;
     padding: space(2) var(--grid-gutter);
     box-sizing: border-box;
-    
+
     @media (min-width: $breakpoint-xl) {
       grid-template-columns: minmax(space(5), auto) 1fr minmax(space(5), auto);
       grid-template-rows: 1fr auto;
@@ -68,14 +73,14 @@
     margin: 0;
     color: rgba(var(--color-text), 1);
   }
-  
+
   &__separator {
     font-size: 2rem;
     line-height: 0;
     font-weight: 700;
     color: rgba(var(--color-text), 1);
   }
-  
+
   &__subtitle {
     @include body--s();
     display: flex;
@@ -121,7 +126,7 @@
       display: block;
     }
   }
-  
+
   &__actions {
     grid-row-start: 2;
     grid-column: 1 / -1;

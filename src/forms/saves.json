@@ -1,0 +1,237 @@
+[{
+  "form": {
+    "entity": "poi",
+    "method": "POST",
+    "action": "create"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nuevo punto de interés",
+      "helpmsg": "Los campos con * son obligatorios.",
+      "removeMainKey": true,
+      "fields": {
+        "icon": {
+          "id": "poiIcon",
+          "name": "icon",
+          "label": "Icono",
+          "type": "hidden",
+          "fillValue": "poi",
+          "required": false,
+          "readonly": false
+        },
+        "coordinates": {
+          "id": "poiCoordinates",
+          "name": "coordinates",
+          "label": "Coordenadas",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "types": {
+          "id": "poiTypes",
+          "name": "types",
+          "label": "Tipos",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "location": {
+          "id": "poiLocation",
+          "name": "location",
+          "label": "Id de la localización",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "image": {
+          "id": "poiImage",
+          "name": "image",
+          "label": "Imagen",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "city": {
+          "id": "poiCity",
+          "name": "city",
+          "label": "Ciudad",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "locality": {
+          "id": "poiLocality",
+          "name": "locality",
+          "label": "Localidad",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "country": {
+          "id": "poiCountry",
+          "name": "country",
+          "label": "País",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "iso": {
+          "id": "poiIso",
+          "name": "iso",
+          "label": "ISO",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "address": {
+          "id": "poiAddress",
+          "name": "address",
+          "label": "Dirección del poi",
+          "type": "hidden",
+          "required": false,
+          "readonly": false
+        },
+        "name": {
+          "id": "poiName",
+          "name": "name",
+          "label": "Nombre del punto de interés",
+          "type": "text",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
+        "price": {
+          "id": "poiPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "text",
+          "fieldSize": "full",
+          "a11y": {
+            "clear": "Limpiar campo"
+          },
+          "required": false,
+          "readonly": false
+        },
+        "notes": {
+          "id": "poiNotes",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
+          "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "a11y": {
+                "choose": "Abrir selector de iconos",
+                "icon": "Elegir icono",
+                "list": "Listado de iconos disponibles"
+              },
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "showInResume": true,
+              "autofocus": true,
+              "required": false,
+              "readonly": false
+            }
+          }
+        }
+      }
+    }
+  }
+},
+{
+  "form": {
+    "entity": "poi",
+    "method": "POST",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Nuevo punto de interés",
+      "removeMainKey": true,
+      "fields": {
+        "name": {
+          "id": "poiName",
+          "name": "name",
+          "label": "Nombre del punto de interés",
+          "type": "text",
+          "fieldSize": "full",
+          "helpmsg": "Si dejas el campo vacío lo rellenaremos con el nombre de la ubicación.",
+          "required": false,
+          "readonly": false
+        },
+        "time": {
+          "id": "poiTime",
+          "name": "time",
+          "label": "Elige la hora",
+          "type": "time",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
+        "price": {
+          "id": "poiPrice",
+          "name": "price",
+          "label": "Precio",
+          "type": "text",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "notes": {
+          "id": "poiNotes",
+          "sectionTitle": "Notas",
+          "sectionHelpmsg": "Añade notas para ampliar la información.",
+          "canAdd": true,
+          "addLabel": "Añadir nota",
+          "canRemove": true,
+          "emptyMsg": "Aún no hay notas añadidas.",
+          "grid": "inline",
+          "schema": {
+            "icon": {
+              "id": "poiNotesIcon",
+              "name": "icon",
+              "label": "Icono",
+              "type": "icon",
+              "required": false,
+              "readonly": false
+            },
+            "text": {
+              "id": "poiNotesText",
+              "name": "text",
+              "label": "Texto",
+              "type": "textarea",
+              "fieldSize": "full",
+              "showInResume": true,
+              "autofocus": true,
+              "required": false,
+              "readonly": false
+            }
+          }
+        }
+      }
+    }
+  }
+}]

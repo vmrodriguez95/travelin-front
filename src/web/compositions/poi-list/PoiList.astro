@@ -163,12 +163,23 @@ function formatDate(dateStart: string, dateEnd: string) {
                   <a href="#" slot="action">
                     <e-icon icon="edit" size="m"></e-icon>
                   </a>
+                  {
+                    poi.type !== 'poi_note' && poi.type !== 'poi_reminder' && (
+                      <e-modal-trigger modal="modal" slot="action">
+                        <e-icon icon="bookmark" size="m"></e-icon>
+                        <template>
+                          <h2 slot="title">Añadir a guardados</h2>
+                          <c-poi-resume-form place={JSON.stringify(poi)} static class="ti-form__modal__resume"></c-poi-resume-form>
+                        </template>
+                      </e-modal-trigger>
+                    )
+                  }
                   <e-modal-trigger modal="modal" slot="action">
                     <e-icon icon="delete" size="m"></e-icon>
                     <template>
                       <h2 slot="title">Eliminar {poi.name}</h2>
                       <p slot="description">Estas a punto de eliminar este elemento del listado. Si lo tienes en tus guardados, no te preocupes, no se eliminará de ahí. ¿Quieres quitarlo de este itinerario?</p>
-                      <e-fetch action="/api/poi.json" method="DELETE">
+                      <e-fetch action="/api/poi.json" method="delete">
                         <span>Eliminar</span>
                       </e-fetch>
                     </template>
