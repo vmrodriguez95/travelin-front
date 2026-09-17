@@ -63,7 +63,7 @@
     overflow-y: auto;
 
     @media (min-width: $breakpoint-md) {
-      padding: space(4);
+      padding: space(4) space(8);
     }
   }
 

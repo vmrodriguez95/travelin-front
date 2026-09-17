@@ -25,7 +25,8 @@ export class EModalTrigger extends LitElement {
     `
   }
 
-  private _openModal() {
+  private _openModal(ev: Event) {
+    ev.stopPropagation()
     const modal = document.getElementById(this.modal) as CModal
 
     if (modal) modal.showModal(this._templates[0] as HTMLTemplateElement)

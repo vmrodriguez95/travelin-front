@@ -1,0 +1,67 @@
+body {
+  // Principal
+  --color-primary: 252, 110, 32; // Orange
+  --color-primary--light: 235, 134, 79; // Light orange
+  --color-gray: 170, 170, 170; // Gray
+  --color-gray--light: 234, 234, 234; // Light gray
+
+  // Dark Theme
+  --color-text: 255, 255, 255;
+  --color-background: 26, 28, 32;
+  --color-background--secondary: 43, 47, 54;
+
+  // Light Theme
+  --color-text--light: 34, 34, 34;
+  --color-background--light: 255, 255, 255;
+  --color-background--secondary--light: 245, 245, 245;
+
+  // Semantic Colors
+  --color-success: 63, 139, 91; // Green
+  --color-warning: 139, 119, 63; // Yellow
+  --color-error: 139, 63, 63; // Red
+
+  // General Colors
+  --color-white: 255, 255, 255;
+  --color-black: 0, 0, 0;
+  --color-brown: 111, 78, 55;
+  --color-yellow: 240, 168, 96;
+  --color-blue: 84, 197, 228;
+
+  // Achievement Colors
+  --color-old-rose: 204, 117, 132;
+  --color-muted-raspberry: 201, 115, 150;
+  --color-mauve: 199, 117, 169;
+  --color-orchid: 197, 119, 187;
+  --color-alpine-green: 105, 191, 148;
+  --color-ocean-blue: 96, 172, 199;
+  --color-lava-red: 202, 114, 104;
+  --color-trail-green: 125, 186, 109;
+  --color-jungle-green: 105, 191, 119;
+  --color-sand: 203, 164, 114;
+  --color-lavender: 153, 130, 206;
+  --color-stone-violet: 161, 119, 197;
+  --color-lilac: 184, 125, 202;
+  --color-plum: 189, 114, 192;
+  --color-sky-blue: 117, 163, 209;
+  --color-steel-blue: 117, 142, 199;
+  --color-light-navy: 130, 138, 206;
+  --color-soft-indigo: 134, 126, 200;
+  --color-petrol-blue: 98, 158, 188;
+  --color-teal: 103, 181, 193;
+  --color-night-purple: 153, 108, 198;
+  --color-turquoise: 112, 194, 188;
+  --color-old-gold: 200, 187, 106;
+  --color-golden-olive: 189, 192, 114;
+  --color-terracotta: 207, 139, 110;
+  --color-caramel: 205, 155, 112;
+  --color-soft-mustard: 200, 169, 106;
+  --color-light-burgundy: 190, 96, 121;
+  --color-amber: 202, 184, 125;
+  --color-aquamarine: 117, 199, 180;
+  --color-mint: 128, 198, 170;
+  --color-muted-lime: 175, 194, 112;
+  --color-sage-green: 158, 191, 125;
+  --color-bronze: 205, 127, 50;
+  --color-silver: 192, 192, 192;
+  --color-gold: 212, 175, 55;
+}

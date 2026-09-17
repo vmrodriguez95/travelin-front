@@ -238,7 +238,7 @@
     "time": "11:00",
     "icon": "hotel",
     "notes": [],
-    "type": "note",
+    "type": "poi_note",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -280,7 +280,7 @@
     "time": "12:00",
     "icon": "restaurant",
     "notes": [],
-    "type": "note",
+    "type": "poi_note",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -322,7 +322,7 @@
     "time": "14:00",
     "notes": [],
     "icon": "reminder",
-    "type": "reminder",
+    "type": "poi_reminder",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"
@@ -340,7 +340,7 @@
     "time": "16:00",
     "icon": "cafe",
     "notes": [],
-    "type": "note",
+    "type": "poi_note",
     "order": 0,
     "createdAt": {
       "$date": "2026-03-06T09:31:02.739"

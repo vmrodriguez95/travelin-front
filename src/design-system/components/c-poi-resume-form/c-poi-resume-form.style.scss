@@ -25,6 +25,7 @@
   }
   
   &--static {
+    display: block;
     position: static;
     transform: translateX(0);
     max-width: 100%;
@@ -44,7 +45,7 @@
     
     @media (min-width: $breakpoint-xl) {
       gap: space(2);
-      padding: space(1);
+      padding: space(1) space(2) space(1) space(1);
     }
   }
 
