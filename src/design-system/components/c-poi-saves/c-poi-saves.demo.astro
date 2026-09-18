@@ -1,0 +1,26 @@
+---
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
+import collections from '../../../data/collections.json'
+import type { CheckboxGroupFormField } from '@ds/components/c-form/c-form.types'
+
+const { id, channel, action, heading, submitLabel, close, data } = Astro.props
+
+const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
+const pois = (Object.values(poisGlob)[0] as { default: any[] })?.default ?? []
+const poi = pois.find((item) => item.type === 'poi')
+
+const schema = withFormA11yDefaults(data)
+const collectionsField = schema.sections.core.fields.collections as CheckboxGroupFormField
+collectionsField.options = collections.map((collection) => ({
+  label: collection.name,
+  value: collection.id,
+  icon: collection.icon
+}))
+---
+
+<section class="u-bg--dark">
+  <e-modal-trigger channel={channel} data={JSON.stringify(poi)}>
+    <e-icon icon="bookmark" size="l"></e-icon>
+  </e-modal-trigger>
+  <c-poi-saves data-component id={id} channel={channel} action={action} heading={heading} submitLabel={submitLabel} close={close} data={JSON.stringify(schema)}></c-poi-saves>
+</section>

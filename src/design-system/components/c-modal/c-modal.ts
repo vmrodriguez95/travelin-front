@@ -52,6 +52,11 @@ export class CModal extends LitElement {
       event.preventDefault()
       this.closeModal()
     })
+
+    // Anything inside the modal that talks to the server (e-fetch, a fetched
+    // c-form) announces success with a composed `fetch-success`, so one
+    // listener on the host covers both cloned templates and static content.
+    this.addEventListener('fetch-success', () => this.closeModal())
   }
 
   showModal(template: HTMLTemplateElement | undefined = undefined) {
@@ -61,7 +66,6 @@ export class CModal extends LitElement {
     }
 
     this._syncA11yReferences()
-    this._detectFetchElement()
 
     this._dialog.showModal()
   }
@@ -75,16 +79,6 @@ export class CModal extends LitElement {
     }, 201)
 
     this.dispatchEvent(new CustomEvent('modal-close', { bubbles: true, composed: true }))
-  }
-
-  private _detectFetchElement() {
-    const fetchElement = this.querySelector('e-fetch')
-
-    if (fetchElement) {
-      fetchElement.addEventListener('fetch-success', () => {
-        this.closeModal()
-      })
-    }
   }
 
   private _syncA11yReferences() {

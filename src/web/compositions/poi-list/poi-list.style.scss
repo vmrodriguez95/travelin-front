@@ -14,7 +14,6 @@
   position: relative;
   box-sizing: border-box;
   height: calc(100dvh - var(--ui-c-header-image-height));
-  padding: calc(var(--grid-gutter) / 2) 0;
   width: 100%;
 
   &__dates,
@@ -115,6 +114,8 @@
     @media (min-width: $breakpoint-xl) {
       min-height: 0;
       grid-area: cards;
+      padding: 0 0 space(2);
+      box-sizing: border-box;
     }
 
     &-list {
@@ -141,7 +142,7 @@
     grid-area: map;
 
     @media (min-width: $breakpoint-xl) {
-      padding: var(--grid-gutter) var(--grid-gutter) 0 calc(var(--grid-gutter) / 2);
+      padding: space(2) var(--grid-gutter) space(2) calc(var(--grid-gutter) / 2);
     }
   }
 }

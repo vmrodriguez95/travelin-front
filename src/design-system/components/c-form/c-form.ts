@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS, type TemplateResult } from 'lit'
-import { customElement, property, query, queryAll } from 'lit/decorators.js'
+import { customElement, property, query, queryAll, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
 import { repeat } from 'lit/directives/repeat.js'
@@ -20,14 +20,19 @@ import type {
   SelectFormField,
   FieldDependency,
   FormArraySection,
-  CalendarFormField
+  CalendarFormField,
+  CheckboxGroupFormField
 } from './c-form.types'
 import type { SelectOption } from './c-form.types'
 import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
-import type { FormFillEventDetail, FormModifyFieldsEventDetail } from '@ds/utils/poi-channel.utils'
+import { FORM_SUBMIT_SUCCESS_EVENT } from '@ds/utils/poi-channel.utils'
+import type { FormFillEventDetail, FormModifyFieldsEventDetail, FormSubmitSuccessEventDetail } from '@ds/utils/poi-channel.utils'
+
+// Requests
+import { SimpleFormClient } from '@ds/requests/form-client'
 
 import styles from './c-form.style.scss?inline'
 
@@ -48,7 +53,16 @@ export class CForm extends LitElement {
 
   @property({ type: Boolean }) modal = false
 
+  // Sends the form through fetch instead of a native submit, so the page is
+  // not reloaded. Success and error are announced with the same events as
+  // e-fetch (`fetch-success` / `fetch-error`) so c-modal closes on its own.
+  @property({ type: Boolean }) fetch = false
+
   @property({ type: String }) channel = ''
+
+  @state() private _submitting = false
+
+  @state() private _error: string | null = null
 
   @query('form') _form!: HTMLFormElement
 
@@ -59,6 +73,12 @@ export class CForm extends LitElement {
   private _internals: ElementInternals
 
   private _dependencies: Array<FieldDependency> = []
+
+  private _client = new SimpleFormClient()
+
+  private _pristineData!: FormSchema
+
+  private _workingData: FormSchema | null = null
 
   private _channel = new ChannelController(
     this,
@@ -78,6 +98,16 @@ export class CForm extends LitElement {
     this._internals = this.attachInternals()
   }
 
+  // The form writes into the schema as the user types, so it works on its
+  // own copy: the object handed in stays as the owner left it, and a pristine
+  // copy is kept to start over after a fetched submit.
+  protected willUpdate(changed: Map<string, unknown>) {
+    if (changed.has('data') && this.data && this.data !== this._workingData) {
+      this._pristineData = window.structuredClone(this.data)
+      this._workingData = window.structuredClone(this.data)
+      this.data = this._workingData
+    }
+  }
 
   render() {
     const classes = classMap({
@@ -89,7 +119,10 @@ export class CForm extends LitElement {
     return html`
       <form class=${classes} action=${this.action} method=${this.method} enctype=${this.enctype} @submit=${this._onSubmit}>
         ${this._printSections(this.data.sections)}
-        <e-button class="c-form__submit" type="submit" size="full" @click=${this._onSubmit}>${this.submitLabel}</e-button>
+        ${when(this._error, () => html`
+          <p class="c-form__error">${this._error}</p>
+        `)}
+        <e-button class="c-form__submit" type="submit" size="full" ?disabled=${this._submitting} @click=${this._onSubmit}>${this.submitLabel}</e-button>
       </form>
     `
   }
@@ -132,8 +165,46 @@ export class CForm extends LitElement {
     const formData = new FormData(this._form)
     this._internals.setFormValue(formData)
 
+    if (this.fetch) {
+      ev.preventDefault()
+      this._submitByFetch(formData)
+      return false
+    }
+
     this._form.requestSubmit()
     this._submitButton.disabled = true
+  }
+
+  private async _submitByFetch(formData: FormData) {
+    // The submit button and the form's own submit event both end up here, so
+    // one click must never turn into two requests.
+    if (this._submitting) return
+
+    this._submitting = true
+    this._error = null
+
+    try {
+      const data = await this._client.submit<unknown>(this.action, this.method || 'POST', formData, this.enctype)
+
+      this.dispatchEvent(new CustomEvent('fetch-success', { detail: data, bubbles: true, composed: true }))
+      this._channel.dispatch<FormSubmitSuccessEventDetail>(FORM_SUBMIT_SUCCESS_EVENT, { data, source: this })
+      this.reset()
+    } catch (err) {
+      this._error = (err as Error).message
+      this.dispatchEvent(new CustomEvent('fetch-error', { detail: err, bubbles: true, composed: true }))
+    } finally {
+      this._submitting = false
+    }
+  }
+
+  // A fetched form stays on the page (it may live in a shared modal), so it
+  // has to come back as it was first rendered: the schema is restored from the
+  // copy taken when it arrived, which also drops any repeater blocks added,
+  // and the native reset clears what the fields hold on their own.
+  reset() {
+    this._form.reset()
+    this._workingData = window.structuredClone(this._pristineData)
+    this.data = this._workingData
   }
 
   private _onChange(ev: CustomEvent, field: BasicFormField, block?: FormBlock) {
@@ -687,6 +758,31 @@ export class CForm extends LitElement {
           ></e-input-icon>
         `
 
+      case 'checkbox-group':
+        const fieldCheckboxGroup = field as CheckboxGroupFormField
+        const checkedValues = this._getFieldValue(fieldCheckboxGroup)
+
+        return html`
+          <e-checkbox-group
+            class=${this._getFieldClasses(fieldCheckboxGroup)}
+            id=${fieldCheckboxGroup.id}
+            name=${name}
+            label=${fieldCheckboxGroup.label}
+            helpmsg=${fieldCheckboxGroup.helpmsg}
+            .messages=${field.messages ?? {}}
+            .options=${fieldCheckboxGroup.options ?? []}
+            .value=${Array.isArray(checkedValues) ? checkedValues : []}
+            .a11y=${fieldCheckboxGroup.a11y ?? {}}
+            ?canAdd=${fieldCheckboxGroup.canAdd}
+            addLabel=${fieldCheckboxGroup.addLabel ?? ''}
+            nameLabel=${fieldCheckboxGroup.nameLabel ?? ''}
+            namePlaceholder=${fieldCheckboxGroup.namePlaceholder ?? ''}
+            ?required=${fieldCheckboxGroup.required}
+            ?readonly=${fieldCheckboxGroup.readonly}
+            @change=${(ev: CustomEvent) => this._onChange(ev, fieldCheckboxGroup)}
+          ></e-checkbox-group>
+        `
+
       case 'calendar':
         const fieldCalendar = field as CalendarFormField
 
@@ -849,11 +945,13 @@ export class CForm extends LitElement {
           return ''
         })}
         <div class="c-form__resume__actions">
-          <button class="c-form__resume__action" type="button" @click=${() => this._editBlock(section, index)} aria-label=${section.editLabel ?? 'Editar elemento'}>
-            <e-icon icon="edit" size="m"></e-icon>
-          </button>
+          ${when(section.canEdit !== false, () => html`
+            <button class="c-form__resume__action" type="button" @click=${() => this._editBlock(section, index)} aria-label=${section.editLabel ?? 'Editar elemento'}>
+              <e-icon icon="edit" size="m"></e-icon>
+            </button>
+          `)}
           ${when(section.canRemove, () => html`
-            <button class="c-form__resume__action" type="button" @click=${() => this._removeBlock(fields, section.editingElementIdx as number)} aria-label=${section.removeLabel ?? 'Eliminar elemento'}>
+            <button class="c-form__resume__action" type="button" @click=${() => this._removeBlock(fields, index)} aria-label=${section.removeLabel ?? 'Eliminar elemento'}>
               <e-icon icon="delete" size="m"></e-icon>
             </button>
           `)}
@@ -884,9 +982,9 @@ export class CForm extends LitElement {
                 return this._printResume(fieldBlock, section, fields, breadcrumbs, index)
               }
             ),
-            () => html`
+            () => when(section.emptyMsg, () => html`
               <p class="c-form__empty">${section.emptyMsg}</p>
-            `
+            `)
           )}
           ${when(section.canAdd, () => html`
             <button class="c-form__add" type="button" @click=${() => this._addNewBlock(section)}>

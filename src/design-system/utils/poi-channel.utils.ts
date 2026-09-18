@@ -12,6 +12,7 @@ export const MENU_TOGGLE_EVENT = 'menu-toggle'
 export const MODAL_OPEN_EVENT = 'modal-open'
 export const FORM_MODIFY_FIELDS_EVENT = 'form-modify-fields'
 export const FORM_FILL_EVENT = 'form-fill'
+export const FORM_SUBMIT_SUCCESS_EVENT = 'form-submit-success'
 export const TAB_SELECT_EVENT = 'tab-select'
 
 export type PoiChannelData = Poi | PoiHotel | PoiTransport | Reminder | Note | Place
@@ -60,6 +61,11 @@ export interface FormModifyFieldsEventDetail {
 
 export interface FormFillEventDetail {
   data: Record<string, any>
+  source?: EventTarget | null
+}
+
+export interface FormSubmitSuccessEventDetail {
+  data: unknown
   source?: EventTarget | null
 }
 

@@ -1,6 +1,10 @@
 ---
 import AppMenu from '@web/components/AppMenu.astro'
+import { getFormBy } from '@web/utils/form.utils'
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
+import collections from '../../../data/collections.json'
 import type { Poi, PoiHotel, PoiTransport, Reminder, Note } from '@ds/types/pois.types'
+import type { CheckboxGroupFormField } from '@ds/components/c-form/c-form.types'
 
 type AnyPoi = Poi | PoiHotel | PoiTransport | Reminder | Note
 
@@ -36,6 +40,7 @@ const buttons = [
 const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
 const pois: AnyPoi[] = (Object.values(poisGlob)[0] as { default: AnyPoi[] })?.default ?? []
 const channel = 'poi-list'
+const savesChannel = 'poi-saves'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
 function getMarkerView(type: string) {
@@ -92,6 +97,17 @@ const markers = pois.flatMap((poi: any) => {
 
   return []
 })
+
+// The saves form is shared by every card: the user's collections are poured
+// into its checkbox group once, here, instead of once per POI.
+const savesSchema = withFormA11yDefaults(getFormBy('saves', 'create')!)
+const savesCollections = savesSchema.sections.core.fields.collections as CheckboxGroupFormField
+savesCollections.options = collections.map((collection) => ({
+  label: collection.name,
+  value: collection.id,
+  icon: collection.icon
+}))
+const savesForm = JSON.stringify(savesSchema)
 
 function formatDate(dateStart: string, dateEnd: string) {
   const start = new Date(dateStart)
@@ -164,13 +180,9 @@ function formatDate(dateStart: string, dateEnd: string) {
                     <e-icon icon="edit" size="m"></e-icon>
                   </a>
                   {
-                    poi.type !== 'poi_note' && poi.type !== 'poi_reminder' && (
-                      <e-modal-trigger modal="modal" slot="action">
+                    (poi.type === 'poi' || poi.type === 'poi_hotel') && (
+                      <e-modal-trigger channel={savesChannel} data={JSON.stringify(poi)} slot="action">
                         <e-icon icon="bookmark" size="m"></e-icon>
-                        <template>
-                          <h2 slot="title">Añadir a guardados</h2>
-                          <c-poi-resume-form place={JSON.stringify(poi)} static class="ti-form__modal__resume"></c-poi-resume-form>
-                        </template>
                       </e-modal-trigger>
                     )
                   }
@@ -199,6 +211,10 @@ function formatDate(dateStart: string, dateEnd: string) {
   </div>
 </section>
 <c-modal id="modal" close="Cerrar"></c-modal>
+<c-poi-saves channel={savesChannel} action="/api/saves.json" data={savesForm} heading="Añadir a guardados" submitLabel="Añadir POI" close="Cerrar"></c-poi-saves>
 <e-notification channel={channel} timeout="2">
   <span>POI eliminado correctamente</span>
+</e-notification>
+<e-notification channel={savesChannel} event="form-submit-success" timeout="2">
+  <span>POI guardado en tus colecciones</span>
 </e-notification>

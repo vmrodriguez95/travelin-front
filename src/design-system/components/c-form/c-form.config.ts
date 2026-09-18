@@ -18,6 +18,12 @@ export const config = {
       type: 'text',
       default: 'POST'
     },
+    fetch: {
+      name: 'fetch',
+      label: 'Enviar por fetch (sin recargar la página)',
+      type: 'checkbox',
+      default: false
+    },
     submitLabel: {
       name: 'submitLabel',
       label: 'Etiqueta del botón de envío',

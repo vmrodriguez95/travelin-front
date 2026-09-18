@@ -1,0 +1,167 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+@use '@common/styles/variables/border-radius.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
+
+.e-checkbox-group {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+  text-align: right;
+
+  &__label {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 space(1);
+    padding: 0;
+  }
+
+  &__options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: space(1) space(2);
+
+    @media (min-width: $breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__option {
+    --eIconColor: var(--color-primary);
+    @include body--m;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: space(1);
+    padding: space(1.5) space(2);
+    color: rgba(var(--color-text), 1);
+    background-color: rgba(var(--color-background--secondary), 1);
+    border: 2px solid transparent;
+    border-radius: $border-radius-s;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color .2s ease, transform .2s ease;
+
+    &--checked {
+      border-color: rgba(var(--color-primary), 1);
+    }
+
+    &:has(.e-checkbox-group__input:focus-visible) {
+      outline: 2px solid rgba(var(--color-primary), 1);
+      outline-offset: 2px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  // The native checkbox stays in the tree for keyboard and screen readers,
+  // the tile is what the eye gets.
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  &__text {
+    text-align: center;
+  }
+
+  &__error {
+    @include body--xs;
+    margin: space(1) 0 0;
+    text-align: left;
+    color: rgba(var(--color-error), 1);
+  }
+
+  &__add {
+    @include body--m;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    margin-top: space(2);
+    gap: space(0.5);
+    color: rgba(var(--color-primary), 1);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+
+    e-icon {
+      transition: transform .2s ease;
+    }
+
+    @media (hover: hover) {
+      &:hover e-icon {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &__new {
+    position: relative;
+    margin-top: space(2);
+    padding: space(1) space(4) space(2);
+    border: 1px solid rgba(var(--color-gray), 1);
+    border-radius: $border-radius-m;
+    text-align: left;
+
+    &-actions {
+      position: absolute;
+      top: space(1);
+      right: space(4);
+      display: flex;
+      justify-content: flex-end;
+      gap: space(2);
+      z-index: 1;
+    }
+
+    &-action {
+      --eIconColor: var(--color-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: space(3);
+      height: space(3);
+      background-color: rgba(var(--color-primary), 1);
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      cursor: pointer;
+      transition: transform .2s ease;
+
+      @media (hover: hover) {
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    &-fields {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: space(2);
+    }
+
+    &-name {
+      flex: 1 0 auto;
+    }
+  }
+}
