@@ -41,6 +41,7 @@ const poisGlob = import.meta.glob('../../../data/pois.json', { eager: true })
 const pois: AnyPoi[] = (Object.values(poisGlob)[0] as { default: AnyPoi[] })?.default ?? []
 const channel = 'poi-list'
 const savesChannel = 'poi-saves'
+const moveChannel = 'poi-move'
 const googleMapsApiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
 function getMarkerView(type: string) {
@@ -128,7 +129,7 @@ function formatDate(dateStart: string, dateEnd: string) {
     <c-header heading="Itinerary" subheading="12-05-2024" url="#" bg="/images/japan-wallpaper.jpg" animated backA11y="Volver atrás"></c-header>
     <section class="ti-poi-list">
       <div class="ti-poi-list__dates">
-        {Array.from({ length: 15 }, (_, i) =>(
+        {Array.from({ length: 15 }, (_, i) => (
           <a href="#" title={`Ir al día ${i + 1}`} class={i === 1 ? 'u-date u-date--today' : 'u-date'}>
             <p class="u-date__date">{12 + i} May</p>
             <p class="u-date__day">Día {12 + i}</p>
@@ -184,6 +185,9 @@ function formatDate(dateStart: string, dateEnd: string) {
                       <e-modal-trigger channel={savesChannel} data={JSON.stringify(poi)} slot="action">
                         <e-icon icon="bookmark" size="m"></e-icon>
                       </e-modal-trigger>
+                      <e-modal-trigger channel={moveChannel} data={JSON.stringify(poi)} slot="action">
+                        <e-icon icon="moving" size="m"></e-icon>
+                      </e-modal-trigger>
                     )
                   }
                   <e-modal-trigger modal="modal" slot="action">
@@ -211,9 +215,25 @@ function formatDate(dateStart: string, dateEnd: string) {
   </div>
 </section>
 <c-modal id="modal" close="Cerrar"></c-modal>
+<c-modal id="move-to" close="Cerrar" channel={moveChannel}>
+  <h2 slot="title">Mover POI a</h2>
+  <c-poi-resume-form channel={moveChannel} static class="ti-form__modal__resume"></c-poi-resume-form>
+  {Array.from({ length: 15 }, (_, i) => (
+    <e-fetch type="plain" class="u-margin--bottom--m" channel={moveChannel} action="/api/poi.json" method="PATCH" body={JSON.stringify({ idItinerary: `itinerary-${i + 1}` })}>
+      <c-card-date text="Llegada a Bangkok" day={i}>
+        <p slot="index">Día {i + 1}</p>
+        <p slot="day">{12 + i}</p>
+        <p slot="month">Mayo</p>
+      </c-card-date>
+    </e-fetch>
+  ))}
+</c-modal>
 <c-poi-saves channel={savesChannel} action="/api/saves.json" data={savesForm} heading="Añadir a guardados" submitLabel="Añadir POI" close="Cerrar"></c-poi-saves>
 <e-notification channel={channel} timeout="2">
   <span>POI eliminado correctamente</span>
+</e-notification>
+<e-notification channel={channel} event="poi-move" timeout="2">
+  <span>POI movido de itinerario</span>
 </e-notification>
 <e-notification channel={savesChannel} event="form-submit-success" timeout="2">
   <span>POI guardado en tus colecciones</span>

@@ -6,6 +6,7 @@ import {
   POI_HOVER_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_REMOVE_EVENT,
+  POI_MOVE_EVENT,
   DAY_HOVER_EVENT,
   DAY_HOVER_CLEAR_EVENT,
   DAY_ACTIVE_EVENT,
@@ -19,6 +20,7 @@ import {
   type GenericEventDetail,
   type PoiHoverEventDetail,
   type PoiRemoveEventDetail,
+  type PoiMoveEventDetail,
   type DayHoverEventDetail,
   type DayActiveEventDetail,
   type MenuToggleEventDetail,
@@ -34,6 +36,7 @@ export interface ChannelHandlers {
   onHover?: (detail: PoiHoverEventDetail) => void
   onHoverClear?: () => void
   onRemove?: (detail: PoiRemoveEventDetail) => void
+  onMove?: (detail: PoiMoveEventDetail) => void
   onDayHover?: (detail: DayHoverEventDetail) => void
   onDayHoverClear?: () => void
   onDayActive?: (detail: DayActiveEventDetail) => void
@@ -103,6 +106,7 @@ export class ChannelController implements ReactiveController {
     if (this.handlers.onHover) add(POI_HOVER_EVENT, wrap(this.handlers.onHover))
     if (this.handlers.onHoverClear) add(POI_HOVER_CLEAR_EVENT, this.handlers.onHoverClear)
     if (this.handlers.onRemove) add(POI_REMOVE_EVENT, wrap(this.handlers.onRemove))
+    if (this.handlers.onMove) add(POI_MOVE_EVENT, wrap(this.handlers.onMove))
     if (this.handlers.onDayHover) add(DAY_HOVER_EVENT, wrap(this.handlers.onDayHover))
     if (this.handlers.onDayHoverClear) add(DAY_HOVER_CLEAR_EVENT, this.handlers.onDayHoverClear)
     if (this.handlers.onDayActive) add(DAY_ACTIVE_EVENT, wrap(this.handlers.onDayActive))

@@ -16,9 +16,11 @@ import {
   POI_CLEAR_EVENT,
   POI_HOVER_CLEAR_EVENT,
   POI_HOVER_EVENT,
+  POI_MOVE_EVENT,
   POI_REMOVE_EVENT,
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
+  type PoiMoveEventDetail,
   type PoiRemoveEventDetail,
   type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
@@ -170,14 +172,25 @@ export class CCardPoi extends Responsive(LitElement) {
     setTimeout(() => { this.remove() }, 501)
   }
 
+  // The card leaves the list either way; what the list is told differs:
+  // a PATCH moved the POI to another itinerary, anything else deleted it.
+  private _isMoveRequest(ev: Event) {
+    const method = (ev.target as { method?: string } | null)?.method
+
+    return method?.toUpperCase() === 'PATCH'
+  }
+
   private _onFetchSuccess = (ev: Event) => {
     const event = ev as CustomEvent
 
     if (event.detail?.data?.id === this.data.id) {
-      this._channel.dispatch<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
-        data: this.data,
-        source: this
-      })
+      const detail = { data: this.data, source: this }
+
+      if (this._isMoveRequest(ev)) {
+        this._channel.dispatch<PoiMoveEventDetail>(POI_MOVE_EVENT, detail)
+      } else {
+        this._channel.dispatch<PoiRemoveEventDetail>(POI_REMOVE_EVENT, detail)
+      }
 
       if (this._isSelectedData) {
         this._channel.dispatch(POI_CLEAR_EVENT)

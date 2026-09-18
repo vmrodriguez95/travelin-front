@@ -129,6 +129,7 @@ export class CMap extends LitElement {
       onHover: (detail) => this._onHoverChange(detail),
       onHoverClear: () => this._onHoverClear(),
       onRemove: (detail) => this._onPoiRemove(detail),
+      onMove: (detail) => this._onPoiRemove(detail),
       onDayHover: (detail) => this._onDayHoverChange(detail),
       onDayHoverClear: () => this._onDayHoverClear(),
       onDayActive: (detail) => this._onDayActiveChange(detail),

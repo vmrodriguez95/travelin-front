@@ -5,6 +5,7 @@ export const POI_CLEAR_EVENT = 'poi-clear'
 export const POI_HOVER_EVENT = 'poi-hover'
 export const POI_HOVER_CLEAR_EVENT = 'poi-hover-clear'
 export const POI_REMOVE_EVENT = 'poi-remove'
+export const POI_MOVE_EVENT = 'poi-move'
 export const DAY_HOVER_EVENT = 'day-hover'
 export const DAY_HOVER_CLEAR_EVENT = 'day-hover-clear'
 export const DAY_ACTIVE_EVENT = 'day-active'
@@ -35,6 +36,12 @@ export interface PoiHoverEventDetail {
 }
 
 export interface PoiRemoveEventDetail {
+  data: PoiChannelData
+  source?: EventTarget | null
+}
+
+// The POI leaves this list because it now lives in another itinerary.
+export interface PoiMoveEventDetail {
   data: PoiChannelData
   source?: EventTarget | null
 }

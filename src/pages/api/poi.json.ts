@@ -42,3 +42,12 @@ export const DELETE: APIRoute = ({ url }) => {
     headers: { "Content-Type": "application/json; charset=utf-8" },
   })
 };
+
+// Moving a POI between itineraries. Static endpoint: it cannot read the
+// body, so it answers with the fixed POI and that card is the one leaving
+// the list (same limitation as DELETE).
+export const PATCH: APIRoute = () => {
+  return new Response(JSON.stringify({ data: DATA[0] }), {
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+  })
+};
