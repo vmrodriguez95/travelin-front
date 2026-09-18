@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { map } from 'lit/directives/map.js'
 
@@ -40,7 +40,11 @@ export class CCardTransport extends Responsive(LitElement) {
 
   @property({ type: String }) channel = ''
 
+  @property({ type: String }) menu = ''
+
   @property({ type: Boolean, reflect: true }) active = false
+
+  @state() actionsShowed = false
 
   @query('.c-card-transport') _card!: HTMLElement
 
@@ -98,7 +102,15 @@ export class CCardTransport extends Responsive(LitElement) {
           </div>
         </div>
         <div class="c-card-transport__end">
-          <slot name="action"></slot>
+          <div class=${classMap({
+            'c-card-transport__actions': true,
+            'c-card-transport__actions--showed': this.actionsShowed
+          })}>
+            <slot name="action"></slot>
+            <button class="c-card-transport__menu" @click=${this._showActions} aria-label=${this.menu}>
+              <e-icon icon="menu" size="m"></e-icon>
+            </button>
+          </div>
         </div>
       </div>
     `
@@ -180,5 +192,10 @@ export class CCardTransport extends Responsive(LitElement) {
   private _onSelectionClear() {
     this._isSelectedData = false
     this.active = false
+  }
+
+  private _showActions(ev: Event) {
+    ev.stopPropagation()
+    this.actionsShowed = !this.actionsShowed
   }
 }
