@@ -16,6 +16,7 @@
 
     @media (min-width: $breakpoint-xl) {
       padding: space(1);
+      box-sizing: border-box;
     }
   }
 

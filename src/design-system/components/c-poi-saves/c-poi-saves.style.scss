@@ -1,0 +1,8 @@
+@use '@common/styles/tools/tools.scss' as *;
+
+.c-poi-saves {
+  &__resume {
+    display: block;
+    margin-bottom: space(1);
+  }
+}

@@ -68,9 +68,7 @@ export class CPoiResumeForm extends LitElement {
           <div class="c-poi-resume-form__details">
             <div class="c-poi-resume-form__column">
               <p class="c-poi-resume-form__text">${name}</p>
-              ${map(this.place.address, (chunk: any, index: number) => when(index > 0, () => html`
-                <p class="c-poi-resume-form__subtext">${chunk.longText}</p>
-              `))}
+              ${this._printAddress()}
             </div>
             <div class="c-poi-resume-form__column">
             ${when(this.button, () => html`
@@ -88,6 +86,22 @@ export class CPoiResumeForm extends LitElement {
         `)}
       </div>
     `
+  }
+
+  // A Google place brings its address as chunks; a POI already saved brings
+  // it as one string. Both must read the same on screen.
+  private _printAddress() {
+    const address = this.place?.address as unknown
+
+    if (Array.isArray(address)) {
+      return map(address, (chunk: any, index: number) => when(index > 0, () => html`
+        <p class="c-poi-resume-form__subtext">${chunk.longText}</p>
+      `))
+    }
+
+    return when(address, () => html`
+      <p class="c-poi-resume-form__subtext">${address}</p>
+    `)
   }
 
   private _showInfo() {

@@ -28,6 +28,10 @@ export class ENotification extends LitElement {
 
   @property({ type: String }) channel = ''
 
+  // Channel event that shows the toast. Defaults to the POI removal so the
+  // existing delete flows keep working without naming it.
+  @property({ type: String }) event = POI_REMOVE_EVENT
+
   @state() _loaded = false
 
   @state() _closing = false
@@ -96,12 +100,22 @@ export class ENotification extends LitElement {
     }
   }
 
+  // A toast tied to a channel is reused every time its event fires, so it
+  // only hides; a standalone one is shown once and leaves the DOM.
   private _close() {
     this._closing = true
-    setTimeout(() => this.remove(), 400)
+
+    setTimeout(() => {
+      if (this.channel) {
+        this._loaded = false
+        this._closing = false
+      } else {
+        this.remove()
+      }
+    }, 400)
   }
 
-  private _onPoiRemoved = () => {
+  private _onChannelEvent = () => {
     this.type = 'success'
     this._loaded = true
 
@@ -117,12 +131,12 @@ export class ENotification extends LitElement {
     if (!this.channel) return
 
     this._channelBus = getPoiChannel(this.channel)
-    this._channelBus.addEventListener(POI_REMOVE_EVENT, this._onPoiRemoved as EventListener)
+    this._channelBus.addEventListener(this.event, this._onChannelEvent as EventListener)
   }
 
   private _disconnectFromChannel() {
     if (!this._channelBus) return
-    this._channelBus.removeEventListener(POI_REMOVE_EVENT, this._onPoiRemoved as EventListener)
+    this._channelBus.removeEventListener(this.event, this._onChannelEvent as EventListener)
     this._channelBus = null
   }
 }

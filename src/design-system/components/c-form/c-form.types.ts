@@ -32,6 +32,7 @@ export interface FormArraySection {
   addLabel: string
   canMove: boolean
   canRemove: boolean
+  canEdit?: boolean
   emptyMsg: string
   removeMainKey?: boolean
   editingElementIdx?: number
@@ -80,6 +81,20 @@ export interface BasicFormField {
 export interface SelectOption {
   label: string
   value: string | number
+}
+
+export interface CheckboxOption {
+  label: string
+  value: string
+  icon?: string
+}
+
+export interface CheckboxGroupFormField extends BasicFormField {
+  options: Array<CheckboxOption>
+  canAdd?: boolean
+  addLabel?: string
+  nameLabel?: string
+  namePlaceholder?: string
 }
 
 export interface SelectFormField extends BasicFormField {

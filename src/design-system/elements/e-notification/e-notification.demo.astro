@@ -1,7 +1,7 @@
 ---
-const { id } = Astro.props
+const { id, type, timeout, channel, event } = Astro.props
 ---
 
-<e-notification data-component id={id}>
+<e-notification data-component id={id} type={type} timeout={timeout} channel={channel} event={event}>
   <slot />
 </e-notification>

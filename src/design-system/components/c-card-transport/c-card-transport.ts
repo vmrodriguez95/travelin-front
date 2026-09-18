@@ -143,7 +143,7 @@ export class CCardTransport extends Responsive(LitElement) {
   private _onFetchSuccess = (ev: Event) => {
     const event = ev as CustomEvent
 
-    if (event.detail.data.id === this.data.id) {
+    if (event.detail?.data?.id === this.data.id) {
       this._channel.dispatch<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
         data: this.data,
         source: this

@@ -8,6 +8,7 @@ interface PoiBase {
   type: string
   name: string
   types: string[]
+  collections?: string[]
 }
 
 interface Notes {

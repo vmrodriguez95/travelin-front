@@ -1,0 +1,6 @@
+[
+  { "id": "col-restaurants", "name": "Restaurantes", "icon": "restaurant" },
+  { "id": "col-thailand", "name": "Tailandia", "icon": "temple-buddhist" },
+  { "id": "col-vietnam", "name": "Vietnam", "icon": "temple-buddhist" },
+  { "id": "col-wishlist", "name": "Quiero ir", "icon": "location" }
+]

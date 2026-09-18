@@ -1,7 +1,7 @@
 ---
-const { modalId } = Astro.props
+const { modal, channel } = Astro.props
 ---
 
-<e-modal-trigger data-component modalID={modalId}>
+<e-modal-trigger data-component modal={modal} channel={channel}>
   <slot />
 </e-modal-trigger>

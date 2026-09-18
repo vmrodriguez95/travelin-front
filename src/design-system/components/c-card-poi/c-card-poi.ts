@@ -8,6 +8,7 @@ import type { Poi, PoiHotel, Reminder, Note } from '@ds/types/pois.types'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
+import { DataUpdateController } from '@ds/controllers/data-update.controller'
 
 // Utils
 import {
@@ -64,6 +65,8 @@ export class CCardPoi extends Responsive(LitElement) {
       onClear: () => this._onSelectionClear(),
     }
   )
+
+  private _dataUpdate = new DataUpdateController(this, () => this.data, (data) => { this.data = data })
 
   connectedCallback() {
     super.connectedCallback()
@@ -170,7 +173,7 @@ export class CCardPoi extends Responsive(LitElement) {
   private _onFetchSuccess = (ev: Event) => {
     const event = ev as CustomEvent
 
-    if (event.detail.data.id === this.data.id) {
+    if (event.detail?.data?.id === this.data.id) {
       this._channel.dispatch<PoiRemoveEventDetail>(POI_REMOVE_EVENT, {
         data: this.data,
         source: this
