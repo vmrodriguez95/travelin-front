@@ -15,7 +15,7 @@
   gap: space(1);
 
   @media (min-width: $breakpoint-xl) {
-    bottom: calc(var(--grid-gutter) * 0.5);
+    bottom: var(--grid-gutter);
     right: inherit;
     left: 50%;
     transform: translateX(-50%);
