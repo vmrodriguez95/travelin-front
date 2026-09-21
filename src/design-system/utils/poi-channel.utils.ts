@@ -81,6 +81,27 @@ export interface TabSelectEventDetail {
   source?: EventTarget | null
 }
 
+// Every event the channel carries, with the detail it travels with. A new
+// event is added here and in the constants above; the controller that wires
+// handlers reads this map and needs no change.
+export interface ChannelEventMap {
+  [POI_SELECT_EVENT]: PoiSelectEventDetail
+  [POI_CLEAR_EVENT]: GenericEventDetail
+  [POI_HOVER_EVENT]: PoiHoverEventDetail
+  [POI_HOVER_CLEAR_EVENT]: GenericEventDetail
+  [POI_REMOVE_EVENT]: PoiRemoveEventDetail
+  [POI_MOVE_EVENT]: PoiMoveEventDetail
+  [DAY_HOVER_EVENT]: DayHoverEventDetail
+  [DAY_HOVER_CLEAR_EVENT]: GenericEventDetail
+  [DAY_ACTIVE_EVENT]: DayActiveEventDetail
+  [MENU_TOGGLE_EVENT]: MenuToggleEventDetail
+  [MODAL_OPEN_EVENT]: GenericEventDetail
+  [FORM_MODIFY_FIELDS_EVENT]: FormModifyFieldsEventDetail
+  [FORM_FILL_EVENT]: FormFillEventDetail
+  [FORM_SUBMIT_SUCCESS_EVENT]: FormSubmitSuccessEventDetail
+  [TAB_SELECT_EVENT]: TabSelectEventDetail
+}
+
 const channels = new Map<string, EventTarget>()
 
 export function getPoiChannel(channel: string): EventTarget {

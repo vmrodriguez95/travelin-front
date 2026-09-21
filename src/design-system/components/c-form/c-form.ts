@@ -27,8 +27,16 @@ import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
-import { FORM_SUBMIT_SUCCESS_EVENT } from '@ds/utils/poi-channel.utils'
-import type { FormFillEventDetail, FormModifyFieldsEventDetail, FormSubmitSuccessEventDetail } from '@ds/utils/poi-channel.utils'
+
+// Utils
+import {
+  FORM_FILL_EVENT,
+  FORM_MODIFY_FIELDS_EVENT,
+  FORM_SUBMIT_SUCCESS_EVENT,
+  type FormFillEventDetail,
+  type FormModifyFieldsEventDetail,
+  type FormSubmitSuccessEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Requests
 import { SimpleFormClient } from '@ds/requests/form-client'
@@ -81,8 +89,8 @@ export class CForm extends LitElement {
     this,
     () => this.channel,
     {
-      onFormModifyFields: (detail) => this._onFormModifyFields(detail),
-      onFormFill: (detail) => this._onFormFill(detail)
+      [FORM_MODIFY_FIELDS_EVENT]: (detail) => this._onFormModifyFields(detail),
+      [FORM_FILL_EVENT]: (detail) => this._onFormFill(detail)
     }
   )
 

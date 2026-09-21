@@ -5,7 +5,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
-import type { MenuToggleEventDetail } from '@ds/utils/poi-channel.utils'
+import { MENU_TOGGLE_EVENT, type MenuToggleEventDetail } from '@ds/utils/poi-channel.utils'
 
 import styles from './c-menu.style.scss?inline'
 
@@ -20,7 +20,7 @@ export class CMenu extends LitElement {
     this,
     () => this.channel,
     {
-      onMenuToggle: (detail: MenuToggleEventDetail) => this._toggleHideMenu(detail),
+      [MENU_TOGGLE_EVENT]: (detail: MenuToggleEventDetail) => this._toggleHideMenu(detail),
     }
   )
 

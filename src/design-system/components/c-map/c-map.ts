@@ -15,12 +15,20 @@ import { getIconSvg } from '@ds/utils/icon.utils'
 import { BreakpointObserver } from '@ds/utils/breakpoint.utils'
 import type { Breakpoint } from '@ds/utils/breakpoint.types'
 import {
+  DAY_ACTIVE_EVENT,
+  DAY_HOVER_CLEAR_EVENT,
+  DAY_HOVER_EVENT,
+  POI_CLEAR_EVENT,
+  POI_HOVER_CLEAR_EVENT,
+  POI_HOVER_EVENT,
+  POI_MOVE_EVENT,
+  POI_REMOVE_EVENT,
   POI_SELECT_EVENT,
+  type DayActiveEventDetail,
+  type DayHoverEventDetail,
   type PoiHoverEventDetail,
   type PoiRemoveEventDetail,
-  type PoiSelectEventDetail,
-  type DayHoverEventDetail,
-  type DayActiveEventDetail
+  type PoiSelectEventDetail
 } from '@ds/utils/poi-channel.utils'
 
 // Styles
@@ -133,15 +141,15 @@ export class CMap extends LitElement {
     this,
     () => this.channel,
     {
-      onSelect: (detail) => this._onSelectionChange(detail),
-      onClear: () => this._onSelectionClear(),
-      onHover: (detail) => this._onHoverChange(detail),
-      onHoverClear: () => this._onHoverClear(),
-      onRemove: (detail) => this._onPoiRemove(detail),
-      onMove: (detail) => this._onPoiRemove(detail),
-      onDayHover: (detail) => this._onDayHoverChange(detail),
-      onDayHoverClear: () => this._onDayHoverClear(),
-      onDayActive: (detail) => this._onDayActiveChange(detail),
+      [POI_SELECT_EVENT]: (detail) => this._onSelectionChange(detail),
+      [POI_CLEAR_EVENT]: () => this._onSelectionClear(),
+      [POI_HOVER_EVENT]: (detail) => this._onHoverChange(detail),
+      [POI_HOVER_CLEAR_EVENT]: () => this._onHoverClear(),
+      [POI_REMOVE_EVENT]: (detail) => this._onPoiRemove(detail),
+      [POI_MOVE_EVENT]: (detail) => this._onPoiRemove(detail),
+      [DAY_HOVER_EVENT]: (detail) => this._onDayHoverChange(detail),
+      [DAY_HOVER_CLEAR_EVENT]: () => this._onDayHoverClear(),
+      [DAY_ACTIVE_EVENT]: (detail) => this._onDayActiveChange(detail),
     }
   )
 

@@ -11,6 +11,8 @@ import type { Breakpoint } from '@ds/utils/breakpoint.types'
 import {
   DAY_ACTIVE_EVENT,
   MENU_TOGGLE_EVENT,
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
   type DayActiveEventDetail,
   type MenuToggleEventDetail
 } from '@ds/utils/poi-channel.utils'
@@ -58,8 +60,8 @@ export class CSwipe extends LitElement {
     this,
     () => this.channel,
     {
-      onSelect: () => this._setHidden(true),
-      onClear: () => this._setHidden(false),
+      [POI_SELECT_EVENT]: () => this._setHidden(true),
+      [POI_CLEAR_EVENT]: () => this._setHidden(false),
     }
   )
 

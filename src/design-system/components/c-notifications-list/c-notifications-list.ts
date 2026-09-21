@@ -1,68 +1,29 @@
-import { LitElement, html, type PropertyValues } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
-import { map } from 'lit/directives/map.js'
+import { html } from 'lit'
+import { customElement } from 'lit/decorators.js'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 
 // Types
 import type { Notification } from './c-notifications-list.types'
-import type { FilterChangeDetail } from '../c-filter/c-filter.types'
+
+// Abstracts
+import { FilteredListBase } from '@ds/abstracts/filtered-list.base'
 
 @customElement('c-notifications-list')
-export class CNotificationsList extends LitElement {
+export class CNotificationsList extends FilteredListBase<Notification> {
 
-  @state() private _notifications?: Array<Notification>
-
-  private _hydrated = false
-
-  private _onFilterChange = (ev: Event) => {
-    this._notifications = (ev as CustomEvent<FilterChangeDetail>).detail.data as Array<Notification>
+  protected _getListClass() {
+    return 'ti-notifications__list'
   }
 
-  // Light DOM so the global `ti-*` composition styles apply to the list.
-  createRenderRoot() {
-    return this
+  protected _getEmptyClass() {
+    return 'ti-notifications__empty'
   }
 
-  connectedCallback(): void {
-    super.connectedCallback()
-
-    document.addEventListener('filter:change', this._onFilterChange)
+  protected _getEmptyMessage() {
+    return 'No hay notificaciones que coincidan con tu búsqueda.'
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback()
-
-    document.removeEventListener('filter:change', this._onFilterChange)
-  }
-
-  // Keep the server-rendered list untouched until the user interacts with the
-  // filter. `_notifications` stays undefined until the first `filter:change`.
-  shouldUpdate(): boolean {
-    return this._notifications !== undefined
-  }
-
-  // On the first client render, drop the server-rendered list so lit renders a
-  // fresh one in its place instead of appending after it.
-  protected update(changed: PropertyValues): void {
-    if (!this._hydrated) {
-      this._hydrated = true
-      this.replaceChildren()
-    }
-
-    super.update(changed)
-  }
-
-  render() {
-    return html`
-      <ul class="ti-notifications__list">
-        ${this._notifications && this._notifications.length
-          ? map(this._notifications, (notification) => this._renderNotification(notification))
-          : html`<li class="ti-notifications__empty">No hay notificaciones que coincidan con tu búsqueda.</li>`}
-      </ul>
-    `
-  }
-
-  private _renderNotification(notification: Notification) {
+  protected _renderItem(notification: Notification) {
     return html`
       <li class="ti-notifications__item">
         <div class="ti-notification-item">
@@ -83,10 +44,10 @@ export class CNotificationsList extends LitElement {
           <p class="ti-notification-item__date">${notification.date}</p>
           ${notification.confirm ? html`
             <div class="ti-notification-item__actions">
-              <e-fetch action="/api/poi.json" method="POST" color="green" size="thin">
+              <e-fetch action=${this.action} method="POST" color="green" size="thin">
                 <span>Aceptar</span>
               </e-fetch>
-              <e-fetch action="/api/poi.json" method="POST" color="red" size="thin">
+              <e-fetch action=${this.action} method="POST" color="red" size="thin">
                 <span>Rechazar</span>
               </e-fetch>
             </div>

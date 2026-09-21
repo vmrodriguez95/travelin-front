@@ -12,6 +12,8 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 // Utils
 import {
   FORM_MODIFY_FIELDS_EVENT,
+  FORM_SUBMIT_SUCCESS_EVENT,
+  POI_SELECT_EVENT,
   type FormModifyFieldsEventDetail,
   type FormSubmitSuccessEventDetail,
   type PoiSelectEventDetail
@@ -52,8 +54,8 @@ export class CPoiSaves extends LitElement {
   @query('c-form') _form!: CForm
 
   private _channel = new ChannelController(this, () => this.channel, {
-    onSelect: (detail) => this._onSelect(detail),
-    onFormSubmitSuccess: (detail) => this._onSaved(detail)
+    [POI_SELECT_EVENT]: (detail) => this._onSelect(detail),
+    [FORM_SUBMIT_SUCCESS_EVENT]: (detail) => this._onSaved(detail)
   })
 
   static styles = css`${unsafeCSS(styles)}`

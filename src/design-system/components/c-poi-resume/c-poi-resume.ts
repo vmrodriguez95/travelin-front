@@ -42,8 +42,8 @@ export class CPoiResume extends LitElement {
     this,
     () => this.channel,
     {
-      onSelect: (detail) => this._onSelectionChange(detail),
-      onClear: () => this._onSelectionClear(),
+      [POI_SELECT_EVENT]: (detail) => this._onSelectionChange(detail),
+      [POI_CLEAR_EVENT]: () => this._onSelectionClear(),
     }
   )
 

@@ -17,7 +17,8 @@ import {
   POI_CLEAR_EVENT,
   type FormModifyFieldsEventDetail,
   type GenericEventDetail,
-  type PoiSelectEventDetail
+  type PoiSelectEventDetail,
+  POI_SELECT_EVENT
 } from '@ds/utils/poi-channel.utils'
 
 // Styles
@@ -42,8 +43,8 @@ export class CPoiResumeForm extends LitElement {
     this,
     () => this.channel,
     {
-      onSelect: (detail) => this._onSelectionChange(detail),
-      onClear: () => this._onSelectionClear(),
+      [POI_SELECT_EVENT]: (detail) => this._onSelectionChange(detail),
+      [POI_CLEAR_EVENT]: () => this._onSelectionClear(),
     }
   )
 

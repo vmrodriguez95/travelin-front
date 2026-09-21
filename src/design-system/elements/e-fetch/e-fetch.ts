@@ -11,7 +11,12 @@ import type { HttpMethod } from '@ds/requests/requests.types'
 
 // Utils
 import { isSilentRequestError } from '@ds/utils/request.utils'
-import type { PoiChannelData, PoiSelectEventDetail } from '@ds/utils/poi-channel.utils'
+import {
+  POI_CLEAR_EVENT,
+  POI_SELECT_EVENT,
+  type PoiChannelData,
+  type PoiSelectEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 import styles from './e-fetch.style.scss?inline'
 
@@ -58,8 +63,8 @@ export class EFetch extends LitElement {
   private _countdownTimer = 0
 
   private _channel = new ChannelController(this, () => this.channel, {
-    onSelect: (detail) => this._onSelect(detail),
-    onClear: () => { this._selected = null }
+    [POI_SELECT_EVENT]: (detail) => this._onSelect(detail),
+    [POI_CLEAR_EVENT]: () => { this._selected = null }
   })
 
   static styles = css`${unsafeCSS(styles)}`

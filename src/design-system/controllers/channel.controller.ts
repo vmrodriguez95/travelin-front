@@ -1,52 +1,8 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit'
-import {
-  getPoiChannel,
-  POI_SELECT_EVENT,
-  POI_CLEAR_EVENT,
-  POI_HOVER_EVENT,
-  POI_HOVER_CLEAR_EVENT,
-  POI_REMOVE_EVENT,
-  POI_MOVE_EVENT,
-  DAY_HOVER_EVENT,
-  DAY_HOVER_CLEAR_EVENT,
-  DAY_ACTIVE_EVENT,
-  MENU_TOGGLE_EVENT,
-  FORM_MODIFY_FIELDS_EVENT,
-  FORM_FILL_EVENT,
-  FORM_SUBMIT_SUCCESS_EVENT,
-  TAB_SELECT_EVENT,
-  MODAL_OPEN_EVENT,
-  type PoiSelectEventDetail,
-  type GenericEventDetail,
-  type PoiHoverEventDetail,
-  type PoiRemoveEventDetail,
-  type PoiMoveEventDetail,
-  type DayHoverEventDetail,
-  type DayActiveEventDetail,
-  type MenuToggleEventDetail,
-  type FormModifyFieldsEventDetail,
-  type FormFillEventDetail,
-  type FormSubmitSuccessEventDetail,
-  type TabSelectEventDetail
-} from '@ds/utils/poi-channel.utils'
+import { getPoiChannel } from '@ds/utils/poi-channel.utils'
+import type { ChannelHandlers } from './channel.controller.types'
 
-export interface ChannelHandlers {
-  onSelect?: (detail: PoiSelectEventDetail) => void
-  onClear?: (detail: GenericEventDetail) => void
-  onHover?: (detail: PoiHoverEventDetail) => void
-  onHoverClear?: () => void
-  onRemove?: (detail: PoiRemoveEventDetail) => void
-  onMove?: (detail: PoiMoveEventDetail) => void
-  onDayHover?: (detail: DayHoverEventDetail) => void
-  onDayHoverClear?: () => void
-  onDayActive?: (detail: DayActiveEventDetail) => void
-  onMenuToggle?: (detail: MenuToggleEventDetail) => void
-  onModalOpen?: () => void
-  onFormModifyFields?: (detail: FormModifyFieldsEventDetail) => void
-  onFormFill?: (detail: FormFillEventDetail) => void
-  onFormSubmitSuccess?: (detail: FormSubmitSuccessEventDetail) => void
-  onTabSelect?: (detail: TabSelectEventDetail) => void
-}
+export type { ChannelHandlers } from './channel.controller.types'
 
 export class ChannelController implements ReactiveController {
   private getChannel: () => string
@@ -87,35 +43,25 @@ export class ChannelController implements ReactiveController {
     this._bus.dispatchEvent(new CustomEvent<T>(eventName, { ...options, detail }))
   }
 
+  // Each handler is wrapped once and listens under its own event name, so the
+  // events the channel supports are decided by the map, not by this class.
   private _connect() {
     const channel = this.getChannel()
     if (!channel) return
 
-    this._bus = getPoiChannel(channel)
+    const bus = getPoiChannel(channel)
+
+    this._bus = bus
     this._currentChannel = channel
 
-    const add = (eventName: string, handler: EventListener) => {
-      this._boundHandlers.set(eventName, handler)
-      this._bus!.addEventListener(eventName, handler)
-    }
+    Object.entries(this.handlers).forEach(([eventName, handler]) => {
+      if (!handler) return
 
-    const wrap = <T>(handler: (detail: T) => void) => (e: Event) => handler((e as CustomEvent<T>).detail)
+      const listener = (event: Event) => handler((event as CustomEvent).detail)
 
-    if (this.handlers.onSelect) add(POI_SELECT_EVENT, wrap(this.handlers.onSelect))
-    if (this.handlers.onClear) add(POI_CLEAR_EVENT, wrap(this.handlers.onClear))
-    if (this.handlers.onHover) add(POI_HOVER_EVENT, wrap(this.handlers.onHover))
-    if (this.handlers.onHoverClear) add(POI_HOVER_CLEAR_EVENT, this.handlers.onHoverClear)
-    if (this.handlers.onRemove) add(POI_REMOVE_EVENT, wrap(this.handlers.onRemove))
-    if (this.handlers.onMove) add(POI_MOVE_EVENT, wrap(this.handlers.onMove))
-    if (this.handlers.onDayHover) add(DAY_HOVER_EVENT, wrap(this.handlers.onDayHover))
-    if (this.handlers.onDayHoverClear) add(DAY_HOVER_CLEAR_EVENT, this.handlers.onDayHoverClear)
-    if (this.handlers.onDayActive) add(DAY_ACTIVE_EVENT, wrap(this.handlers.onDayActive))
-    if (this.handlers.onMenuToggle) add(MENU_TOGGLE_EVENT, wrap(this.handlers.onMenuToggle))
-    if (this.handlers.onModalOpen) add(MODAL_OPEN_EVENT, wrap(this.handlers.onModalOpen))
-    if (this.handlers.onFormModifyFields) add(FORM_MODIFY_FIELDS_EVENT, wrap(this.handlers.onFormModifyFields))
-    if (this.handlers.onFormFill) add(FORM_FILL_EVENT, wrap(this.handlers.onFormFill))
-    if (this.handlers.onFormSubmitSuccess) add(FORM_SUBMIT_SUCCESS_EVENT, wrap(this.handlers.onFormSubmitSuccess))
-    if (this.handlers.onTabSelect) add(TAB_SELECT_EVENT, wrap(this.handlers.onTabSelect))
+      this._boundHandlers.set(eventName, listener)
+      bus.addEventListener(eventName, listener)
+    })
   }
 
   private _disconnect() {
