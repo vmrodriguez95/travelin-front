@@ -10,13 +10,7 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 import { SimpleGetClient } from '@ds/requests/index'
 
 // Utils
-import { extractPdfPages } from '@ds/components/c-voucher-reader/utils/pdf.utils'
-import { renderPages } from '@ds/components/c-voucher-reader/utils/pdf-field.utils'
-import { parseGenericPdf, sanitizeDraft } from '@ds/components/c-voucher-reader/utils/pdf-generic.utils'
 import { PDF_MAX_SIZE } from '@ds/utils/variables'
-import { detectProfileId, parseWithPdfProfile } from '@ds/components/c-voucher-reader/utils/pdf-profile.utils'
-import { hotelDraftToFormFill, transportDraftToFormFill } from '@ds/components/c-voucher-reader/utils/voucher-form.utils'
-import { getPassProfileId, pkpassToTransportDraft, readPassJson } from '@ds/components/c-voucher-reader/utils/pkpass.utils'
 import { buildVoucherEndpoint } from '@ds/components/c-voucher-reader/utils/voucher-endpoint.utils'
 import { FORM_FILL_EVENT, TAB_SELECT_EVENT, type FormFillEventDetail, type TabSelectEventDetail } from '@ds/utils/poi-channel.utils'
 
@@ -25,6 +19,7 @@ import type { CModal } from '@ds/components/c-modal/c-modal'
 import type { PassJson, VendorProfile } from './types/pkpass.types'
 import type { VoucherReaderStatus } from './types/c-voucher-reader.types'
 import type { PdfProfile, PdfProfileManifestEntry } from './types/pdf-profile.types'
+import type { VoucherParsers } from './types/voucher-parsers.types'
 import type { HotelVoucherDraft, TransportVoucherDraft, VoucherDraft, VoucherErrorCode, VoucherErrors, VoucherExtension, VoucherPoiType, VoucherStatusMessages } from './types/voucher.types'
 
 // Styles
@@ -67,6 +62,9 @@ export class CVoucherReader extends LitElement {
   private _manifest: PdfProfileManifestEntry[] | null = null
 
   private _client = new SimpleGetClient({ baseUrl: window.origin })
+
+  // The parsers are loaded on the first upload and kept for the next ones.
+  private _parsers: Promise<VoucherParsers> | null = null
 
   private _channel = new ChannelController(this, () => this.channel, {})
 
@@ -150,10 +148,11 @@ export class CVoucherReader extends LitElement {
     this._processing = false
 
     try {
-      const draft = await this._readFile(file)
+      const parsers = await this._loadParsers()
+      const draft = await this._readFile(parsers, file)
       if (this._cancelled) return
 
-      this._sendToForm(draft)
+      this._sendToForm(parsers, draft)
       this._status = 'success'
     } catch (error) {
       if (this._cancelled) return
@@ -173,25 +172,35 @@ export class CVoucherReader extends LitElement {
     return this.errorMessages && code in this.errorMessages ? code as VoucherErrorCode : 'readError'
   }
 
+  private _loadParsers(): Promise<VoucherParsers> {
+    this._parsers ??= import('./utils/voucher-parsers').catch((error) => {
+      // A failed load is not kept: the next upload tries again.
+      this._parsers = null
+      throw error
+    })
+
+    return this._parsers
+  }
+
   // Sends the parsed draft to the form on the shared channel and jumps to the manual tab.
-  private _sendToForm(draft: VoucherDraft) {
+  private _sendToForm(parsers: VoucherParsers, draft: VoucherDraft) {
     const data = draft.type === 'poi_hotel'
-      ? hotelDraftToFormFill(draft as HotelVoucherDraft)
-      : transportDraftToFormFill(draft as TransportVoucherDraft)
+      ? parsers.hotelDraftToFormFill(draft as HotelVoucherDraft)
+      : parsers.transportDraftToFormFill(draft as TransportVoucherDraft)
 
     this._channel.dispatch<FormFillEventDetail>(FORM_FILL_EVENT, { data, source: this })
     this._channel.dispatch<TabSelectEventDetail>(TAB_SELECT_EVENT, { index: 1, source: this })
   }
 
-  private async _readFile(file: File): Promise<VoucherDraft> {
+  private async _readFile(parsers: VoucherParsers, file: File): Promise<VoucherDraft> {
     const extension = file.name.split('.').pop()?.toLowerCase()
 
     if (extension === 'pkpass') {
-      return this._readPkpass(file, extension)
+      return this._readPkpass(parsers, file, extension)
     }
 
     if (extension === 'pdf') {
-      return this._readPdf(file, extension)
+      return this._readPdf(parsers, file, extension)
     }
 
     throw new Error('invalidFile')
@@ -204,8 +213,8 @@ export class CVoucherReader extends LitElement {
     return buildVoucherEndpoint(this.endpoint, { id, poiType: this.poiType, extension })
   }
 
-  private async _readPkpass(file: File, extension: VoucherExtension): Promise<VoucherDraft> {
-    const pass = await readPassJson(file)
+  private async _readPkpass(parsers: VoucherParsers, file: File, extension: VoucherExtension): Promise<VoucherDraft> {
+    const pass = await parsers.readPassJson(file)
 
     if (this.poiType === 'poi_hotel') {
       // TODO: Recopilar más información sobre los pkpass de los hoteles para implementarlos.
@@ -214,14 +223,14 @@ export class CVoucherReader extends LitElement {
     //   return pkpassToHotelDraft(pass)
     }
 
-    const profile = await this._fetchProfile(pass, extension)
-    return pkpassToTransportDraft(pass, profile)
+    const profile = await this._fetchProfile(parsers, pass, extension)
+    return parsers.pkpassToTransportDraft(pass, profile)
   }
 
   // Asks the backend for the vendor profile matching this pass's organization.
   // Any miss (no org, unknown vendor → 404, or a request error) falls back to generic parsing.
-  private async _fetchProfile(pass: PassJson, extension: VoucherExtension): Promise<VendorProfile | null> {
-    const id = getPassProfileId(pass)
+  private async _fetchProfile(parsers: VoucherParsers, pass: PassJson, extension: VoucherExtension): Promise<VendorProfile | null> {
+    const id = parsers.getPassProfileId(pass)
     const url = id ? this._profileUrl(id, extension) : ''
     if (!url) return null
 
@@ -233,13 +242,13 @@ export class CVoucherReader extends LitElement {
     }
   }
 
-  private async _readPdf(file: File, extension: VoucherExtension): Promise<VoucherDraft> {
+  private async _readPdf(parsers: VoucherParsers, file: File, extension: VoucherExtension): Promise<VoucherDraft> {
     if (file.size > PDF_MAX_SIZE) {
       throw new Error('fileTooLarge')
     }
 
-    const pages = await extractPdfPages(file)
-    const text = renderPages(pages)
+    const pages = await parsers.extractPdfPages(file)
+    const text = parsers.renderPages(pages)
 
     // No text layer at all: the PDF is a scan, and there is nothing to read.
     if (!text) {
@@ -248,27 +257,27 @@ export class CVoucherReader extends LitElement {
 
     this._processing = true
 
-    const profile = await this._fetchPdfProfile(text, extension)
+    const profile = await this._fetchPdfProfile(parsers, text, extension)
 
     // A known vendor is read by its profile; anything else falls back to the
     // generic parser, which fills what it recognises and leaves the rest for
     // the user to correct.
-    return sanitizeDraft(profile
-      ? parseWithPdfProfile(pages, text, profile)
-      : parseGenericPdf(pages, text, this.poiType))
+    return parsers.sanitizeDraft(profile
+      ? parsers.parseWithPdfProfile(pages, text, profile)
+      : parsers.parseGenericPdf(pages, text, this.poiType))
   }
 
   // Recognises the vendor against the backend manifest, then asks for that
   // profile. The requested id always comes from the manifest, never from the
   // document, so a crafted PDF cannot steer which resource gets fetched.
   // Any miss (unknown vendor → 404, or a request error) falls back to generic.
-  private async _fetchPdfProfile(text: string, extension: VoucherExtension): Promise<PdfProfile | null> {
+  private async _fetchPdfProfile(parsers: VoucherParsers, text: string, extension: VoucherExtension): Promise<PdfProfile | null> {
     if (!this.endpoint) return null
 
     try {
       this._manifest ??= (await this._client.get<{ data: PdfProfileManifestEntry[] }>(this._profileUrl('manifest', extension))).data ?? []
 
-      const id = detectProfileId(text, this._manifest)
+      const id = parsers.detectProfileId(text, this._manifest)
       if (!id) return null
 
       const response = await this._client.get<{ data: PdfProfile | null }>(this._profileUrl(id, extension))

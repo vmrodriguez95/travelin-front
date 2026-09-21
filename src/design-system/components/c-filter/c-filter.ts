@@ -5,9 +5,13 @@ import { map } from 'lit/directives/map.js'
 // Types
 import type { Filter, FilterChangeDetail } from './c-filter.types'
 
+// Requests
+import { SimpleGetClient } from '@ds/requests/index.ts'
+
 // Utils
 import { debounce } from '../../utils/action.utils.ts'
 import { filterCollection } from '../../utils/filter.utils.ts'
+import { isSilentRequestError } from '../../utils/request.utils.ts'
 
 // Styles
 import styles from './c-filter.style.scss?inline'
@@ -27,9 +31,12 @@ export class CFilter extends LitElement {
 
   private _items: Array<Record<string, unknown>> = []
 
-  private _loaded = false
+  // The dataset is fetched once. Every caller awaits the same promise, so a
+  // second keystroke during the load waits for the data instead of filtering
+  // an empty list.
+  private _loadPromise: Promise<void> | null = null
 
-  private _loading = false
+  private _client = new SimpleGetClient()
 
   private _abort?: AbortController
 
@@ -41,6 +48,13 @@ export class CFilter extends LitElement {
     super.connectedCallback()
 
     this.active = this.getDefaultFilter()
+  }
+
+  disconnectedCallback(): void {
+    this._abort?.abort()
+    this._abort = undefined
+
+    super.disconnectedCallback()
   }
 
   render() {
@@ -92,34 +106,31 @@ export class CFilter extends LitElement {
 
   // Fetches the dataset once, lazily, on the first user interaction. The list
   // is never touched on page load — only when the user searches or filters.
-  private async _load() {
-    if (this._loaded || this._loading || !this.api) return
+  private _load(): Promise<void> {
+    if (!this.api) return Promise.resolve()
 
-    this._loading = true
+    this._loadPromise ??= this._fetchItems()
 
+    return this._loadPromise
+  }
+
+  private async _fetchItems() {
     const controller = new AbortController()
     this._abort = controller
 
     try {
-      const response = await fetch(this.api, {
-        headers: { 'Accept': 'application/json' },
-        signal: controller.signal
-      })
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-
-      const json = await response.json()
+      const json = await this._client.get<{ data?: unknown }>(this.api, '', controller.signal)
 
       this._items = Array.isArray(json?.data) ? json.data : []
-      this._loaded = true
     } catch (e: unknown) {
-      if ((e as Error)?.name === 'AbortError') return
+      // A failed load is not cached: the next interaction tries again.
+      this._loadPromise = null
+
+      if (isSilentRequestError(e)) return
 
       console.error(e)
       this._items = []
     } finally {
-      this._loading = false
-
       if (this._abort === controller) this._abort = undefined
     }
   }

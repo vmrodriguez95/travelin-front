@@ -22,7 +22,8 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 import {
   POI_CLEAR_EVENT,
   type GenericEventDetail,
-  type PoiSelectEventDetail
+  type PoiSelectEventDetail,
+  POI_SELECT_EVENT
 } from '@ds/utils/poi-channel.utils'
 
 // Mixins
@@ -52,8 +53,8 @@ export class CPoiDetail extends Responsive(LitElement) {
     this,
     () => this.channel,
     {
-      onSelect: (detail) => this._onSelectionChange(detail),
-      onClear: () => this._onSelectionClear(),
+      [POI_SELECT_EVENT]: (detail) => this._onSelectionChange(detail),
+      [POI_CLEAR_EVENT]: () => this._onSelectionClear(),
     }
   )
 

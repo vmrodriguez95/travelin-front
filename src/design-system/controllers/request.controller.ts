@@ -1,10 +1,11 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit'
-import { SimpleGetClient } from '@ds/requests/index.ts'
+import { StaleResponseError } from '@ds/requests/requests.error.ts'
+import type { GetClient } from '@ds/requests/requests.types.ts'
 
 export class SimpleRequestController implements ReactiveController {
 
   private host: ReactiveControllerHost
-  private client: SimpleGetClient
+  private client: GetClient
 
   private abortController?: AbortController
   private requestId = 0
@@ -15,7 +16,7 @@ export class SimpleRequestController implements ReactiveController {
 
   loading = false
 
-  constructor(host: ReactiveControllerHost, client: SimpleGetClient) {
+  constructor(host: ReactiveControllerHost, client: GetClient) {
     this.host = host
     this.client = client
     host.addController(this)
@@ -61,7 +62,7 @@ export class SimpleRequestController implements ReactiveController {
       const data = await this.client.get<T>(path, query, this.abortController.signal)
 
       if (currentRequestId !== this.requestId) {
-        throw new Error('Stale response ignored')
+        throw new StaleResponseError()
       }
 
       this.cache.set(cacheKey, data)

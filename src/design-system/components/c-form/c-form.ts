@@ -5,37 +5,55 @@ import { when } from 'lit/directives/when.js'
 import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-// Utils
-import { printDateTime } from '@ds/utils/date.utils'
-
 // Types
 import type {
   FormBlock,
   FormSchema,
   FormSection,
-  FileFormField,
-  DateFormField,
   BasicFormField,
   SearchFormField,
-  SelectFormField,
-  FieldDependency,
-  FormArraySection,
-  CalendarFormField,
-  CheckboxGroupFormField
+  FormArraySection
 } from './c-form.types'
-import type { SelectOption } from './c-form.types'
 import type { EInputSearch } from '@ds/elements/e-input-search/e-input-search'
+
+// Renderers
+import { FieldRendererRegistry, type FieldRenderContext } from './renderers'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
-import { FORM_SUBMIT_SUCCESS_EVENT } from '@ds/utils/poi-channel.utils'
-import type { FormFillEventDetail, FormModifyFieldsEventDetail, FormSubmitSuccessEventDetail } from '@ds/utils/poi-channel.utils'
+
+// Utils
+import { printDateTime } from '@ds/utils/date-format.utils'
+import { FormDependencyResolver } from '@ds/utils/form-dependency.utils'
+import { applyFieldUpdates, blockHasAnyValue, createBlock, fillEntry } from '@ds/utils/form-fill.utils'
+import {
+  getFieldValue,
+  getSiblingValue,
+  isArraySection,
+  isRenderableEntry,
+  isSubSection,
+  joinBreadcrumbsWithName,
+  setFieldValue,
+  setSiblingValue,
+  type FormEntry
+} from '@ds/utils/form-schema.utils'
+import {
+  FORM_FILL_EVENT,
+  FORM_MODIFY_FIELDS_EVENT,
+  FORM_SUBMIT_SUCCESS_EVENT,
+  type FormFillEventDetail,
+  type FormModifyFieldsEventDetail,
+  type FormSubmitSuccessEventDetail
+} from '@ds/utils/poi-channel.utils'
 
 // Requests
 import { SimpleFormClient } from '@ds/requests/form-client'
 
 import styles from './c-form.style.scss?inline'
 
+// Renders a schema as a form. Each field type is painted by its renderer
+// (`renderers/`); this class owns the layout of sections and repeaters, the
+// user's edits to the schema, and the submit.
 @customElement('c-form')
 export class CForm extends LitElement {
 
@@ -72,20 +90,21 @@ export class CForm extends LitElement {
 
   private _internals: ElementInternals
 
-  private _dependencies: Array<FieldDependency> = []
-
   private _client = new SimpleFormClient()
 
   private _pristineData!: FormSchema
 
   private _workingData: FormSchema | null = null
 
+  // Rebuilt on every render, so dependency lookups are cached for one paint.
+  private _dependencies!: FormDependencyResolver
+
   private _channel = new ChannelController(
     this,
     () => this.channel,
     {
-      onFormModifyFields: (detail) => this._onFormModifyFields(detail),
-      onFormFill: (detail) => this._onFormFill(detail)
+      [FORM_MODIFY_FIELDS_EVENT]: (detail) => this._onFormModifyFields(detail),
+      [FORM_FILL_EVENT]: (detail) => this._onFormFill(detail)
     }
   )
 
@@ -116,6 +135,8 @@ export class CForm extends LitElement {
       'c-form--modal': this.modal
     })
 
+    this._dependencies = new FormDependencyResolver(this.data.sections)
+
     return html`
       <form class=${classes} action=${this.action} method=${this.method} enctype=${this.enctype} @submit=${this._onSubmit}>
         ${this._printSections(this.data.sections)}
@@ -127,22 +148,7 @@ export class CForm extends LitElement {
     `
   }
 
-  private _getFieldClasses(field: BasicFormField) {
-    return classMap({
-      'c-form__field': true,
-      'c-form__field--full': field.fieldSize === 'full'
-    })
-  }
-
-  private _getFieldValue(field: BasicFormField) {
-    return field.value ?? field.fillValue ?? ''
-  }
-
-  private _isRenderableSectionEntry(
-    value: FormBlock[string]
-  ): value is BasicFormField | FormSection | FormArraySection {
-    return typeof value === 'object' && value !== null
-  }
+  // Submit
 
   private _isValid() {
     let isValid = true
@@ -207,24 +213,21 @@ export class CForm extends LitElement {
     this.data = this._workingData
   }
 
+  // Edits
+
   private _onChange(ev: CustomEvent, field: BasicFormField, block?: FormBlock) {
     switch (field.type) {
       case 'calendar':
-        field.value = ev.detail
-        field.fillValue = ev.detail
+        setFieldValue(field, ev.detail)
         break
       case 'search':
         const searchInput = ev.currentTarget as EInputSearch
 
-        field.value = searchInput.value
-        field.fillValue = searchInput.value
+        setFieldValue(field, searchInput.value)
         this._syncSearchSiblings(field as SearchFormField, searchInput, block)
         break
       default:
-        const defaultTarget = ev.currentTarget as HTMLInputElement
-
-        field.value = defaultTarget.value
-        field.fillValue = defaultTarget.value
+        setFieldValue(field, (ev.currentTarget as HTMLInputElement).value)
     }
 
     this.requestUpdate()
@@ -237,32 +240,9 @@ export class CForm extends LitElement {
   private _syncSearchSiblings(field: SearchFormField, input: EInputSearch, block?: FormBlock) {
     if (!block) return
 
-    this._setSiblingValue(block, field.placeIdField, input.placeId)
+    setSiblingValue(block, field.placeIdField, input.placeId)
 
-    field.resetFields?.forEach((key) => this._setSiblingValue(block, key, ''))
-  }
-
-  private _getSiblingValue(block: FormBlock | undefined, key: string | undefined): string {
-    if (!block || !key) return ''
-
-    const sibling = block[key]
-
-    if (!this._isRenderableSectionEntry(sibling) || 'fields' in sibling || 'schema' in sibling) return ''
-
-    return String(this._getFieldValue(sibling as BasicFormField) ?? '')
-  }
-
-  private _setSiblingValue(block: FormBlock, key: string | undefined, value: string) {
-    if (!key) return
-
-    const sibling = block[key]
-
-    if (!this._isRenderableSectionEntry(sibling) || 'fields' in sibling || 'schema' in sibling) return
-
-    const target = sibling as BasicFormField
-
-    target.value = value
-    target.fillValue = value
+    field.resetFields?.forEach((key) => setSiblingValue(block, key, ''))
   }
 
   private _onFormModifyFields(detail: FormModifyFieldsEventDetail) {
@@ -270,180 +250,33 @@ export class CForm extends LitElement {
 
     if (!updates || !Object.keys(updates).length) return
 
-    Object.values(this.data.sections).forEach((section) => this._applyFieldUpdates(section, updates))
+    Object.values(this.data.sections).forEach((section) => applyFieldUpdates(section, updates))
 
     this.requestUpdate()
   }
 
-  private _applyFieldUpdates(entry: BasicFormField | FormSection | FormArraySection, updates: Record<string, string>) {
-    if ('schema' in entry) {
-      (entry as FormArraySection).fields?.forEach((block) => this._applyBlockUpdates(block, updates))
-      return
-    }
-
-    if ('fields' in entry) {
-      this._applyBlockUpdates((entry as FormSection).fields, updates)
-      return
-    }
-
-    const field = entry as BasicFormField
-
-    if (field.name in updates) {
-      field.value = updates[field.name]
-      field.fillValue = updates[field.name]
-    }
-  }
-
-  private _applyBlockUpdates(block: FormBlock, updates: Record<string, string>) {
-    Object.entries(block).forEach(([key, entry]) => {
-      if (key === 'randomId' || !this._isRenderableSectionEntry(entry)) return
-
-      this._applyFieldUpdates(entry, updates)
-    })
-  }
-
-  // Structured fill: the payload mirrors the schema (section keys + field names),
-  // so repeater arrays (segments, passengers) are rebuilt block by block.
   private _onFormFill(detail: FormFillEventDetail) {
     const data = detail.data
 
     if (!data || !Object.keys(data).length) return
 
     Object.entries(this.data.sections).forEach(([key, section]) => {
-      if (key in data) this._fillEntry(section, (data as Record<string, unknown>)[key])
+      if (key in data) fillEntry(section, (data as Record<string, unknown>)[key])
     })
 
     this.requestUpdate()
   }
 
-  private _fillEntry(entry: BasicFormField | FormSection | FormArraySection, value: unknown) {
-    if (value == null) return
-
-    if ('schema' in entry) {
-      const section = entry as FormArraySection
-      const items = Array.isArray(value) ? value : []
-
-      section.fields = items.map((item) => {
-        const block = window.structuredClone(section.schema)
-        block.randomId = crypto.randomUUID()
-        this._fillBlock(block, item as Record<string, unknown>)
-        return block
-      })
-      return
-    }
-
-    if ('fields' in entry) {
-      this._fillBlock((entry as FormSection).fields, value as Record<string, unknown>)
-      return
-    }
-
-    this._setFilledValue(entry as BasicFormField, value)
-  }
-
-  private _fillBlock(block: FormBlock, values: Record<string, unknown>) {
-    if (!values || typeof values !== 'object') return
-
-    Object.entries(block).forEach(([key, entry]) => {
-      if (key === 'randomId' || !this._isRenderableSectionEntry(entry) || !(key in values)) return
-
-      this._fillEntry(entry, values[key])
-    })
-  }
-
-  private _setFilledValue(field: BasicFormField, value: unknown) {
-    // A calendar is filled with a structured range ({ dateStart, dateEnd }), but
-    // e-calendar paints and submits from its own `start`/`end`, so the range has
-    // to be mapped onto those. The keys come from the field's own
-    // `returnedValues`, which is the same contract e-calendar submits under.
-    if (field.type === 'calendar') {
-      const calendar = field as CalendarFormField
-      const [startKey, endKey] = calendar.returnedValues ?? []
-      const range = (value ?? {}) as Record<string, string>
-
-      // Drafts carry full ISO datetimes; the calendar matches days as
-      // "YYYY-MM-DD", so an unsliced value would never match a rendered day.
-      calendar.start = (range[startKey] ?? '').slice(0, 10)
-      calendar.end = (range[endKey] ?? '').slice(0, 10)
-      calendar.value = calendar.start
-      calendar.fillValue = calendar.start
-      return
-    }
-
-    // Array values (e.g. coordinates) are carried as-is; hidden fields serialize them to JSON.
-    if (Array.isArray(value)) {
-      field.fillValue = value as unknown as Array<string>
-      return
-    }
-
-    const stringValue = value == null ? '' : String(value)
-
-    switch (field.type) {
-      // A search field needs no special case: it submits its own text, so a
-      // voucher fills it exactly like any other field and the user only reviews
-      // it. Its sibling `placeId` stays empty until the user picks an option,
-      // which is what tells the backend to resolve the place by text instead.
-      case 'date':
-      case 'time':
-      case 'datetime-local':
-        field.value = stringValue.slice(0, 16)
-        field.fillValue = field.value
-        break
-      default:
-        field.value = stringValue
-        field.fillValue = stringValue
-    }
-  }
+  // Repeater blocks
 
   private _addNewBlock(section: FormArraySection) {
     if (!section.fields) {
       section.fields = []
     }
 
-    const newBlock = window.structuredClone(section.schema)
-
-    newBlock.randomId = crypto.randomUUID()
-
-    section.fields.push(newBlock)
+    section.fields.push(createBlock(section))
     section.editingElementIdx = section.fields.length - 1
     this.requestUpdate()
-  }
-
-  private _hasArrayFields(field: FormArraySection) {
-    return Array.isArray(field.fields) && field.fields.length > 0
-  }
-
-  private _hasFieldsWithValues(section: FormSection) {
-    if ('fields' in section && !Array.isArray(section.fields)) {
-      const fields = section.fields as FormBlock
-
-      for (const [_, field] of Object.entries(fields)) {
-        const basicField = field as BasicFormField
-
-        if ('value' in basicField && basicField.value !== '' || basicField.fillValue) {
-          return true
-        }
-      }
-    }
-
-    return false
-  }
-
-  private _hasAnyValue(block: FormBlock): boolean {
-    for (const [key, field] of Object.entries(block)) {
-      if (key !== 'randomId') {
-        const basicField = field as BasicFormField
-
-        if (
-          ('value' in basicField && basicField.value !== '' || basicField.fillValue) ||
-          this._hasArrayFields(field as FormArraySection) ||
-          this._hasFieldsWithValues(field as FormSection)
-        ) {
-          return true
-        }
-      }
-    }
-
-    return false
   }
 
   // Validates only the block being collapsed. Its fields live in this same
@@ -470,7 +303,7 @@ export class CForm extends LitElement {
 
     // A block the user added and never filled in is discarded rather than
     // validated: there is nothing to keep, and nothing to complain about.
-    if (block && !this._hasAnyValue(block)) {
+    if (block && !blockHasAnyValue(block)) {
       section.fields?.splice(index, 1)
       delete section.editingElementIdx
 
@@ -498,339 +331,37 @@ export class CForm extends LitElement {
     this.requestUpdate()
   }
 
-  private joinBreadcrumbsWithName(name: string, breadcrumbs: string) {
-    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const regex = new RegExp(`\\[?${escaped}\\]?$`)
+  // Rendering
 
-    if (breadcrumbs && !regex.test(breadcrumbs)) {
-      return `${breadcrumbs}[${name}]`
-    }
-
-    if (breadcrumbs && regex.test(breadcrumbs)) {
-      return breadcrumbs
-    }
-
-    return name
+  private _getFieldClasses(field: BasicFormField) {
+    return classMap({
+      'c-form__field': true,
+      'c-form__field--full': field.fieldSize === 'full'
+    })
   }
 
-  private _normalizeSelectOption(value: string): SelectOption {
+  // What a renderer may ask for while painting one field.
+  private _getRenderContext(name: string, block?: FormBlock): FieldRenderContext {
     return {
-      value,
-      label: value
+      name,
+      block,
+      classes: (field) => this._getFieldClasses(field),
+      value: (field) => getFieldValue(field),
+      siblingValue: (key) => getSiblingValue(block, key),
+      dependencyValues: (field) => this._dependencies.valuesFor(field),
+      selectOptions: (field) => this._dependencies.selectOptionsFor(field),
+      onChange: (ev, field) => this._onChange(ev, field, block)
     }
   }
-
-  private _dedupeSelectOptions(options: Array<SelectOption>) {
-    const seen = new Set<string>()
-
-    return options.filter((option) => {
-      const key = `${String(option.value)}::${option.label}`
-
-      if (!String(option.value) || seen.has(key)) {
-        return false
-      }
-
-      seen.add(key)
-      return true
-    })
-  }
-
-  private _collectValuesFromDependency(node: unknown, pathParts: Array<string>): string[] {
-    if (!node) return []
-
-    if (pathParts.length === 0) {
-      if (typeof node === 'string') {
-        return node ? [node] : []
-      }
-
-      if (typeof node === 'object' && 'value' in node) {
-        const field = node as BasicFormField
-        const value = this._getFieldValue(field)
-
-        return typeof value === 'string' && value ? [value] : []
-      }
-
-      return []
-    }
-
-    const [currentPart, ...rest] = pathParts
-
-    if (Array.isArray(node)) {
-      return node.flatMap((item) => this._collectValuesFromDependency(item, pathParts))
-    }
-
-    if (typeof node !== 'object') {
-      return []
-    }
-
-    const record = node as Record<string, unknown>
-
-    if (currentPart in record) {
-      return this._collectValuesFromDependency(record[currentPart], rest)
-    }
-
-    if ('fields' in record) {
-      return this._collectValuesFromDependency(record.fields, pathParts)
-    }
-
-    return []
-  }
-
-  private _getDependencyOptions(field: BasicFormField) {
-    const dependsOn = field.dependsOn || []
-
-    if (!dependsOn.length) return []
-
-    const dependencyValues = dependsOn.flatMap((dependencyPath) => {
-      return this._collectValuesFromDependency(this.data.sections, dependencyPath.split('.'))
-    })
-
-    return this._dedupeSelectOptions(
-      dependencyValues.map((value) => this._normalizeSelectOption(value))
-    )
-  }
-
-  private _getSelectFieldOptions(field: SelectFormField) {
-    const declaredOptions = field.options || []
-    const dependencyOptions = this._getDependencyOptions(field)
-
-    return this._dedupeSelectOptions([...declaredOptions, ...dependencyOptions])
-  }
-
-  private _getDependencyValues(field: BasicFormField) {
-    const dependsOn = field.dependsOn || []
-
-    if (!dependsOn.length) return []
-
-    return dependsOn.flatMap((dependencyPath) => {
-      return this._collectValuesFromDependency(this.data.sections, dependencyPath.split('.'))
-    })
-  }
-
-  private _getDateTimeFormat(date: string = '') {
-    if (!date) return ''
-
-    return printDateTime(date)
-  }
-    
 
   private _printField(field: BasicFormField, breadcrumbs: string, block?: FormBlock): TemplateResult {
-    const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
+    const renderer = FieldRendererRegistry.get(field.type)
 
-    if ('dependsOn' in field) {
-      this._dependencies.push({
-        field: field.id,
-        dependsOn: field.dependsOn,
-        isRegistered: false
-      })
-    }
+    if (!renderer) return html`<p>Campo no registrado</p>`
 
-    switch(field.type) {
-      case 'hidden':
-        return html`
-          <input type="hidden" name=${name} value=${Array.isArray(field.fillValue) ? JSON.stringify(field.fillValue) : field.fillValue} />
-        `
+    const name = joinBreadcrumbsWithName(field.name, breadcrumbs)
 
-      case 'text':
-      case 'email':
-      case 'password':
-      case 'number':
-        const dependencyValues = this._getDependencyValues(field)
-        const compareValue = field.type === 'password' ? dependencyValues[0] || '' : ''
-
-        return html`
-          <e-input
-            class=${this._getFieldClasses(field)}
-            id=${field.id}
-            name=${name}
-            label=${field.label}
-            type=${field.type}
-            helpmsg=${field.helpmsg}
-            .a11y=${field.a11y ?? {}}
-            .messages=${field.messages ?? {}}
-            .minlength=${field.minLength || 0}
-            .maxlength=${field.maxLength || 255}
-            ?required=${field.required}
-            ?readonly=${field.readonly}
-            .value=${this._getFieldValue(field)}
-            compareValue=${compareValue}
-            placeholder=${field.placeholder}
-            @input=${(ev: CustomEvent) => this._onChange(ev, field)}
-          ></e-input>
-        `
-
-      case 'textarea':
-        return html`
-          <e-textarea
-            class=${this._getFieldClasses(field)}
-            id=${field.id}
-            name=${name}
-            label=${field.label}
-            helpmsg=${field.helpmsg}
-            .messages=${field.messages ?? {}}
-            ?autofocus=${field.autofocus}
-            ?required=${field.required}
-            ?readonly=${field.readonly}
-            value=${this._getFieldValue(field)}
-            @input=${(ev: CustomEvent) => this._onChange(ev, field)}
-          ></e-textarea>
-        `
-
-      case 'select':
-        const fieldSelect = field as SelectFormField
-        fieldSelect.options = this._getSelectFieldOptions(fieldSelect)
-
-        return html`
-          <e-select
-            class=${this._getFieldClasses(fieldSelect)}
-            id=${fieldSelect.id}
-            name=${name}
-            label=${fieldSelect.label}
-            type=${fieldSelect.type}
-            helpmsg=${fieldSelect.helpmsg}
-            .messages=${field.messages ?? {}}
-            default=${fieldSelect.default}
-            .options=${fieldSelect.options}
-            ?required=${fieldSelect.required}
-            ?readonly=${fieldSelect.readonly}
-            .value=${this._getFieldValue(fieldSelect)}
-            @change=${(ev: CustomEvent) => this._onChange(ev, field)}
-          ></e-select>
-        `
-
-      case 'file':
-        const fieldFile = field as FileFormField
-
-        return html`
-          <e-input-file
-            class=${this._getFieldClasses(fieldFile)}
-            id=${fieldFile.id}
-            name=${name}
-            label=${fieldFile.label}
-            type=${fieldFile.type}
-            helpmsg=${fieldFile.helpmsg}
-            .messages=${field.messages ?? {}}
-            ?required=${fieldFile.required}
-            ?readonly=${fieldFile.readonly}
-            value=${fieldFile.fillValue}
-            extensions=${fieldFile.file.extensions}
-            size=${fieldFile.file.maxSize}
-            ?multiple=${fieldFile.file.multiple}
-            .a11y=${fieldFile.a11y ?? {}}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldFile)}
-          ></e-input-file>
-        `
-
-      case 'search':
-        const fieldSearch = field as SearchFormField
-
-        return html`
-          <e-input-search
-            class=${this._getFieldClasses(fieldSearch)}
-            id=${fieldSearch.id}
-            api=${fieldSearch.api}
-            name=${name}
-            label=${fieldSearch.label}
-            helpmsg=${fieldSearch.helpmsg}
-            .messages=${field.messages ?? {}}
-            ?required=${fieldSearch.required}
-            ?readonly=${fieldSearch.readonly}
-            .value=${this._getFieldValue(fieldSearch)}
-            placeId=${this._getSiblingValue(block, fieldSearch.placeIdField)}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldSearch, block)}
-          ></e-input-search>
-        `
-
-      case 'icon':
-        return html`
-          <e-input-icon
-            class=${this._getFieldClasses(field)}
-            id=${field.id}
-            name=${name}
-            label=${field.label}
-            helpmsg=${field.helpmsg}
-            .messages=${field.messages ?? {}}
-            .value=${this._getFieldValue(field)}
-            .a11y=${field.a11y ?? {}}
-            ?required=${field.required}
-            ?readonly=${field.readonly}
-            @change=${(ev: CustomEvent) => this._onChange(ev, field)}
-          ></e-input-icon>
-        `
-
-      case 'checkbox-group':
-        const fieldCheckboxGroup = field as CheckboxGroupFormField
-        const checkedValues = this._getFieldValue(fieldCheckboxGroup)
-
-        return html`
-          <e-checkbox-group
-            class=${this._getFieldClasses(fieldCheckboxGroup)}
-            id=${fieldCheckboxGroup.id}
-            name=${name}
-            label=${fieldCheckboxGroup.label}
-            helpmsg=${fieldCheckboxGroup.helpmsg}
-            .messages=${field.messages ?? {}}
-            .options=${fieldCheckboxGroup.options ?? []}
-            .value=${Array.isArray(checkedValues) ? checkedValues : []}
-            .a11y=${fieldCheckboxGroup.a11y ?? {}}
-            ?canAdd=${fieldCheckboxGroup.canAdd}
-            addLabel=${fieldCheckboxGroup.addLabel ?? ''}
-            nameLabel=${fieldCheckboxGroup.nameLabel ?? ''}
-            namePlaceholder=${fieldCheckboxGroup.namePlaceholder ?? ''}
-            ?required=${fieldCheckboxGroup.required}
-            ?readonly=${fieldCheckboxGroup.readonly}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldCheckboxGroup)}
-          ></e-checkbox-group>
-        `
-
-      case 'calendar':
-        const fieldCalendar = field as CalendarFormField
-
-        return html`
-          <e-calendar
-            class=${this._getFieldClasses(fieldCalendar)}
-            id=${fieldCalendar.id}
-            name=${name}
-            label=${fieldCalendar.label}
-            type=${fieldCalendar.type}
-            helpmsg=${fieldCalendar.helpmsg}
-            .messages=${field.messages ?? {}}
-            start=${fieldCalendar.start}
-            end=${fieldCalendar.end}
-            min=${fieldCalendar.min || ''}
-            max=${fieldCalendar.max || ''}
-            ?required=${fieldCalendar.required}
-            ?readonly=${fieldCalendar.readonly}
-            .returnedValues=${fieldCalendar.returnedValues}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldCalendar)}
-          ></e-calendar>
-        `
-      case 'date':
-      case 'time':
-      case 'datetime-local':
-        const fieldDate = field as DateFormField
-
-        return html`
-          <e-input-date
-            class=${this._getFieldClasses(fieldDate)}
-            id=${fieldDate.id}
-            name=${name}
-            label=${fieldDate.label}
-            helpmsg=${fieldDate.helpmsg}
-            .messages=${field.messages ?? {}}
-            type=${fieldDate.type}
-            min=${fieldDate.min}
-            max=${fieldDate.max}
-            .value=${this._getFieldValue(fieldDate)}
-            ?required=${fieldDate.required}
-            ?readonly=${fieldDate.readonly}
-            @change=${(ev: CustomEvent) => this._onChange(ev, fieldDate)}
-          ></e-input-date>
-        `
-
-      default:
-        return html`<p>Campo no registrado</p>`
-    }
+    return renderer.render(field, this._getRenderContext(name, block))
   }
 
   private _printArraySection(fieldBlock: FormBlock, section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string, index: number): TemplateResult {
@@ -848,7 +379,7 @@ export class CForm extends LitElement {
           ${map(Object.keys(fieldBlock), (key: string) => {
             const entry = fieldBlock[key]
 
-            if (key !== 'randomId' && this._isRenderableSectionEntry(entry)) {
+            if (key !== 'randomId' && isRenderableEntry(entry)) {
               return this._printSection(entry, `${breadcrumbs}[${index}][${key}]`, fieldBlock)
             }
 
@@ -869,7 +400,7 @@ export class CForm extends LitElement {
         ${map(Object.keys(fields), (key: string) => {
           const entry = fields[key]
 
-          if (this._isRenderableSectionEntry(entry)) {
+          if (isRenderableEntry(entry)) {
             return this._printSection(entry, breadcrumbs ? `${breadcrumbs}[${key}]` : `${key}`, fields)
           }
 
@@ -881,22 +412,15 @@ export class CForm extends LitElement {
 
   private _printResumeValue(field: BasicFormField, breadcrumbs: string): TemplateResult {
     const value = field.value || field.fillValue
-    const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
+    const name = joinBreadcrumbsWithName(field.name, breadcrumbs)
 
     if (field.showInResume) {
+      const text = field.type === 'datetime-local' ? printDateTime(String(value ?? '')) : value
 
-      switch(field.type) {
-        case 'datetime-local':
-          return html`
-            <p class="c-form__text">${this._getDateTimeFormat(value as string)}</p>
-            <input type="hidden" name=${name} value=${value} />
-          `
-        default:
-          return html`
-            <p class="c-form__text">${value}</p>
-            <input type="hidden" name=${name} value=${value} />
-          `
-      }
+      return html`
+        <p class="c-form__text">${text}</p>
+        <input type="hidden" name=${name} value=${value} />
+      `
     }
 
     return html`<input type="hidden" name=${name} value=${value} />`
@@ -907,42 +431,11 @@ export class CForm extends LitElement {
     return html`
       <div class="c-form__resume">
         ${map(Object.keys(fieldBlock), (key: string) => {
-          const entry = fieldBlock[key] as BasicFormField | FormSection | FormArraySection
+          const entry = fieldBlock[key]
 
-          if (key !== 'randomId' && !('fields' in entry) && !('schema' in entry)) {
-            // Si es un campo
-            return this._printResumeValue(entry, `${breadcrumbs}[${index}]`)
-          } else if (key !== 'randomId' && 'fields' in entry && !Array.isArray(entry.fields)) {
-            // Si es un FormSection
-            const fields = entry.fields as FormBlock
+          if (key === 'randomId' || !isRenderableEntry(entry)) return ''
 
-            return html`${map(Object.keys(fields), (subkey: string) => {
-              return this._printResumeValue(fields[subkey] as BasicFormField, `${breadcrumbs}[${index}][${key}]`)
-            })}`
-          } else if (key !== 'randomId' && 'fields' in entry && Array.isArray(entry.fields)) {
-            // Si es un FormArraySection
-            const fields = entry.fields as Array<FormBlock>
-
-            return html`
-              ${'resumeLabel' in entry ? html`
-                <p class="c-form__text">${fields.length} ${entry.resumeLabel?.toLowerCase()}</p>
-              ` : ''}
-
-              ${map(fields, (fieldBlock: FormBlock, subindex: number) =>
-                map(Object.keys(fieldBlock), (subkey: string) =>
-                  when(subkey !== 'randomId', () => {
-                    const field = fieldBlock[subkey] as BasicFormField
-                    const name = this.joinBreadcrumbsWithName(field.name, `${breadcrumbs}[${index}][${key}][${subindex}]`)
-
-                    return html`<input type="hidden" name=${name} value=${field.value}>`
-                  })
-                )
-              )}
-            `
-          }
-
-          // Para todo lo demás, Mastercard
-          return ''
+          return this._printResumeEntry(entry, key, `${breadcrumbs}[${index}]`)
         })}
         <div class="c-form__resume__actions">
           ${when(section.canEdit !== false, () => html`
@@ -958,6 +451,41 @@ export class CForm extends LitElement {
         </div>
       </div>
     `
+  }
+
+  // One entry of a collapsed block: a field shows its value, a subsection its
+  // fields, a nested repeater a count plus hidden inputs for every value.
+  private _printResumeEntry(entry: FormEntry, key: string, breadcrumbs: string): TemplateResult | string {
+    if (isArraySection(entry)) {
+      const fields = (entry.fields ?? []) as Array<FormBlock>
+
+      return html`
+        ${'resumeLabel' in entry ? html`
+          <p class="c-form__text">${fields.length} ${entry.resumeLabel?.toLowerCase()}</p>
+        ` : ''}
+
+        ${map(fields, (fieldBlock: FormBlock, subindex: number) =>
+          map(Object.keys(fieldBlock), (subkey: string) =>
+            when(subkey !== 'randomId', () => {
+              const field = fieldBlock[subkey] as BasicFormField
+              const name = joinBreadcrumbsWithName(field.name, `${breadcrumbs}[${key}][${subindex}]`)
+
+              return html`<input type="hidden" name=${name} value=${field.value}>`
+            })
+          )
+        )}
+      `
+    }
+
+    if (isSubSection(entry)) {
+      const fields = entry.fields
+
+      return html`${map(Object.keys(fields), (subkey: string) => {
+        return this._printResumeValue(fields[subkey] as BasicFormField, `${breadcrumbs}[${key}]`)
+      })}`
+    }
+
+    return this._printResumeValue(entry, breadcrumbs)
   }
 
   private _printRepeater(section: FormArraySection, fields: Array<FormBlock>, breadcrumbs: string): TemplateResult {
@@ -995,24 +523,16 @@ export class CForm extends LitElement {
       `
   }
 
-  private _printSection(section: BasicFormField | FormSection | FormArraySection, breadcrumbs: string, block?: FormBlock): TemplateResult {
-    if ('schema' in section) {
-      // Schema indica que esa estructura de campos se debe pintar en un repeater
-      // En caso de que la casuística sea un FormArraySection
-      const fields = section.fields as Array<FormBlock>
-
-      return this._printRepeater(section as FormArraySection, fields, breadcrumbs)
+  private _printSection(section: FormEntry, breadcrumbs: string, block?: FormBlock): TemplateResult {
+    if (isArraySection(section)) {
+      return this._printRepeater(section, section.fields as Array<FormBlock>, breadcrumbs)
     }
 
-    if ('fields' in section && !Array.isArray(section.fields)) {
-      // En caso de que la casuística sea un FormSection
-      const fields = section.fields as FormBlock
-
-      return this._printSubSection(section, fields, breadcrumbs)
+    if (isSubSection(section)) {
+      return this._printSubSection(section, section.fields, breadcrumbs)
     }
 
-    // En caso de que la casuística sea un BasicFormField
-    return this._printField(section as BasicFormField, breadcrumbs, block)
+    return this._printField(section, breadcrumbs, block)
   }
 
   private _printSections(sections: FormSchema['sections']) {

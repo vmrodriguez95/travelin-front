@@ -5,6 +5,9 @@ import { classMap } from 'lit/directives/class-map.js'
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
 
+// Utils
+import { TAB_SELECT_EVENT } from '@ds/utils/poi-channel.utils'
+
 // Styles
 import styles from './c-tabs.style.scss?inline'
 
@@ -21,7 +24,7 @@ export class CTabs extends LitElement {
     this,
     () => this.channel,
     {
-      onTabSelect: (detail) => this._selectByIndex(detail.index)
+      [TAB_SELECT_EVENT]: (detail) => this._selectByIndex(detail.index)
     }
   )
 

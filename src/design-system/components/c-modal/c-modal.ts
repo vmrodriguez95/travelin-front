@@ -4,6 +4,9 @@ import { customElement, property, query } from 'lit/decorators.js'
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
 
+// Utils
+import { MODAL_OPEN_EVENT } from '@ds/utils/poi-channel.utils'
+
 // Styles
 import styles from './c-modal.style.scss?inline'
 
@@ -22,7 +25,7 @@ export class CModal extends LitElement {
     this,
     () => this.channel,
     {
-      onModalOpen: () => this.showModal(),
+      [MODAL_OPEN_EVENT]: () => this.showModal(),
     }
   )
 

@@ -1,27 +1,11 @@
-import { html, css, unsafeCSS, type PropertyValues } from 'lit'
+import { html, css, nothing, unsafeCSS, type PropertyValues } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import { map } from 'lit/directives/map.js'
 import { when } from 'lit/directives/when.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-// Utils
-import {
-  getWeekdayInitials,
-  getMonthDays,
-  getMonths,
-  isToday,
-  getDateFrom,
-  compareDates,
-  getOptionalDate,
-  clampDate,
-  isDateOutsideRange,
-  isMonthOutsideRange,
-  isYearOutsideRange,
-  getNearestAvailableMonth,
-  getCalendarYears
-} from '../../utils/date.utils'
-
-import { Temporal } from '@js-temporal/polyfill'
+// Types
+import type { DateUtils } from './e-calendar.types'
 
 import { FormElement } from '../../abstracts/form-element.base'
 import type { ValidityResult } from '../../abstracts/form-element.base'
@@ -56,17 +40,41 @@ export class ECalendar extends FormElement {
 
   _weekdaysInititals: Array<string> = []
 
+  // Set once the date helpers (and the Temporal polyfill behind them) are in.
+  // Until then the calendar renders nothing and skips the property-driven
+  // work, which is redone in one go when the helpers arrive.
+  private _ready = false
+
+  private _dates!: DateUtils
+
   static styles = css`${unsafeCSS(style)}`
 
   connectedCallback(): void {
     super.connectedCallback()
 
+    this._loadDateUtils()
+  }
+
+  private async _loadDateUtils() {
+    const dates = await import('../../utils/date.utils')
+
+    if (this._ready || !this.isConnected) return
+
+    this._dates = dates
+    this._ready = true
+
     this._initialize()
 
-    this._months = getMonths()
+    this._months = dates.getMonths()
     this._years = this._getYears()
-    this._monthDays = getMonthDays(this._actualMonth, this._actualYear)
-    this._weekdaysInititals = getWeekdayInitials()
+    this._monthDays = dates.getMonthDays(this._actualMonth, this._actualYear)
+    this._weekdaysInititals = dates.getWeekdayInitials()
+
+    // A range that arrived as properties before the helpers did has to
+    // submit just the same as one picked by hand.
+    if (this.start || this.end) this._publishValue()
+
+    this.requestUpdate()
   }
 
   // `value` is always the start of the range, whether it came from a click or
@@ -79,6 +87,8 @@ export class ECalendar extends FormElement {
   }
 
   protected updated(changedProperties: PropertyValues<this>) {
+    if (!this._ready) return
+
     if (
       changedProperties.has('start')
       || changedProperties.has('min')
@@ -102,6 +112,8 @@ export class ECalendar extends FormElement {
   }
 
   render() {
+    if (!this._ready) return nothing
+
     const inputClasses = classMap({
       'e-calendar': true,
       'e-calendar--readonly': this.readonly,
@@ -195,40 +207,40 @@ export class ECalendar extends FormElement {
 
   private _getRangeOptions() {
     return {
-      minDate: getOptionalDate(this.min),
-      maxDate: getOptionalDate(this.max)
+      minDate: this._dates.getOptionalDate(this.min),
+      maxDate: this._dates.getOptionalDate(this.max)
     }
   }
 
   private _getInitialViewDate() {
-    const referenceDate = this.start || this.min || Temporal.Now.plainDateISO().toString()
+    const referenceDate = this.start || this.min || this._dates.getTodayIso()
     
-    return clampDate(referenceDate, this._getRangeOptions())
+    return this._dates.clampDate(referenceDate, this._getRangeOptions())
   }
 
   private _goToMonth(month: number, year: number) {
-    this._monthDays = getMonthDays(month, year)
+    this._monthDays = this._dates.getMonthDays(month, year)
     this._actualMonth = month
     this._actualYear = year
   }
 
   private _isMonthDisabled(month: number, year: number) {
-    return isMonthOutsideRange(month, year, this._getRangeOptions())
+    return this._dates.isMonthOutsideRange(month, year, this._getRangeOptions())
   }
 
   private _isYearDisabled(year: number) {
-    return isYearOutsideRange(year, this._getRangeOptions())
+    return this._dates.isYearOutsideRange(year, this._getRangeOptions())
   }
 
   private _isDayDisabled(day: number) {
-    return isDateOutsideRange(
+    return this._dates.isDateOutsideRange(
       { day, month: this._actualMonth, year: this._actualYear },
       this._getRangeOptions()
     )
   }
 
   private _isFirstDate() {
-    return this._actualMonth === getNearestAvailableMonth(this._actualYear, 1, this._getRangeOptions())
+    return this._actualMonth === this._dates.getNearestAvailableMonth(this._actualYear, 1, this._getRangeOptions())
       && this._actualYear === this._years.find((year) => !this._isYearDisabled(year))
   }
 
@@ -236,12 +248,12 @@ export class ECalendar extends FormElement {
     const availableYears = this._years.filter((year) => !this._isYearDisabled(year))
     const lastAvailableYear = availableYears[availableYears.length - 1]
 
-    return this._actualMonth === getNearestAvailableMonth(this._actualYear, 12, this._getRangeOptions())
+    return this._actualMonth === this._dates.getNearestAvailableMonth(this._actualYear, 12, this._getRangeOptions())
       && this._actualYear === lastAvailableYear
   }
 
   private _getActualDate(day: number) {
-    return getDateFrom({ day, month: this._actualMonth, year: this._actualYear })
+    return this._dates.getDateFrom({ day, month: this._actualMonth, year: this._actualYear })
   }
 
   private _isSingle(day: number) {
@@ -255,11 +267,11 @@ export class ECalendar extends FormElement {
   private _isMiddle(day: number) {
     if (!this.start || !this.end) return false
 
-    const startDate = getDateFrom(this.start)
-    const endDate = getDateFrom(this.end)
+    const startDate = this._dates.getDateFrom(this.start)
+    const endDate = this._dates.getDateFrom(this.end)
     const actualDate = this._getActualDate(day)
 
-    return compareDates(startDate, actualDate) === -1 && compareDates(endDate, actualDate) === 1
+    return this._dates.compareDates(startDate, actualDate) === -1 && this._dates.compareDates(endDate, actualDate) === 1
   }
 
   private _isEnd(day: number) {
@@ -271,8 +283,8 @@ export class ECalendar extends FormElement {
 
     if (this.start && !this.end) return '1 día seleccionado'
 
-    const startDate = getDateFrom(this.start)
-    const endDate = getDateFrom(this.end)
+    const startDate = this._dates.getDateFrom(this.start)
+    const endDate = this._dates.getDateFrom(this.end)
 
     return `${startDate.until(endDate, { largestUnit: 'day' }).days + 1} días seleccionados`
   }
@@ -280,7 +292,7 @@ export class ECalendar extends FormElement {
   private _getYears() {
     const initialDate = this._getInitialViewDate()
 
-    return getCalendarYears(initialDate, this._getRangeOptions())
+    return this._dates.getCalendarYears(initialDate, this._getRangeOptions())
   }
 
   private _getDayClasses(day: number) {
@@ -288,7 +300,7 @@ export class ECalendar extends FormElement {
 
     return classMap({
       'e-calendar__day': true,
-      'e-calendar__day--today': isToday(actualDate),
+      'e-calendar__day--today': this._dates.isToday(actualDate),
       'e-calendar__day--single': this._isSingle(day),
       'e-calendar__day--start': this._isStart(day),
       'e-calendar__day--middle': this._isMiddle(day),
@@ -342,7 +354,7 @@ export class ECalendar extends FormElement {
   private _onYearChange(e: Event) {
     const target = e.currentTarget as HTMLSelectElement
     const newYear = parseInt(target.value)
-    const newMonth = getNearestAvailableMonth(newYear, this._actualMonth, this._getRangeOptions())
+    const newMonth = this._dates.getNearestAvailableMonth(newYear, this._actualMonth, this._getRangeOptions())
 
     if (this._isYearDisabled(newYear) || this._isMonthDisabled(newMonth, newYear)) return
 
@@ -372,10 +384,10 @@ export class ECalendar extends FormElement {
     if (!this.start && !this.end) {
       this.start = newDate
       this.value = newDate
-    } else if (this.start && compareDates(this.start, newDate) === 1 && !this.end) {
+    } else if (this.start && this._dates.compareDates(this.start, newDate) === 1 && !this.end) {
       this.start = newDate
       this.value = newDate
-    } else if (this.start && compareDates(this.start, newDate) === -1 && !this.end) {
+    } else if (this.start && this._dates.compareDates(this.start, newDate) === -1 && !this.end) {
       this.end = newDate
     } else if (this.start && this.end) {
       this.start = newDate

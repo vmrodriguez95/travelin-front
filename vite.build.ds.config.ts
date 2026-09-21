@@ -59,6 +59,11 @@ export default defineConfig(({ mode }) => {
             if (id.includes('/node_modules/pdfjs-dist/')) {
               return 'pdf'
             }
+            // Only reached through dynamic imports (calendar, voucher parsers),
+            // so it stays out of app.js.
+            if (id.includes('/node_modules/@js-temporal/')) {
+              return 'temporal'
+            }
           }
         }
       },

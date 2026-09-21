@@ -182,10 +182,10 @@ function formatDate(dateStart: string, dateEnd: string) {
                   </a>
                   {
                     (poi.type === 'poi' || poi.type === 'poi_hotel') && (
-                      <e-modal-trigger channel={savesChannel} data={JSON.stringify(poi)} slot="action">
+                      <e-modal-trigger channel={savesChannel} slot="action">
                         <e-icon icon="bookmark" size="m"></e-icon>
                       </e-modal-trigger>
-                      <e-modal-trigger channel={moveChannel} data={JSON.stringify(poi)} slot="action">
+                      <e-modal-trigger channel={moveChannel} slot="action">
                         <e-icon icon="moving" size="m"></e-icon>
                       </e-modal-trigger>
                     )
