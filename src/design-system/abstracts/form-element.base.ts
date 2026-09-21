@@ -1,5 +1,5 @@
 import { LitElement } from 'lit'
-import { property } from 'lit/decorators.js'
+import { property, state } from 'lit/decorators.js'
 import type { FieldMessages } from '@ds/components/c-form/c-form.types'
 
 export interface ValidityResult {
@@ -25,6 +25,13 @@ export abstract class FormElement extends LitElement {
 
   @property({ type: Object }) messages: FieldMessages = {}
 
+  // Whether the user has reached the field yet: left it, picked something in
+  // it, or tried to submit the form. Validity is always kept up to date on
+  // ElementInternals so the form knows where it stands, but the message is
+  // only printed once there is a reason to read it — a required field must
+  // not open with an error before anyone has typed.
+  @state() protected _touched = false
+
   static formAssociated = true
 
   constructor() {
@@ -36,6 +43,11 @@ export abstract class FormElement extends LitElement {
 
   protected _getAnchorElement(): HTMLElement {
     return this
+  }
+
+  // What the template prints under the field.
+  protected get _errorMessage(): string {
+    return this._touched ? this._internals.validationMessage : ''
   }
 
   protected _getDefaultValidity(): ValidityResult {
@@ -68,13 +80,24 @@ export abstract class FormElement extends LitElement {
     }
   }
 
-  reportValidity(): boolean {
+  // Marks the field as reached by the user and validates it, so from here on
+  // its message is shown and kept current.
+  protected _touch(): void {
+    this._touched = true
     this._validate()
+  }
+
+  reportValidity(): boolean {
+    this._touch()
     return this._internals.reportValidity()
   }
 
   checkValidity(): boolean {
     this._validate()
     return this._internals.checkValidity()
+  }
+
+  formResetCallback(): void {
+    this._touched = false
   }
 }

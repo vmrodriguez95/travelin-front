@@ -56,8 +56,8 @@ export class ETextarea extends FormElement {
             @blur=${this._onBlur}
           ></textarea>
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-textarea__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-textarea__error">${this._errorMessage}</p>
         `)}
         ${when(this.helpmsg, () => html`
           <p class="e-textarea__helpmsg">${this.helpmsg}</p>
@@ -75,7 +75,7 @@ export class ETextarea extends FormElement {
   }
 
   private _onBlur() {
-    this._validate()
+    this._touch()
   }
 
   private _getCurrentValue() {
