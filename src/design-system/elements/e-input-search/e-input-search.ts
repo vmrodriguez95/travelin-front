@@ -8,6 +8,7 @@ import type { SearchResult, SearchApiResponse, PlaceApiResponse } from './e-inpu
 
 // Utils
 import { SimpleGetClient } from '@ds/requests/index.ts'
+import { isSilentRequestError } from '@ds/utils/request.utils.ts'
 import { debounce } from '../../utils/action.utils.ts'
 import { POI_SELECT_EVENT, type PoiSelectEventDetail } from '@ds/utils/poi-channel.utils.ts'
 
@@ -51,7 +52,7 @@ export class EInputSearch extends FormElement {
 
   @query('input') _input!: HTMLInputElement
 
-  private _client = new SimpleGetClient({ baseUrl: '', timeoutMs: 8000 })
+  private _client = new SimpleGetClient({ timeoutMs: 8000 })
 
   private _request = new SimpleRequestController(this, this._client)
 
@@ -205,8 +206,7 @@ export class EInputSearch extends FormElement {
       this._searchResults = Array.isArray(data?.data) ? data.data : []
       this._open = this._searchResults.length > 0
     } catch (e: unknown) {
-      if ((e as Error)?.name === 'AbortError') return
-      if ((e as Error)?.message === 'Stale response ignored') return
+      if (isSilentRequestError(e)) return
 
       console.error(e)
       this._searchResults = []
@@ -220,8 +220,7 @@ export class EInputSearch extends FormElement {
     try {
       return await this._request.get<PlaceApiResponse>(this.places, placeId)
     } catch (e: unknown) {
-      if ((e as Error)?.name === 'AbortError') return
-      if ((e as Error)?.message === 'Stale response ignored') return
+      if (isSilentRequestError(e)) return
 
       console.error(e)
     }

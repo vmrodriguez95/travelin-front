@@ -5,7 +5,12 @@ import { when } from 'lit/directives/when.js'
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
 
+// Requests
+import { SimpleJsonClient } from '@ds/requests/json-client'
+import type { HttpMethod } from '@ds/requests/requests.types'
+
 // Utils
+import { isSilentRequestError } from '@ds/utils/request.utils'
 import type { PoiChannelData, PoiSelectEventDetail } from '@ds/utils/poi-channel.utils'
 
 import styles from './e-fetch.style.scss?inline'
@@ -17,7 +22,7 @@ export class EFetch extends LitElement {
 
   @property({ type: String }) action = ''
 
-  @property({ type: String }) method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET'
+  @property({ type: String }) method: HttpMethod = 'GET'
 
   @property({ type: String, reflect: true }) type = 'button' // button | link | plain
 
@@ -45,6 +50,13 @@ export class EFetch extends LitElement {
 
   private _selected: PoiChannelData | null = null
 
+  private _client = new SimpleJsonClient()
+
+  // The request in flight, aborted if the element leaves the DOM first.
+  private _abort?: AbortController
+
+  private _countdownTimer = 0
+
   private _channel = new ChannelController(this, () => this.channel, {
     onSelect: (detail) => this._onSelect(detail),
     onClear: () => { this._selected = null }
@@ -57,6 +69,14 @@ export class EFetch extends LitElement {
 
     super.connectedCallback()
     this._activateCountdown()
+  }
+
+  disconnectedCallback(): void {
+    this._abort?.abort()
+    this._abort = undefined
+    window.clearTimeout(this._countdownTimer)
+
+    super.disconnectedCallback()
   }
 
   render() {
@@ -101,35 +121,12 @@ export class EFetch extends LitElement {
     this.loading = true
     this.error = null
 
+    this._abort = new AbortController()
+
     try {
-      const options: RequestInit = {
-        method: this.method,
-        headers: {
-          'Content-Type': 'application/json',
-          ...this.headers
-        }
-      }
-
-      const body = this._buildBody()
-
-      if (body && this.method !== 'GET') {
-        options.body = JSON.stringify(body)
-      }
-
-      const response = await fetch(this.action, options)
-
-      if (!response.ok) {
-        let message = `Error ${response.status}`
-
-        try {
-          const data = await response.json()
-          message = data.message || message
-        } catch (_) {}
-
-        throw new Error(message)
-      }
-
-      const data = await response.json()
+      // The method attribute may arrive in lower case from the page.
+      const method = this.method.toUpperCase() as HttpMethod
+      const data = await this._client.send<unknown>(this.action, method, this._buildBody(), this.headers, this._abort.signal)
 
       this.dispatchEvent(new CustomEvent('fetch-success', {
         detail: data,
@@ -138,6 +135,8 @@ export class EFetch extends LitElement {
       }))
 
     } catch (err: unknown) {
+      if (isSilentRequestError(err)) return
+
       this.error = (err as Error).message
 
       this.dispatchEvent(new CustomEvent('fetch-error', {
@@ -146,6 +145,7 @@ export class EFetch extends LitElement {
         composed: true
       }))
     } finally {
+      this._abort = undefined
       this._resetCountdown()
       this._activateCountdown()
       this.loading = false
@@ -157,8 +157,10 @@ export class EFetch extends LitElement {
   }
 
   private _activateCountdown() {
+    window.clearTimeout(this._countdownTimer)
+
     if (this._countdown > 0) {
-      setTimeout(() => {
+      this._countdownTimer = window.setTimeout(() => {
         this._countdown -= 1000
         this._activateCountdown()
       }, 1000)
