@@ -6,7 +6,8 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Utils
 import { clamp } from '@ds/utils/number.utils'
-import { BREAKPOINTS } from '@ds/utils/variables'
+import { BreakpointObserver } from '@ds/utils/breakpoint.utils'
+import type { Breakpoint } from '@ds/utils/breakpoint.types'
 import {
   DAY_ACTIVE_EVENT,
   MENU_TOGGLE_EVENT,
@@ -20,7 +21,7 @@ import styles from './c-swipe.style.scss?inline'
 @customElement('c-swipe')
 export class CSwipe extends LitElement {
 
-  private static readonly DESKTOP_BREAKPOINT = BREAKPOINTS.xl
+  private static readonly DESKTOP_BREAKPOINT: Breakpoint = 'xl'
   private static readonly SETTLE_DELAY = 120
 
   @property({ type: String }) stage = ''
@@ -50,7 +51,7 @@ export class CSwipe extends LitElement {
   private _dragStartHeight = 0
 
   private _resizeObserver!: ResizeObserver
-  private _mediaQuery!: MediaQueryList
+  private _unsubscribeBreakpoint: (() => void) | null = null
   private _stageEl: HTMLElement | null = null
 
   private _channel = new ChannelController(
@@ -66,14 +67,13 @@ export class CSwipe extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    this._mediaQuery = window.matchMedia(`(min-width: ${CSwipe.DESKTOP_BREAKPOINT}px)`)
-    this._mediaQuery.addEventListener('change', this._onBreakpointChange)
-    this._isMobile = !this._mediaQuery.matches
+    this._unsubscribeBreakpoint = BreakpointObserver.instance.subscribe(this._onBreakpointChange)
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this._mediaQuery.removeEventListener('change', this._onBreakpointChange)
+    this._unsubscribeBreakpoint?.()
+    this._unsubscribeBreakpoint = null
     this._resizeObserver?.disconnect()
     this._detachScrollSpy()
   }
@@ -152,8 +152,18 @@ export class CSwipe extends LitElement {
     this._applyHeight()
   }
 
-  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
-    this._isMobile = !ev.matches
+  // Runs once on subscribe with the current value and again on each change.
+  // Before the first render the stage is not resolved yet, so measuring is
+  // skipped: `firstUpdated` does it.
+  private _onBreakpointChange = (breakpoint: Breakpoint) => {
+    const isMobile = breakpoint !== CSwipe.DESKTOP_BREAKPOINT
+
+    if (isMobile === this._isMobile) return
+
+    this._isMobile = isMobile
+
+    if (!this.hasUpdated) return
+
     this._measure()
     this._syncScrollSpy()
   }

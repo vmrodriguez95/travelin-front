@@ -12,7 +12,8 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 // Utils
 import { loadGoogleMapsApi } from '@ds/utils/google-maps.utils'
 import { getIconSvg } from '@ds/utils/icon.utils'
-import { BREAKPOINTS } from '@ds/utils/variables'
+import { BreakpointObserver } from '@ds/utils/breakpoint.utils'
+import type { Breakpoint } from '@ds/utils/breakpoint.types'
 import {
   POI_SELECT_EVENT,
   type PoiHoverEventDetail,
@@ -72,6 +73,14 @@ export class CMap extends LitElement {
 
   _resizeHandler: (() => void) | null = null
 
+  // Height is recomputed once per frame at most, however many resize events
+  // the browser fires while the window is being dragged.
+  private _resizeFrame = 0
+
+  // Resolves once the Google libraries are loaded and the map exists. Every
+  // sync awaits the same promise, so the map is only ever created once.
+  private _mapReady: Promise<void> | null = null
+
   _lastMarkerClick = {
     id: '',
     time: 0
@@ -95,7 +104,7 @@ export class CMap extends LitElement {
 
   _isMobile = false
 
-  _mediaQuery: MediaQueryList | null = null
+  private _unsubscribeBreakpoint: (() => void) | null = null
 
   _markerStates = new Map<string, string>()
 
@@ -143,24 +152,21 @@ export class CMap extends LitElement {
     this._initialLongitude = this.longitude
     this._initialZoom = this.zoom
 
-    this._mediaQuery = window.matchMedia(`(min-width: ${BREAKPOINTS.xl}px)`)
-    this._isMobile = !this._mediaQuery.matches
-    this._mediaQuery.addEventListener('change', this._onBreakpointChange)
+    this._unsubscribeBreakpoint = BreakpointObserver.instance.subscribe(this._onBreakpointChange)
 
     this._activateFullHeight()
   }
 
   disconnectedCallback() {
     this._removeResizeHandler()
-    this._mediaQuery?.removeEventListener('change', this._onBreakpointChange)
+    this._unsubscribeBreakpoint?.()
+    this._unsubscribeBreakpoint = null
 
     super.disconnectedCallback()
   }
 
-  protected firstUpdated() {
-    this._setupMap()
-  }
-
+  // The first update already reports `markers`, `latitude` and `longitude`
+  // as changed, so this also covers the initial setup.
   protected updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has('markers') || changedProperties.has('latitude') || changedProperties.has('longitude')) {
       this._setupMap()
@@ -192,8 +198,12 @@ export class CMap extends LitElement {
     `
   }
 
-  private _onBreakpointChange = (ev: MediaQueryListEvent) => {
-    this._isMobile = !ev.matches
+  private _onBreakpointChange = (breakpoint: Breakpoint) => {
+    const isMobile = breakpoint !== 'xl'
+
+    if (isMobile === this._isMobile) return
+
+    this._isMobile = isMobile
     this._syncMarkers()
   }
 
@@ -224,6 +234,9 @@ export class CMap extends LitElement {
   }
 
   private _removeResizeHandler() {
+    cancelAnimationFrame(this._resizeFrame)
+    this._resizeFrame = 0
+
     if (!this._resizeHandler) return
 
     window.removeEventListener('resize', this._resizeHandler)
@@ -234,7 +247,12 @@ export class CMap extends LitElement {
     this._removeResizeHandler()
 
     this._resizeHandler = () => {
-      this._calcHeight(viewport)
+      if (this._resizeFrame) return
+
+      this._resizeFrame = requestAnimationFrame(() => {
+        this._resizeFrame = 0
+        this._calcHeight(viewport)
+      })
     }
 
     window.addEventListener('resize', this._resizeHandler)
@@ -284,18 +302,9 @@ export class CMap extends LitElement {
     this._markerInstances.clear()
   }
 
+  // Only the list changes here: the update it triggers syncs the map, and
+  // the sync drops the instances that no longer have a marker.
   private _removePoiMarkers(idPoi: string) {
-    this.markers.forEach((marker) => {
-      if (marker.idPoi !== idPoi && marker.id !== idPoi) return
-
-      const markerInstance = this._markerInstances.get(marker.id)
-
-      if (markerInstance) {
-        markerInstance.map = null
-        this._markerInstances.delete(marker.id)
-      }
-    })
-
     this.markers = this.markers.filter((marker) => marker.idPoi !== idPoi && marker.id !== idPoi)
 
     if (this._selectedIdPoi === idPoi) {
@@ -316,34 +325,38 @@ export class CMap extends LitElement {
     return this.markers
   }
 
+  // Reconciles the map with `markers` by id: instances that left the list
+  // are dropped, new ones are created, the rest only get their style refreshed
+  // when their state changed. Nothing is torn down to be rebuilt.
   private _syncMarkers() {
-    if (!this._map || !this.markers.length) return
+    if (!this._map) return
 
     const displayed = this._displayedMarkers()
+    const displayedIds = new Set(displayed.map((marker) => marker.id))
 
-    this._clearMarkers()
-    this._markerStates.clear()
+    this._markerInstances.forEach((markerInstance, id) => {
+      if (displayedIds.has(id)) return
+
+      markerInstance.map = null
+      this._markerInstances.delete(id)
+      this._markerStates.delete(id)
+    })
 
     if (!displayed.length) return
 
     const bounds = new this._google.maps.LatLngBounds()
-    const { AdvancedMarkerElement } = this._markerLibrary
 
     displayed.forEach((marker) => {
       const position = this._getMarkerPosition(marker)
-      const markerInstance = new AdvancedMarkerElement({
-        position,
-        map: this._map,
-        title: marker.label,
-        content: this._createMarkerContent(marker),
-        gmpClickable: true
-      })
 
-      markerInstance.addListener('gmp-click', () => this._onMarkerClick(marker))
+      if (this._markerInstances.has(marker.id)) {
+        this._markerInstances.get(marker.id).position = position
+        this._refreshMarkerStyle(marker)
+      } else {
+        this._createMarkerInstance(marker, position)
+      }
 
       bounds.extend(position)
-      this._markerInstances.set(marker.id, markerInstance)
-      this._markerStates.set(marker.id, this._getMarkerStateKey(marker))
     })
 
     if (displayed.length === 1) {
@@ -357,6 +370,22 @@ export class CMap extends LitElement {
     if (this._selectedIdPoi) {
       this._focusPoiMarkers(this._selectedIdPoi)
     }
+  }
+
+  private _createMarkerInstance(marker: MapMarker, position: { lat: number, lng: number }) {
+    const { AdvancedMarkerElement } = this._markerLibrary
+    const markerInstance = new AdvancedMarkerElement({
+      position,
+      map: this._map,
+      title: marker.label,
+      content: this._createMarkerContent(marker),
+      gmpClickable: true
+    })
+
+    markerInstance.addEventListener('gmp-click', () => this._onMarkerClick(marker))
+
+    this._markerInstances.set(marker.id, markerInstance)
+    this._markerStates.set(marker.id, this._getMarkerStateKey(marker))
   }
 
   private _getMarkerIcon(marker: MapMarker) {
@@ -396,18 +425,22 @@ export class CMap extends LitElement {
   private _refreshMarkerStyles() {
     if (!this._map || !this._markerLibrary || !this._markerInstances.size) return
 
-    this._displayedMarkers().forEach((marker) => {
-      const markerInstance = this._markerInstances.get(marker.id)
+    this._displayedMarkers().forEach((marker) => this._refreshMarkerStyle(marker))
+  }
 
-      if (!markerInstance) return
+  // The content is only rebuilt when the marker changes state; a hover over
+  // one card leaves the other markers untouched.
+  private _refreshMarkerStyle(marker: MapMarker) {
+    const markerInstance = this._markerInstances.get(marker.id)
 
-      const nextState = this._getMarkerStateKey(marker)
+    if (!markerInstance) return
 
-      if (this._markerStates.get(marker.id) === nextState) return
+    const nextState = this._getMarkerStateKey(marker)
 
-      this._markerStates.set(marker.id, nextState)
-      markerInstance.content = this._createMarkerContent(marker)
-    })
+    if (this._markerStates.get(marker.id) === nextState) return
+
+    this._markerStates.set(marker.id, nextState)
+    markerInstance.content = this._createMarkerContent(marker)
   }
 
   private _createMarkerContent(marker: MapMarker) {
@@ -507,17 +540,34 @@ export class CMap extends LitElement {
   private async _setupMap() {
     if (!this._hasInteractiveMarkers()) return
 
-    const container = await this._viewport
+    this._mapReady ??= this._initMap()
 
-    this._google = await loadGoogleMapsApi(this.apiKey)
-    this._mapsLibrary = this._mapsLibrary || await this._google.maps.importLibrary('maps')
-    this._markerLibrary = this._markerLibrary || await this._google.maps.importLibrary('marker')
-
-    if (!this._map) {
-      this._createMap(container)
+    try {
+      await this._mapReady
+    } catch (error) {
+      // A failed load is not kept: the next change tries again.
+      this._mapReady = null
+      console.error(error)
+      return
     }
 
     this._syncMarkers()
+  }
+
+  private async _initMap() {
+    const container = await this._viewport
+
+    this._google = await loadGoogleMapsApi(this.apiKey)
+
+    const [mapsLibrary, markerLibrary] = await Promise.all([
+      this._google.maps.importLibrary('maps'),
+      this._google.maps.importLibrary('marker')
+    ])
+
+    this._mapsLibrary = mapsLibrary
+    this._markerLibrary = markerLibrary
+
+    this._createMap(container)
   }
 
   private _focusPoiMarkers(idPoi: string) {

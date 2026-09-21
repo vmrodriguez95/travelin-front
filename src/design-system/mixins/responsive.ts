@@ -1,10 +1,11 @@
 import { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
-import { BREAKPOINTS } from '../utils/variables'
+import { BreakpointObserver } from '../utils/breakpoint.utils'
+import type { Breakpoint } from '../utils/breakpoint.types'
+
+export type { Breakpoint } from '../utils/breakpoint.types'
 
 type Constructor<T> = new (...args: any[]) => T
-
-export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl'
 
 export declare class ResponsiveInterface {
   breakpoint: Breakpoint
@@ -15,34 +16,21 @@ export const Responsive =
   class ResponsiveElement extends superClass {
     @property({ type: String }) breakpoint: Breakpoint = 'sm'
 
-    private _mediaQueryList: MediaQueryList[] = []
+    private _unsubscribeBreakpoint: (() => void) | null = null
 
     connectedCallback() {
       super.connectedCallback()
-      this._activateMediaQueries()
+
+      this._unsubscribeBreakpoint = BreakpointObserver.instance.subscribe((breakpoint) => {
+        this.breakpoint = breakpoint
+      })
     }
 
     disconnectedCallback() {
       super.disconnectedCallback()
-      this._mediaQueryList.forEach(mq => mq.removeEventListener('change', this._activateMediaQueries))
-    }
 
-    private _activateMediaQueries = () => {
-      if (this._mediaQueryList.length === 0) {
-        this._mediaQueryList = [
-          window.matchMedia(`(min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md - 1}px)`),
-          window.matchMedia(`(min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg - 1}px)`),
-          window.matchMedia(`(min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl - 1}px)`),
-          window.matchMedia(`(min-width: ${BREAKPOINTS.xl}px)`),
-        ]
-        this._mediaQueryList.forEach(mq => mq.addEventListener('change', this._activateMediaQueries))
-      }
-
-      const [sm, md, lg, xl] = this._mediaQueryList
-      if (sm.matches) this.breakpoint = 'sm'
-      else if (md.matches) this.breakpoint = 'md'
-      else if (lg.matches) this.breakpoint = 'lg'
-      else if (xl.matches) this.breakpoint = 'xl'
+      this._unsubscribeBreakpoint?.()
+      this._unsubscribeBreakpoint = null
     }
   }
 
