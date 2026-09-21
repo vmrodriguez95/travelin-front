@@ -38,6 +38,14 @@ export class ENotification extends LitElement {
 
   _channelBus: EventTarget | null = null
 
+  // One timer per phase, so a re-render or a second channel event never
+  // stacks a duplicate; all are cleared when the toast leaves the DOM.
+  private _showTimer = 0
+
+  private _closeTimer = 0
+
+  private _autoCloseTimer = 0
+
   static styles = css`${unsafeCSS(styles)}`
 
   connectedCallback(): void {
@@ -48,9 +56,21 @@ export class ENotification extends LitElement {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     if (!this.channel) {
-      setTimeout(() => {
+      this._showTimer = window.setTimeout(() => {
         this._loaded = true
       }, 100)
+    }
+  }
+
+  // The auto-close countdown starts when the toast becomes visible, not on
+  // every render: rendering must not schedule side effects.
+  protected updated(changed: PropertyValues): void {
+    if (!changed.has('_loaded')) return
+
+    if (this._loaded) {
+      this._scheduleAutoClose()
+    } else {
+      this._clearAutoClose()
     }
   }
 
@@ -62,19 +82,7 @@ export class ENotification extends LitElement {
       [`e-notification--${this.type}`]: this.type
     })
 
-    const styles = {}
-    if (this.timeout > 0) {
-      Object.defineProperty(styles, '--eNotificationTimeout', {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: `${this.timeout}s`
-      })
-
-      if (!this.channel) {
-        setTimeout(() => this._close(), this.timeout * 1000)
-      }
-    }
+    const styles = this.timeout > 0 ? { '--eNotificationTimeout': `${this.timeout}s` } : {}
 
     return html`
       <div class=${classes}>
@@ -103,9 +111,12 @@ export class ENotification extends LitElement {
   // A toast tied to a channel is reused every time its event fires, so it
   // only hides; a standalone one is shown once and leaves the DOM.
   private _close() {
+    if (this._closing) return
+
+    this._clearAutoClose()
     this._closing = true
 
-    setTimeout(() => {
+    this._closeTimer = window.setTimeout(() => {
       if (this.channel) {
         this._loaded = false
         this._closing = false
@@ -115,14 +126,36 @@ export class ENotification extends LitElement {
     }, 400)
   }
 
+  private _scheduleAutoClose() {
+    this._clearAutoClose()
+
+    if (this.timeout <= 0) return
+
+    this._autoCloseTimer = window.setTimeout(() => this._close(), this.timeout * 1000)
+  }
+
+  private _clearAutoClose() {
+    window.clearTimeout(this._autoCloseTimer)
+    this._autoCloseTimer = 0
+  }
+
+  private _clearTimers() {
+    window.clearTimeout(this._showTimer)
+    window.clearTimeout(this._closeTimer)
+    this._clearAutoClose()
+  }
+
   private _onChannelEvent = () => {
     this.type = 'success'
     this._loaded = true
 
-    setTimeout(() => this._close(), this.timeout * 1000)
+    // When the toast was already visible `_loaded` does not change and
+    // `updated` stays quiet, so the countdown is restarted from here.
+    this._scheduleAutoClose()
   }
 
   disconnectedCallback(): void {
+    this._clearTimers()
     this._disconnectFromChannel()
     super.disconnectedCallback()
   }

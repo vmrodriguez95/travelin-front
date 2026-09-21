@@ -18,7 +18,6 @@ import type {
   BasicFormField,
   SearchFormField,
   SelectFormField,
-  FieldDependency,
   FormArraySection,
   CalendarFormField,
   CheckboxGroupFormField
@@ -71,8 +70,6 @@ export class CForm extends LitElement {
   @queryAll('.c-form__field') fields!: NodeListOf<HTMLInputElement>
 
   private _internals: ElementInternals
-
-  private _dependencies: Array<FieldDependency> = []
 
   private _client = new SimpleFormClient()
 
@@ -616,14 +613,6 @@ export class CForm extends LitElement {
 
   private _printField(field: BasicFormField, breadcrumbs: string, block?: FormBlock): TemplateResult {
     const name = this.joinBreadcrumbsWithName(field.name, breadcrumbs)
-
-    if ('dependsOn' in field) {
-      this._dependencies.push({
-        field: field.id,
-        dependsOn: field.dependsOn,
-        isRegistered: false
-      })
-    }
 
     switch(field.type) {
       case 'hidden':

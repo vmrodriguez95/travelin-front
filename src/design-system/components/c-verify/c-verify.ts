@@ -101,7 +101,7 @@ export class CVerify extends LitElement {
   }
 
   private _isMaxLengthAttr(mutation: MutationRecord) {
-    return mutation.type === 'attributes' && mutation.attributeName === 'value'
+    return mutation.type === 'attributes' && mutation.attributeName === 'maxlength'
   }
 
   private _observerEmailRule = (mutation: MutationRecord, input: HTMLInputElement) => {
@@ -137,7 +137,7 @@ export class CVerify extends LitElement {
 
   private _addObserverToInput(input: HTMLInputElement, rules: Function) {
     const observer = this._createObserverForInput(input, rules)
-    const config = { attributes: true, attributeFilter: ['value', 'maxLength'] }
+    const config = { attributes: true, attributeFilter: ['value', 'maxlength'] }
 
     observer.observe(input, config)
   }
