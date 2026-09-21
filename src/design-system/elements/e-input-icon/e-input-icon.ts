@@ -87,8 +87,8 @@ export class EInputIcon extends FormElement {
             </ul>
           </div>
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-input-icon__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-input-icon__error">${this._errorMessage}</p>
         `)}
         ${when(this.helpmsg, () => html`
           <p class="e-input-icon__helpmsg">${this.helpmsg}</p>
@@ -126,7 +126,7 @@ export class EInputIcon extends FormElement {
     this.value = iconKey
     this._closePopup()
 
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this.value)
     this.dispatchEvent(new Event('change'))
   }

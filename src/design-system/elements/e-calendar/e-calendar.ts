@@ -183,8 +183,8 @@ export class ECalendar extends FormElement {
             `))}
           </div>
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-calendar__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-calendar__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -380,6 +380,8 @@ export class ECalendar extends FormElement {
     const newDate = this._getActualDate(day).toString()
 
     if (this._isDayDisabled(day)) return
+
+    this._touched = true
 
     if (!this.start && !this.end) {
       this.start = newDate

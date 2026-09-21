@@ -68,8 +68,8 @@ export class ECheckboxGroup extends FormElement {
         <div class="e-checkbox-group__options">
           ${map(this._allOptions, (option) => this._printOption(option))}
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-checkbox-group__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-checkbox-group__error">${this._errorMessage}</p>
         `)}
         ${when(this.canAdd && !this.readonly, () => this._printAdd())}
       </fieldset>
@@ -156,6 +156,7 @@ export class ECheckboxGroup extends FormElement {
   }
 
   private _setValue(value: string[]) {
+    this._touched = true
     this.value = value
     this.dispatchEvent(new Event('change'))
   }
@@ -227,6 +228,8 @@ export class ECheckboxGroup extends FormElement {
   }
 
   formResetCallback() {
+    super.formResetCallback()
+
     this.value = []
     this._added = []
     this._adding = false

@@ -37,8 +37,7 @@ export class EInputDate extends FormElement {
     if (!changed.has('value')) return
 
     this._internals.setFormValue(this.value)
-
-    if (this._internals.validationMessage) this._validate()
+    this._validate()
   }
 
   render() {
@@ -69,8 +68,8 @@ export class EInputDate extends FormElement {
             @change=${this._onChange}
           />
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-input-date__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-input-date__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -80,7 +79,7 @@ export class EInputDate extends FormElement {
     const target = e.target as HTMLInputElement
     this.value = target.value
 
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this.value)
     this.dispatchEvent(new Event('change'))
   }

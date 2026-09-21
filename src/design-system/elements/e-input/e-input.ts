@@ -108,8 +108,8 @@ export class EInput extends FormElement {
             </button>
           `)}
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-input__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-input__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -124,13 +124,13 @@ export class EInput extends FormElement {
   }
 
   private _onBlur() {
-    this._validate()
+    this._touch()
   }
 
   private _onClean() {
     this.value = ''
 
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this._getCurrentValue())
 
     this.dispatchEvent(new Event('input'))

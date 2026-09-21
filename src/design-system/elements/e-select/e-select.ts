@@ -66,8 +66,8 @@ export class ESelect extends FormElement {
           </select>
           <e-icon class="e-select__icon" icon="arrow-down" size="l"></e-icon>
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-select__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-select__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -77,7 +77,7 @@ export class ESelect extends FormElement {
     const target = e.target as HTMLInputElement
     this.value = target.value
 
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this.value)
     this.dispatchEvent(new Event('change'))
   }

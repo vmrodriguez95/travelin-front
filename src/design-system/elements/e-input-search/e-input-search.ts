@@ -83,10 +83,7 @@ export class EInputSearch extends FormElement {
     if (!changed.has('value')) return
 
     this._internals.setFormValue(this.value)
-
-    // Only refreshes an error already on screen. Validating unconditionally
-    // would flag a required field the user has not reached yet.
-    if (this._internals.validationMessage) this._validate()
+    this._validate()
   }
 
   render() {
@@ -149,8 +146,8 @@ export class EInputSearch extends FormElement {
             </ul>
           `)}
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-input-search__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-input-search__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -232,6 +229,7 @@ export class EInputSearch extends FormElement {
     this._searchResults = []
     this._open = false
 
+    this._touched = true
     this._commit(result.label, result.value)
 
     if (this.channel) {
@@ -250,6 +248,8 @@ export class EInputSearch extends FormElement {
   private _onBlur() {
     this._searchResults = []
     this._open = false
+
+    this._touch()
   }
 
   private _onClean() {
@@ -258,6 +258,7 @@ export class EInputSearch extends FormElement {
     this._searchResults = []
     this._open = false
 
+    this._touched = true
     this._commit('', '')
   }
 

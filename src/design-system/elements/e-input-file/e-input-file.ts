@@ -65,8 +65,8 @@ export class EInputFile extends FormElement {
             </button>
           `)}
         </div>
-        ${when(this._internals.validationMessage, () => html`
-          <p class="e-input-file__error">${this._internals.validationMessage}</p>
+        ${when(this._errorMessage, () => html`
+          <p class="e-input-file__error">${this._errorMessage}</p>
         `)}
       </div>
     `
@@ -84,7 +84,7 @@ export class EInputFile extends FormElement {
       this._filename = this.value[0].name
     }
 
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this.value?.[0] || '')
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }))
@@ -93,7 +93,7 @@ export class EInputFile extends FormElement {
   private _onClean() {
     this.value = null
     this._filename = ''
-    this._validate()
+    this._touch()
     this._internals.setFormValue(this.value)
 
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }))
