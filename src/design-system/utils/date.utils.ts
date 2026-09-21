@@ -85,12 +85,8 @@ export function getDateFrom(date: DateLike) {
   return Temporal.PlainDate.from(date)
 }
 
-export function getTimeFrom(date: string) {
-  return Temporal.PlainDateTime.from(date)
-}
-
-export function getDateTimeFrom(date: string) {
-  return Temporal.PlainDateTime.from(date)
+export function getTodayIso() {
+  return Temporal.Now.plainDateISO().toString()
 }
 
 export function getOptionalDate(date?: string | Temporal.PlainDate | null) {
@@ -198,14 +194,6 @@ export function getCalendarYears(initialDate: Temporal.PlainDate, {
   const length = Math.max(endYear - startYear + 1, 1)
 
   return Array.from({ length }, (_, index) => startYear + index)
-}
-
-export function printTime(date: string) {
-  return getTimeFrom(date).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' })
-}
-
-export function printDateTime(date: string) {
-  return getDateTimeFrom(date).toLocaleString(navigator.language, { day: '2-digit', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
 export function compareDates(date1: Temporal.PlainDate | string, date2: Temporal.PlainDate | string) {
@@ -347,7 +335,7 @@ export function parseNaturalDate(value?: string | null, fallbackYear?: number): 
 // prints "29 AGOSTO" without a year can still be dated. Falls back to the
 // current year when the text names none.
 export function findDocumentYear(text: string): number {
-  const current = Temporal.Now.plainDateISO().year
+  const current = new Date().getFullYear()
   const years = [...text.matchAll(/\b(20\d{2})\b/g)]
     .map((match) => Number(match[1]))
     .filter((year) => year >= current - 1 && year <= current + 5)

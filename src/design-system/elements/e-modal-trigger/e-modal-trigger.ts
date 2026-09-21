@@ -26,6 +26,9 @@ export class EModalTrigger extends LitElement {
   // to it. One modal then serves every trigger.
   @property({ type: String }) channel = ''
 
+  // The item to announce. Left empty when the trigger sits inside a card
+  // that already holds it: the card's copy is announced instead, so the page
+  // carries each item once.
   @property({ type: Object }) data: PoiChannelData | null = null
 
   @queryAssignedElements({ selector: 'template' }) _templates!: Array<HTMLElement>
@@ -60,14 +63,36 @@ export class EModalTrigger extends LitElement {
   }
 
   private _openByChannel() {
-    if (this.data) {
+    const data = this._resolveData()
+
+    if (data) {
       this._channel.dispatch<PoiSelectEventDetail>(POI_SELECT_EVENT, {
-        data: this.data,
+        data,
         source: this,
         view: 'resume'
       })
     }
 
     this._channel.dispatch(MODAL_OPEN_EVENT)
+  }
+
+  // Own `data` first; otherwise the nearest ancestor holding an item (a card),
+  // read at click time so page-wide updates to that item are already in.
+  private _resolveData(): PoiChannelData | null {
+    if (this.data) return this.data
+
+    let node: HTMLElement | null = this.parentElement
+
+    while (node) {
+      const data = (node as { data?: unknown }).data
+
+      if (data && typeof data === 'object' && 'id' in data) {
+        return data as PoiChannelData
+      }
+
+      node = node.parentElement
+    }
+
+    return null
   }
 }

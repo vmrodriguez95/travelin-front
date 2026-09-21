@@ -11,7 +11,7 @@ import type { PoiChannelView } from '@ds/utils/poi-channel.utils'
 import { CardBase } from '@ds/abstracts/card.base'
 
 // Utils
-import { printTime } from '@ds/utils/date.utils'
+import { printTime } from '@ds/utils/date-format.utils'
 
 // Styles
 import styles from './c-card-transport.style.scss?inline'

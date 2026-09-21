@@ -6,7 +6,7 @@ import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 // Utils
-import { printDateTime } from '@ds/utils/date.utils'
+import { printDateTime } from '@ds/utils/date-format.utils'
 
 // Types
 import type {
