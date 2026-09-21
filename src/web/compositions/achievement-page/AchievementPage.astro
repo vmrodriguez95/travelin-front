@@ -1,0 +1,50 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+---
+
+<section class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Logro" url="#" backA11y="Volver atrás"></c-header>
+    <div class="ti-achievement-page">
+      <div class="ti-achievement">
+        <div class="ti-achievement__head">
+          <e-icon class="ti-achievement__verified" icon="verified" size="xl"></e-icon>
+          <e-icon class="ti-achievement__icon u-border--color--brown" icon="landscape" size="xxxl"></e-icon>
+        </div>
+        <h2 class="ti-achievement__title">Mountain King II</h2>
+        <p class="ti-achievement__text">Visit 10 Mountains</p>
+        <e-button class="ti-achievement__share" size="thin" outline title="Compartir logro Mountain King II">
+          <e-icon icon="share" size="m"></e-icon>
+          <span class="ti-achievement__share-text">Compartir</span>
+        </e-button>
+      </div>
+      <ul class="ti-achievement-page__poi-list">
+        <li>
+          <c-card-progress>
+            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+            <p slot="title">Machupichu</p>
+            <p slot="text">Perú</p>
+          </c-card-progress>
+        </li>
+        <li>
+          <c-card-progress>
+            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+            <p slot="title">Machupichu</p>
+            <p slot="text">Perú</p>
+          </c-card-progress>
+        </li>
+        <li>
+          <c-card-progress>
+            <img slot="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/1280px-Machu_Picchu%2C_Peru_%282018%29.jpg" alt="Imagen sobre Perú" width="80" height="80" />
+            <p slot="title">Machupichu</p>
+            <p slot="text">Perú</p>
+          </c-card-progress>
+        </li>
+      </ul>
+      <e-progress-bar class="ti-achievement-page__progress" value="3" total="10" showValues></e-progress-bar>
+    </div>
+  </div>
+</section>

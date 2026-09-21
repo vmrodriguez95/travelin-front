@@ -62,7 +62,6 @@
   }
 
   &--completed {
-    ::slotted([slot="title"]),
     ::slotted([slot="text"]),
     #{$root}__text {
       color: rgba(var(--color-gray), 1);

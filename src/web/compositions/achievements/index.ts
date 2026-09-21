@@ -1,5 +1,5 @@
 export const meta = {
-  name: 'Logos',
+  name: 'Logros',
   icon: 'medals',
   tag: 'achievements',
   description: 'Vista de logros.',
