@@ -45,7 +45,7 @@ export class CPoiSaves extends LitElement {
 
   @property({ type: String }) close = ''
 
-  @property({ type: String }) idField = 'idPoi'
+  @property({ type: String }) idField = 'location'
 
   @property({ type: String }) collectionsField = 'collections'
 
@@ -80,11 +80,11 @@ export class CPoiSaves extends LitElement {
   }
 
   private _onSelect(detail: PoiSelectEventDetail) {
-    const poi = detail.data as { id: string; collections?: string[] }
+    const poi = detail.data as { location: string; collections?: string[] }
 
     this._channel.dispatch<FormModifyFieldsEventDetail>(FORM_MODIFY_FIELDS_EVENT, {
       fields: {
-        [this.idField]: poi.id,
+        [this.idField]: poi.location,
         [this.collectionsField]: poi.collections ?? []
       },
       source: this
@@ -99,7 +99,7 @@ export class CPoiSaves extends LitElement {
     this._addCollections(saved.collections)
 
     dispatchDataUpdate({
-      id: saved.idPoi,
+      id: saved.location,
       changes: { collections: saved.collections.map((collection) => collection.id) },
       source: this
     })

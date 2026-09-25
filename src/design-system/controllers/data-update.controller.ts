@@ -2,11 +2,11 @@ import type { ReactiveController, ReactiveControllerHost } from 'lit'
 import { DATA_UPDATE_EVENT, type DataUpdateEventDetail } from '@ds/utils/data-update.utils'
 
 interface Identified {
-  id: string
+  location: string
 }
 
 // Keeps a host's `data` copy in sync with `data-update` announcements for
-// the same id. The host decides how to store the merged record.
+// the same location. The host decides how to store the merged record.
 export class DataUpdateController<T extends Identified> implements ReactiveController {
   private getData: () => T | null | undefined
   private setData: (data: T) => void
@@ -28,7 +28,9 @@ export class DataUpdateController<T extends Identified> implements ReactiveContr
   private _onUpdate = (ev: CustomEvent<DataUpdateEventDetail>) => {
     const data = this.getData()
 
-    if (!data || data.id !== ev.detail.id) return
+    // An update without a location names no record; matching it would merge
+    // it into every record that has no location either.
+    if (!ev.detail.id || !data || data.location !== ev.detail.id) return
 
     this.setData({ ...data, ...ev.detail.changes })
   }

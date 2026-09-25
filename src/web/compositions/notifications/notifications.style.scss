@@ -29,7 +29,7 @@ c-notifications-list {
   grid-template-columns: repeat(4, 1fr);
   gap: space(2);
   align-items: center;
-  padding: space(1) space(2);
+  padding: space(2);
   border-radius: $border-radius-l;
   background-color: rgba(var(--color-background--secondary), 1);
 
