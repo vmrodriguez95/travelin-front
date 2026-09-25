@@ -183,7 +183,7 @@ function formatDate(dateStart: string, dateEnd: string) {
                   {
                     (poi.type === 'poi' || poi.type === 'poi_hotel') && (
                       <e-modal-trigger channel={savesChannel} slot="action">
-                        <e-icon icon="bookmark" size="m"></e-icon>
+                        <e-icon-state icon="bookmark" activeIcon="bookmark-filled" field="collections" size="m"></e-icon-state>
                       </e-modal-trigger>
                       <e-modal-trigger channel={moveChannel} slot="action">
                         <e-icon icon="moving" size="m"></e-icon>

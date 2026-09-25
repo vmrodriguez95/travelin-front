@@ -4,6 +4,7 @@ import { customElement, property, queryAssignedElements } from 'lit/decorators.j
 // Types
 import type { CModal } from '@ds/components/c-modal/c-modal'
 import type { PoiChannelData } from '@ds/utils/poi-channel.utils'
+import { findHolderData } from '@ds/utils/data-holder.utils'
 
 // Controllers
 import { ChannelController } from '@ds/controllers/channel.controller'
@@ -76,23 +77,9 @@ export class EModalTrigger extends LitElement {
     this._channel.dispatch(MODAL_OPEN_EVENT)
   }
 
-  // Own `data` first; otherwise the nearest ancestor holding an item (a card),
-  // read at click time so page-wide updates to that item are already in.
+  // Own `data` first; otherwise the card around it, read at click time so
+  // page-wide updates to that item are already in.
   private _resolveData(): PoiChannelData | null {
-    if (this.data) return this.data
-
-    let node: HTMLElement | null = this.parentElement
-
-    while (node) {
-      const data = (node as { data?: unknown }).data
-
-      if (data && typeof data === 'object' && 'id' in data) {
-        return data as PoiChannelData
-      }
-
-      node = node.parentElement
-    }
-
-    return null
+    return this.data ?? findHolderData(this)
   }
 }
