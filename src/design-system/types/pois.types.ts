@@ -8,6 +8,7 @@ interface PoiBase {
   type: string
   name: string
   types: string[]
+  location: string
   collections?: string[]
 }
 
@@ -32,7 +33,6 @@ export interface MapMarker {
 
 // POI HOTEL
 export interface PoiHotel extends PoiBase {
-  location: string
   coordinates: Coordinates
   dateStart: string
   dateEnd: string
@@ -95,7 +95,6 @@ export interface PoiTransport extends PoiBase {
 
 // POI
 export interface Poi extends PoiBase {
-  location: string
   coordinates: Coordinates
   time: string
   icon: string

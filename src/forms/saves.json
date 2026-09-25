@@ -10,9 +10,9 @@
       "helpmsg": "",
       "removeMainKey": true,
       "fields": {
-        "idPoi": {
-          "id": "savesIdPoi",
-          "name": "idPoi",
+        "location": {
+          "id": "savesLocation",
+          "name": "location",
           "label": "POI",
           "type": "hidden",
           "fillValue": "",

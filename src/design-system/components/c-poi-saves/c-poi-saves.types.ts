@@ -7,7 +7,7 @@ export interface Collection {
 // What the server answers after saving a POI into its collections.
 export interface SavesResponse {
   data: {
-    idPoi: string
+    location: string
     collections: Array<Collection>
   }
 }

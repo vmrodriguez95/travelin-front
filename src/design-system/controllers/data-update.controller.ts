@@ -2,7 +2,7 @@ import type { ReactiveController, ReactiveControllerHost } from 'lit'
 import { DATA_UPDATE_EVENT, type DataUpdateEventDetail } from '@ds/utils/data-update.utils'
 
 interface Identified {
-  id: string
+  location: string
 }
 
 // Keeps a host's `data` copy in sync with `data-update` announcements for
@@ -28,7 +28,7 @@ export class DataUpdateController<T extends Identified> implements ReactiveContr
   private _onUpdate = (ev: CustomEvent<DataUpdateEventDetail>) => {
     const data = this.getData()
 
-    if (!data || data.id !== ev.detail.id) return
+    if (!data || data.location !== ev.detail.id) return
 
     this.setData({ ...data, ...ev.detail.changes })
   }
