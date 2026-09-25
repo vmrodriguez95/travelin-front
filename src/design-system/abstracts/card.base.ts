@@ -22,6 +22,9 @@ import {
 } from '@ds/utils/poi-channel.utils'
 import { scrollIntoNearestVerticalContainer, scrollToPageEnd } from '@ds/utils/action.utils'
 
+// Requests
+import { FetchSuccessEvent } from '@ds/requests/fetch-success.event'
+
 // Mixins
 import { Responsive } from '@ds/mixins/responsive'
 
@@ -63,11 +66,11 @@ export abstract class CardBase<T extends PoiChannelData> extends Responsive(LitE
   connectedCallback() {
     super.connectedCallback()
 
-    document.addEventListener('fetch-success', this._onFetchSuccess as EventListener)
+    document.addEventListener(FetchSuccessEvent.type, this._onFetchSuccess as EventListener)
   }
 
   disconnectedCallback() {
-    document.removeEventListener('fetch-success', this._onFetchSuccess as EventListener)
+    document.removeEventListener(FetchSuccessEvent.type, this._onFetchSuccess as EventListener)
 
     super.disconnectedCallback()
   }
@@ -118,10 +121,16 @@ export abstract class CardBase<T extends PoiChannelData> extends Responsive(LitE
     return method?.toUpperCase() === 'PATCH'
   }
 
-  private _onFetchSuccess = (ev: Event) => {
-    const event = ev as CustomEvent
+  // The id the requester says it acted on wins; the answer's own id is the
+  // fallback for requests that carry no item (a cloned delete template).
+  private _getSubjectId(ev: Event): string | undefined {
+    if (ev instanceof FetchSuccessEvent && ev.subjectId) return ev.subjectId
 
-    if (event.detail?.data?.id !== this.data.id) return
+    return (ev as CustomEvent).detail?.data?.id
+  }
+
+  private _onFetchSuccess = (ev: Event) => {
+    if (this._getSubjectId(ev) !== this.data.id) return
 
     const detail = { data: this.data, source: this }
 

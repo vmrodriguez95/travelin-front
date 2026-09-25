@@ -8,6 +8,7 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 // Requests
 import { SimpleJsonClient } from '@ds/requests/json-client'
 import type { HttpMethod } from '@ds/requests/requests.types'
+import { FetchSuccessEvent } from '@ds/requests/fetch-success.event'
 
 // Utils
 import { isSilentRequestError } from '@ds/utils/request.utils'
@@ -133,11 +134,7 @@ export class EFetch extends LitElement {
       const method = this.method.toUpperCase() as HttpMethod
       const data = await this._client.send<unknown>(this.action, method, this._buildBody(), this.headers, this._abort.signal)
 
-      this.dispatchEvent(new CustomEvent('fetch-success', {
-        detail: data,
-        bubbles: true,
-        composed: true
-      }))
+      this.dispatchEvent(new FetchSuccessEvent(data, this._selected?.id ?? null))
 
     } catch (err: unknown) {
       if (isSilentRequestError(err)) return
