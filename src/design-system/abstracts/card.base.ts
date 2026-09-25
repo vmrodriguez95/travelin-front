@@ -113,12 +113,9 @@ export abstract class CardBase<T extends PoiChannelData> extends Responsive(LitE
     this.remove()
   }
 
-  // The card leaves the list either way; what the list is told differs:
-  // a PATCH moved the item to another itinerary, anything else deleted it.
+  // Only a request that says so moves the item; anything else removed it.
   private _isMoveRequest(ev: Event) {
-    const method = (ev.target as { method?: string } | null)?.method
-
-    return method?.toUpperCase() === 'PATCH'
+    return ev instanceof FetchSuccessEvent && ev.intent === 'move'
   }
 
   // The id the requester says it acted on wins; the answer's own id is the

@@ -219,7 +219,7 @@ function formatDate(dateStart: string, dateEnd: string) {
   <h2 slot="title">Mover POI a</h2>
   <c-poi-resume-form channel={moveChannel} static class="ti-form__modal__resume"></c-poi-resume-form>
   {Array.from({ length: 15 }, (_, i) => (
-    <e-fetch type="plain" class="u-margin--bottom--m" channel={moveChannel} action="/api/poi.json" method="PATCH" body={JSON.stringify({ idItinerary: `itinerary-${i + 1}` })}>
+    <e-fetch type="plain" class="u-margin--bottom--m" channel={moveChannel} intent="move" action="/api/poi.json" method="PATCH" body={JSON.stringify({ idItinerary: `itinerary-${i + 1}` })}>
       <c-card-date text="Llegada a Bangkok" day={i}>
         <p slot="index">Día {i + 1}</p>
         <p slot="day">{12 + i}</p>

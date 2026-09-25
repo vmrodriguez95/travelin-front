@@ -23,6 +23,13 @@ export const config = {
       label: 'Canal',
       type: 'text',
     },
+    intent: {
+      name: 'intent',
+      label: 'Intención',
+      type: 'select',
+      options: ['remove', 'move'],
+      default: 'remove'
+    },
     idField: {
       name: 'idField',
       label: 'Campo del id seleccionado',
