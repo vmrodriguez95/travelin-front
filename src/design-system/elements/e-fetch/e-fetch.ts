@@ -7,7 +7,8 @@ import { ChannelController } from '@ds/controllers/channel.controller'
 
 // Requests
 import { SimpleJsonClient } from '@ds/requests/json-client'
-import type { HttpMethod } from '@ds/requests/requests.types'
+import type { FetchIntent, HttpMethod } from '@ds/requests/requests.types'
+import { FetchSuccessEvent } from '@ds/requests/fetch-success.event'
 
 // Utils
 import { isSilentRequestError } from '@ds/utils/request.utils'
@@ -46,6 +47,9 @@ export class EFetch extends LitElement {
   @property({ type: String }) channel = ''
 
   @property({ type: String }) idField = 'idPoi'
+
+  // What the request does to that item, announced with the success event.
+  @property({ type: String }) intent: FetchIntent = 'remove'
 
   @state() _countdown = 0
 
@@ -133,11 +137,7 @@ export class EFetch extends LitElement {
       const method = this.method.toUpperCase() as HttpMethod
       const data = await this._client.send<unknown>(this.action, method, this._buildBody(), this.headers, this._abort.signal)
 
-      this.dispatchEvent(new CustomEvent('fetch-success', {
-        detail: data,
-        bubbles: true,
-        composed: true
-      }))
+      this.dispatchEvent(new FetchSuccessEvent(data, this._selected?.id ?? null, this.intent))
 
     } catch (err: unknown) {
       if (isSilentRequestError(err)) return
