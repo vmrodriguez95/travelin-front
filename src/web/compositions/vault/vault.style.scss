@@ -1,0 +1,39 @@
+@use '@common/styles/tools/grid.scss' as *;
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/variables/breakpoints.scss' as *;
+
+.ti-vault {
+  padding: 0 var(--grid-gutter) var(--ui-menu-height);
+  min-height: 0;
+  box-sizing: border-box;
+  
+  @media (min-width: $breakpoint-xl) {
+    padding: 0 var(--grid-gutter);
+    height: calc(100dvh - var(--ui-c-header-basic-height));
+    overflow-y: auto;
+  }
+
+  &__collection {
+    padding-bottom: space(4);
+  }
+
+  &__title {
+    @include heading--h2(400);
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    margin: 0 0 space(2);
+    color: rgba(var(--color-text), 1);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: space(1) space(4);
+    
+    @media (min-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
