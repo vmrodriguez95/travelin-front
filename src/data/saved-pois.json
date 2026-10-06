@@ -1,0 +1,1174 @@
+[
+  {
+    "id": "177278946269aa9ed6b396b",
+    "idTrip": "177278946269aa9ed6b396c",
+    "idUser": "177278946269aa9ed6b396c",
+    "idItinerary": "177278946269aa9ed6b396c",
+
+    "name": "Vuelo Madrid - Tokio",
+    "type": "poi_transport",
+    "typeTransport": "flight",
+
+    "file": "",
+
+    "booking": {
+      "reference": "ABC123",
+      "ticketNumber": "1234567890",
+      "provider": "Skyscanner",
+      "price": 850,
+      "currency": "EUR"
+    },
+
+    "passengers": [
+      {
+        "name": "Victor"
+      },
+      {
+        "name": "Estefanía"
+      }
+    ],
+
+    "segments": [
+      {
+        "duration": "6h 45m",
+        "operator": "China Eastern Airlines",
+        "transportNumber": "MU 710",
+        "class": "Tourist",
+        "origin": {
+          "code": "MAD",
+          "name": "Adolfo Suárez Madrid-Barajas",
+          "address": "Madrid, España",
+          "coordinates": [-3.560, 40.472],
+          "platform": "T1",
+          "gate": "12",
+          "date": "2025-10-28T10:30:00.000"
+        },
+        "destiny": {
+          "code": "PVG",
+          "name": "Shanghai Pudong International Airport",
+          "address": "Shanghai, China",
+          "coordinates": [139.779, 35.549],
+          "platform": "T1",
+          "gate": "--",
+          "date": "2025-10-29T06:20:00.000"
+        },
+        "passengers": [
+          {
+            "name": "Victor",
+            "seat": "69A"
+          },
+          {
+            "name": "Estefanía",
+            "seat": "69B"
+          }
+        ]
+      },
+      {
+        "duration": "6h 55m",
+        "transportNumber": "MU 539",
+        "class": "Tourist",
+        "origin": {
+          "code": "PVG",
+          "name": "Shanghai Pudong International Airport",
+          "address": "Shanghai, China",
+          "coordinates": [139.779, 35.549],
+          "platform": "T1",
+          "gate": "13",
+          "date": "2025-10-29T14:55:00.000"
+        },
+        "destiny": {
+          "code": "HND",
+          "name": "Haneda Airport",
+          "address": "Tokio, Japón",
+          "coordinates": [139.779, 35.549],
+          "platform": "T3",
+          "gate": "10",
+          "date": "2025-10-29T18:30:00.000"
+        },
+        "operator": {
+          "name": "China Eastern Airlines",
+          "code": "MU"
+        },
+        "passengers": [
+          {
+            "name": "Victor",
+            "seat": "69A"
+          },
+          {
+            "name": "Estefanía",
+            "seat": "69B"
+          }
+        ]
+      }
+    ],
+
+    "order": 0,
+
+    "createdAt": "2026-03-06T09:31:02.739Z",
+    "updatedAt": "2026-03-06T09:31:02.739Z"
+  },
+  {
+    "id": "177278946269aa9ed6b396a",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-ele-hotel-higashi-ueno",
+    "coordinates": [139.7853965, 35.7120532],
+    "name": "Ele Hotel Higashi Ueno",
+    "type": "poi_hotel",
+    "collections": ["col-thailand"],
+    "icon": "hotel",
+    "types": ["hotel"],
+    "address": "6 Chome-7-10 Higashiueno, Taito City, Tokyo 110-0015, Japón",
+    "dateStart": "2025-05-13T00:00:00.000",
+    "dateEnd": "2025-05-17T00:00:00.000",
+    "image": "https://pix8.agoda.net/property/69930119/0/f333537039ff35a5703bec37e7f3ef8f.jpeg?ce=2",
+    "file": "",
+    "notes": [
+      {
+        "icon": "restaurant",
+        "text": "Solo desayuno"
+      },
+      {
+        "icon": "star",
+        "text": "4 estrellas"
+      },
+      {
+        "icon": "bed",
+        "text": "Cama doble"
+      },
+      {
+        "icon": "wifi",
+        "text": "Wifi gratis"
+      },
+      {
+        "icon": "check-in-out",
+        "text": "Checkin a partir de las 15:00. Checkout antes de las 11:00"
+      }
+    ],
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396c",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-senso-ji",
+    "coordinates": [139.7889957, 35.7146405],
+    "name": "Templo Senso-ji",
+    "icon": "temple-buddhist",
+    "address": "2 Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "08:00",
+    "price": 0,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQweqNwGvKXb79DfhnnTscJqZSpl4v6hA_jDQ&s=3",
+    "notes": [
+      {
+        "icon": "coffee",
+        "text": "El ritual del té es una tradición japonesa..."
+      }
+    ],
+    "type": "poi",
+    "collections": ["col-wishlist"],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396d",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-ginza-karen",
+    "coordinates": [139.7966712, 35.711539],
+    "name": "Ir a comprar maletas a Ginza Karen",
+    "address": "1 Chome-33-1 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "10:00",
+    "price": 0,
+    "icon": "storefront",
+    "image": "https://rimage.gnst.jp/livejapan.com/public/img/spot/lj/00/05/lj0005850/lj0005850_6998661f0ecf5_main.jpg?20260224092540&q=80&rw=616",
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396e",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-porcelain-shop-asakusa",
+    "coordinates": [139.7950474, 35.7112363],
+    "name": "Tienda de porcelana",
+    "address": "1 Chome-4-5 Asakusa, Taito City, Tokyo 111-0032, Japón",
+    "time": "10:30",
+    "price": 0,
+    "icon": "storefront",
+    "image": "https://asakusayamakichi.co.jp/cdn/shop/t/2/assets/yamakichi_footer_slide_img04.jpg?v=96709946685070448781643253869",
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-wishlist"],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396f",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Paradita técnico táctica para dejar lo comprado en el hotel",
+    "time": "11:00",
+    "icon": "hotel",
+    "notes": [],
+    "type": "poi_note",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396g",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-akihabara",
+    "coordinates": [139.7707135, 35.7009932],
+    "name": "Llegada a Akihabara",
+    "address": "Akihabara, Tokio, Japón",
+    "time": "12:00",
+    "price": 0,
+    "icon": "poi",
+    "image": "https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/akihabara-iStock-484915982-562x421.jpg",
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396h",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Paradita técnico táctica para comer",
+    "time": "12:00",
+    "icon": "restaurant",
+    "notes": [],
+    "type": "poi_note",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396i",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-kanda-myojin",
+    "coordinates": [139.7707135, 35.7009932],
+    "name": "Visita al santuario de Kanda",
+    "address": "2 Chome-16-2 Sotokanda, Chiyoda City, Tokyo 101-0021, Japón",
+    "time": "13:30",
+    "price": 0,
+    "icon": "temple-buddhist",
+    "image": "https://live.staticflickr.com/4918/32398331218_5e4909e5fb_b.jpg",
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-wishlist"],
+    "types": ["poi"],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396j",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Sacar entradas para ver la estatua de Hachiko",
+    "time": "14:00",
+    "notes": [],
+    "icon": "reminder",
+    "type": "poi_reminder",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946269aa9ed6b396k",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "name": "Tiempo libre de dos horas",
+    "time": "16:00",
+    "icon": "cafe",
+    "notes": [],
+    "type": "poi_note",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0001",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-ichiran-shibuya",
+    "coordinates": [139.6993, 35.6596],
+    "name": "Ichiran Shibuya",
+    "icon": "restaurant",
+    "address": "1 Chome-22-7 Jinnan, Shibuya City, Tokyo 150-0041, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0002",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-sushi-dai-toyosu",
+    "coordinates": [139.7845, 35.6455],
+    "name": "Sushi Dai Toyosu",
+    "icon": "restaurant",
+    "address": "6 Chome-6-2 Toyosu, Koto City, Tokyo 135-0061, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0003",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-tsukiji-outer-market",
+    "coordinates": [139.7707, 35.6655],
+    "name": "Mercado exterior de Tsukiji",
+    "icon": "storefront",
+    "address": "4 Chome-16-2 Tsukiji, Chuo City, Tokyo 104-0045, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0004",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-gyukatsu-motomura-shibuya",
+    "coordinates": [139.7009, 35.6589],
+    "name": "Gyukatsu Motomura Shibuya",
+    "icon": "meat",
+    "address": "2 Chome-3-1 Dogenzaka, Shibuya City, Tokyo 150-0043, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0005",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-afuri-harajuku",
+    "coordinates": [139.7035, 35.6709],
+    "name": "Afuri Harajuku",
+    "icon": "restaurant",
+    "address": "3 Chome-63-1 Jingumae, Shibuya City, Tokyo 150-0001, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0006",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-maisen-aoyama",
+    "coordinates": [139.7119, 35.6657],
+    "name": "Tonkatsu Maisen Aoyama",
+    "icon": "restaurant",
+    "address": "4 Chome-8-5 Jingumae, Shibuya City, Tokyo 150-0001, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0007",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-tsukishima-monja-street",
+    "coordinates": [139.7826, 35.6618],
+    "name": "Monjayaki en Tsukishima",
+    "icon": "restaurant",
+    "address": "3 Chome-12-10 Tsukishima, Chuo City, Tokyo 104-0052, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0008",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-omoide-yokocho",
+    "coordinates": [139.6993, 35.693],
+    "name": "Omoide Yokocho",
+    "icon": "glass",
+    "address": "1 Chome-2 Nishishinjuku, Shinjuku City, Tokyo 160-0023, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0009",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-kanda-yabusoba",
+    "coordinates": [139.7681, 35.6967],
+    "name": "Kanda Yabusoba",
+    "icon": "restaurant",
+    "address": "2 Chome-10 Kanda Awajicho, Chiyoda City, Tokyo 101-0063, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0010",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-gonpachi-nishi-azabu",
+    "coordinates": [139.7266, 35.6624],
+    "name": "Gonpachi Nishi-Azabu",
+    "icon": "restaurant",
+    "address": "1 Chome-13-11 Nishiazabu, Minato City, Tokyo 106-0031, Japón",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-restaurants", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0011",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-wat-pho",
+    "coordinates": [100.493, 13.7465],
+    "name": "Wat Pho",
+    "icon": "temple-buddhist",
+    "address": "2 Sanamchai Rd, Grand Palace Subdistrict, Bangkok 10200, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0012",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-wat-arun",
+    "coordinates": [100.4889, 13.7437],
+    "name": "Wat Arun",
+    "icon": "temple-buddhist",
+    "address": "158 Thanon Wang Doem, Wat Arun, Bangkok 10600, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0013",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-gran-palacio-bangkok",
+    "coordinates": [100.4915, 13.75],
+    "name": "Gran Palacio de Bangkok",
+    "icon": "castle",
+    "address": "Na Phra Lan Rd, Grand Palace Subdistrict, Bangkok 10200, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0014",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-chatuchak-market",
+    "coordinates": [100.55, 13.7999],
+    "name": "Mercado de Chatuchak",
+    "icon": "storefront",
+    "address": "Kamphaeng Phet 2 Rd, Chatuchak, Bangkok 10900, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0015",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-jim-thompson-house",
+    "coordinates": [100.5283, 13.749],
+    "name": "Casa de Jim Thompson",
+    "icon": "museum",
+    "address": "6 Soi Kasemsan 2, Rama I Rd, Bangkok 10330, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0016",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-wat-phra-that-doi-suthep",
+    "coordinates": [98.9217, 18.8048],
+    "name": "Wat Phra That Doi Suthep",
+    "icon": "temple-buddhist",
+    "address": "Su Thep, Mueang Chiang Mai, Chiang Mai 50200, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0017",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-wat-chedi-luang",
+    "coordinates": [98.9868, 18.787],
+    "name": "Wat Chedi Luang",
+    "icon": "temple-buddhist",
+    "address": "103 Prapokklao Rd, Mueang Chiang Mai, Chiang Mai 50200, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0018",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-elephant-nature-park",
+    "coordinates": [98.942, 19.2455],
+    "name": "Elephant Nature Park",
+    "icon": "animal",
+    "address": "1 Ban Lao, Mae Taeng, Chiang Mai 50150, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0019",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-maya-bay-phi-phi",
+    "coordinates": [98.7665, 7.677],
+    "name": "Maya Bay, Islas Phi Phi",
+    "icon": "beach",
+    "address": "Ko Phi Phi Le, Ao Nang, Krabi 81210, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0020",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-railay-beach",
+    "coordinates": [98.8384, 8.0125],
+    "name": "Playa de Railay",
+    "icon": "beach",
+    "address": "Railay, Ao Nang, Mueang Krabi, Krabi 81000, Tailandia",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-thailand", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0021",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-lago-hoan-kiem",
+    "coordinates": [105.8522, 21.0287],
+    "name": "Lago Hoan Kiem",
+    "icon": "water",
+    "address": "Hoan Kiem, Hanoi, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0022",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-templo-de-la-literatura",
+    "coordinates": [105.8355, 21.0275],
+    "name": "Templo de la Literatura",
+    "icon": "temple-buddhist",
+    "address": "58 Quoc Tu Giam, Dong Da, Hanoi, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0023",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-bahia-de-ha-long",
+    "coordinates": [107.0431, 20.9101],
+    "name": "Bahía de Ha Long",
+    "icon": "landscape",
+    "address": "Ha Long, Quang Ninh, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0024",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-trang-an-ninh-binh",
+    "coordinates": [105.9023, 20.2506],
+    "name": "Complejo paisajístico de Trang An",
+    "icon": "landscape",
+    "address": "Trang An, Ninh Binh, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0025",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-ciudad-imperial-hue",
+    "coordinates": [107.5775, 16.4698],
+    "name": "Ciudad Imperial de Hue",
+    "icon": "castle",
+    "address": "Phu Hau, Hue, Thua Thien Hue, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0026",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-montanas-de-marmol",
+    "coordinates": [108.263, 16.0037],
+    "name": "Montañas de Mármol",
+    "icon": "landscape",
+    "address": "81 Huyen Tran Cong Chua, Ngu Hanh Son, Da Nang, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0027",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-casco-antiguo-hoi-an",
+    "coordinates": [108.3281, 15.8772],
+    "name": "Casco antiguo de Hoi An",
+    "icon": "city",
+    "address": "Hoi An, Quang Nam, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0028",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-tuneles-de-cu-chi",
+    "coordinates": [106.4624, 11.1426],
+    "name": "Túneles de Cu Chi",
+    "icon": "forest",
+    "address": "Phu Hiep, Cu Chi, Ho Chi Minh, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0029",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-mercado-ben-thanh",
+    "coordinates": [106.6981, 10.7725],
+    "name": "Mercado de Ben Thanh",
+    "icon": "storefront",
+    "address": "Le Loi, District 1, Ho Chi Minh, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  },
+  {
+    "id": "177278946270a0030",
+    "idUser": "177263595469a847322fb6d",
+    "idTrip": "177272350469a99d30551f1",
+    "idItinerary": "177272350569a99d317d3fe",
+    "location": "mock-place-museo-de-los-restos-de-la-guerra",
+    "coordinates": [106.692, 10.7795],
+    "name": "Museo de los Restos de la Guerra",
+    "icon": "museum",
+    "address": "28 Vo Van Tan, District 3, Ho Chi Minh, Vietnam",
+    "time": "",
+    "price": 0,
+    "notes": [],
+    "type": "poi",
+    "collections": ["col-vietnam", "col-wishlist"],
+    "types": [
+      "poi"
+    ],
+    "file": "",
+    "order": 0,
+    "createdAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    },
+    "updatedAt": {
+      "$date": "2026-03-06T09:31:02.739"
+    }
+  }
+]

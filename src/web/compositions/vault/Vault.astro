@@ -1,0 +1,77 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+import collections from '../../../data/collections.json'
+import type { Poi } from '@ds/types/pois.types'
+import type { CheckboxGroupFormField } from '@ds/components/c-form/c-form.types'
+import { getFormBy } from '@web/utils/form.utils'
+import { withFormA11yDefaults } from '@web/utils/form.server'
+
+const { id } = Astro.props
+
+const poisGlob = import.meta.glob('../../../data/saved-pois.json', { eager: true })
+const pois: Poi[] = (Object.values(poisGlob)[0] as { default: Poi[] })?.default ?? []
+
+const savesChannel = 'poi-saves'
+
+// The saves form is shared by every card: the user's collections are poured
+// into its checkbox group once, here, instead of once per POI.
+const savesSchema = withFormA11yDefaults(getFormBy('saves', 'create')!)
+const savesCollections = savesSchema.sections.core.fields.collections as CheckboxGroupFormField
+savesCollections.options = collections.map((collection) => ({
+  label: collection.name,
+  value: collection.id,
+  icon: collection.icon
+}))
+const savesForm = JSON.stringify(savesSchema)
+
+---
+
+<section id={id} class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Bóveda" url="#" backA11y="Volver atrás"></c-header>
+    <section class="ti-vault">
+      {collections.map((collection) => {
+        const collectionPois = pois.filter((poi: any) => poi.type === 'poi' && poi.collections?.includes(collection.id))
+
+        return collectionPois.length > 0 && (
+          <article class="ti-vault__collection" aria-labelledby={`vault-${collection.id}`}>
+            <h2 class="ti-vault__title" id={`vault-${collection.id}`}>
+              <e-icon icon={collection.icon} size="l"></e-icon>
+              <span>{collection.name}</span>
+            </h2>
+            <div class="ti-vault__list">
+              {collectionPois.map((poi: any) => (
+                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type}>
+                  {
+                    poi.image && (
+                      <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="64" height="64" loading="lazy" />
+                    )
+                  }
+                  <span slot="title">{poi.name}</span>
+                  <e-modal-trigger channel={savesChannel} slot="action">
+                        <e-icon-state icon="bookmark" activeIcon="bookmark-filled" field="collections" size="m"></e-icon-state>
+                      </e-modal-trigger>
+                  <e-modal-trigger modal="modal" slot="action">
+                    <e-icon icon="delete" size="m"></e-icon>
+                    <template>
+                      <h2 slot="title">Eliminar {poi.name}</h2>
+                      <p slot="description">Estas a punto de eliminar este elemento de tus guardados. Esta acción no eliminará este POI de tus viajes. ¿Quieres quitarlo de tus guardados?</p>
+                      <e-fetch action="/api/poi.json" method="delete">
+                        <span>Eliminar</span>
+                      </e-fetch>
+                    </template>
+                  </e-modal-trigger>
+                </c-card-poi>
+              ))}
+            </div>
+          </article>
+        )
+      })}
+    </section>
+  </div>
+</section>
+<c-modal id="modal" close="Cerrar"></c-modal>
+<c-poi-saves channel={savesChannel} action="/api/saves.json" data={savesForm} heading="Añadir a guardados" submitLabel="Añadir POI" close="Cerrar"></c-poi-saves>

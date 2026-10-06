@@ -11,4 +11,8 @@
   border: none;
   background: none;
   cursor: pointer;
+
+  ::slotted(e-icon[icon="delete"]) {
+    --eIconColor: var(--color-error);
+  }
 }
