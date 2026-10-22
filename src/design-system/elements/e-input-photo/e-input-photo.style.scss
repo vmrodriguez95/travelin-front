@@ -1,0 +1,103 @@
+@use '@common/styles/tools/tools.scss' as *;
+@use '@common/styles/tools/typography.scss' as *;
+@use '@common/styles/utils/input-info.scss' as *;
+
+.e-input-photo {
+  display: block;
+  position: relative;
+
+  &__label {
+    @include body--m;
+    color: rgba(var(--color-text), 1);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 space(0.5);
+    cursor: pointer;
+  }
+
+  &__wrapper {
+    position: relative;
+    width: space(14);
+    height: space(14);
+  }
+
+  &__field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  &__preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background-color: rgba(var(--color-background--secondary), 1);
+    border: 2px solid rgba(var(--color-primary), 1);
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__edit {
+    --eIconColor: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: space(4);
+    height: space(4);
+    background-color: rgba(var(--color-primary), 1);
+    border-radius: 50%;
+  }
+
+  &__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: space(3);
+    height: space(3);
+    padding: 0;
+    background-color: rgba(var(--color-background--secondary), 1);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__error {
+    @include body--xs;
+    margin: space(1) 0 0;
+    color: rgba(var(--color-error), 1);
+  }
+}
