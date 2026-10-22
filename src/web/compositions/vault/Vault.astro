@@ -44,7 +44,7 @@ const savesForm = JSON.stringify(savesSchema)
             </h2>
             <div class="ti-vault__list">
               {collectionPois.map((poi: any) => (
-                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type}>
+                <c-card-poi icon={poi.icon} data={JSON.stringify(poi)} type={poi.type} static>
                   {
                     poi.image && (
                       <img {...{ slot: 'img' }} src={poi.image} alt={`Picture about ${poi.name}`} width="64" height="64" loading="lazy" />

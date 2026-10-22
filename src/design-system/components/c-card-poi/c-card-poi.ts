@@ -26,6 +26,8 @@ export class CCardPoi extends CardBase<Poi | PoiHotel | Reminder | Note> {
 
   @property({ type: String }) type = ''
 
+  @property({ type: Boolean }) static = false
+
   @query('.c-card-poi') _card!: HTMLElement
 
   @state() removing = false
@@ -38,7 +40,8 @@ export class CCardPoi extends CardBase<Poi | PoiHotel | Reminder | Note> {
     const classes = classMap({
       'c-card-poi': true,
       'c-card-poi--active': this.active,
-      'c-card-poi--removing': this.removing
+      'c-card-poi--removing': this.removing,
+      'c-card-poi--static': this.static
     })
 
     const headClasses = classMap({
@@ -73,12 +76,15 @@ export class CCardPoi extends CardBase<Poi | PoiHotel | Reminder | Note> {
 
           <div class=${classMap({
             'c-card-poi__actions': true,
-            'c-card-poi__actions--showed': this.actionsShowed
+            'c-card-poi__actions--showed': this.actionsShowed || this.static
           })}>
             <slot name="action"></slot>
-            <button class="c-card-poi__menu" @click=${this._showActions} aria-label=${this.menu}>
-              <e-icon icon="menu" size="m"></e-icon>
-            </button>
+
+            ${when(!this.static, () => html`
+              <button class="c-card-poi__menu" @click=${this._showActions} aria-label=${this.menu}>
+                <e-icon icon="menu" size="m"></e-icon>
+              </button>
+            `)}
           </div>
         </div>
       </div>
