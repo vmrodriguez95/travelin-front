@@ -224,9 +224,9 @@ export class CMap extends LitElement {
   }
 
   private _getEmbedSrc() {
-    if (this.apiKey && this.latitude && this.longitude) {
-      return `https://www.google.com/maps/embed/v1/view?key=${this.apiKey}&center=${this.latitude},${this.longitude}&zoom=${this.zoom}`
-    }
+    // if (this.apiKey && this.latitude && this.longitude) {
+    //   return `https://www.google.com/maps/embed/v1/view?key=${this.apiKey}&center=${this.latitude},${this.longitude}&zoom=${this.zoom}`
+    // }
 
     return `https://www.google.com/maps?q=${this.latitude},${this.longitude}&z=${this.zoom}&output=embed`
   }
