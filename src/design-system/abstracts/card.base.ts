@@ -154,6 +154,7 @@ export abstract class CardBase<T extends PoiChannelData> extends Responsive(LitE
   private _onSelectionChange(detail: PoiSelectEventDetail) {
     this._isSelectedData = detail.data.id === this.data.id
     this.active = this._isSelectedData
+    this.actionsShowed = this._isSelectedData
 
     if (this._isSelectedData && detail.source !== this) {
       this._focusSelectedCard()

@@ -79,12 +79,6 @@ export class CCardPoi extends CardBase<Poi | PoiHotel | Reminder | Note> {
             'c-card-poi__actions--showed': this.actionsShowed || this.static
           })}>
             <slot name="action"></slot>
-
-            ${when(!this.static, () => html`
-              <button class="c-card-poi__menu" @click=${this._showActions} aria-label=${this.menu}>
-                <e-icon icon="menu" size="m"></e-icon>
-              </button>
-            `)}
           </div>
         </div>
       </div>

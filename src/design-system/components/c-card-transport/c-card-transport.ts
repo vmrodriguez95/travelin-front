@@ -59,9 +59,6 @@ export class CCardTransport extends CardBase<PoiTransport> {
             'c-card-transport__actions--showed': this.actionsShowed
           })}>
             <slot name="action"></slot>
-            <button class="c-card-transport__menu" @click=${this._showActions} aria-label=${this.menu}>
-              <e-icon icon="menu" size="m"></e-icon>
-            </button>
           </div>
         </div>
       </div>
