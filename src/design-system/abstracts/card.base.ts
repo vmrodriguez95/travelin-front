@@ -103,11 +103,6 @@ export abstract class CardBase<T extends PoiChannelData> extends Responsive(LitE
     this._channel.dispatch(POI_HOVER_CLEAR_EVENT, { source: this })
   }
 
-  protected _showActions(ev: Event) {
-    ev.stopPropagation()
-    this.actionsShowed = !this.actionsShowed
-  }
-
   // How the card leaves the DOM; a subclass may animate it first.
   protected _removeFromDOM() {
     this.remove()
