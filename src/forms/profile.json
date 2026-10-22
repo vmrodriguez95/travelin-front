@@ -1,0 +1,50 @@
+[{
+  "form": {
+    "entity": "profile",
+    "method": "POST",
+    "action": "edit"
+  },
+  "sections": {
+    "core": {
+      "legend": "Editar nota",
+      "removeMainKey": true,
+      "fields": {
+        "photo": {
+          "id": "profilePhoto",
+          "name": "photo",
+          "label": "Foto de perfil",
+          "type": "photo",
+          "required": false,
+          "readonly": false
+        },
+        "name": {
+          "id": "profileName",
+          "name": "name",
+          "label": "Nombre",
+          "type": "text",
+          "fieldSize": "full",
+          "required": true,
+          "readonly": false
+        },
+        "location": {
+          "id": "profileLocation",
+          "name": "location",
+          "label": "Ubicación",
+          "type": "text",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        },
+        "biography": {
+          "id": "profileBiography",
+          "name": "biography",
+          "label": "Biografía",
+          "type": "textarea",
+          "fieldSize": "full",
+          "required": false,
+          "readonly": false
+        }
+      }
+    }
+  }
+}]

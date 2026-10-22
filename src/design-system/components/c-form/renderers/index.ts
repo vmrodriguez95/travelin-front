@@ -4,6 +4,7 @@ import { TextFieldRenderer } from './text.renderer'
 import { TextareaFieldRenderer } from './textarea.renderer'
 import { SelectFieldRenderer } from './select.renderer'
 import { FileFieldRenderer } from './file.renderer'
+import { PhotoFieldRenderer } from './photo.renderer'
 import { SearchFieldRenderer } from './search.renderer'
 import { IconFieldRenderer } from './icon.renderer'
 import { CheckboxGroupFieldRenderer } from './checkbox-group.renderer'
@@ -15,6 +16,7 @@ FieldRendererRegistry.register(['text', 'email', 'password', 'number'], new Text
 FieldRendererRegistry.register('textarea', new TextareaFieldRenderer())
 FieldRendererRegistry.register('select', new SelectFieldRenderer())
 FieldRendererRegistry.register('file', new FileFieldRenderer())
+FieldRendererRegistry.register('photo', new PhotoFieldRenderer())
 FieldRendererRegistry.register('search', new SearchFieldRenderer())
 FieldRendererRegistry.register('icon', new IconFieldRenderer())
 FieldRendererRegistry.register('checkbox-group', new CheckboxGroupFieldRenderer())
