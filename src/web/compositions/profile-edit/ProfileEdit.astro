@@ -1,0 +1,25 @@
+---
+import AppMenu from '@web/components/AppMenu.astro'
+import { withFormA11yDefaults } from '@web/utils/form.server.ts'
+const { id, data } = Astro.props
+
+let finalData = withFormA11yDefaults(data)
+
+finalData = JSON.stringify(finalData)
+---
+
+<section id={id} class="u-grid-main u-bg--dark" data-component>
+  <div class="u-grid-main--sidebar">
+    <AppMenu />
+  </div>
+  <div class="u-grid-main--main">
+    <c-header heading="Editar perfil" url="#" backA11y="Volver atrás"></c-header>
+    <div class="ti-form u-grid">
+      <div class="u-col-4 u-col-md-2"></div>
+      <div class="u-col-4 u-col-md-8">
+        <c-form action="/" method="POST" data={finalData} submitLabel="Guardar cambios" enctype="multipart/form-data"></c-form>
+      </div>
+      <div class="u-col-4 u-col-md-2"></div>
+    </div>
+  </div>
+</section>
