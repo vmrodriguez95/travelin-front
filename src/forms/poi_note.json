@@ -28,15 +28,6 @@
           "required": true,
           "readonly": false
         },
-        "time": {
-          "id": "poiNoteTime",
-          "name": "time",
-          "label": "Elige la hora",
-          "type": "time",
-          "fieldSize": "full",
-          "required": false,
-          "readonly": false
-        },
         "notes": {
           "id": "poiNoteNotes",
           "sectionTitle": "Notas",
@@ -98,15 +89,6 @@
           "type": "text",
           "fieldSize": "full",
           "required": true,
-          "readonly": false
-        },
-        "time": {
-          "id": "poiNoteTime",
-          "name": "time",
-          "label": "Elige la hora",
-          "type": "time",
-          "fieldSize": "full",
-          "required": false,
           "readonly": false
         },
         "notes": {

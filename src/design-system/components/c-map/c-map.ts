@@ -300,14 +300,11 @@ export class CMap extends LitElement {
       streetViewControl: false,
       fullscreenControl: false
     })
-  }
 
-  private _clearMarkers() {
-    this._markerInstances.forEach((markerInstance) => {
-      markerInstance.map = null
+    this._map.addListener('click', (ev: any) => {
+      console.log('Click', ev)
+      console.log('LatLng', ev.latLng.toJSON())
     })
-
-    this._markerInstances.clear()
   }
 
   // Only the list changes here: the update it triggers syncs the map, and
@@ -451,41 +448,50 @@ export class CMap extends LitElement {
     markerInstance.content = this._createMarkerContent(marker)
   }
 
-  private _createMarkerContent(marker: MapMarker) {
-    const markerStyle = this._getMarkerStyle(marker)
-    const wrapper = document.createElement('div')
-    const icon = document.createElement('div')
-    const scale = markerStyle.scale
-    const size = 24 * scale
-    let pointerStart: { x: number, y: number } | null = null
-
+  private _setWrapperStyles(wrapper: HTMLDivElement, scale: number, bg: string, borderColor: string, isSelected: boolean) {
     wrapper.style.width = `${40 * scale}px`
     wrapper.style.height = `${40 * scale}px`
     wrapper.style.borderRadius = '999px'
     wrapper.style.display = 'flex'
     wrapper.style.alignItems = 'center'
     wrapper.style.justifyContent = 'center'
-    wrapper.style.backgroundColor = markerStyle.background
-    wrapper.style.border = `2px solid ${markerStyle.borderColor}`
+    wrapper.style.backgroundColor = bg
+    wrapper.style.border = `2px solid ${borderColor}`
     wrapper.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.22)'
     wrapper.style.cursor = 'pointer'
     wrapper.style.touchAction = 'manipulation'
     wrapper.style.userSelect = 'none'
     wrapper.style.transition = 'transform 0.2s ease'
-    wrapper.style.transform = this._selectedIdPoi && marker.idPoi === this._selectedIdPoi ? 'translateY(-2px)' : 'translateY(0)'
+    wrapper.style.transform = isSelected ? 'translateY(-2px)' : 'translateY(0)'
+  }
 
+  private _setIconStyles(icon: HTMLDivElement, size: number, color: string, marker: MapMarker) {
     icon.style.width = `${size}px`
     icon.style.height = `${size}px`
     icon.style.display = 'flex'
     icon.style.alignItems = 'center'
     icon.style.justifyContent = 'center'
-    icon.style.color = markerStyle.iconColor
+    icon.style.color = color
     icon.innerHTML = this._normalizeMarkerSvg(this._getMarkerIcon(marker))
+  }
+
+  private _createMarkerContent(marker: MapMarker) {
+    const markerStyle = this._getMarkerStyle(marker)
+    const wrapper = document.createElement('div')
+    const icon = document.createElement('div')
+    const scale = markerStyle.scale
+    const size = 24 * scale
+    const isSelected = marker.idPoi === this._selectedIdPoi
+    let pointerStart: { x: number, y: number } | null = null
+
+    this._setWrapperStyles(wrapper, scale, markerStyle.background, markerStyle.borderColor, isSelected)
+    this._setIconStyles(icon, size, markerStyle.iconColor, marker)
 
     wrapper.appendChild(icon)
     wrapper.addEventListener('pointerdown', (ev) => {
       pointerStart = { x: ev.clientX, y: ev.clientY }
     })
+
     wrapper.addEventListener('pointerup', (ev) => {
       if (!pointerStart) return
 
