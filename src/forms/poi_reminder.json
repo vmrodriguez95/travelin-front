@@ -31,7 +31,7 @@
         "time": {
           "id": "poiReminderTime",
           "name": "time",
-          "label": "Elige la hora",
+          "label": "¿A qué hora quieres que te avisemos?",
           "type": "time",
           "fieldSize": "full",
           "required": true,
@@ -107,7 +107,7 @@
         "time": {
           "id": "poiReminderTime",
           "name": "time",
-          "label": "Elige la hora",
+          "label": "¿A qué hora quieres que te avisemos?",
           "type": "time",
           "fieldSize": "full",
           "required": true,

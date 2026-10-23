@@ -103,7 +103,7 @@
         "time": {
           "id": "poiTime",
           "name": "time",
-          "label": "Elige la hora",
+          "label": "Hora a la que vas a ir a visitarlo",
           "type": "time",
           "fieldSize": "full",
           "required": true,
@@ -185,10 +185,10 @@
         "time": {
           "id": "poiTime",
           "name": "time",
-          "label": "Elige la hora",
+          "label": "Hora a la que vas a ir a visitarlo",
           "type": "time",
           "fieldSize": "full",
-          "required": true,
+          "required": false,
           "readonly": false
         },
         "price": {
