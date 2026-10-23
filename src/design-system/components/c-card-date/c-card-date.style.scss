@@ -23,12 +23,17 @@
   @media (min-width: $breakpoint-md) {
     min-height: space(15);
   }
+  
+  &--thin {
+    min-height: 0;
+  }
 
   &__head {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    padding: space(1) 0;
     width: space(8);
     color: rgba(var(--color-text--light), 1);
     background-color: rgba(var(--color-background--light), 1);
@@ -58,14 +63,30 @@
     text-transform: capitalize;
   }
 
+  &--thin {
+    ::slotted([slot="index"]),
+    ::slotted([slot="day"]),
+    ::slotted([slot="month"]) {
+      line-height: 1;
+    }
+
+    ::slotted([slot="month"]) {
+      margin: 0;
+    }
+  }
+
   &__content {
     padding: space(1) space(2);
+
+    #{$block}--thin & {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__title {
     @include body--m(600);
     text-align: left;
-    margin: 0 0 space(1);
     
     @media (min-width: $breakpoint-md) {
       @include body--l(600);
@@ -78,7 +99,7 @@
     flex-direction: column;
     gap: space(0.5);
     position: relative;
-    margin: 0;
+    margin: space(1) 0 0;
     padding: 0;
     list-style: none;
 

@@ -27,6 +27,8 @@ export class CCardDate extends LitElement {
 
   @property({ type: Number }) day = -1
 
+  @property({ type: Boolean }) thin = false
+
   private _channel = new ChannelController(
     this,
     () => this.channel,
@@ -36,7 +38,8 @@ export class CCardDate extends LitElement {
   render() {
     const classes = classMap({
       'c-card-date': true,
-      'c-card-date--today': this.isToday
+      'c-card-date--today': this.isToday,
+      'c-card-date--thin': this.thin
     })
 
     return html`
