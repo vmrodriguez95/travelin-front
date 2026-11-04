@@ -19,7 +19,7 @@
   }
 
   &__title {
-    @include heading--h2(400);
+    @include heading--h3(400);
     display: flex;
     align-items: center;
     gap: space(1);

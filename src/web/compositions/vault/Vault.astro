@@ -52,17 +52,7 @@ const savesForm = JSON.stringify(savesSchema)
                   }
                   <span slot="title">{poi.name}</span>
                   <e-modal-trigger channel={savesChannel} slot="action">
-                        <e-icon-state icon="bookmark" activeIcon="bookmark-filled" field="collections" size="m"></e-icon-state>
-                      </e-modal-trigger>
-                  <e-modal-trigger modal="modal" slot="action">
-                    <e-icon icon="delete" size="m"></e-icon>
-                    <template>
-                      <h2 slot="title">Eliminar {poi.name}</h2>
-                      <p slot="description">Estas a punto de eliminar este elemento de tus guardados. Esta acción no eliminará este POI de tus viajes. ¿Quieres quitarlo de tus guardados?</p>
-                      <e-fetch action="/api/poi.json" method="delete">
-                        <span>Eliminar</span>
-                      </e-fetch>
-                    </template>
+                    <e-icon-state icon="bookmark" activeIcon="bookmark-filled" field="collections" size="m"></e-icon-state>
                   </e-modal-trigger>
                 </c-card-poi>
               ))}
