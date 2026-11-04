@@ -93,7 +93,7 @@
     }
     
     &:disabled {
-      background: none;
+      background-color: rgba(var(--color-background--secondary), 0.4);
       cursor: not-allowed;
 
       &:hover {
